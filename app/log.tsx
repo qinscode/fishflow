@@ -22,7 +22,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { FishCard } from '@/components/ui/FishCard';
 import { useTheme } from '@/hooks/useThemeColor';
 import { useAppStore, useFish } from '@/lib/store';
-import { Fish, CatchRecord, WaterType, WeatherCondition } from '@/lib/types';
+import { Fish, CatchRecord, WaterType } from '@/lib/types';
 import { generateUUID } from '@/lib/utils';
 import { WATER_TYPES, WEATHER_CONDITIONS } from '@/lib/constants';
 
@@ -36,7 +36,7 @@ interface CatchFormData {
     longitude: number;
   };
   waterType: WaterType;
-  weather: WeatherCondition;
+  weather: string;
   temperature?: number;
   notes?: string;
   photos?: string[];
@@ -69,7 +69,7 @@ export default function LogCatchScreen() {
   const requestPermissions = async () => {
     try {
       const { status: locationStatus } = await Location.requestForegroundPermissionsAsync();
-      const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync();
+      const { status: cameraStatus } = await ImagePicker.requestCameraPermissionsAsync();
       const { status: mediaStatus } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       
       if (locationStatus === 'granted') {
@@ -167,18 +167,31 @@ export default function LogCatchScreen() {
       const catchRecord: Omit<CatchRecord, 'id' | 'createdAt' | 'updatedAt'> = {
         userId: 'user-001',
         fishId: data.fishId,
-        weight: data.weight,
-        length: data.length,
-        location: data.location || '未知位置',
-        coordinates: data.coordinates,
-        waterType: data.waterType,
-        weather: data.weather,
-        temperature: data.temperature,
         timestamp: new Date().toISOString(),
-        notes: data.notes,
         photos: data.photos || [],
-        bait: data.bait,
-        method: data.method,
+        measurements: {
+          lengthCm: data.length,
+          weightKg: data.weight,
+        },
+        location: data.coordinates ? {
+          latitude: data.coordinates.latitude,
+          longitude: data.coordinates.longitude,
+          accuracy: 5,
+          address: data.location,
+          waterType: data.waterType,
+          privacy: 'exact' as const,
+        } : undefined,
+        equipment: {
+          bait: data.bait,
+        },
+        conditions: {
+          weather: data.weather,
+          temperature: data.temperature,
+        },
+        notes: data.notes,
+        isReleased: false,
+        isPersonalBest: false,
+        tags: [],
       };
 
       addCatch(catchRecord);
