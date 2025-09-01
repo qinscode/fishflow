@@ -33,15 +33,35 @@ export default function HomeScreen() {
   const userStats = useUserStats();
   const achievements = useAchievements();
   const userAchievements = useUserAchievements();
-  const initializeData = useAppStore(state => state.initializeData);
+  const { setFish, setAchievements } = useAppStore(state => ({ 
+    setFish: state.setFish, 
+    setAchievements: state.setAchievements 
+  }));
 
   // Initialize data on mount
   useEffect(() => {
-    if (fish.length === 0) {
-      initializeMockData().then(() => {
-        initializeData();
-      });
-    }
+    let mounted = true;
+    
+    const initData = async () => {
+      if (fish.length === 0 && mounted) {
+        try {
+          const { MOCK_FISH_DATA, MOCK_ACHIEVEMENT_DATA } = await import('@/lib/mockData');
+          if (mounted) {
+            setFish(MOCK_FISH_DATA);
+            setAchievements && setAchievements(MOCK_ACHIEVEMENT_DATA);
+            console.log('Data initialized successfully');
+          }
+        } catch (error) {
+          console.error('Failed to initialize data:', error);
+        }
+      }
+    };
+    
+    initData();
+    
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   // Get recent unlocks (last 3)

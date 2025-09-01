@@ -38,6 +38,7 @@ interface AppState {
 interface AppActions {
   // 数据操作
   setFish: (fish: Fish[]) => void;
+  setAchievements: (achievements: Achievement[]) => void;
   addCatch: (
     catchData: Omit<CatchRecord, 'id' | 'createdAt' | 'updatedAt'>
   ) => void;
@@ -121,6 +122,10 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     const catches = get().catches;
     const unlockedIds = new Set(catches.map(c => c.fishId));
     set({ unlockedFishIds: unlockedIds });
+  },
+
+  setAchievements: achievements => {
+    set({ achievements });
   },
 
   addCatch: catchData => {
