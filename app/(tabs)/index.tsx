@@ -20,6 +20,7 @@ import {
   useAchievements,
   useUserAchievements,
 } from '@/lib/store';
+import { FadeInView, SlideInView } from '@/components/animations';
 import { getFishCardState } from '@/lib/utils';
 import { initializeMockData } from '@/lib/mockData';
 
@@ -97,29 +98,31 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
-        <ThemedView style={styles.header}>
-          <View>
-            <ThemedText type="h2" style={styles.greeting}>
-              欢迎回来！
-            </ThemedText>
-            <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
-              继续你的钓鱼之旅
-            </ThemedText>
-          </View>
-          
-          <Pressable 
-            style={[styles.profileButton, { backgroundColor: theme.colors.surface }]}
-            onPress={() => {
-              // TODO: Navigate to profile
-            }}
-          >
-            <IconSymbol 
-              name="person.fill" 
-              size={24} 
-              color={theme.colors.primary} 
-            />
-          </Pressable>
-        </ThemedView>
+        <FadeInView delay={0}>
+          <ThemedView style={styles.header}>
+            <View>
+              <ThemedText type="h2" style={styles.greeting}>
+                欢迎回来！
+              </ThemedText>
+              <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
+                继续你的钓鱼之旅
+              </ThemedText>
+            </View>
+            
+            <Pressable 
+              style={[styles.profileButton, { backgroundColor: theme.colors.surface }]}
+              onPress={() => {
+                // TODO: Navigate to profile
+              }}
+            >
+              <IconSymbol 
+                name="person.fill" 
+                size={24} 
+                color={theme.colors.primary} 
+              />
+            </Pressable>
+          </ThemedView>
+        </FadeInView>
 
         {/* Quick Stats */}
         <ThemedView type="card" style={[styles.statsCard, theme.shadows.sm]}>
