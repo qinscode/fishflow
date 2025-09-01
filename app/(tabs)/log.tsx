@@ -1,5 +1,6 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -17,10 +18,7 @@ export default function LogScreen() {
           description="开始记录你的钓鱼经历吧！"
           action={{
             label: "开始记录",
-            onPress: () => {
-              // TODO: 导航到记录表单
-              console.log('Navigate to log form');
-            },
+            onPress: () => router.push('/log'),
           }}
         />
       </ThemedView>
