@@ -113,7 +113,7 @@ export default function FishdexScreen() {
   // Handlers
   const handleFishPress = useCallback((fishItem: Fish) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    router.push(`/fish/${fishItem.id}`);
+    router.push(`/fish/${fishItem.id}` as any);
   }, []);
 
   const handleSearchChange = useCallback((text: string) => {
