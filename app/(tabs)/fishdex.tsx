@@ -17,7 +17,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { FishCard } from '@/components/ui/FishCard';
 import { FilterChip, FilterChipGroup } from '@/components/ui/FilterChip';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import { IconSymbol, MAPPING } from '@/components/ui/IconSymbol';
 import { EmptyState, EmptyStates } from '@/components/ui/EmptyState';
 import { useTheme } from '@/hooks/useThemeColor';
 import { useResponsive } from '@/hooks/useResponsive';
@@ -97,7 +97,7 @@ export default function FishdexScreen() {
     Object.entries(WATER_TYPES).map(([key, config]) => ({
       id: key,
       label: config.name,
-      icon: config.icon as keyof typeof import('@/components/ui/IconSymbol')['MAPPING'],
+      icon: config.icon as keyof typeof MAPPING,
     }))
   , []);
 
@@ -338,7 +338,6 @@ export default function FishdexScreen() {
           data={sortedFish}
           renderItem={renderFishItem}
           numColumns={gridColumns}
-          estimatedItemSize={isTablet ? 220 : 200}
           ListHeaderComponent={renderHeader}
           ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
           contentContainerStyle={styles.listContent}

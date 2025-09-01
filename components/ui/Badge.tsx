@@ -10,7 +10,7 @@ import Animated, {
 import * as Haptics from 'expo-haptics';
 
 import { ThemedText } from '@/components/ThemedText';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import { IconSymbol, MAPPING } from '@/components/ui/IconSymbol';
 import { ProgressRing } from '@/components/ui/ProgressBar';
 import { useTheme } from '@/hooks/useThemeColor';
 import { Achievement, AchievementTier } from '@/lib/types';
@@ -174,7 +174,7 @@ export function Badge({
             />
           ) : (
             <IconSymbol
-              name={achievement.icon as keyof typeof import('@/components/ui/IconSymbol')['MAPPING']}
+              name={achievement.icon as keyof typeof MAPPING}
               size={iconSize}
               color={iconColor}
             />

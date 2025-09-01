@@ -240,7 +240,7 @@ export const MOCK_FISH_DATA: Fish[] = [
 ];
 
 // 模拟成就数据（使用常量中的默认成就）
-export const MOCK_ACHIEVEMENT_DATA: Achievement[] = DEFAULT_ACHIEVEMENTS;
+export const MOCK_ACHIEVEMENT_DATA: Achievement[] = [...DEFAULT_ACHIEVEMENTS];
 
 // 生成模拟钓鱼记录的函数
 export function generateMockCatchRecords(fishData: Fish[], count: number = 10) {

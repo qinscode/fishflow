@@ -9,7 +9,7 @@ import Animated, {
 import * as Haptics from 'expo-haptics';
 
 import { ThemedText } from '@/components/ThemedText';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import { IconSymbol, MAPPING } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/hooks/useThemeColor';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -20,7 +20,7 @@ export interface FilterChipProps {
   onPress?: () => void;
   variant?: 'filled' | 'outlined' | 'text';
   color?: string;
-  icon?: keyof typeof import('@/components/ui/IconSymbol')['MAPPING'];
+  icon?: keyof typeof MAPPING;
   count?: number;
   disabled?: boolean;
   size?: 'small' | 'medium' | 'large';
@@ -208,7 +208,7 @@ export interface FilterChipGroupProps {
   chips: Array<{
     id: string;
     label: string;
-    icon?: keyof typeof import('@/components/ui/IconSymbol')['MAPPING'];
+    icon?: keyof typeof MAPPING;
     count?: number;
   }>;
   selectedIds: string[];

@@ -124,8 +124,8 @@ export const DEFAULT_ACHIEVEMENTS = [
     icon: 'fish.fill',
     tiers: {
       bronze: { requirement: 1, reward: '解锁图鉴功能' },
-      silver: { requirement: 1, reward: null },
-      gold: { requirement: 1, reward: null },
+      silver: { requirement: 1, reward: undefined },
+      gold: { requirement: 1, reward: undefined },
     },
     isHidden: false,
   },

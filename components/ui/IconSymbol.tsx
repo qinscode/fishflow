@@ -56,7 +56,7 @@ const MAPPING: IconMapping = {
   'cloud.drizzle.fill': { type: 'ionicons', name: 'rainy' },
   'cloud.rain.fill': { type: 'ionicons', name: 'rainy' },
   'cloud.bolt.rain.fill': { type: 'ionicons', name: 'thunderstorm' },
-  'cloud.fog.fill': { type: 'material', name: 'fog' },
+  'cloud.fog.fill': { type: 'material', name: 'foggy' },
   'wind': { type: 'material', name: 'air' },
   
   // Tools and Measurements

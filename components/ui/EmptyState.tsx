@@ -236,11 +236,11 @@ export const EmptyStates = {
     />
   ),
 
-  NoSearchResults: (query: string, props: Partial<EmptyStateProps> = {}) => (
+  NoSearchResults: (props: Partial<EmptyStateProps> & { query: string }) => (
     <EmptyState
       type="no-results"
       title="没有找到相关结果"
-      description={`没有找到与"${query}"相关的鱼类`}
+      description={`没有找到与"${props.query}"相关的鱼类`}
       action={{
         label: "清除搜索",
         onPress: () => {},
