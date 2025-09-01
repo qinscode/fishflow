@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import Animated, { 
   useAnimatedStyle, 
   useSharedValue, 
   withTiming,
   withSpring,
-  useEffect,
 } from 'react-native-reanimated';
 
 import { ThemedText } from '@/components/ThemedText';
@@ -141,8 +140,8 @@ export function ProgressRing({
   const animatedStyle = useAnimatedStyle(() => {
     const strokeDashoffset = circumference * (1 - animatedProgress.value);
     return {
-      strokeDashoffset,
-    };
+      strokeDashoffset: strokeDashoffset,
+    } as any;
   });
 
   const displayLabel = label || `${Math.round(progress * 100)}%`;
