@@ -11,4 +11,7 @@ yarn.lock
 .DS_Store
 android/
 ios/
-web-build/ 
+web-build/
+
+# igonre markdown files
+*.md
