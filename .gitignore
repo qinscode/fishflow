@@ -9,6 +9,8 @@ dist/
 web-build/
 expo-env.d.ts
 
+/.idea
+
 # Native
 .kotlin/
 *.orig.*
@@ -37,3 +39,25 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+### ReactNative template
+# React Native Stack Base
+
+.expo
+__generated__
+
+### react template
+.DS_*
+*.log
+logs
+**/*.backup.*
+**/*.back.*
+
+node_modules
+bower_components
+
+*.sublime*
+
+psd
+thumb
+sketch
+
