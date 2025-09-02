@@ -98,7 +98,7 @@ export const FishCard = memo<FishCardProps>(({
       height: cardSize * 1, // 减少卡片高度比例
       backgroundColor: 'white',
       borderRadius: 16,
-      borderWidth: 3,
+      borderWidth: 2, // 减少边框宽度从3到2
       borderColor: rarityColor, // 只根据稀有度显示边框颜色
     },
     theme.shadows.lg,
