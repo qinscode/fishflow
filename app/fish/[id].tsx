@@ -2,7 +2,7 @@ import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, router } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
   View, 
   StyleSheet, 
@@ -11,6 +11,14 @@ import {
   StatusBar,
   Dimensions,
 } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+  withDelay,
+  Easing,
+} from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/ThemedText';
@@ -76,23 +84,105 @@ export default function FishDetailScreen() {
     return currentWeight > bestWeight ? current : best;
   }, userCatches[0]);
 
+  // 动画值
+  const bubble1Scale = useSharedValue(1);
+  const bubble2Scale = useSharedValue(1);
+  const bubble3Scale = useSharedValue(1);
+  const bubble1Opacity = useSharedValue(1);
+  const bubble2Opacity = useSharedValue(1);
+  const bubble3Opacity = useSharedValue(1);
+  
+  // 启动动画
+  useEffect(() => {
+    // 缩放动画
+    bubble1Scale.value = withRepeat(
+      withTiming(1.2, { duration: 2000, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true
+    );
+    bubble2Scale.value = withDelay(500, withRepeat(
+      withTiming(1.15, { duration: 1800, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true
+    ));
+    bubble3Scale.value = withDelay(1000, withRepeat(
+      withTiming(1.1, { duration: 1600, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true
+    ));
+    
+    // 透明度动画
+    bubble1Opacity.value = withRepeat(
+      withTiming(0.3, { duration: 3000, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true
+    );
+    bubble2Opacity.value = withDelay(800, withRepeat(
+      withTiming(0.4, { duration: 2500, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true
+    ));
+    bubble3Opacity.value = withDelay(1200, withRepeat(
+      withTiming(0.5, { duration: 2000, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true
+    ));
+  }, []);
+
+  // 动画样式
+  const animatedBubble1Style = useAnimatedStyle(() => ({
+    transform: [{ scale: bubble1Scale.value }],
+    opacity: bubble1Opacity.value,
+  }));
+
+  const animatedBubble2Style = useAnimatedStyle(() => ({
+    transform: [{ scale: bubble2Scale.value }],
+    opacity: bubble2Opacity.value,
+  }));
+
+  const animatedBubble3Style = useAnimatedStyle(() => ({
+    transform: [{ scale: bubble3Scale.value }],
+    opacity: bubble3Opacity.value,
+  }));
+
 
   const renderHeader = () => (
     <View style={styles.header}>
       <LinearGradient
-        colors={[rarityColor + '25', rarityColor + '15', rarityColor + '05']}
+        colors={[rarityColor + '35', rarityColor + '25', rarityColor + '10']}
         style={styles.headerGradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
       />
       
-      {/* 装饰性线条 */}
+      {/* 装饰性元素 - 丰富的泡泡效果 */}
       <View style={styles.decorativeLines}>
-        <View style={[styles.line1, { backgroundColor: rarityColor + '10' }]} />
-        <View style={[styles.line2, { backgroundColor: rarityColor + '08' }]} />
-        <View style={[styles.line3, { backgroundColor: rarityColor + '12' }]} />
-        <View style={[styles.circle1, { backgroundColor: rarityColor + '06' }]} />
-        <View style={[styles.circle2, { backgroundColor: rarityColor + '08' }]} />
+        {/* 几何图形 - 统一规整 */}
+        <View style={[styles.geometryCircle, { backgroundColor: rarityColor + '15' }]} />
+        <View style={[styles.geometrySquare, { backgroundColor: rarityColor + '12' }]} />
+        
+        {/* 主要气泡组 - 右侧 */}
+        <View style={[styles.rhythmBubble1, { backgroundColor: rarityColor + '20' }]} />
+        <View style={[styles.rhythmBubble2, { backgroundColor: rarityColor + '15' }]} />
+        <View style={[styles.rhythmBubble3, { backgroundColor: rarityColor + '10' }]} />
+        
+        {/* 左侧气泡组 */}
+        <View style={[styles.leftBubble1, { backgroundColor: rarityColor + '18' }]} />
+        <View style={[styles.leftBubble2, { backgroundColor: rarityColor + '12' }]} />
+        <View style={[styles.leftBubble3, { backgroundColor: rarityColor + '08' }]} />
+        
+        {/* 散布的小气泡 */}
+        <View style={[styles.smallBubble1, { backgroundColor: rarityColor + '15' }]} />
+        <View style={[styles.smallBubble2, { backgroundColor: rarityColor + '12' }]} />
+        <View style={[styles.smallBubble3, { backgroundColor: rarityColor + '10' }]} />
+        <View style={[styles.smallBubble4, { backgroundColor: rarityColor + '14' }]} />
+        <View style={[styles.smallBubble5, { backgroundColor: rarityColor + '08' }]} />
+        
+        {/* 微小气泡点缀 */}
+        <View style={[styles.tinyBubble1, { backgroundColor: rarityColor + '12' }]} />
+        <View style={[styles.tinyBubble2, { backgroundColor: rarityColor + '10' }]} />
+        <View style={[styles.tinyBubble3, { backgroundColor: rarityColor + '08' }]} />
+        <View style={[styles.tinyBubble4, { backgroundColor: rarityColor + '06' }]} />
       </View>
       
       <SafeAreaView edges={['top']} style={styles.headerSafeArea}>
@@ -465,45 +555,147 @@ const styles = StyleSheet.create({
     bottom: 0,
     overflow: 'hidden',
   },
-  line1: {
+  // 几何图形 - 统一规整
+  geometryCircle: {
     position: 'absolute',
-    top: 80,
-    right: -50,
-    width: 120,
-    height: 2,
-    transform: [{ rotate: '35deg' }],
+    top: 70,
+    right: 60,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
   },
-  line2: {
+  geometrySquare: {
     position: 'absolute',
-    top: 150,
-    left: -30,
-    width: 80,
-    height: 1.5,
-    transform: [{ rotate: '-25deg' }],
-  },
-  line3: {
-    position: 'absolute',
-    bottom: 40,
-    right: 20,
-    width: 60,
-    height: 2,
+    bottom: 140,
+    left: 25,
+    width: 24,
+    height: 24,
+    borderRadius: 6,
     transform: [{ rotate: '45deg' }],
   },
-  circle1: {
+  // 主要气泡组 - 右侧
+  rhythmBubble1: {
     position: 'absolute',
-    top: 60,
-    left: 30,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    top: 110,
+    right: 40,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
   },
-  circle2: {
+  rhythmBubble2: {
     position: 'absolute',
-    bottom: 80,
-    left: -10,
-    width: 25,
-    height: 25,
-    borderRadius: 12.5,
+    top: 135,
+    right: 55,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+  },
+  rhythmBubble3: {
+    position: 'absolute',
+    top: 155,
+    right: 45,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  // 左侧气泡组
+  leftBubble1: {
+    position: 'absolute',
+    top: 140,
+    left: 50,
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+  },
+  leftBubble2: {
+    position: 'absolute',
+    top: 165,
+    left: 35,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  leftBubble3: {
+    position: 'absolute',
+    top: 185,
+    left: 45,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
+  // 散布的小气泡
+  smallBubble1: {
+    position: 'absolute',
+    top: 100,
+    left: 80,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  smallBubble2: {
+    position: 'absolute',
+    top: 180,
+    right: 100,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  smallBubble3: {
+    position: 'absolute',
+    bottom: 160,
+    left: 70,
+    width: 9,
+    height: 9,
+    borderRadius: 4.5,
+  },
+  smallBubble4: {
+    position: 'absolute',
+    bottom: 180,
+    right: 80,
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
+  },
+  smallBubble5: {
+    position: 'absolute',
+    top: 120,
+    left: 120,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
+  // 微小气泡点缀
+  tinyBubble1: {
+    position: 'absolute',
+    top: 90,
+    left: 100,
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+  },
+  tinyBubble2: {
+    position: 'absolute',
+    top: 200,
+    right: 120,
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
+  },
+  tinyBubble3: {
+    position: 'absolute',
+    bottom: 200,
+    left: 90,
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+  },
+  tinyBubble4: {
+    position: 'absolute',
+    bottom: 170,
+    right: 110,
+    width: 3,
+    height: 3,
+    borderRadius: 1.5,
   },
   headerSafeArea: {
     paddingHorizontal: 16,
@@ -516,9 +708,11 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   headerTitleContainer: {
-    flex: 1,
+    position: 'absolute',
+    left: 0,
+    right: 0,
     alignItems: 'center',
-    marginHorizontal: 20,
+    justifyContent: 'center',
   },
   backButton: {
     width: 40,
@@ -611,15 +805,15 @@ const styles = StyleSheet.create({
     marginTop: -40,
   },
   infoCard: {
-    marginBottom: 16,
-    padding: 20,
+    marginBottom: 12,
+    padding: 16,
     borderRadius: 16,
   },
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 12,
   },
   cardTitle: {
     fontWeight: '700',
@@ -637,8 +831,8 @@ const styles = StyleSheet.create({
   infoRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    paddingVertical: 12,
-    gap: 12,
+    paddingVertical: 8,
+    gap: 10,
   },
   infoContent: {
     flex: 1,
@@ -656,11 +850,11 @@ const styles = StyleSheet.create({
   unlockStatus: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
     borderRadius: 8,
-    marginTop: 16,
-    gap: 8,
+    marginTop: 12,
+    gap: 6,
     borderWidth: 1,
   },
   unlockText: {
@@ -668,13 +862,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   statsList: {
-    gap: 16,
+    gap: 12,
   },
   statRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 4,
+    paddingVertical: 2,
   },
   statLabel: {
     flexDirection: 'row',
@@ -705,15 +899,15 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   habitatInfo: {
-    gap: 16,
+    gap: 12,
   },
   habitatRow: {
-    gap: 12,
+    gap: 8,
   },
   habitatLabel: {
     fontSize: 14,
     fontWeight: '500',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   tagContainer: {
     flexDirection: 'row',
@@ -734,7 +928,7 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   recordInfo: {
-    gap: 12,
+    gap: 8,
   },
   recordRow: {
     flexDirection: 'row',
@@ -750,20 +944,20 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   regulationItem: {
-    marginBottom: 16,
-    paddingBottom: 16,
+    marginBottom: 12,
+    paddingBottom: 12,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(0, 0, 0, 0.1)',
   },
   regulationHeader: {
-    marginBottom: 8,
+    marginBottom: 6,
   },
   regionName: {
     fontSize: 16,
     fontWeight: '600',
   },
   regulationContent: {
-    gap: 6,
+    gap: 4,
   },
   regulationRow: {
     flexDirection: 'row',

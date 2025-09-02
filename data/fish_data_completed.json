@@ -54,6 +54,7 @@
       "activeTime": "day",
       "difficulty": 3
     },
+    "edibility": 4,
     "notes": null
   },
   {
@@ -70,7 +71,7 @@
       "minLengthCm": 40,
       "maxLengthCm": 100,
       "maxWeightKg": 10,
-      "lifespan": null
+      "lifespan": 56
     },
     "habitat": {
       "waterTypes": ["marine"],
@@ -104,6 +105,7 @@
       "activeTime": "day",
       "difficulty": 3
     },
+    "edibility": 4,
     "notes": null
   },
   {
@@ -150,6 +152,7 @@
       "activeTime": "both",
       "difficulty": 4
     },
+    "edibility": 4,
     "notes": null
   },
   {
@@ -166,7 +169,7 @@
       "minLengthCm": 41,
       "maxLengthCm": 100,
       "maxWeightKg": 22,
-      "lifespan": null
+      "lifespan": 40
     },
     "habitat": {
       "waterTypes": ["marine"],
@@ -195,6 +198,7 @@
       "activeTime": "both",
       "difficulty": 4
     },
+    "edibility": 5,
     "notes": null
   },
   {
@@ -240,6 +244,7 @@
       "activeTime": "day",
       "difficulty": 3
     },
+    "edibility": 4,
     "notes": null
   },
   {
@@ -285,6 +290,7 @@
       "activeTime": "day",
       "difficulty": 2
     },
+    "edibility": 4,
     "notes": null
   },
   {
@@ -330,6 +336,7 @@
       "activeTime": "day",
       "difficulty": 2
     },
+    "edibility": 3,
     "notes": null
   },
   {
@@ -376,6 +383,7 @@
       "activeTime": "both",
       "difficulty": 3
     },
+    "edibility": 4,
     "notes": null
   },
   {
@@ -427,6 +435,7 @@
       "activeTime": "day",
       "difficulty": 3
     },
+    "edibility": 3,
     "notes": null
   },
   {
@@ -469,6 +478,7 @@
       "activeTime": "day",
       "difficulty": 2
     },
+    "edibility": 3,
     "notes": null
   },
   {
@@ -505,6 +515,7 @@
       "activeTime": "both",
       "difficulty": 1
     },
+    "edibility": 1,
     "notes": "Contains tetrodotoxin; not safe for consumption"
   },
   {
@@ -550,6 +561,7 @@
       "activeTime": "night",
       "difficulty": 4
     },
+    "edibility": 5,
     "notes": null
   },
   {
@@ -595,6 +607,7 @@
       "activeTime": "day",
       "difficulty": 3
     },
+    "edibility": 4,
     "notes": null
   },
   {
@@ -652,6 +665,7 @@
       "activeTime": "night",
       "difficulty": 2
     },
+    "edibility": 3,
     "notes": null
   },
   {
@@ -681,7 +695,8 @@
       "activeTime": "day",
       "difficulty": 4
     },
-    "localNames": ["Chinaman cod", "Charlie Court cod", "Halfmoon grouper"]
+    "localNames": ["Chinaman cod", "Charlie Court cod", "Halfmoon grouper"],
+    "edibility": 3
   },
   {
     "id": "16",
@@ -715,7 +730,8 @@
       "feedingHabits": ["small crustaceans", "molluscs", "marine worms"],
       "activeTime": "day",
       "difficulty": 3
-    }
+    },
+    "edibility": 3
   },
   {
     "id": "17",
@@ -744,7 +760,8 @@
       "feedingHabits": ["fishes", "crustaceans", "cephalopods"],
       "activeTime": "both",
       "difficulty": 5
-    }
+    },
+    "edibility": 4
   },
   {
     "id": "18",
@@ -798,6 +815,7 @@
       "activeTime": "day",
       "difficulty": 2
     },
+    "edibility": 3,
     "notes": null
   },
   {
@@ -827,7 +845,8 @@
       "feedingHabits": ["molluscs", "crustaceans", "small fish", "worms"],
       "activeTime": "day",
       "difficulty": 3
-    }
+    },
+    "edibility": 4
   },
   {
     "id": "20",
@@ -856,7 +875,8 @@
       "feedingHabits": ["small fish", "crustaceans", "invertebrates"],
       "activeTime": "day",
       "difficulty": 4
-    }
+    },
+    "edibility": 4
   },
   {
     "id": "21",
@@ -890,7 +910,8 @@
       "feedingHabits": ["molluscs", "crabs", "worms", "plant material"],
       "activeTime": "night",
       "difficulty": 4
-    }
+    },
+    "edibility": 3
   },
   {
     "id": "22",
@@ -928,6 +949,7 @@
       "activeTime": "day",
       "difficulty": 2
     },
+    "edibility": 3,
     "notes": null
   },
   {
@@ -962,7 +984,8 @@
       "feedingHabits": ["fishes", "cephalopods", "invertebrates"],
       "activeTime": "day",
       "difficulty": 4
-    }
+    },
+    "edibility": 4
   },
   {
     "id": "24",
@@ -991,7 +1014,8 @@
       "feedingHabits": ["benthic invertebrates", "crustaceans", "small fish"],
       "activeTime": "day",
       "difficulty": 3
-    }
+    },
+    "edibility": 4
   },
   {
     "id": "25",
@@ -1020,7 +1044,8 @@
       "feedingHabits": ["fishes", "prawns", "crabs", "crustaceans"],
       "activeTime": "both",
       "difficulty": 5
-    }
+    },
+    "edibility": 5
   },
   {
     "id": "26",
@@ -1049,7 +1074,8 @@
       "feedingHabits": ["fishes", "crustaceans", "squids"],
       "activeTime": "both",
       "difficulty": 5
-    }
+    },
+    "edibility": 4
   },
   {
     "id": "27",
@@ -1078,7 +1104,8 @@
       "feedingHabits": ["fishes", "crustaceans", "squids"],
       "activeTime": "both",
       "difficulty": 4
-    }
+    },
+    "edibility": 4
   },
   {
     "id": "28",
@@ -1111,7 +1138,8 @@
       "feedingHabits": ["fishes", "squids", "crustaceans"],
       "activeTime": "day",
       "difficulty": 4
-    }
+    },
+    "edibility": 4
   },
   {
     "id": "29",
@@ -1144,7 +1172,8 @@
       "feedingHabits": ["fishes", "sardines", "herrings"],
       "activeTime": "day",
       "difficulty": 3
-    }
+    },
+    "edibility": 4
   },
   {
     "id": "30",
@@ -1179,7 +1208,8 @@
       "feedingHabits": ["crustaceans", "fishes", "squids"],
       "activeTime": "both",
       "difficulty": 4
-    }
+    },
+    "edibility": 4
   },
   {
     "id": "31",
@@ -1208,276 +1238,349 @@
       "feedingHabits": ["fishes", "squids", "crustaceans"],
       "activeTime": "both",
       "difficulty": 5
-    }
+    },
+    "edibility": 4
   },
   {
     "id": "32",
     "name": "Moses perch",
     "scientificName": "Lutjanus russellii",
+    "localNames": [
+      "Moses perch",
+      "Russell's snapper",
+      "Fingermark bream",
+      "Red bream"
+    ],
     "family": "Lutjanidae",
     "rarity": "uncommon",
     "images": {
       "card": "32.png"
     },
     "characteristics": {
-      "minLengthCm": null,
-      "maxLengthCm": null,
-      "maxWeightKg": null
+      "minLengthCm": 25,
+      "maxLengthCm": 45,
+      "maxWeightKg": 1.8,
+      "lifespan": 12
     },
     "habitat": {
-      "waterTypes": [],
-      "regions": [],
-      "seasons": [],
-      "depth": null
+      "waterTypes": ["marine", "estuarine"],
+      "regions": ["WA", "NT", "QLD", "NSW"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "depth": "3-80 m"
     },
     "regulations": [],
     "behavior": {
-      "feedingHabits": [],
+      "feedingHabits": ["benthic invertebrates", "fishes"],
       "activeTime": "day",
       "difficulty": 3
-    }
+    },
+    "edibility": 4
   },
   {
     "id": "33",
     "name": "Redthroat emperor (sweetlip emperor)",
     "scientificName": "Lethrinus miniatus",
+    "localNames": [
+      "Redthroat emperor",
+      "Sweetlip emperor",
+      "Trumpet emperor",
+      "Lipper"
+    ],
     "family": "Lethrinidae",
     "rarity": "common",
     "images": {
       "card": "33.png"
     },
     "characteristics": {
-      "minLengthCm": null,
-      "maxLengthCm": null,
-      "maxWeightKg": null
+      "minLengthCm": 28,
+      "maxLengthCm": 90,
+      "maxWeightKg": 9.6,
+      "lifespan": 22
     },
     "habitat": {
-      "waterTypes": [],
-      "regions": [],
-      "seasons": [],
-      "depth": null
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT", "QLD", "NSW"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "depth": "5-30 m"
     },
     "regulations": [],
     "behavior": {
-      "feedingHabits": [],
+      "feedingHabits": [
+        "fish",
+        "molluscs",
+        "crustaceans",
+        "crabs",
+        "sea urchins"
+      ],
       "activeTime": "day",
-      "difficulty": 3
-    }
+      "difficulty": 4
+    },
+    "edibility": 4
   },
   {
     "id": "34",
     "name": "Coral trout",
     "scientificName": "Plectropomus leopardus",
+    "localNames": [
+      "Coral trout",
+      "Common coral trout",
+      "Leopard coral grouper",
+      "Blue-spot trout"
+    ],
     "family": "Serranidae",
     "rarity": "common",
     "images": {
       "card": "34.png"
     },
     "characteristics": {
-      "minLengthCm": null,
-      "maxLengthCm": null,
-      "maxWeightKg": null
+      "minLengthCm": 38,
+      "maxLengthCm": 75,
+      "maxWeightKg": 6,
+      "lifespan": 16
     },
     "habitat": {
-      "waterTypes": [],
-      "regions": [],
-      "seasons": [],
-      "depth": null
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT", "QLD"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "depth": "1-100 m"
     },
     "regulations": [],
     "behavior": {
-      "feedingHabits": [],
-      "activeTime": "day",
-      "difficulty": 3
-    }
+      "feedingHabits": ["fishes", "crustaceans", "cephalopods"],
+      "activeTime": "both",
+      "difficulty": 4
+    },
+    "edibility": 5
   },
   {
     "id": "35",
     "name": "School mackerel (Queensland school mackerel)",
     "scientificName": "Scomberomorus queenslandicus",
+    "localNames": ["School mackerel", "Queensland school mackerel"],
     "family": "Scombridae",
     "rarity": "common",
     "images": {
       "card": "35.png"
     },
     "characteristics": {
-      "minLengthCm": null,
-      "maxLengthCm": null,
-      "maxWeightKg": null
+      "minLengthCm": 48,
+      "maxLengthCm": 100,
+      "maxWeightKg": 12.2,
+      "lifespan": 10
     },
     "habitat": {
-      "waterTypes": [],
-      "regions": [],
-      "seasons": [],
-      "depth": null
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT", "QLD", "NSW"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "depth": "1-100 m"
     },
     "regulations": [],
     "behavior": {
-      "feedingHabits": [],
+      "feedingHabits": ["pilchards", "anchovies", "herrings"],
       "activeTime": "day",
       "difficulty": 3
-    }
+    },
+    "edibility": 4
   },
   {
     "id": "36",
     "name": "Gold spotted trevally",
     "scientificName": "Carangoides fulvoguttatus",
+    "localNames": [
+      "Gold spotted trevally",
+      "Yellowspotted trevally",
+      "Turrum",
+      "Goldspotted trevally"
+    ],
     "family": "Carangidae",
     "rarity": "uncommon",
     "images": {
       "card": "36.png"
     },
     "characteristics": {
-      "minLengthCm": null,
-      "maxLengthCm": null,
-      "maxWeightKg": null
+      "minLengthCm": 30,
+      "maxLengthCm": 120,
+      "maxWeightKg": 18,
+      "lifespan": 15
     },
     "habitat": {
-      "waterTypes": [],
-      "regions": [],
-      "seasons": [],
-      "depth": null
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT", "QLD"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "depth": "0-100 m"
     },
     "regulations": [],
     "behavior": {
-      "feedingHabits": [],
+      "feedingHabits": ["fish", "crustaceans", "cephalopods"],
       "activeTime": "day",
-      "difficulty": 3
-    }
+      "difficulty": 4
+    },
+    "edibility": 4
   },
   {
     "id": "37",
     "name": "Yellow edge coronation trout",
     "scientificName": "Variola louti",
+    "localNames": [
+      "Yellow edge coronation trout",
+      "Yellowedge coronation trout",
+      "Lyretail grouper"
+    ],
     "family": "Serranidae",
     "rarity": "uncommon",
     "images": {
       "card": "37.png"
     },
     "characteristics": {
-      "minLengthCm": null,
-      "maxLengthCm": null,
-      "maxWeightKg": null
+      "minLengthCm": 25,
+      "maxLengthCm": 81,
+      "maxWeightKg": 12,
+      "lifespan": 20
     },
     "habitat": {
-      "waterTypes": [],
-      "regions": [],
-      "seasons": [],
-      "depth": null
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT", "QLD"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "depth": "6-180 m"
     },
     "regulations": [],
     "behavior": {
-      "feedingHabits": [],
-      "activeTime": "day",
-      "difficulty": 3
-    }
+      "feedingHabits": ["fish", "crustaceans", "cephalopods"],
+      "activeTime": "both",
+      "difficulty": 4
+    },
+    "edibility": 4
   },
   {
     "id": "38",
     "name": "Goldspotted rockcod (Estuary cod)",
     "scientificName": "Epinephelus coioides",
+    "localNames": [
+      "Goldspotted rockcod",
+      "Estuary cod",
+      "Orange-spotted grouper"
+    ],
     "family": "Serranidae",
     "rarity": "common",
     "images": {
       "card": "38.png"
     },
     "characteristics": {
-      "minLengthCm": null,
-      "maxLengthCm": null,
-      "maxWeightKg": null
+      "minLengthCm": 25,
+      "maxLengthCm": 120,
+      "maxWeightKg": 25,
+      "lifespan": 25
     },
     "habitat": {
-      "waterTypes": [],
-      "regions": [],
-      "seasons": [],
-      "depth": null
+      "waterTypes": ["marine", "estuarine"],
+      "regions": ["WA", "NT", "QLD", "NSW"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "depth": "1-100 m"
     },
     "regulations": [],
     "behavior": {
-      "feedingHabits": [],
-      "activeTime": "day",
-      "difficulty": 3
-    }
+      "feedingHabits": ["fish", "crustaceans", "cephalopods"],
+      "activeTime": "both",
+      "difficulty": 4
+    },
+    "edibility": 4
   },
   {
     "id": "39",
     "name": "Long nose emperor",
     "scientificName": "Lethrinus olivaceus",
+    "localNames": [
+      "Long nose emperor",
+      "Longface emperor",
+      "Longspine emperor"
+    ],
     "family": "Lethrinidae",
     "rarity": "uncommon",
     "images": {
       "card": "39.png"
     },
     "characteristics": {
-      "minLengthCm": null,
-      "maxLengthCm": null,
-      "maxWeightKg": null
+      "minLengthCm": 20,
+      "maxLengthCm": 55,
+      "maxWeightKg": 3.5,
+      "lifespan": 18
     },
     "habitat": {
-      "waterTypes": [],
-      "regions": [],
-      "seasons": [],
-      "depth": null
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT", "QLD"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "depth": "5-50 m"
     },
     "regulations": [],
     "behavior": {
-      "feedingHabits": [],
+      "feedingHabits": ["benthic invertebrates", "crustaceans", "small fish"],
       "activeTime": "day",
       "difficulty": 3
-    }
+    },
+    "edibility": 4
   },
   {
     "id": "40",
     "name": "Pink snapper (adult)",
     "scientificName": "Chrysophrys auratus",
+    "localNames": ["Pink snapper", "Snapper", "Red bream", "Squire"],
     "family": "Sparidae",
     "rarity": "common",
     "images": {
       "card": "40.png"
     },
     "characteristics": {
-      "minLengthCm": null,
-      "maxLengthCm": null,
-      "maxWeightKg": null
+      "minLengthCm": 30,
+      "maxLengthCm": 130,
+      "maxWeightKg": 18,
+      "lifespan": 40
     },
     "habitat": {
-      "waterTypes": [],
-      "regions": [],
-      "seasons": [],
-      "depth": null
+      "waterTypes": ["marine", "estuarine"],
+      "regions": ["WA", "SA", "VIC", "NSW", "QLD"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "depth": "0-200 m"
     },
     "regulations": [],
     "behavior": {
-      "feedingHabits": [],
-      "activeTime": "day",
-      "difficulty": 3
-    }
+      "feedingHabits": ["crustaceans", "molluscs", "worms", "small fish"],
+      "activeTime": "both",
+      "difficulty": 4
+    },
+    "edibility": 5
   },
   {
     "id": "41",
     "name": "Pink snapper (juvenile)",
     "scientificName": "Chrysophrys auratus",
+    "localNames": ["Pink snapper", "Cocknies", "Pinkies"],
     "family": "Sparidae",
     "rarity": "common",
     "images": {
       "card": "41.png"
     },
     "characteristics": {
-      "minLengthCm": null,
-      "maxLengthCm": null,
-      "maxWeightKg": null
+      "minLengthCm": 10,
+      "maxLengthCm": 30,
+      "maxWeightKg": 1.5,
+      "lifespan": 40
     },
     "habitat": {
-      "waterTypes": [],
-      "regions": [],
-      "seasons": [],
-      "depth": null
+      "waterTypes": ["marine", "estuarine"],
+      "regions": ["WA", "SA", "VIC", "NSW", "QLD"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "depth": "0-50 m"
     },
     "regulations": [],
     "behavior": {
-      "feedingHabits": [],
+      "feedingHabits": [
+        "small crustaceans",
+        "polychaete worms",
+        "small molluscs"
+      ],
       "activeTime": "day",
-      "difficulty": 3
-    }
+      "difficulty": 2
+    },
+    "edibility": 5
   }
 ]

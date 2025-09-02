@@ -8,7 +8,7 @@ import { FadeInView, SlideInView } from '@/components/animations';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Badge } from '@/components/ui/Badge';
-import { FishCard } from '@/components/ui/FishCard';
+import { HomeFishCard } from '@/components/ui/HomeFishCard';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useResponsive } from '@/hooks/useResponsive';
@@ -148,52 +148,6 @@ export default function HomeScreen() {
           </ThemedView>
         </SlideInView>
 
-        {/* Quick Actions */}
-        <FadeInView delay={400}>
-          <View style={styles.section}>
-            <ThemedText type="title" style={styles.sectionTitle}>
-              快捷操作
-            </ThemedText>
-            
-            <View style={styles.quickActions}>
-              {quickActions.map((action, index) => (
-                <SlideInView key={action.id} direction="left" delay={500 + index * 100}>
-                  <Pressable
-                    style={[
-                      styles.actionCard,
-                      { backgroundColor: theme.colors.card },
-                      theme.shadows.sm,
-                    ]}
-                    onPress={action.onPress}
-                  >
-                    <View style={[styles.actionIcon, { backgroundColor: `${action.color}20` }]}>
-                      <IconSymbol 
-                        name={action.icon} 
-                        size={24} 
-                        color={action.color} 
-                      />
-                    </View>
-                    
-                    <View style={styles.actionContent}>
-                      <ThemedText type="subtitle" style={styles.actionTitle}>
-                        {action.title}
-                      </ThemedText>
-                      <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
-                        {action.description}
-                      </ThemedText>
-                    </View>
-                    
-                    <IconSymbol 
-                      name="chevron.right" 
-                      size={16} 
-                      color={theme.colors.textSecondary} 
-                    />
-                  </Pressable>
-                </SlideInView>
-              ))}
-            </View>
-          </View>
-        </FadeInView>
 
         {/* Recent Unlocks */}
         {recentUnlocks.length > 0 && (
@@ -215,13 +169,10 @@ export default function HomeScreen() {
               contentContainerStyle={styles.horizontalList}
             >
               {recentUnlocks.map((fishItem) => (
-                <FishCard
+                <HomeFishCard
                   key={fishItem.id}
                   fish={fishItem}
-                  state={fishItem.state as any}
-                  size="small"
                   onPress={() => router.push(`/fish/${fishItem.id}` as any)}
-                  showRarity={true}
                   style={styles.smallFishCard}
                 />
               ))}

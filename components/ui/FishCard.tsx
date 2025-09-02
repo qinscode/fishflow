@@ -95,12 +95,11 @@ export const FishCard = memo<FishCardProps>(({
     styles.cardContainer,
     {
       width: cardSize,
-      height: cardSize * 1.3,
+      height: cardSize * 1, // 减少卡片高度比例
       backgroundColor: 'white',
       borderRadius: 16,
       borderWidth: 3,
-      borderColor: rarityColor,
-      borderStyle: isLocked ? 'dashed' : 'solid', // 未解锁用虚线边框
+      borderColor: rarityColor, // 只根据稀有度显示边框颜色
     },
     theme.shadows.lg,
     style,
@@ -115,54 +114,30 @@ export const FishCard = memo<FishCardProps>(({
       onLongPress={handleLongPress}
       disabled={!onPress}
     >
-      {/* 顶部鱼类名称区域 */}
+      {/* 顶部鱼类名称区域 - 移除所有状态指示器 */}
       <View style={styles.headerSection}>
-        <ThemedText style={[
-          styles.fishTitle,
-          { color: '#333' }
-        ]} numberOfLines={1}>
+        <ThemedText 
+          style={[
+            styles.fishTitle,
+            { color: '#333' }
+          ]} 
+          numberOfLines={2}
+          adjustsFontSizeToFit={true}
+          minimumFontScale={0.8}
+        >
           {fish.name}
         </ThemedText>
-        
-        {/* 状态指示器 */}
-        <View style={styles.statusIndicators}>
-          {isLocked && (
-            <View style={styles.lockIndicator}>
-              <IconSymbol name="lock.fill" size={12} color="white" />
-            </View>
-          )}
-          {!isLocked && (
-            <View style={styles.newIndicator}>
-              <IconSymbol name="checkmark" size={12} color="white" />
-            </View>
-          )}
-        </View>
       </View>
 
-      {/* 中间图片区域 - 始终显示真实鱼类照片 */}
+      {/* 中间图片区域 - 显示真实鱼类照片，移除锁定徽章 */}
       <View style={styles.imageSection}>
-        <View style={[
-          styles.imageBackground,
-          { backgroundColor: `${rarityColor}08` }
-        ]}>
+        <View style={styles.imageBackground}>
           <Image
             source={FISH_IMAGES[fish.id] || require('@/assets/images/fish/1.png')}
-            style={[
-              styles.fishImageNew,
-              {
-                opacity: isLocked ? 0.7 : 1, // 未解锁稍微降低透明度但保持彩色
-              }
-            ]}
+            style={styles.fishImageNew}
             contentFit="contain"
             transition={200}
           />
-          
-          {/* 未解锁时在图片上添加锁定徽章 */}
-          {isLocked && (
-            <View style={styles.lockBadgeOverlay}>
-              <IconSymbol name="lock.fill" size={20} color="rgba(255,255,255,0.9)" />
-            </View>
-          )}
         </View>
       </View>
 
@@ -187,47 +162,24 @@ const styles = StyleSheet.create({
   cardContainer: {
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
+    padding: 10, // 进一步减少内边距
     overflow: 'hidden',
   },
   
   // 顶部标题区域
   headerSection: {
     width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    paddingHorizontal: 4,
+    // marginBottom: 2, // 进一步减少底部边距
     alignItems: 'center',
-    paddingHorizontal: 8,
-    marginBottom: 8,
+    minHeight: 36, // 为更大字体增加高度
   },
   
   fishTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    flex: 1,
-  },
-  
-  statusIndicators: {
-    flexDirection: 'row',
-    gap: 6,
-  },
-  
-  lockIndicator: {
-    backgroundColor: '#666',
-    borderRadius: 12,
-    width: 24,
-    height: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  
-  newIndicator: {
-    backgroundColor: '#22C55E',
-    borderRadius: 12,
-    width: 24,
-    height: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
+    fontSize: 16, // 增大字体
+    fontWeight: '700', // 加粗
+    textAlign: 'center',
+    lineHeight: 18, // 相应调整行高
   },
   
   // 中间图片区域
@@ -236,55 +188,35 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 8,
+    // marginVertical: 2, // 进一步减少垂直边距
   },
   
   imageBackground: {
-    width: '85%',
+    width: '95%', // 进一步增加图片区域宽度
     height: '100%',
-    borderRadius: 12,
+    borderRadius: 6, // 进一步减少圆角
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
+    backgroundColor: 'transparent',
   },
   
   fishImageNew: {
-    width: '90%',
-    height: '90%',
+    width: '98%', // 进一步增加图片宽度
+    height: '98%', // 进一步增加图片高度
     resizeMode: 'contain',
-  },
-  
-  // 锁定徽章覆盖层
-  lockBadgeOverlay: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    borderRadius: 20,
-    width: 36,
-    height: 36,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   
   // 底部星级区域
   starSection: {
     width: '100%',
     alignItems: 'center',
-    paddingVertical: 8,
+    // paddingVertical: 2, // 进一步减少垂直内边距
   },
   
   starContainer: {
     flexDirection: 'row',
-    gap: 4,
+    // gap: 2, // 进一步减少星星间距
   },
 });
 

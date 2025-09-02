@@ -10,14 +10,13 @@ const rarityMapping: Record<string, FishRarity> = {
   'rare': 'rare',
   'epic': 'epic',
   'legendary': 'legendary',
-  'unknown': 'unknown',
 };
 
 // 转换原始数据为应用所需的 Fish 接口格式
 function transformFishData(rawData: any[]): Fish[] {
   return rawData.map((rawFish: any) => {
     // 处理稀有度映射
-    const mappedRarity = rarityMapping[rawFish.rarity] || 'unknown';
+    const mappedRarity = rarityMapping[rawFish.rarity] || 'common'; // 默认为common而不是unknown
     
     // 图片将在组件中直接映射，这里只需要提供ID
     const images = {
