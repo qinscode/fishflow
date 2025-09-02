@@ -1,0 +1,1820 @@
+[
+  {
+    "id": "1",
+    "name": "隆額豥齒魚",
+    "scientificName": "Choerodon rubescens",
+    "localNames": [
+      "Baldchin tuskfish",
+      "Baldies"
+    ],
+    "family": "Labridae",
+    "rarity": "uncommon",
+    "images": {
+      "card": "1.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 40,
+      "maxLengthCm": 70,
+      "maxWeightKg": 7,
+      "lifespan": 25
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine"
+      ],
+      "regions": [
+        "WA"
+      ],
+      "seasons": [
+        9,
+        10,
+        11,
+        12,
+        1
+      ],
+      "depth": "0-100 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": 40,
+        "dailyLimit": 2,
+        "possessionLimit": null,
+        "closedSeasons": [
+          {
+            "start": "02-01",
+            "end": "03-31"
+          },
+          {
+            "start": "08-01",
+            "end": "09-15"
+          },
+          {
+            "start": "10-15",
+            "end": "12-15"
+          },
+          {
+            "start": "10-01",
+            "end": "12-31"
+          }
+        ],
+        "requiresLicense": true,
+        "notes": "Daily limit 2 in West Coast, 1 in Abrolhos, 3 in other bioregions; demersal closure periods apply"
+      },
+      {
+        "region": "QLD",
+        "dailyLimit": null,
+        "notes": "Baldchin groper is endemic to WA; not subject to QLD regulations"
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "echinoderms",
+        "molluscs",
+        "crustaceans"
+      ],
+      "activeTime": "day",
+      "difficulty": 3
+    },
+    "notes": null
+  },
+  {
+    "id": "2",
+    "name": "舒氏豥齒魚",
+    "scientificName": "Choerodon schoenleinii",
+    "localNames": [
+      "Blackspot tuskfish",
+      "Blue tuskfish"
+    ],
+    "family": "Labridae",
+    "rarity": "uncommon",
+    "images": {
+      "card": "2.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 40,
+      "maxLengthCm": 100,
+      "maxWeightKg": 10,
+      "lifespan": null
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine"
+      ],
+      "regions": [
+        "WA",
+        "NT",
+        "QLD",
+        "NSW"
+      ],
+      "seasons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "depth": "0-60 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": 40,
+        "dailyLimit": 2,
+        "notes": "West Coast 2, Abrolhos 1, other bioregions 3; demersal closure periods apply",
+        "requiresLicense": true
+      },
+      {
+        "region": "QLD",
+        "minSizeCm": 30,
+        "dailyLimit": 6,
+        "notes": "Combined possession limit of 6 for all tuskfish species",
+        "requiresLicense": true
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "hard-shelled invertebrates",
+        "molluscs",
+        "crustaceans",
+        "sea urchins"
+      ],
+      "activeTime": "day",
+      "difficulty": 3
+    },
+    "notes": null
+  },
+  {
+    "id": "3",
+    "name": "蓝棒石斑鱼",
+    "scientificName": "Epinephelus multinotatus",
+    "localNames": [
+      "Rankin cod",
+      "Rankin rockcod"
+    ],
+    "family": "Serranidae",
+    "rarity": "uncommon",
+    "images": {
+      "card": "3.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 30,
+      "maxLengthCm": 100,
+      "maxWeightKg": 9,
+      "lifespan": 22
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine"
+      ],
+      "regions": [
+        "WA",
+        "NT"
+      ],
+      "seasons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "depth": "10-110 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": null,
+        "dailyLimit": 2,
+        "notes": "No minimum size (except goldspotted rockcod). Bag limit 2 in West Coast, 1 at Abrolhos, 3 in other bioregions",
+        "requiresLicense": true
+      },
+      {
+        "region": "QLD",
+        "minSizeCm": 38,
+        "maxSizeCm": 120,
+        "dailyLimit": 5,
+        "notes": "Combined possession limit of 5 for cod and grouper species",
+        "requiresLicense": true
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "small fishes",
+        "crustaceans"
+      ],
+      "activeTime": "both",
+      "difficulty": 4
+    },
+    "notes": null
+  },
+  {
+    "id": "4",
+    "name": "川紋笛鯛",
+    "scientificName": "Lutjanus sebae",
+    "localNames": [
+      "Red emperor",
+      "King snapper",
+      "Scarlet emperor"
+    ],
+    "family": "Lutjanidae",
+    "rarity": "uncommon",
+    "images": {
+      "card": "4.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 41,
+      "maxLengthCm": 100,
+      "maxWeightKg": 22,
+      "lifespan": null
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine"
+      ],
+      "regions": [
+        "WA",
+        "NT",
+        "QLD",
+        "NSW"
+      ],
+      "seasons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "depth": "0-180 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": 41,
+        "dailyLimit": 2,
+        "notes": "Bag limit 2 in West Coast bioregion, 3 in other bioregions; demersal closures apply",
+        "requiresLicense": true
+      },
+      {
+        "region": "QLD",
+        "minSizeCm": 55,
+        "dailyLimit": 5,
+        "notes": "QLD coral reef finfish possession limit 20; red emperor included with minimum size 55 cm and bag limit 5 per person",
+        "requiresLicense": true
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "fishes",
+        "crabs",
+        "shrimps",
+        "cephalopods"
+      ],
+      "activeTime": "both",
+      "difficulty": 4
+    },
+    "notes": null
+  },
+  {
+    "id": "5",
+    "name": "斑紋裸頜魚",
+    "scientificName": "Lethrinus nebulosus",
+    "localNames": [
+      "Spangled emperor",
+      "Nor’west snapper"
+    ],
+    "family": "Lethrinidae",
+    "rarity": "common",
+    "images": {
+      "card": "5.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 41,
+      "maxLengthCm": 90,
+      "maxWeightKg": 10,
+      "lifespan": 25
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine"
+      ],
+      "regions": [
+        "WA",
+        "NT",
+        "QLD",
+        "NSW"
+      ],
+      "seasons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "depth": "0-80 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": 41,
+        "dailyLimit": 2,
+        "notes": "Bag limit 2 in West Coast, 3 in other regions; demersal closures apply",
+        "requiresLicense": true
+      },
+      {
+        "region": "QLD",
+        "minSizeCm": 45,
+        "dailyLimit": 5,
+        "notes": "QLD minimum size 45 cm, possession limit 5 for spangled emperor",
+        "requiresLicense": true
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "sea snails",
+        "crabs",
+        "sea urchins",
+        "worms"
+      ],
+      "activeTime": "day",
+      "difficulty": 3
+    },
+    "notes": null
+  },
+  {
+    "id": "6",
+    "name": "條紋笛鯛",
+    "scientificName": "Lutjanus carponotatus",
+    "localNames": [
+      "Stripey snapper",
+      "Spanish flag"
+    ],
+    "family": "Lutjanidae",
+    "rarity": "common",
+    "images": {
+      "card": "6.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 25,
+      "maxLengthCm": 40,
+      "maxWeightKg": 2,
+      "lifespan": 20
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine"
+      ],
+      "regions": [
+        "WA",
+        "NT",
+        "QLD"
+      ],
+      "seasons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "depth": "0-35 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": null,
+        "dailyLimit": 3,
+        "notes": "Included in tropical snappers group; bag limit 3 in West Coast (demersal closures apply)",
+        "requiresLicense": true
+      },
+      {
+        "region": "QLD",
+        "minSizeCm": 25,
+        "dailyLimit": 5,
+        "notes": "QLD minimum size 25 cm for stripey snapper; possession limit 5",
+        "requiresLicense": true
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "fishes",
+        "crustaceans",
+        "cephalopods"
+      ],
+      "activeTime": "day",
+      "difficulty": 2
+    },
+    "notes": null
+  },
+  {
+    "id": "7",
+    "name": "黃尾裸頜魚",
+    "scientificName": "Lethrinus atkinsoni",
+    "localNames": [
+      "Pacific yellowtail emperor",
+      "Reticulated emperor"
+    ],
+    "family": "Lethrinidae",
+    "rarity": "uncommon",
+    "images": {
+      "card": "7.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 25,
+      "maxLengthCm": 35,
+      "maxWeightKg": 1.5,
+      "lifespan": 10
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine"
+      ],
+      "regions": [
+        "WA",
+        "QLD",
+        "NT"
+      ],
+      "seasons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "depth": "0-30 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": 28,
+        "dailyLimit": 3,
+        "notes": "Included in emperor group; minimum size 28 cm, bag limit 3 in West Coast (blue-lined emperor has separate limit); demersal closures apply",
+        "requiresLicense": true
+      },
+      {
+        "region": "QLD",
+        "minSizeCm": 25,
+        "dailyLimit": 5,
+        "notes": "General emperor species minimum size 25 cm, possession limit 5",
+        "requiresLicense": true
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "plankton",
+        "molluscs",
+        "crustaceans",
+        "small fish"
+      ],
+      "activeTime": "day",
+      "difficulty": 2
+    },
+    "notes": null
+  },
+  {
+    "id": "8",
+    "name": "青鰺魚",
+    "scientificName": "Pomatomus saltatrix",
+    "localNames": [
+      "Tailor",
+      "Bluefish"
+    ],
+    "family": "Pomatomidae",
+    "rarity": "common",
+    "images": {
+      "card": "8.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 30,
+      "maxLengthCm": 130,
+      "maxWeightKg": 14,
+      "lifespan": 10
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine"
+      ],
+      "regions": [
+        "WA",
+        "NT",
+        "QLD",
+        "NSW"
+      ],
+      "seasons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "depth": "surface to 60 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": 30,
+        "dailyLimit": 8,
+        "specialRules": [
+          "Only two fish over 50 cm may be kept"
+        ],
+        "requiresLicense": true,
+        "notes": "Wire trace banned around some areas; boat fishing licence required"
+      },
+      {
+        "region": "QLD",
+        "minSizeCm": 35,
+        "dailyLimit": 20,
+        "notes": "Minimum size 35 cm total length; possession limit 20 per person",
+        "requiresLicense": true
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "schooling fishes",
+        "crustaceans"
+      ],
+      "activeTime": "both",
+      "difficulty": 3
+    },
+    "notes": null
+  },
+  {
+    "id": "9",
+    "name": "銀鯛魚",
+    "scientificName": "Rhabdosargus sarba",
+    "localNames": [
+      "Tarwhine",
+      "Silver bream"
+    ],
+    "family": "Sparidae",
+    "rarity": "common",
+    "images": {
+      "card": "9.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 25,
+      "maxLengthCm": 50,
+      "maxWeightKg": 2.5,
+      "lifespan": 15
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine",
+        "estuarine"
+      ],
+      "regions": [
+        "WA",
+        "SA",
+        "QLD",
+        "NSW",
+        "VIC"
+      ],
+      "seasons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "depth": "shallow estuaries to inshore reefs"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": 25,
+        "dailyLimit": 6,
+        "notes": "Mixed nearshore/estuarine finfish bag limit applies; licence required for boat fishing",
+        "requiresLicense": true
+      },
+      {
+        "region": "SA",
+        "minSizeCm": 24,
+        "dailyLimit": 10,
+        "notes": "SA general bream size 24 cm, bag limit 10",
+        "requiresLicense": true
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "bivalve molluscs",
+        "gastropods",
+        "amphipods",
+        "plants",
+        "algae"
+      ],
+      "activeTime": "day",
+      "difficulty": 3
+    },
+    "notes": null
+  },
+  {
+    "id": "10",
+    "name": "西部學校鰏",
+    "scientificName": "Sillago vittata",
+    "localNames": [
+      "Western school whiting",
+      "Banded whiting",
+      "Golden whiting"
+    ],
+    "family": "Sillaginidae",
+    "rarity": "common",
+    "images": {
+      "card": "10.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 10,
+      "maxLengthCm": 30,
+      "maxWeightKg": 0.275,
+      "lifespan": 5
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine"
+      ],
+      "regions": [
+        "WA"
+      ],
+      "seasons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "depth": "0-55 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": null,
+        "dailyLimit": 30,
+        "notes": "No minimum size for whiting species; total mixed daily limit 30; licence required for boat fishing",
+        "requiresLicense": true
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "crustaceans",
+        "molluscs",
+        "echinoderms"
+      ],
+      "activeTime": "day",
+      "difficulty": 2
+    },
+    "notes": null
+  },
+  {
+    "id": "11",
+    "name": "銀魨",
+    "scientificName": "Lagocephalus sceleratus",
+    "localNames": [
+      "Silver toadfish",
+      "North-West blowfish"
+    ],
+    "family": "Tetraodontidae",
+    "rarity": "rare",
+    "images": {
+      "card": "11.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 10,
+      "maxLengthCm": 40,
+      "maxWeightKg": 3,
+      "lifespan": 5
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine"
+      ],
+      "regions": [
+        "WA",
+        "NT",
+        "QLD"
+      ],
+      "seasons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "depth": "0-250 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "notes": "No size or bag limit; species is toxic and not recommended for consumption",
+        "requiresLicense": false
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "benthic invertebrates"
+      ],
+      "activeTime": "both",
+      "difficulty": 1
+    },
+    "notes": "Contains tetrodotoxin; not safe for consumption"
+  },
+  {
+    "id": "12",
+    "name": "花鯧魚",
+    "scientificName": "Argyrosomus japonicus",
+    "localNames": [
+      "Mulloway",
+      "Jewfish"
+    ],
+    "family": "Sciaenidae",
+    "rarity": "common",
+    "images": {
+      "card": "12.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 50,
+      "maxLengthCm": 200,
+      "maxWeightKg": 82,
+      "lifespan": 20
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine",
+        "estuarine"
+      ],
+      "regions": [
+        "WA",
+        "SA",
+        "VIC",
+        "NSW",
+        "QLD"
+      ],
+      "seasons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "depth": "0-120 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": 50,
+        "dailyLimit": 2,
+        "notes": "Mixed nearshore/estuarine finfish bag limit 16; licence required for boat fishing",
+        "requiresLicense": true
+      },
+      {
+        "region": "QLD",
+        "minSizeCm": 75,
+        "dailyLimit": 2,
+        "notes": "Minimum size 75 cm; bag limit 2",
+        "requiresLicense": true
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "mysid shrimps",
+        "small fish",
+        "cephalopods"
+      ],
+      "activeTime": "night",
+      "difficulty": 4
+    },
+    "notes": null
+  },
+  {
+    "id": "13",
+    "name": "草裸頜魚",
+    "scientificName": "Lethrinus laticaudis",
+    "localNames": [
+      "Bluelined emperor",
+      "Grass emperor",
+      "Black snapper"
+    ],
+    "family": "Lethrinidae",
+    "rarity": "common",
+    "images": {
+      "card": "13.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 32,
+      "maxLengthCm": 59,
+      "maxWeightKg": 5,
+      "lifespan": 20
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine"
+      ],
+      "regions": [
+        "WA",
+        "NT",
+        "QLD"
+      ],
+      "seasons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "depth": "0-50 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": 32,
+        "dailyLimit": 3,
+        "notes": "Grass emperor (blue-lined) minimum size 32 cm; bag limit 3; demersal closures apply",
+        "requiresLicense": true
+      },
+      {
+        "region": "NT",
+        "minSizeCm": null,
+        "dailyLimit": 5,
+        "notes": "NT general reef fish bag limits apply",
+        "requiresLicense": true
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "benthic invertebrates",
+        "crustaceans",
+        "molluscs"
+      ],
+      "activeTime": "day",
+      "difficulty": 3
+    },
+    "notes": null
+  },
+  {
+    "id": "14",
+    "name": "藍泳蟹",
+    "scientificName": "Portunus armatus",
+    "localNames": [
+      "Blue swimmer crab",
+      "Blue manna crab",
+      "Blueys"
+    ],
+    "family": "Portunidae",
+    "rarity": "common",
+    "images": {
+      "card": "14.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 12.7,
+      "maxLengthCm": 25,
+      "maxWeightKg": 1,
+      "lifespan": 3
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine",
+        "estuarine"
+      ],
+      "regions": [
+        "WA",
+        "SA",
+        "NT",
+        "NSW"
+      ],
+      "seasons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "depth": "intertidal to 50 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": 12.7,
+        "dailyLimit": 10,
+        "closedSeasons": [
+          {
+            "start": "09-01",
+            "end": "11-30"
+          }
+        ],
+        "notes": "Minimum carapace width 127 mm; bag limit varies (5 in Swan/Canning rivers, 10 in West Coast, 20 elsewhere); boat limit applies; licence required for boat fishing",
+        "requiresLicense": true
+      },
+      {
+        "region": "SA",
+        "minSizeCm": 11,
+        "dailyLimit": 20,
+        "notes": "SA minimum size 11 cm carapace length; bag limit 20 per person",
+        "requiresLicense": true
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "small fish",
+        "crustaceans",
+        "molluscs",
+        "worms",
+        "algae"
+      ],
+      "activeTime": "night",
+      "difficulty": 2
+    },
+    "notes": null
+  },
+  {
+    "id": "15",
+    "name": "Chinaman cod (Charlie Court cod)",
+    "scientificName": "Epinephelus rivulatus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "15.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "16",
+    "name": "Common dart",
+    "scientificName": "Trachinotus botla",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "16.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "17",
+    "name": "Giant trevally",
+    "scientificName": "Caranx ignobilis",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "17.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "18",
+    "name": "黃鰭鰏",
+    "scientificName": "Sillago schomburgkii",
+    "localNames": [
+      "Yellowfin whiting",
+      "Western sand whiting",
+      "Fine-scaled whiting"
+    ],
+    "family": "Sillaginidae",
+    "rarity": "common",
+    "images": {
+      "card": "18.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 20,
+      "maxLengthCm": 42,
+      "maxWeightKg": 0.6,
+      "lifespan": 5
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine",
+        "estuarine"
+      ],
+      "regions": [
+        "WA",
+        "SA"
+      ],
+      "seasons": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "depth": "0-20 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": null,
+        "dailyLimit": 30,
+        "notes": "No minimum size for whiting species; bag limit 30; licence required for boat fishing",
+        "requiresLicense": true
+      },
+      {
+        "region": "SA",
+        "minSizeCm": 24,
+        "dailyLimit": 20,
+        "notes": "Minimum size 24 cm; daily bag limit 20",
+        "requiresLicense": true
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "polychaete worms",
+        "copepods",
+        "amphipods",
+        "bivalves"
+      ],
+      "activeTime": "day",
+      "difficulty": 2
+    },
+    "notes": null
+  },
+  {
+    "id": "19",
+    "name": "Western yellowfin bream",
+    "scientificName": "Acanthopagrus morrisoni",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "19.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "20",
+    "name": "Golden trevally",
+    "scientificName": "Gnathanodon speciosus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "20.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "21",
+    "name": "Green mud crab",
+    "scientificName": "Scylla serrata",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "21.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "22",
+    "name": "長槍魚",
+    "scientificName": "Belonidae family",
+    "localNames": [
+      "Longtom",
+      "Stout longtom",
+      "Needlefish"
+    ],
+    "family": "Belonidae",
+    "rarity": "common",
+    "images": {
+      "card": "22.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": 40,
+      "maxLengthCm": 130,
+      "maxWeightKg": 3,
+      "lifespan": 10
+    },
+    "habitat": {
+      "waterTypes": [
+        "marine"
+      ],
+      "regions": [
+        "WA",
+        "NT",
+        "QLD",
+        "NSW"
+      ],
+      "seasons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "depth": "surface to 20 m"
+    },
+    "regulations": [
+      {
+        "region": "WA",
+        "minSizeCm": null,
+        "dailyLimit": 30,
+        "notes": "Included in nearshore/estuarine finfish bag limit of 30; no minimum size",
+        "requiresLicense": true
+      }
+    ],
+    "behavior": {
+      "feedingHabits": [
+        "small fish",
+        "crustaceans"
+      ],
+      "activeTime": "day",
+      "difficulty": 2
+    },
+    "notes": null
+  },
+  {
+    "id": "23",
+    "name": "Queenfish",
+    "scientificName": "Scomberoides commersonnianus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "23.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "24",
+    "name": "Blue spotted emperor",
+    "scientificName": "Lethrinus punctulatus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "24.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "25",
+    "name": "Mangrove jack",
+    "scientificName": "Lutjanus argentimaculatus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "25.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "26",
+    "name": "Yellowfin tuna",
+    "scientificName": "Thunnus albacares",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "26.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "27",
+    "name": "Mahi mahi (dolphin fish)",
+    "scientificName": "Coryphaena hippurus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "27.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "28",
+    "name": "Spanish mackerel",
+    "scientificName": "Scomberomorus commerson",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "28.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "29",
+    "name": "Grey mackerel (Broad-barred Spanish mackerel)",
+    "scientificName": "Scomberomorus semifasciatus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "29.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "30",
+    "name": "Cobia",
+    "scientificName": "Rachycentron canadus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "30.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "31",
+    "name": "Wahoo",
+    "scientificName": "Acanthocybium solandri",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "31.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "32",
+    "name": "Moses perch",
+    "scientificName": "Lutjanus russellii",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "32.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "33",
+    "name": "Redthroat emperor (sweetlip emperor)",
+    "scientificName": "Lethrinus miniatus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "33.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "34",
+    "name": "Coral trout",
+    "scientificName": "Plectropomus leopardus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "34.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "35",
+    "name": "School mackerel (Queensland school mackerel)",
+    "scientificName": "Scomberomorus queenslandicus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "35.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "36",
+    "name": "Gold spotted trevally",
+    "scientificName": "Carangoides fulvoguttatus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "36.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "37",
+    "name": "Yellow edge coronation trout",
+    "scientificName": "Variola louti",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "37.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "38",
+    "name": "Goldspotted rockcod (Estuary cod)",
+    "scientificName": "Epinephelus coioides",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "38.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "39",
+    "name": "Long nose emperor",
+    "scientificName": "Lethrinus olivaceus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "39.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "40",
+    "name": "Pink snapper (adult)",
+    "scientificName": "Chrysophrys auratus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "40.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  },
+  {
+    "id": "41",
+    "name": "Pink snapper (juvenile)",
+    "scientificName": "Chrysophrys auratus",
+    "family": "",
+    "rarity": "unknown",
+    "images": {
+      "card": "41.jpeg"
+    },
+    "characteristics": {
+      "minLengthCm": null,
+      "maxLengthCm": null,
+      "maxWeightKg": null
+    },
+    "habitat": {
+      "waterTypes": [],
+      "regions": [],
+      "seasons": [],
+      "depth": null
+    },
+    "regulations": [],
+    "behavior": {
+      "feedingHabits": [],
+      "activeTime": "day",
+      "difficulty": 3
+    }
+  }
+]
