@@ -21,6 +21,7 @@ export default function RootLayout() {
   const setAchievements = useAppStore(state => state.setAchievements);
   const setUserAchievements = useAppStore(state => state.setUserAchievements);
   const setCatches = useAppStore(state => state.setCatches);
+  const setEquipmentSets = useAppStore(state => state.setEquipmentSets);
   
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -34,12 +35,13 @@ export default function RootLayout() {
       const initData = async () => {
         try {
           const { loadFishData } = await import('@/lib/fishDataLoader');
-          const { MOCK_ACHIEVEMENT_DATA } = await import('@/lib/mockData');
+          const { MOCK_ACHIEVEMENT_DATA, MOCK_EQUIPMENT_DATA } = await import('@/lib/mockData');
           const fishData = loadFishData();
           
           setFish(fishData);
           setAchievements(MOCK_ACHIEVEMENT_DATA);
           setUserAchievements([]);
+          setEquipmentSets(MOCK_EQUIPMENT_DATA);
           
           // 添加一些测试钓鱼记录，这样部分鱼类会显示为已解锁
           const mockCatches = [
@@ -78,7 +80,7 @@ export default function RootLayout() {
           ];
           
           setCatches(mockCatches);
-          console.log('App data initialized successfully with JSON fish data and mock catches');
+          console.log('App data initialized successfully with JSON fish data, mock catches, and equipment data');
         } catch (error) {
           console.error('Failed to initialize app data:', error);
         }
@@ -86,7 +88,7 @@ export default function RootLayout() {
       
       initData();
     }
-  }, [loaded, setFish, setAchievements, setUserAchievements, setCatches]);
+  }, [loaded, setFish, setAchievements, setUserAchievements, setCatches, setEquipmentSets]);
 
   if (!loaded) {
     return null;
@@ -99,6 +101,8 @@ export default function RootLayout() {
         <Stack.Screen name="log" options={{ headerShown: false }} />
         <Stack.Screen name="achievements" options={{ headerShown: false }} />
         <Stack.Screen name="fish/[id]" options={{ headerShown: false }} />
+        <Stack.Screen name="equipment/create" options={{ headerShown: false }} />
+        <Stack.Screen name="equipment/[id]" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
