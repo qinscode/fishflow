@@ -21,6 +21,7 @@ import { FishCard } from '@/components/ui/FishCard';
 import { IconSymbol, MAPPING } from '@/components/ui/IconSymbol';
 import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
+import { useTranslation } from '@/lib/i18n';
 import { RARITY_NAMES, WATER_TYPES } from '@/lib/constants';
 import { 
   useAppStore,
@@ -36,6 +37,7 @@ import { getFishCardState, sortFish } from '@/lib/utils';
 
 export default function FishdexScreen() {
   const theme = useTheme();
+  const { t } = useTranslation();
   const { gridColumns, isTablet } = useResponsive();
   
   // Store hooks
@@ -122,7 +124,7 @@ export default function FishdexScreen() {
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);
-    // 简单的刷新逻辑，重新获取数据
+    // Simple refresh logic, reload data
     try {
       const { loadFishData } = await import('@/lib/fishDataLoader');
       setFish(loadFishData());
@@ -158,7 +160,7 @@ export default function FishdexScreen() {
             styles.searchInput,
             { color: theme.colors.text, flex: 1 }
           ]}
-          placeholder="搜索鱼类..."
+          placeholder={t('fishdex.search')}
           placeholderTextColor={theme.colors.textSecondary}
           value={searchQuery}
           onChangeText={handleSearchChange}
@@ -173,7 +175,7 @@ export default function FishdexScreen() {
       {/* Stats */}
       <View style={styles.statsContainer}>
         <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
-          总计 {stats.total} • 已解锁 {stats.unlocked} • 显示 {stats.filtered}
+          {t('common.total')} {stats.total} • {t('fishdex.unlocked')} {stats.unlocked} • {t('common.showing')} {stats.filtered}
         </ThemedText>
       </View>
 
@@ -181,7 +183,7 @@ export default function FishdexScreen() {
       <View style={styles.controlsContainer}>
         {/* Filter Toggle */}
         <FilterChip
-          label="筛选"
+          label={t('common.filter')}
           icon="line.3.horizontal.decrease"
           selected={showFilters}
           onPress={() => setShowFilters(!showFilters)}
@@ -191,7 +193,7 @@ export default function FishdexScreen() {
 
         {/* Unlocked Only */}
         <FilterChip
-          label="仅已解锁"
+          label={t('fishdex.unlocked.only')}
           selected={filters.unlockedOnly || false}
           onPress={handleUnlockedOnlyToggle}
           variant="filled"
@@ -200,7 +202,7 @@ export default function FishdexScreen() {
 
         {/* Sort Options */}
         <FilterChip
-          label={sortBy === 'name' ? '名称' : sortBy === 'rarity' ? '稀有度' : '最近'}
+          label={sortBy === 'name' ? t('common.name') : sortBy === 'rarity' ? t('fishdex.rarity') : t('common.recent')}
           icon="arrow.up.arrow.down"
           selected={true}
           onPress={() => {
@@ -216,7 +218,7 @@ export default function FishdexScreen() {
         {/* Clear Filters */}
         {(Object.keys(filters).length > 0 || searchQuery.length > 0) && (
           <FilterChip
-            label="清除"
+            label={t('common.clear')}
             onPress={handleClearFilters}
             variant="text"
             size="small"
@@ -230,7 +232,7 @@ export default function FishdexScreen() {
           {/* Rarity Filters */}
           <View style={styles.filterSection}>
             <ThemedText type="caption" style={styles.filterSectionTitle}>
-              稀有度
+              {t('fishdex.rarity')}
             </ThemedText>
             <FilterChipGroup
               chips={rarityOptions}
@@ -245,7 +247,7 @@ export default function FishdexScreen() {
           {/* Water Type Filters */}
           <View style={styles.filterSection}>
             <ThemedText type="caption" style={styles.filterSectionTitle}>
-              水域类型
+              {t('fishdex.water.types')}
             </ThemedText>
             <FilterChipGroup
               chips={waterTypeOptions}
@@ -266,8 +268,8 @@ export default function FishdexScreen() {
       <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
         <EmptyState
           type="loading"
-          title="加载中..."
-          description="正在载入鱼类图鉴数据"
+          title={t('common.loading')}
+          description={t('fishdex.loading.description')}
         />
       </SafeAreaView>
     );
@@ -278,7 +280,7 @@ export default function FishdexScreen() {
       <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
         <EmptyStates.NoFish
           action={{
-            label: "初始化数据",
+            label: t('fishdex.initialize.data'),
             onPress: handleRefresh,
           }}
         />
@@ -303,17 +305,17 @@ export default function FishdexScreen() {
             <EmptyStates.NoSearchResults
               query={searchQuery}
               action={{
-                label: "清除搜索",
+                label: t('common.clear.search'),
                 onPress: () => handleSearchChange(''),
               }}
             />
           ) : (
             <EmptyState
               type="no-results"
-              title="没有匹配的鱼类"
-              description="尝试调整筛选条件"
+              title={t('fishdex.no.matches.title')}
+              description={t('fishdex.no.matches.description')}
               action={{
-                label: "清除筛选",
+                label: t('common.clear.filters'),
                 onPress: handleClearFilters,
               }}
             />
