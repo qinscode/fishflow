@@ -155,37 +155,37 @@ export default function FishDetailScreen() {
         end={{ x: 0, y: 1 }}
       />
       
-      {/* 装饰性元素 - 丰富的泡泡效果 */}
-      <View style={styles.decorativeLines}>
-        {/* 几何图形 - 统一规整 */}
-        <Animated.View style={[styles.geometryCircle, { backgroundColor: rarityColor + '15' }, animatedBubble1Style]} />
-        <Animated.View style={[styles.geometryCircle2, { backgroundColor: rarityColor + '12' }, animatedBubble2Style]} />
-        
-        {/* 主要气泡组 - 右侧 */}
-        <Animated.View style={[styles.rhythmBubble1, { backgroundColor: rarityColor + '20' }, animatedBubble3Style]} />
-        <Animated.View style={[styles.rhythmBubble2, { backgroundColor: rarityColor + '15' }, animatedBubble1Style]} />
-        <Animated.View style={[styles.rhythmBubble3, { backgroundColor: rarityColor + '10' }, animatedBubble2Style]} />
-        
-        {/* 左侧气泡组 */}
-        <Animated.View style={[styles.leftBubble1, { backgroundColor: rarityColor + '18' }, animatedBubble2Style]} />
-        <Animated.View style={[styles.leftBubble2, { backgroundColor: rarityColor + '12' }, animatedBubble3Style]} />
-        <Animated.View style={[styles.leftBubble3, { backgroundColor: rarityColor + '08' }, animatedBubble1Style]} />
-        
-        {/* 散布的小气泡 */}
-        <Animated.View style={[styles.smallBubble1, { backgroundColor: rarityColor + '15' }, animatedBubble1Style]} />
-        <Animated.View style={[styles.smallBubble2, { backgroundColor: rarityColor + '12' }, animatedBubble3Style]} />
-        <Animated.View style={[styles.smallBubble3, { backgroundColor: rarityColor + '10' }, animatedBubble2Style]} />
-        <Animated.View style={[styles.smallBubble4, { backgroundColor: rarityColor + '14' }, animatedBubble1Style]} />
-        <Animated.View style={[styles.smallBubble5, { backgroundColor: rarityColor + '08' }, animatedBubble3Style]} />
-        
-        {/* 微小气泡点缀 */}
-        <Animated.View style={[styles.tinyBubble1, { backgroundColor: rarityColor + '12' }, animatedBubble2Style]} />
-        <Animated.View style={[styles.tinyBubble2, { backgroundColor: rarityColor + '10' }, animatedBubble1Style]} />
-        <Animated.View style={[styles.tinyBubble3, { backgroundColor: rarityColor + '08' }, animatedBubble3Style]} />
-        <Animated.View style={[styles.tinyBubble4, { backgroundColor: rarityColor + '06' }, animatedBubble2Style]} />
-      </View>
-      
       <SafeAreaView edges={['top']} style={styles.headerSafeArea}>
+        {/* 装饰性元素 - 丰富的泡泡效果 */}
+        <View style={styles.decorativeLines}>
+          {/* 几何图形 - 统一规整 */}
+          <Animated.View style={[styles.geometryCircle, { backgroundColor: rarityColor + '15' }, animatedBubble1Style]} />
+          <Animated.View style={[styles.geometryCircle2, { backgroundColor: rarityColor + '12' }, animatedBubble2Style]} />
+          
+          {/* 主要气泡组 - 右侧 */}
+          <Animated.View style={[styles.rhythmBubble1, { backgroundColor: rarityColor + '20' }, animatedBubble3Style]} />
+          <Animated.View style={[styles.rhythmBubble2, { backgroundColor: rarityColor + '15' }, animatedBubble1Style]} />
+          <Animated.View style={[styles.rhythmBubble3, { backgroundColor: rarityColor + '10' }, animatedBubble2Style]} />
+          
+          {/* 左侧气泡组 */}
+          <Animated.View style={[styles.leftBubble1, { backgroundColor: rarityColor + '18' }, animatedBubble2Style]} />
+          <Animated.View style={[styles.leftBubble2, { backgroundColor: rarityColor + '12' }, animatedBubble3Style]} />
+          <Animated.View style={[styles.leftBubble3, { backgroundColor: rarityColor + '08' }, animatedBubble1Style]} />
+          
+          {/* 散布的小气泡 */}
+          <Animated.View style={[styles.smallBubble1, { backgroundColor: rarityColor + '15' }, animatedBubble1Style]} />
+          <Animated.View style={[styles.smallBubble2, { backgroundColor: rarityColor + '12' }, animatedBubble3Style]} />
+          <Animated.View style={[styles.smallBubble3, { backgroundColor: rarityColor + '10' }, animatedBubble2Style]} />
+          <Animated.View style={[styles.smallBubble4, { backgroundColor: rarityColor + '14' }, animatedBubble1Style]} />
+          <Animated.View style={[styles.smallBubble5, { backgroundColor: rarityColor + '08' }, animatedBubble3Style]} />
+          
+          {/* 微小气泡点缀 */}
+          <Animated.View style={[styles.tinyBubble1, { backgroundColor: rarityColor + '12' }, animatedBubble2Style]} />
+          <Animated.View style={[styles.tinyBubble2, { backgroundColor: rarityColor + '10' }, animatedBubble1Style]} />
+          <Animated.View style={[styles.tinyBubble3, { backgroundColor: rarityColor + '08' }, animatedBubble3Style]} />
+          <Animated.View style={[styles.tinyBubble4, { backgroundColor: rarityColor + '06' }, animatedBubble2Style]} />
+        </View>
+        
         <View style={styles.headerContent}>
           <Pressable style={styles.backButton} onPress={() => router.back()}>
             <IconSymbol name="chevron.left" size={24} color={theme.colors.text} />
@@ -244,27 +244,23 @@ export default function FishDetailScreen() {
         </View>
       </View>
       
-      <View style={styles.infoRow}>
-        <IconSymbol name="text.book.closed" size={16} color={theme.colors.textSecondary} />
-        <View style={styles.infoContent}>
-          <ThemedText style={styles.infoLabel}>学名：</ThemedText>
-          <ThemedText style={styles.infoValue}>{currentFish.scientificName}</ThemedText>
+      <View style={styles.leftAlignedInfoList}>
+        <View style={styles.leftAlignedInfoRow}>
+          <IconSymbol name="text.book.closed" size={16} color="#8B5CF6" />
+          <ThemedText style={styles.leftAlignedLabel}>学名：</ThemedText>
+          <ThemedText style={styles.leftAlignedValue}>{currentFish.scientificName}</ThemedText>
         </View>
-      </View>
-      
-      <View style={styles.infoRow}>
-        <IconSymbol name="tree" size={16} color={theme.colors.textSecondary} />
-        <View style={styles.infoContent}>
-          <ThemedText style={styles.infoLabel}>科属：</ThemedText>
-          <ThemedText style={styles.infoValue}>{currentFish.family}</ThemedText>
+        
+        <View style={styles.leftAlignedInfoRow}>
+          <IconSymbol name="tree" size={16} color="#059669" />
+          <ThemedText style={styles.leftAlignedLabel}>科属：</ThemedText>
+          <ThemedText style={styles.leftAlignedValue}>{currentFish.family}</ThemedText>
         </View>
-      </View>
-      
-      <View style={styles.infoRow}>
-        <IconSymbol name="location" size={16} color={theme.colors.textSecondary} />
-        <View style={styles.infoContent}>
-          <ThemedText style={styles.infoLabel}>别名：</ThemedText>
-          <ThemedText style={styles.infoValue}>
+        
+        <View style={styles.leftAlignedInfoRow}>
+          <IconSymbol name="location" size={16} color="#DC2626" />
+          <ThemedText style={styles.leftAlignedLabel}>别名：</ThemedText>
+          <ThemedText style={styles.leftAlignedValue}>
             {currentFish.localNames?.join('、') || '无'}
           </ThemedText>
         </View>
@@ -287,58 +283,48 @@ export default function FishDetailScreen() {
         <ThemedText type="title" style={styles.cardTitle}>属性数据</ThemedText>
       </View>
       
-      <View style={styles.statsList}>
-        <View style={styles.statRow}>
-          <View style={styles.statLabel}>
-            <IconSymbol name="ruler" size={20} color="#007AFF" />
-            <ThemedText style={styles.statLabelText}>长度</ThemedText>
-          </View>
-          <View style={styles.statValue}>
-            <ThemedText style={styles.statNumber}>
+      <View style={styles.twoColumnStatsList}>
+        {/* 第一列 */}
+        <View style={styles.statsColumn}>
+          <View style={styles.leftAlignedStatRow}>
+            <IconSymbol name="ruler" size={18} color="#3B82F6" />
+            <ThemedText style={styles.leftAlignedStatLabel}>长度</ThemedText>
+            <ThemedText style={styles.leftAlignedStatValue}>
               {currentFish.characteristics.minLengthCm}-{currentFish.characteristics.maxLengthCm}cm
             </ThemedText>
           </View>
-        </View>
-        
-        <View style={styles.statRow}>
-          <View style={styles.statLabel}>
-            <IconSymbol name="scalemass" size={20} color="#007AFF" />
-            <ThemedText style={styles.statLabelText}>重量</ThemedText>
-          </View>
-          <View style={styles.statValue}>
-            <ThemedText style={styles.statNumber}>
-              最大 {currentFish.characteristics.maxWeightKg}kg
-            </ThemedText>
-          </View>
-        </View>
-        
-        <View style={styles.statRow}>
-          <View style={styles.statLabel}>
-            <IconSymbol name="clock" size={20} color="#007AFF" />
-            <ThemedText style={styles.statLabelText}>寿命</ThemedText>
-          </View>
-          <View style={styles.statValue}>
-            <ThemedText style={styles.statNumber}>
+          
+          <View style={styles.leftAlignedStatRow}>
+            <IconSymbol name="clock" size={18} color="#F59E0B" />
+            <ThemedText style={styles.leftAlignedStatLabel}>寿命</ThemedText>
+            <ThemedText style={styles.leftAlignedStatValue}>
               {currentFish.characteristics.lifespan}年
             </ThemedText>
           </View>
         </View>
         
-        <View style={styles.statRow}>
-          <View style={styles.statLabel}>
-            <IconSymbol name="target" size={20} color="#007AFF" />
-            <ThemedText style={styles.statLabelText}>难度</ThemedText>
+        {/* 第二列 */}
+        <View style={styles.statsColumn}>
+          <View style={styles.leftAlignedStatRow}>
+            <IconSymbol name="scalemass" size={18} color="#10B981" />
+            <ThemedText style={styles.leftAlignedStatLabel}>重量</ThemedText>
+            <ThemedText style={styles.leftAlignedStatValue}>
+              最大 {currentFish.characteristics.maxWeightKg}kg
+            </ThemedText>
           </View>
-          <View style={styles.statValue}>
-            <View style={styles.difficultyContainer}>
+          
+          <View style={styles.leftAlignedStatRow}>
+            <IconSymbol name="target" size={18} color="#EF4444" />
+            <ThemedText style={styles.leftAlignedStatLabel}>难度</ThemedText>
+            <View style={styles.difficultyRow}>
               <ProgressBar
                 progress={currentFish.behavior.difficulty / 5}
-                height={8}
+                height={6}
                 color="#FF9500"
                 backgroundColor="#F2F2F7"
-                style={styles.difficultyBar}
+                style={styles.inlineDifficultyBar}
               />
-              <ThemedText style={styles.difficultyText}>
+              <ThemedText style={styles.inlineDifficultyText}>
                 {DIFFICULTY_NAMES[currentFish.behavior.difficulty] || currentFish.behavior.difficulty}
               </ThemedText>
             </View>
@@ -354,13 +340,13 @@ export default function FishDetailScreen() {
         <ThemedText type="title" style={styles.cardTitle}>栖息环境</ThemedText>
       </View>
       
-      <View style={styles.habitatInfo}>
-        <View style={styles.habitatRow}>
-          <ThemedText style={styles.habitatLabel}>水域类型：</ThemedText>
-          <View style={styles.tagContainer}>
+      <View style={styles.compactHabitatInfo}>
+        <View style={styles.compactHabitatRow}>
+          <ThemedText style={styles.compactHabitatLabel}>水域类型：</ThemedText>
+          <View style={styles.compactTagContainer}>
             {currentFish.habitat.waterTypes?.filter(type => type).map((type, index) => (
-              <View key={index} style={[styles.tag, { backgroundColor: theme.colors.primary + '20' }]}>
-                <ThemedText style={[styles.tagText, { color: theme.colors.primary }]}>
+              <View key={index} style={[styles.compactTag, { backgroundColor: theme.colors.primary + '20' }]}>
+                <ThemedText style={[styles.compactTagText, { color: theme.colors.primary }]}>
                   {WATER_TYPE_NAMES[type] || type || '未知'}
                 </ThemedText>
               </View>
@@ -368,25 +354,37 @@ export default function FishDetailScreen() {
           </View>
         </View>
         
-        <View style={styles.habitatRow}>
-          <ThemedText style={styles.habitatLabel}>分布地区：</ThemedText>
-          <View style={styles.tagContainer}>
-            {currentFish.habitat.regions.map((region, index) => (
-              <View key={index} style={[styles.tag, { backgroundColor: theme.colors.secondary + '20' }]}>
-                <ThemedText style={[styles.tagText, { color: theme.colors.secondary }]}>
-                  {region}
-                </ThemedText>
-              </View>
-            ))}
+        <View style={styles.compactHabitatRow}>
+          <ThemedText style={styles.compactHabitatLabel}>分布地区：</ThemedText>
+          <View style={styles.compactTagContainer}>
+            {currentFish.habitat.regions.map((region, index) => {
+              // 使用与法规信息相同的颜色系统
+              const stateColors = [
+                theme.colors.primary,
+                '#10B981',
+                '#F59E0B', 
+                '#EF4444',
+                '#8B5CF6',
+              ];
+              const stateColor = stateColors[index % stateColors.length];
+              
+              return (
+                <View key={index} style={[styles.compactTag, { backgroundColor: stateColor + '20' }]}>
+                  <ThemedText style={[styles.compactTagText, { color: stateColor }]}>
+                    {region}
+                  </ThemedText>
+                </View>
+              );
+            })}
           </View>
         </View>
         
-        <View style={styles.habitatRow}>
-          <ThemedText style={styles.habitatLabel}>活跃季节：</ThemedText>
-          <View style={styles.tagContainer}>
+        <View style={styles.compactHabitatRow}>
+          <ThemedText style={styles.compactHabitatLabel}>活跃季节：</ThemedText>
+          <View style={styles.compactTagContainer}>
             {currentFish.habitat.seasons.map((month, index) => (
-              <View key={index} style={[styles.tag, { backgroundColor: theme.colors.accent + '20' }]}>
-                <ThemedText style={[styles.tagText, { color: theme.colors.accent }]}>
+              <View key={index} style={[styles.compactTag, { backgroundColor: theme.colors.accent + '20' }]}>
+                <ThemedText style={[styles.compactTagText, { color: theme.colors.accent }]}>
                   {month}月
                 </ThemedText>
               </View>
@@ -400,61 +398,95 @@ export default function FishDetailScreen() {
   const renderRegulations = () => {
     if (!currentFish.regulations || currentFish.regulations.length === 0) {return null;}
     
+    // 为不同州分配不同颜色
+    const stateColors = [
+      { bg: theme.colors.primary + '15', text: theme.colors.primary },
+      { bg: '#10B981' + '15', text: '#10B981' },
+      { bg: '#F59E0B' + '15', text: '#F59E0B' },
+      { bg: '#EF4444' + '15', text: '#EF4444' },
+      { bg: '#8B5CF6' + '15', text: '#8B5CF6' },
+    ];
+    
     return (
       <ThemedView type="card" style={[styles.infoCard, theme.shadows.md]}>
         <View style={styles.cardHeader}>
           <ThemedText type="title" style={styles.cardTitle}>法规信息</ThemedText>
         </View>
         
-        {currentFish.regulations.map((regulation, index) => (
-          <View key={index} style={styles.regulationItem}>
-            <View style={styles.regulationHeader}>
-              <ThemedText style={[styles.regionName, { color: theme.colors.primary }]}>
-                {regulation.region}
-              </ThemedText>
-            </View>
-            
-            <View style={styles.regulationContent}>
-              {regulation.minSizeCm && (
-                <View style={styles.regulationRow}>
-                  <IconSymbol name="ruler" size={14} color={theme.colors.textSecondary} />
-                  <ThemedText style={styles.regulationText}>
-                    最小尺寸: {regulation.minSizeCm}cm
-                  </ThemedText>
+        <View style={styles.regulationsGrid}>
+          {currentFish.regulations.map((regulation, index) => {
+            const stateColor = stateColors[index % stateColors.length];
+            return (
+              <View key={index} style={styles.regulationColumn}>
+                <View style={styles.regulationHeader}>
+                  <View style={[styles.regionBadge, { backgroundColor: stateColor.bg }]}>
+                    <ThemedText style={[styles.regionBadgeText, { color: stateColor.text }]}>
+                      {regulation.region}
+                    </ThemedText>
+                  </View>
                 </View>
-              )}
-              
-              {regulation.dailyLimit && (
-                <View style={styles.regulationRow}>
-                  <IconSymbol name="number" size={14} color={theme.colors.textSecondary} />
-                  <ThemedText style={styles.regulationText}>
-                    日限制: {regulation.dailyLimit}尾
-                  </ThemedText>
+                
+                <View style={styles.regulationContent}>
+                  <View style={styles.regulationItemsGrid}>
+                    {regulation.minSizeCm && (
+                      <View style={styles.regulationGridItem}>
+                        <View style={styles.regulationRow}>
+                          <IconSymbol name="ruler" size={14} color="#3B82F6" />
+                          <View style={styles.regulationTextContainer}>
+                            <ThemedText style={styles.regulationLabel}>最小尺寸</ThemedText>
+                            <ThemedText style={styles.regulationValue}>{regulation.minSizeCm}cm</ThemedText>
+                          </View>
+                        </View>
+                      </View>
+                    )}
+                    
+                    {regulation.dailyLimit && (
+                      <View style={styles.regulationGridItem}>
+                        <View style={styles.regulationRow}>
+                          <IconSymbol name="clock.badge" size={14} color="#10B981" />
+                          <View style={styles.regulationTextContainer}>
+                            <ThemedText style={styles.regulationLabel}>日限制</ThemedText>
+                            <ThemedText style={styles.regulationValue}>{regulation.dailyLimit}尾</ThemedText>
+                          </View>
+                        </View>
+                      </View>
+                    )}
+                    
+                    {regulation.closedSeasons && regulation.closedSeasons.length > 0 && (
+                      <View style={styles.regulationGridItem}>
+                        <View style={styles.regulationRow}>
+                          <IconSymbol name="calendar" size={14} color="#F59E0B" />
+                          <View style={styles.regulationTextContainer}>
+                            <ThemedText style={styles.regulationLabel}>禁钓期</ThemedText>
+                            <ThemedText style={styles.regulationValue}>
+                              {regulation.closedSeasons.map(season => 
+                                `${season.start}-${season.end}`
+                              ).join(', ')}
+                            </ThemedText>
+                          </View>
+                        </View>
+                      </View>
+                    )}
+                    
+                    {regulation.specialRules && regulation.specialRules.length > 0 && (
+                      <View style={styles.regulationGridItem}>
+                        <View style={styles.regulationRow}>
+                          <IconSymbol name="exclamationmark.triangle" size={14} color="#EF4444" />
+                          <View style={styles.regulationTextContainer}>
+                            <ThemedText style={styles.regulationLabel}>特殊规定</ThemedText>
+                            <ThemedText style={styles.regulationValue}>
+                              {regulation.specialRules.join(', ')}
+                            </ThemedText>
+                          </View>
+                        </View>
+                      </View>
+                    )}
+                  </View>
                 </View>
-              )}
-              
-              {regulation.closedSeasons && regulation.closedSeasons.length > 0 && (
-                <View style={styles.regulationRow}>
-                  <IconSymbol name="calendar" size={14} color={theme.colors.warning} />
-                  <ThemedText style={styles.regulationText}>
-                    禁钓期: {regulation.closedSeasons.map(season => 
-                      `${season.start} 至 ${season.end}`
-                    ).join(', ')}
-                  </ThemedText>
-                </View>
-              )}
-              
-              {regulation.specialRules && regulation.specialRules.length > 0 && (
-                <View style={styles.regulationRow}>
-                  <IconSymbol name="exclamationmark.triangle" size={14} color={theme.colors.warning} />
-                  <ThemedText style={styles.regulationText}>
-                    特殊规定: {regulation.specialRules.join(', ')}
-                  </ThemedText>
-                </View>
-              )}
-            </View>
-          </View>
-        ))}
+              </View>
+            );
+          })}
+        </View>
       </ThemedView>
     );
   };
@@ -510,16 +542,16 @@ export default function FishDetailScreen() {
         </View>
       </ScrollView>
       
-      {/* 底部悬浮记录按钮 */}
-      <View style={[styles.floatingButtonContainer, theme.shadows.lg]}>
+      {/* 右下角圆形记录按钮 */}
+      <View style={styles.circularButtonContainer}>
         <Pressable 
-          style={[styles.floatingLogButton, { backgroundColor: theme.colors.primary }]}
+          style={[styles.circularLogButton, { 
+            backgroundColor: theme.colors.primary,
+            shadowColor: theme.colors.primary,
+          }]}
           onPress={() => router.push(`/log?fishId=${currentFish.id}&fishName=${encodeURIComponent(currentFish.name)}`)}
         >
-          <IconSymbol name="plus" size={24} color="white" />
-          <ThemedText type="button" style={[styles.floatingButtonText, { color: 'white' }]}>
-            记录钓获
-          </ThemedText>
+          <IconSymbol name="pencil" size={20} color="white" />
         </Pressable>
       </View>
     </View>
@@ -534,7 +566,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 100,
+    paddingBottom: 80,
   },
   header: {
     position: 'relative',
@@ -731,27 +763,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  floatingButtonContainer: {
+  // 右下角圆形按钮样式
+  circularButtonContainer: {
     position: 'absolute',
-    bottom: 20,
-    left: 20,
+    bottom: 24,
     right: 20,
-    borderRadius: 16,
-    backgroundColor: 'transparent',
   },
-  floatingLogButton: {
-    flexDirection: 'row',
+  circularLogButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    borderRadius: 16,
-    gap: 12,
-    minHeight: 56,
-  },
-  floatingButtonText: {
-    fontSize: 18,
-    fontWeight: '600',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
   },
   statusBadge: {
     paddingHorizontal: 12,
@@ -804,7 +834,7 @@ const styles = StyleSheet.create({
     marginTop: -40,
   },
   infoCard: {
-    marginBottom: 12,
+    marginBottom: 16,
     padding: 16,
     borderRadius: 16,
   },
@@ -845,6 +875,193 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '400',
     lineHeight: 20,
+  },
+  // 新的紧凑布局样式
+  compactInfoList: {
+    gap: 10,
+  },
+  compactInfoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 6,
+  },
+  compactInfoLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    flex: 1,
+  },
+  compactLabel: {
+    fontSize: 15,
+    fontWeight: '400',
+    color: '#374151',
+  },
+  compactValue: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#1F2937',
+    textAlign: 'right',
+    flex: 1,
+  },
+  compactStatsList: {
+    gap: 10,
+  },
+  compactStatRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 6,
+  },
+  compactStatValue: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#1F2937',
+    textAlign: 'right',
+  },
+  compactDifficultyContainer: {
+    alignItems: 'flex-end',
+    gap: 4,
+    minWidth: 80,
+  },
+  compactDifficultyBar: {
+    width: 60,
+  },
+  compactDifficultyText: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#6B7280',
+  },
+  // 栖息环境紧凑样式
+  compactHabitatInfo: {
+    gap: 8,
+  },
+  compactHabitatRow: {
+    gap: 6,
+    marginBottom: 4,
+  },
+  compactHabitatLabel: {
+    fontSize: 15,
+    fontWeight: '400',
+    color: '#374151',
+    marginBottom: 4,
+  },
+  compactTagContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  compactTag: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  compactTagText: {
+    fontSize: 11,
+    fontWeight: '500',
+  },
+  // 基本信息左对齐样式
+  leftAlignedInfoList: {
+    gap: 10,
+  },
+  leftAlignedInfoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 6,
+    gap: 8,
+  },
+  leftAlignedLabel: {
+    fontSize: 15,
+    fontWeight: '400',
+    color: '#374151',
+    minWidth: 50,
+  },
+  leftAlignedValue: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#1F2937',
+    flex: 1,
+  },
+  // 两列布局样式
+  twoColumnStatsList: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  statsColumn: {
+    flex: 1,
+    gap: 14,
+  },
+  // 两列统计行样式
+  twoColumnStatRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 2,
+  },
+  statLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    flex: 1,
+  },
+  statLabel: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#374151',
+  },
+  statValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1F2937',
+    textAlign: 'right',
+    flex: 1,
+  },
+  difficultyRight: {
+    alignItems: 'flex-end',
+    gap: 2,
+    flex: 1,
+  },
+  twoColumnDifficultyBar: {
+    width: 50,
+  },
+  twoColumnDifficultyText: {
+    fontSize: 11,
+    fontWeight: '500',
+    color: '#6B7280',
+  },
+  // 左对齐属性数据样式
+  leftAlignedStatRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 2,
+    gap: 8,
+  },
+  leftAlignedStatLabel: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#374151',
+    minWidth: 40,
+  },
+  leftAlignedStatValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1F2937',
+    flex: 1,
+  },
+  // 难度进度条行内样式
+  difficultyRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    flex: 1,
+  },
+  inlineDifficultyBar: {
+    width: 60,
+  },
+  inlineDifficultyText: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#6B7280',
   },
   unlockStatus: {
     flexDirection: 'row',
@@ -966,6 +1183,66 @@ const styles = StyleSheet.create({
   regulationText: {
     fontSize: 13,
     lineHeight: 18,
+  },
+  // 优化后的法规样式 - 2列布局
+  regulationsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  regulationColumn: {
+    flex: 1,
+    minWidth: '45%',
+    padding: 12,
+    backgroundColor: '#FAFAFA',
+    borderRadius: 8,
+  },
+  regulationCard: {
+    marginBottom: 12,
+    paddingBottom: 12,
+    borderBottomColor: 'rgba(0, 0, 0, 0.05)',
+  },
+  regionBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    alignSelf: 'flex-start',
+    marginBottom: 8,
+  },
+  regionBadgeText: {
+    fontSize: 12,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+  },
+  regulationRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 6,
+    paddingVertical: 3,
+  },
+  regulationTextContainer: {
+    flex: 1,
+  },
+  regulationLabel: {
+    fontSize: 12,
+    fontWeight: '400',
+    color: '#6B7280',
+  },
+  regulationValue: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: '#1F2937',
+    marginTop: 1,
+  },
+  // 法规信息内部2列网格
+  regulationItemsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  regulationGridItem: {
+    flex: 1,
+    minWidth: '45%',
   },
   errorContainer: {
     flex: 1,
