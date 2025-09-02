@@ -23,6 +23,7 @@ export const APP_CONFIG = {
 // 稀有度配色方案
 export const RARITY_COLORS: Record<FishRarity, string> = {
   common: '#6B7280',    // 灰色
+  unique: '#10B981',    // 绿色
   rare: '#3B82F6',      // 蓝色  
   epic: '#8B5CF6',      // 紫色
   legendary: '#F59E0B', // 金色
@@ -216,6 +217,163 @@ export const DEFAULT_ACHIEVEMENTS = [
     },
     isHidden: false,
   },
+  // 新增有趣成就
+  {
+    id: 'air-force',
+    name: '空军部队',
+    description: '连续出钓但空手而归的次数',
+    category: 'special' as AchievementCategory,
+    icon: 'wind',
+    tiers: {
+      bronze: { requirement: 3, reward: '初级空军' },
+      silver: { requirement: 7, reward: '资深空军' },
+      gold: { requirement: 15, reward: '空军司令' },
+    },
+    isHidden: false,
+  },
+  {
+    id: 'early-bird',
+    name: '早起的鸟儿',
+    description: '在早上6点前开始钓鱼',
+    category: 'special' as AchievementCategory,
+    icon: 'sun.min.fill',
+    tiers: {
+      bronze: { requirement: 5, reward: '晨间钓手' },
+      silver: { requirement: 15, reward: '黎明战士' },
+      gold: { requirement: 30, reward: '日出之子' },
+    },
+    isHidden: false,
+  },
+  {
+    id: 'night-owl',
+    name: '夜猫子',
+    description: '在晚上10点后还在钓鱼',
+    category: 'special' as AchievementCategory,
+    icon: 'moon.stars.fill',
+    tiers: {
+      bronze: { requirement: 5, reward: '夜钓新手' },
+      silver: { requirement: 15, reward: '夜行者' },
+      gold: { requirement: 30, reward: '月光钓神' },
+    },
+    isHidden: false,
+  },
+  {
+    id: 'weather-warrior',
+    name: '风雨无阻',
+    description: '在恶劣天气下钓鱼',
+    category: 'special' as AchievementCategory,
+    icon: 'cloud.bolt.rain.fill',
+    tiers: {
+      bronze: { requirement: 3, reward: '勇敢钓手' },
+      silver: { requirement: 10, reward: '铁血战士' },
+      gold: { requirement: 20, reward: '风雨之王' },
+    },
+    isHidden: false,
+  },
+  {
+    id: 'small-fish-specialist',
+    name: '小鱼专家',
+    description: '专门钓小于10cm的鱼',
+    category: 'special' as AchievementCategory,
+    icon: 'fish',
+    tiers: {
+      bronze: { requirement: 10, reward: '小鱼克星' },
+      silver: { requirement: 25, reward: '迷你大师' },
+      gold: { requirement: 50, reward: '袖珍之王' },
+    },
+    isHidden: false,
+  },
+  {
+    id: 'catch-and-release',
+    name: '保护主义者',
+    description: '放生鱼类的数量',
+    category: 'special' as AchievementCategory,
+    icon: 'heart.fill',
+    tiers: {
+      bronze: { requirement: 10, reward: '爱心钓手' },
+      silver: { requirement: 30, reward: '环保卫士' },
+      gold: { requirement: 100, reward: '鱼类守护神' },
+    },
+    isHidden: false,
+  },
+  {
+    id: 'lucky-fisherman',
+    name: '欧皇本皇',
+    description: '钓到传说级稀有鱼类',
+    category: 'species' as AchievementCategory,
+    icon: 'sparkles',
+    tiers: {
+      bronze: { requirement: 1, reward: '初尝甜头' },
+      silver: { requirement: 3, reward: '运气爆棚' },
+      gold: { requirement: 5, reward: '真正欧皇' },
+    },
+    isHidden: false,
+  },
+  {
+    id: 'multi-species',
+    name: '一网打尽',
+    description: '同一天钓到不同种类的鱼',
+    category: 'species' as AchievementCategory,
+    icon: 'arrow.3.trianglepath',
+    tiers: {
+      bronze: { requirement: 3, reward: '多样猎手' },
+      silver: { requirement: 5, reward: '全能钓手' },
+      gold: { requirement: 8, reward: '物种收割机' },
+    },
+    isHidden: false,
+  },
+  {
+    id: 'equipment-hoarder',
+    name: '装备党',
+    description: '记录时使用不同种类的装备',
+    category: 'special' as AchievementCategory,
+    icon: 'wrench.and.screwdriver.fill',
+    tiers: {
+      bronze: { requirement: 5, reward: '装备爱好者' },
+      silver: { requirement: 15, reward: '装备收藏家' },
+      gold: { requirement: 30, reward: '装备狂魔' },
+    },
+    isHidden: false,
+  },
+  {
+    id: 'photo-enthusiast',
+    name: '摄影达人',
+    description: '为钓鱼记录拍摄大量照片',
+    category: 'special' as AchievementCategory,
+    icon: 'camera.fill',
+    tiers: {
+      bronze: { requirement: 20, reward: '摄影新手' },
+      silver: { requirement: 50, reward: '镜头大师' },
+      gold: { requirement: 100, reward: '钓鱼摄影师' },
+    },
+    isHidden: false,
+  },
+  {
+    id: 'season-master',
+    name: '四季钓翁',
+    description: '在一年四季都有钓鱼记录',
+    category: 'special' as AchievementCategory,
+    icon: 'calendar',
+    tiers: {
+      bronze: { requirement: 2, reward: '跨季钓手' },
+      silver: { requirement: 3, reward: '三季勇士' },
+      gold: { requirement: 4, reward: '全年无休' },
+    },
+    isHidden: false,
+  },
+  {
+    id: 'persistent-angler',
+    name: '坚持不懈',
+    description: '单次钓鱼时长超过指定小时',
+    category: 'special' as AchievementCategory,
+    icon: 'timer',
+    tiers: {
+      bronze: { requirement: 4, reward: '耐心钓手' }, // 4小时
+      silver: { requirement: 8, reward: '持久战士' }, // 8小时
+      gold: { requirement: 12, reward: '马拉松钓神' }, // 12小时
+    },
+    isHidden: false,
+  }
 ] as const;
 
 // 图标映射
