@@ -158,31 +158,31 @@ export default function FishDetailScreen() {
       {/* 装饰性元素 - 丰富的泡泡效果 */}
       <View style={styles.decorativeLines}>
         {/* 几何图形 - 统一规整 */}
-        <View style={[styles.geometryCircle, { backgroundColor: rarityColor + '15' }]} />
-        <View style={[styles.geometrySquare, { backgroundColor: rarityColor + '12' }]} />
+        <Animated.View style={[styles.geometryCircle, { backgroundColor: rarityColor + '15' }, animatedBubble1Style]} />
+        <Animated.View style={[styles.geometryCircle2, { backgroundColor: rarityColor + '12' }, animatedBubble2Style]} />
         
         {/* 主要气泡组 - 右侧 */}
-        <View style={[styles.rhythmBubble1, { backgroundColor: rarityColor + '20' }]} />
-        <View style={[styles.rhythmBubble2, { backgroundColor: rarityColor + '15' }]} />
-        <View style={[styles.rhythmBubble3, { backgroundColor: rarityColor + '10' }]} />
+        <Animated.View style={[styles.rhythmBubble1, { backgroundColor: rarityColor + '20' }, animatedBubble3Style]} />
+        <Animated.View style={[styles.rhythmBubble2, { backgroundColor: rarityColor + '15' }, animatedBubble1Style]} />
+        <Animated.View style={[styles.rhythmBubble3, { backgroundColor: rarityColor + '10' }, animatedBubble2Style]} />
         
         {/* 左侧气泡组 */}
-        <View style={[styles.leftBubble1, { backgroundColor: rarityColor + '18' }]} />
-        <View style={[styles.leftBubble2, { backgroundColor: rarityColor + '12' }]} />
-        <View style={[styles.leftBubble3, { backgroundColor: rarityColor + '08' }]} />
+        <Animated.View style={[styles.leftBubble1, { backgroundColor: rarityColor + '18' }, animatedBubble2Style]} />
+        <Animated.View style={[styles.leftBubble2, { backgroundColor: rarityColor + '12' }, animatedBubble3Style]} />
+        <Animated.View style={[styles.leftBubble3, { backgroundColor: rarityColor + '08' }, animatedBubble1Style]} />
         
         {/* 散布的小气泡 */}
-        <View style={[styles.smallBubble1, { backgroundColor: rarityColor + '15' }]} />
-        <View style={[styles.smallBubble2, { backgroundColor: rarityColor + '12' }]} />
-        <View style={[styles.smallBubble3, { backgroundColor: rarityColor + '10' }]} />
-        <View style={[styles.smallBubble4, { backgroundColor: rarityColor + '14' }]} />
-        <View style={[styles.smallBubble5, { backgroundColor: rarityColor + '08' }]} />
+        <Animated.View style={[styles.smallBubble1, { backgroundColor: rarityColor + '15' }, animatedBubble1Style]} />
+        <Animated.View style={[styles.smallBubble2, { backgroundColor: rarityColor + '12' }, animatedBubble3Style]} />
+        <Animated.View style={[styles.smallBubble3, { backgroundColor: rarityColor + '10' }, animatedBubble2Style]} />
+        <Animated.View style={[styles.smallBubble4, { backgroundColor: rarityColor + '14' }, animatedBubble1Style]} />
+        <Animated.View style={[styles.smallBubble5, { backgroundColor: rarityColor + '08' }, animatedBubble3Style]} />
         
         {/* 微小气泡点缀 */}
-        <View style={[styles.tinyBubble1, { backgroundColor: rarityColor + '12' }]} />
-        <View style={[styles.tinyBubble2, { backgroundColor: rarityColor + '10' }]} />
-        <View style={[styles.tinyBubble3, { backgroundColor: rarityColor + '08' }]} />
-        <View style={[styles.tinyBubble4, { backgroundColor: rarityColor + '06' }]} />
+        <Animated.View style={[styles.tinyBubble1, { backgroundColor: rarityColor + '12' }, animatedBubble2Style]} />
+        <Animated.View style={[styles.tinyBubble2, { backgroundColor: rarityColor + '10' }, animatedBubble1Style]} />
+        <Animated.View style={[styles.tinyBubble3, { backgroundColor: rarityColor + '08' }, animatedBubble3Style]} />
+        <Animated.View style={[styles.tinyBubble4, { backgroundColor: rarityColor + '06' }, animatedBubble2Style]} />
       </View>
       
       <SafeAreaView edges={['top']} style={styles.headerSafeArea}>
@@ -564,14 +564,13 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
   },
-  geometrySquare: {
+  geometryCircle2: {
     position: 'absolute',
     bottom: 140,
     left: 25,
     width: 24,
     height: 24,
-    borderRadius: 6,
-    transform: [{ rotate: '45deg' }],
+    borderRadius: 12,
   },
   // 主要气泡组 - 右侧
   rhythmBubble1: {
