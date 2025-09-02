@@ -1,0 +1,544 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+export type Language = 'zh' | 'en';
+export type TranslationKeys = keyof typeof translations.zh;
+
+const LANGUAGE_STORAGE_KEY = '@fishflow/language';
+
+export const translations = {
+  zh: {
+    // Navigation
+    'nav.home': '首页',
+    'nav.fishdex': '图鉴',
+    'nav.equipment': '装备',
+    'nav.achievements': '成就',
+    'nav.stats': '统计',
+    'nav.settings': '设置',
+    'nav.log': '记录',
+
+    // Home Screen
+    'home.title': '首页',
+    'home.welcome': '欢迎回到 FishFlow',
+    'home.subtitle': '继续你的钓鱼之旅',
+    'home.stats.catches': '钓获数',
+    'home.stats.species': '鱼种数',
+    'home.stats.achievements': '成就数',
+    'home.stats.days': '钓鱼天数',
+    'home.quick.log': '记录钓获',
+    'home.quick.fishdex': '查看图鉴',
+    'home.quick.equipment': '管理装备',
+    'home.quick.actions': '快速操作',
+    'home.recent.unlocks': '最近解锁',
+    'home.recent.achievements': '最新成就',
+    'home.recent.empty': '暂无数据',
+    'home.progress.collection': '收集进度',
+
+    // Fishdex Screen
+    'fishdex.title': '鱼类图鉴',
+    'fishdex.subtitle': '发现并收集各种鱼类',
+    'fishdex.search': '搜索鱼类...',
+    'fishdex.filter.all': '全部',
+    'fishdex.filter.unlocked': '已解锁',
+    'fishdex.filter.locked': '未解锁',
+    'fishdex.filter.new': '新发现',
+    'fishdex.filter.freshwater': '淡水',
+    'fishdex.filter.saltwater': '海水',
+    'fishdex.filter.brackish': '咸淡水',
+    'fishdex.locked': '未解锁',
+    'fishdex.new': '新发现!',
+    'fishdex.rare': '稀有',
+    'fishdex.common': '常见',
+    'fishdex.uncommon': '不常见',
+    'fishdex.legendary': '传说',
+    'fishdex.empty.title': '未找到鱼类',
+    'fishdex.empty.subtitle': '尝试调整搜索或筛选条件',
+    'fishdex.unlocked': '已解锁',
+    'fishdex.unlocked.only': '仅已解锁',
+    'fishdex.rarity': '稀有度',
+    'fishdex.water.types': '水域类型',
+    'fishdex.loading.description': '正在载入鱼类图鉴数据',
+    'fishdex.initialize.data': '初始化数据',
+    'fishdex.no.matches.title': '没有匹配的鱼类',
+    'fishdex.no.matches.description': '尝试调整筛选条件',
+
+    // Equipment Screen
+    'equipment.title': '钓鱼装备',
+    'equipment.subtitle': '管理你的钓鱼装备组合',
+    'equipment.create': '创建装备组合',
+    'equipment.filter.all': '全部',
+    'equipment.filter.favorites': '收藏',
+    'equipment.filter.recent': '最近',
+    'equipment.empty.title': '暂无装备组合',
+    'equipment.empty.subtitle': '创建你的第一个钓鱼装备组合',
+    'equipment.stats.usage': '使用次数',
+    'equipment.stats.success': '成功率',
+    'equipment.stats.catches': '钓获数',
+    'equipment.actions.edit': '编辑',
+    'equipment.actions.delete': '删除',
+    'equipment.delete.title': '确认删除',
+    'equipment.delete.message': '确定要删除装备组合「{name}」吗？',
+    'equipment.delete.cancel': '取消',
+    'equipment.delete.confirm': '删除',
+
+    // Equipment Creation/Edit
+    'equipment.create.title': '创建装备组合',
+    'equipment.edit.title': '编辑装备组合',
+    'equipment.form.name': '名称',
+    'equipment.form.name.placeholder': '输入装备组合名称',
+    'equipment.form.description': '描述',
+    'equipment.form.description.placeholder': '输入装备描述（可选）',
+    'equipment.form.rod': '钓竿',
+    'equipment.form.rod.placeholder': '选择或输入钓竿',
+    'equipment.form.reel': '钓轮',
+    'equipment.form.reel.placeholder': '选择或输入钓轮',
+    'equipment.form.line': '钓线',
+    'equipment.form.line.placeholder': '选择或输入钓线',
+    'equipment.form.hook': '钓钩',
+    'equipment.form.hook.placeholder': '选择或输入钓钩',
+    'equipment.form.bait': '鱼饵',
+    'equipment.form.bait.placeholder': '选择或输入鱼饵',
+    'equipment.form.water_types': '适用水域',
+    'equipment.form.tags': '标签',
+    'equipment.form.tags.placeholder': '添加标签（用逗号分隔）',
+    'equipment.form.save': '保存',
+    'equipment.form.cancel': '取消',
+
+    // Achievements Screen
+    'achievements.title': '成就系统',
+    'achievements.subtitle': '解锁各种钓鱼成就',
+    'achievements.filter.all': '全部',
+    'achievements.filter.unlocked': '已解锁',
+    'achievements.filter.locked': '未解锁',
+    'achievements.filter.bronze': '铜牌',
+    'achievements.filter.silver': '银牌',
+    'achievements.filter.gold': '金牌',
+    'achievements.progress': '进度',
+    'achievements.unlocked': '已解锁',
+    'achievements.locked': '未解锁',
+    'achievements.reward': '奖励',
+    'achievements.empty.title': '暂无成就',
+    'achievements.empty.subtitle': '继续钓鱼来解锁成就',
+
+    // Stats Screen
+    'stats.title': '钓鱼统计',
+    'stats.subtitle': '查看你的钓鱼数据分析',
+    'stats.overview': '总体概况',
+    'stats.catches.total': '总钓获数',
+    'stats.species.total': '总鱼种数',
+    'stats.achievements.total': '总成就数',
+    'stats.time.total': '总钓鱼时长',
+    'stats.charts.monthly': '月度钓获',
+    'stats.charts.species': '鱼种分布',
+    'stats.charts.locations': '地点统计',
+    'stats.charts.equipment': '装备使用',
+
+    // Log Screen
+    'log.title': '记录钓获',
+    'log.subtitle': '记录你的钓鱼收获',
+    'log.fish.select': '选择鱼类',
+    'log.fish.search': '搜索鱼类...',
+    'log.photo.add': '添加照片',
+    'log.photo.camera': '拍照',
+    'log.photo.library': '从相册选择',
+    'log.location.current': '使用当前位置',
+    'log.location.manual': '手动输入位置',
+    'log.measurements.length': '长度 (cm)',
+    'log.measurements.weight': '重量 (g)',
+    'log.equipment.select': '选择装备',
+    'log.notes': '备注',
+    'log.notes.placeholder': '添加钓鱼笔记...',
+    'log.save': '保存记录',
+    'log.cancel': '取消',
+    'log.success': '钓获记录已保存',
+    'log.weather.conditions': '天气条件',
+    'log.weather.temperature': '温度',
+    'log.weather.wind': '风速',
+    'log.weather.tide': '潮汐',
+    'log.weather.waves': '浪高',
+    'log.weather.pressure': '气压',
+    'log.weather.loading': '获取天气信息中...',
+    'log.weather.error': '无法获取天气信息',
+    'log.skunked': '空军',
+    'log.skunked.description': '没有钓到鱼',
+
+    // Fish Detail Screen
+    'fish.detail.overview': '概览',
+    'fish.detail.habitat': '栖息地',
+    'fish.detail.characteristics': '特征',
+    'fish.detail.regulations': '钓鱼规定',
+    'fish.detail.catches': '我的钓获',
+    'fish.detail.rarity': '稀有度',
+    'fish.detail.length': '长度',
+    'fish.detail.weight': '重量',
+    'fish.detail.water_type': '水域类型',
+    'fish.detail.season': '季节',
+    'fish.detail.bait': '推荐鱼饵',
+    'fish.detail.no_catches': '暂无钓获记录',
+    'fish.detail.add_catch': '添加钓获',
+
+    // Settings Screen
+    'settings.title': '设置',
+    'settings.subtitle': '个性化你的 FishFlow 体验',
+    'settings.language': '语言',
+    'settings.language.subtitle': '选择应用语言',
+    'settings.theme': '主题',
+    'settings.theme.subtitle': '选择应用主题',
+    'settings.theme.light': '浅色',
+    'settings.theme.dark': '深色',
+    'settings.theme.system': '跟随系统',
+    'settings.notifications': '通知',
+    'settings.notifications.subtitle': '管理通知设置',
+    'settings.notifications.achievements': '成就通知',
+    'settings.notifications.reminders': '钓鱼提醒',
+    'settings.privacy': '隐私',
+    'settings.privacy.subtitle': '管理隐私设置',
+    'settings.privacy.location': '位置信息',
+    'settings.privacy.photos': '照片权限',
+    'settings.about': '关于',
+    'settings.about.version': '版本',
+    'settings.about.feedback': '反馈',
+    'settings.about.support': '支持',
+    'settings.data': '数据管理',
+    'settings.data.export': '导出数据',
+    'settings.data.import': '导入数据',
+    'settings.data.clear': '清除数据',
+    'settings.data.clear.warning': '此操作将删除所有数据，无法撤销',
+
+    // Common
+    'common.search': '搜索',
+    'common.filter': '筛选',
+    'common.sort': '排序',
+    'common.save': '保存',
+    'common.cancel': '取消',
+    'common.delete': '删除',
+    'common.edit': '编辑',
+    'common.add': '添加',
+    'common.done': '完成',
+    'common.ok': '确定',
+    'common.yes': '是',
+    'common.no': '否',
+    'common.loading': '加载中...',
+    'common.error': '错误',
+    'common.success': '成功',
+    'common.empty': '暂无数据',
+    'common.retry': '重试',
+    'common.back': '返回',
+    'common.close': '关闭',
+    'common.total': '总计',
+    'common.showing': '显示',
+    'common.name': '名称',
+    'common.recent': '最近',
+    'common.clear': '清除',
+    'common.clear.search': '清除搜索',
+    'common.clear.filters': '清除筛选',
+
+    // Water Types
+    'water.freshwater': '淡水',
+    'water.saltwater': '海水',
+    'water.brackish': '咸淡水',
+
+    // Measurements
+    'measurement.cm': 'cm',
+    'measurement.g': 'g',
+    'measurement.kg': 'kg',
+    'measurement.m': 'm',
+
+    // Date/Time
+    'date.today': '今天',
+    'date.yesterday': '昨天',
+    'date.week_ago': '一周前',
+    'date.month_ago': '一个月前',
+    'time.morning': '上午',
+    'time.afternoon': '下午',
+    'time.evening': '晚上',
+  },
+  en: {
+    // Navigation
+    'nav.home': 'Home',
+    'nav.fishdex': 'Fishdex',
+    'nav.equipment': 'Equipment',
+    'nav.achievements': 'Achievements',
+    'nav.stats': 'Stats',
+    'nav.settings': 'Settings',
+    'nav.log': 'Log',
+
+    // Home Screen
+    'home.title': 'Home',
+    'home.welcome': 'Welcome back to FishFlow',
+    'home.subtitle': 'Continue your fishing journey',
+    'home.stats.catches': 'Catches',
+    'home.stats.species': 'Species',
+    'home.stats.achievements': 'Achievements',
+    'home.stats.days': 'Fishing Days',
+    'home.quick.log': 'Log Catch',
+    'home.quick.fishdex': 'View Fishdex',
+    'home.quick.equipment': 'Manage Equipment',
+    'home.quick.actions': 'Quick Actions',
+    'home.recent.unlocks': 'Recent Unlocks',
+    'home.recent.achievements': 'Latest Achievements',
+    'home.recent.empty': 'No data available',
+    'home.progress.collection': 'Collection Progress',
+
+    // Fishdex Screen
+    'fishdex.title': 'Fish Encyclopedia',
+    'fishdex.subtitle': 'Discover and collect various fish species',
+    'fishdex.search': 'Search fish...',
+    'fishdex.filter.all': 'All',
+    'fishdex.filter.unlocked': 'Unlocked',
+    'fishdex.filter.locked': 'Locked',
+    'fishdex.filter.new': 'New',
+    'fishdex.filter.freshwater': 'Freshwater',
+    'fishdex.filter.saltwater': 'Saltwater',
+    'fishdex.filter.brackish': 'Brackish',
+    'fishdex.locked': 'Locked',
+    'fishdex.new': 'New!',
+    'fishdex.rare': 'Rare',
+    'fishdex.common': 'Common',
+    'fishdex.uncommon': 'Uncommon',
+    'fishdex.legendary': 'Legendary',
+    'fishdex.empty.title': 'No fish found',
+    'fishdex.empty.subtitle': 'Try adjusting your search or filters',
+    'fishdex.unlocked': 'Unlocked',
+    'fishdex.unlocked.only': 'Unlocked Only',
+    'fishdex.rarity': 'Rarity',
+    'fishdex.water.types': 'Water Types',
+    'fishdex.loading.description': 'Loading fish encyclopedia data',
+    'fishdex.initialize.data': 'Initialize Data',
+    'fishdex.no.matches.title': 'No matching fish',
+    'fishdex.no.matches.description': 'Try adjusting your filters',
+
+    // Equipment Screen
+    'equipment.title': 'Fishing Equipment',
+    'equipment.subtitle': 'Manage your fishing equipment sets',
+    'equipment.create': 'Create Equipment Set',
+    'equipment.filter.all': 'All',
+    'equipment.filter.favorites': 'Favorites',
+    'equipment.filter.recent': 'Recent',
+    'equipment.empty.title': 'No equipment sets',
+    'equipment.empty.subtitle': 'Create your first fishing equipment set',
+    'equipment.stats.usage': 'Usage Count',
+    'equipment.stats.success': 'Success Rate',
+    'equipment.stats.catches': 'Catches',
+    'equipment.actions.edit': 'Edit',
+    'equipment.actions.delete': 'Delete',
+    'equipment.delete.title': 'Confirm Delete',
+    'equipment.delete.message': 'Are you sure you want to delete the equipment set "{name}"?',
+    'equipment.delete.cancel': 'Cancel',
+    'equipment.delete.confirm': 'Delete',
+
+    // Equipment Creation/Edit
+    'equipment.create.title': 'Create Equipment Set',
+    'equipment.edit.title': 'Edit Equipment Set',
+    'equipment.form.name': 'Name',
+    'equipment.form.name.placeholder': 'Enter equipment set name',
+    'equipment.form.description': 'Description',
+    'equipment.form.description.placeholder': 'Enter equipment description (optional)',
+    'equipment.form.rod': 'Rod',
+    'equipment.form.rod.placeholder': 'Select or enter rod',
+    'equipment.form.reel': 'Reel',
+    'equipment.form.reel.placeholder': 'Select or enter reel',
+    'equipment.form.line': 'Line',
+    'equipment.form.line.placeholder': 'Select or enter line',
+    'equipment.form.hook': 'Hook',
+    'equipment.form.hook.placeholder': 'Select or enter hook',
+    'equipment.form.bait': 'Bait',
+    'equipment.form.bait.placeholder': 'Select or enter bait',
+    'equipment.form.water_types': 'Water Types',
+    'equipment.form.tags': 'Tags',
+    'equipment.form.tags.placeholder': 'Add tags (comma separated)',
+    'equipment.form.save': 'Save',
+    'equipment.form.cancel': 'Cancel',
+
+    // Achievements Screen
+    'achievements.title': 'Achievement System',
+    'achievements.subtitle': 'Unlock various fishing achievements',
+    'achievements.filter.all': 'All',
+    'achievements.filter.unlocked': 'Unlocked',
+    'achievements.filter.locked': 'Locked',
+    'achievements.filter.bronze': 'Bronze',
+    'achievements.filter.silver': 'Silver',
+    'achievements.filter.gold': 'Gold',
+    'achievements.progress': 'Progress',
+    'achievements.unlocked': 'Unlocked',
+    'achievements.locked': 'Locked',
+    'achievements.reward': 'Reward',
+    'achievements.empty.title': 'No achievements',
+    'achievements.empty.subtitle': 'Keep fishing to unlock achievements',
+
+    // Stats Screen
+    'stats.title': 'Fishing Statistics',
+    'stats.subtitle': 'View your fishing data analytics',
+    'stats.overview': 'Overview',
+    'stats.catches.total': 'Total Catches',
+    'stats.species.total': 'Total Species',
+    'stats.achievements.total': 'Total Achievements',
+    'stats.time.total': 'Total Fishing Time',
+    'stats.charts.monthly': 'Monthly Catches',
+    'stats.charts.species': 'Species Distribution',
+    'stats.charts.locations': 'Location Statistics',
+    'stats.charts.equipment': 'Equipment Usage',
+
+    // Log Screen
+    'log.title': 'Log Catch',
+    'log.subtitle': 'Record your fishing catch',
+    'log.fish.select': 'Select Fish',
+    'log.fish.search': 'Search fish...',
+    'log.photo.add': 'Add Photo',
+    'log.photo.camera': 'Take Photo',
+    'log.photo.library': 'Choose from Library',
+    'log.location.current': 'Use Current Location',
+    'log.location.manual': 'Enter Location Manually',
+    'log.measurements.length': 'Length (cm)',
+    'log.measurements.weight': 'Weight (g)',
+    'log.equipment.select': 'Select Equipment',
+    'log.notes': 'Notes',
+    'log.notes.placeholder': 'Add fishing notes...',
+    'log.save': 'Save Record',
+    'log.cancel': 'Cancel',
+    'log.success': 'Catch record saved',
+    'log.weather.conditions': 'Weather Conditions',
+    'log.weather.temperature': 'Temperature',
+    'log.weather.wind': 'Wind Speed',
+    'log.weather.tide': 'Tide',
+    'log.weather.waves': 'Wave Height',
+    'log.weather.pressure': 'Pressure',
+    'log.weather.loading': 'Loading weather information...',
+    'log.weather.error': 'Unable to get weather information',
+    'log.skunked': 'Skunked',
+    'log.skunked.description': 'No fish caught',
+
+    // Fish Detail Screen
+    'fish.detail.overview': 'Overview',
+    'fish.detail.habitat': 'Habitat',
+    'fish.detail.characteristics': 'Characteristics',
+    'fish.detail.regulations': 'Fishing Regulations',
+    'fish.detail.catches': 'My Catches',
+    'fish.detail.rarity': 'Rarity',
+    'fish.detail.length': 'Length',
+    'fish.detail.weight': 'Weight',
+    'fish.detail.water_type': 'Water Type',
+    'fish.detail.season': 'Season',
+    'fish.detail.bait': 'Recommended Bait',
+    'fish.detail.no_catches': 'No catch records',
+    'fish.detail.add_catch': 'Add Catch',
+
+    // Settings Screen
+    'settings.title': 'Settings',
+    'settings.subtitle': 'Customize your FishFlow experience',
+    'settings.language': 'Language',
+    'settings.language.subtitle': 'Select app language',
+    'settings.theme': 'Theme',
+    'settings.theme.subtitle': 'Select app theme',
+    'settings.theme.light': 'Light',
+    'settings.theme.dark': 'Dark',
+    'settings.theme.system': 'Follow System',
+    'settings.notifications': 'Notifications',
+    'settings.notifications.subtitle': 'Manage notification settings',
+    'settings.notifications.achievements': 'Achievement Notifications',
+    'settings.notifications.reminders': 'Fishing Reminders',
+    'settings.privacy': 'Privacy',
+    'settings.privacy.subtitle': 'Manage privacy settings',
+    'settings.privacy.location': 'Location Services',
+    'settings.privacy.photos': 'Photo Permissions',
+    'settings.about': 'About',
+    'settings.about.version': 'Version',
+    'settings.about.feedback': 'Feedback',
+    'settings.about.support': 'Support',
+    'settings.data': 'Data Management',
+    'settings.data.export': 'Export Data',
+    'settings.data.import': 'Import Data',
+    'settings.data.clear': 'Clear Data',
+    'settings.data.clear.warning': 'This action will delete all data and cannot be undone',
+
+    // Common
+    'common.search': 'Search',
+    'common.filter': 'Filter',
+    'common.sort': 'Sort',
+    'common.save': 'Save',
+    'common.cancel': 'Cancel',
+    'common.delete': 'Delete',
+    'common.edit': 'Edit',
+    'common.add': 'Add',
+    'common.done': 'Done',
+    'common.ok': 'OK',
+    'common.yes': 'Yes',
+    'common.no': 'No',
+    'common.loading': 'Loading...',
+    'common.error': 'Error',
+    'common.success': 'Success',
+    'common.empty': 'No data',
+    'common.retry': 'Retry',
+    'common.back': 'Back',
+    'common.close': 'Close',
+    'common.total': 'Total',
+    'common.showing': 'Showing',
+    'common.name': 'Name',
+    'common.recent': 'Recent',
+    'common.clear': 'Clear',
+    'common.clear.search': 'Clear Search',
+    'common.clear.filters': 'Clear Filters',
+
+    // Water Types
+    'water.freshwater': 'Freshwater',
+    'water.saltwater': 'Saltwater',
+    'water.brackish': 'Brackish',
+
+    // Measurements
+    'measurement.cm': 'cm',
+    'measurement.g': 'g',
+    'measurement.kg': 'kg',
+    'measurement.m': 'm',
+
+    // Date/Time
+    'date.today': 'Today',
+    'date.yesterday': 'Yesterday',
+    'date.week_ago': '1 week ago',
+    'date.month_ago': '1 month ago',
+    'time.morning': 'AM',
+    'time.afternoon': 'PM',
+    'time.evening': 'Evening',
+  },
+};
+
+let currentLanguage: Language = 'zh';
+
+export const initializeLanguage = async (): Promise<Language> => {
+  try {
+    const storedLanguage = await AsyncStorage.getItem(LANGUAGE_STORAGE_KEY);
+    if (storedLanguage && (storedLanguage === 'zh' || storedLanguage === 'en')) {
+      currentLanguage = storedLanguage as Language;
+    }
+  } catch (error) {
+    console.warn('Failed to load language preference:', error);
+  }
+  return currentLanguage;
+};
+
+export const setLanguage = async (language: Language): Promise<void> => {
+  try {
+    currentLanguage = language;
+    await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+  } catch (error) {
+    console.warn('Failed to save language preference:', error);
+  }
+};
+
+export const getCurrentLanguage = (): Language => {
+  return currentLanguage;
+};
+
+export const t = (key: TranslationKeys, params?: Record<string, string>): string => {
+  const translation = translations[currentLanguage][key] || translations.zh[key] || key;
+  
+  if (params) {
+    return Object.entries(params).reduce((str, [param, value]) => {
+      return str.replace(new RegExp(`\\{${param}\\}`, 'g'), value);
+    }, translation);
+  }
+  
+  return translation;
+};
+
+export const useTranslation = () => {
+  return { t, currentLanguage, setLanguage };
+};
