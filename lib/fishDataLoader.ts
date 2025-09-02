@@ -6,11 +6,11 @@ import { Fish, FishRarity } from './types';
 // 稀有度映射
 const rarityMapping: Record<string, FishRarity> = {
   'common': 'common',
+  'uncommon': 'unique', // 映射到 unique
   'rare': 'rare',
   'epic': 'epic',
   'legendary': 'legendary',
   'unknown': 'unknown',
-  'uncommon': 'unknown', // 不匹配的稀有度使用 unknown
 };
 
 // 转换原始数据为应用所需的 Fish 接口格式

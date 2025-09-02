@@ -21,7 +21,7 @@ module.exports = defineConfig([
       // 'prettier/prettier': 'error',
 
       // JavaScript/TypeScript 基础规则
-      'no-console': 'warn', // 警告使用console
+      // 'no-console': 'warn', // 警告使用console
       'no-debugger': 'error', // 禁止使用debugger
       'no-var': 'error', // 禁止使用var
       'prefer-const': 'error', // 优先使用const

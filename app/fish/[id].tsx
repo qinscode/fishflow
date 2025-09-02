@@ -78,7 +78,23 @@ export default function FishDetailScreen() {
 
 
   const renderHeader = () => (
-    <View style={[styles.header, { backgroundColor: theme.colors.background }]}>
+    <View style={styles.header}>
+      <LinearGradient
+        colors={[rarityColor + '25', rarityColor + '15', rarityColor + '05']}
+        style={styles.headerGradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+      />
+      
+      {/* 装饰性线条 */}
+      <View style={styles.decorativeLines}>
+        <View style={[styles.line1, { backgroundColor: rarityColor + '10' }]} />
+        <View style={[styles.line2, { backgroundColor: rarityColor + '08' }]} />
+        <View style={[styles.line3, { backgroundColor: rarityColor + '12' }]} />
+        <View style={[styles.circle1, { backgroundColor: rarityColor + '06' }]} />
+        <View style={[styles.circle2, { backgroundColor: rarityColor + '08' }]} />
+      </View>
+      
       <SafeAreaView edges={['top']} style={styles.headerSafeArea}>
         <View style={styles.headerContent}>
           <Pressable style={styles.backButton} onPress={() => router.back()}>
@@ -105,23 +121,22 @@ export default function FishDetailScreen() {
         
         <View style={styles.fishImageContainer}>
           <View style={styles.fishImageWrapper}>
-            {isUnlocked ? (
-              <View style={[styles.fishImagePlaceholder, { backgroundColor: rarityColor + '10' }]}>
-                {getFishImage(currentFish.id) ? (
-                  <Image
-                    source={getFishImage(currentFish.id)}
-                    style={styles.fishImage}
-                    contentFit="contain"
-                  />
-                ) : (
+            <View style={styles.fishImagePlaceholder}>
+              {getFishImage(currentFish.id) ? (
+                <Image
+                  source={getFishImage(currentFish.id)}
+                  style={styles.fishImage}
+                  contentFit="contain"
+                />
+              ) : (
+                <View>
                   <IconSymbol name="fish" size={120} color={rarityColor} />
-                )}
-              </View>
-            ) : (
-              <View style={styles.fishImagePlaceholder}>
-                <IconSymbol name="fish" size={120} color={theme.colors.textSecondary} style={{ opacity: 0.3 }} />
-              </View>
-            )}
+                  <ThemedText style={{ fontSize: 10, textAlign: 'center', marginTop: 4, color: theme.colors.textSecondary }}>
+                    图片ID: {currentFish.id}
+                  </ThemedText>
+                </View>
+              )}
+            </View>
           </View>
         </View>
       </SafeAreaView>
@@ -432,10 +447,66 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   header: {
-    backgroundColor: 'transparent',
+    position: 'relative',
+    paddingBottom: 60,
+  },
+  headerGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  decorativeLines: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    overflow: 'hidden',
+  },
+  line1: {
+    position: 'absolute',
+    top: 80,
+    right: -50,
+    width: 120,
+    height: 2,
+    transform: [{ rotate: '35deg' }],
+  },
+  line2: {
+    position: 'absolute',
+    top: 150,
+    left: -30,
+    width: 80,
+    height: 1.5,
+    transform: [{ rotate: '-25deg' }],
+  },
+  line3: {
+    position: 'absolute',
+    bottom: 40,
+    right: 20,
+    width: 60,
+    height: 2,
+    transform: [{ rotate: '45deg' }],
+  },
+  circle1: {
+    position: 'absolute',
+    top: 60,
+    left: 30,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  circle2: {
+    position: 'absolute',
+    bottom: 80,
+    left: -10,
+    width: 25,
+    height: 25,
+    borderRadius: 12.5,
   },
   headerSafeArea: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
   },
   headerContent: {
     flexDirection: 'row',
@@ -516,27 +587,28 @@ const styles = StyleSheet.create({
   fishImageContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 40,
+    paddingVertical: 30,
+    paddingHorizontal: 10,
   },
   fishImageWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
   },
   fishImage: {
-    width: 180,
-    height: 140,
-    borderRadius: 8,
+    width: 280,
+    height: 170,
   },
   fishImagePlaceholder: {
-    width: 200,
-    height: 160,
+    width: 290,
+    height: 170,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 16,
   },
   content: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
+    marginTop: -40,
   },
   infoCard: {
     marginBottom: 16,

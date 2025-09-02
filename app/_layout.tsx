@@ -12,6 +12,7 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useAppStore } from '@/lib/store';
+import { generateUUID } from '@/lib/utils';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -19,6 +20,7 @@ export default function RootLayout() {
   const setFish = useAppStore(state => state.setFish);
   const setAchievements = useAppStore(state => state.setAchievements);
   const setUserAchievements = useAppStore(state => state.setUserAchievements);
+  const setCatches = useAppStore(state => state.setCatches);
   
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -33,11 +35,50 @@ export default function RootLayout() {
         try {
           const { loadFishData } = await import('@/lib/fishDataLoader');
           const { MOCK_ACHIEVEMENT_DATA } = await import('@/lib/mockData');
-          setFish(loadFishData());
+          const fishData = loadFishData();
+          
+          setFish(fishData);
           setAchievements(MOCK_ACHIEVEMENT_DATA);
-          // Initialize empty user achievements for now
           setUserAchievements([]);
-          console.log('App data initialized successfully with JSON fish data');
+          
+          // 添加一些测试钓鱼记录，这样部分鱼类会显示为已解锁
+          const mockCatches = [
+            {
+              id: generateUUID(),
+              fishId: '1',
+              userId: 'test-user',
+              timestamp: new Date().toISOString(),
+              photos: [],
+              measurements: { lengthCm: 45, weightKg: 2.5 },
+              equipment: { rod: '测试鱼竿', bait: '测试饵料' },
+              conditions: {},
+              notes: '测试记录',
+              isReleased: false,
+              isPersonalBest: false,
+              tags: [],
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            },
+            {
+              id: generateUUID(),
+              fishId: '2',
+              userId: 'test-user',
+              timestamp: new Date().toISOString(),
+              photos: [],
+              measurements: { lengthCm: 30, weightKg: 1.2 },
+              equipment: { rod: '测试鱼竿', bait: '测试饵料' },
+              conditions: {},
+              notes: '测试记录2',
+              isReleased: true,
+              isPersonalBest: false,
+              tags: [],
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            },
+          ];
+          
+          setCatches(mockCatches);
+          console.log('App data initialized successfully with JSON fish data and mock catches');
         } catch (error) {
           console.error('Failed to initialize app data:', error);
         }
@@ -45,7 +86,7 @@ export default function RootLayout() {
       
       initData();
     }
-  }, [loaded, setFish, setAchievements, setUserAchievements]);
+  }, [loaded, setFish, setAchievements, setUserAchievements, setCatches]);
 
   if (!loaded) {
     return null;

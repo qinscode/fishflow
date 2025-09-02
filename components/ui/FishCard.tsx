@@ -21,6 +21,7 @@ import { FISH_IMAGES } from '@/lib/fishImagesMap';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
+
 export interface FishCardProps {
   fish: Fish;
   state: FishCardState;
@@ -76,17 +77,32 @@ export const FishCard = memo<FishCardProps>(({
   const isLocked = state === 'locked';
   const isNew = state === 'new';
 
+  // 根据稀有度获取星星数量
+  const getStarCount = (rarity: string): number => {
+    switch (rarity) {
+      case 'common': return 1;
+      case 'unique': return 2;
+      case 'rare': return 3;
+      case 'epic': return 4;
+      case 'legendary': return 5;
+      default: return 1;
+    }
+  };
+
+  const starCount = getStarCount(fish.rarity);
+
   const cardStyles = [
-    styles.container,
+    styles.cardContainer,
     {
       width: cardSize,
-      height: cardSize * 1.15, // 稍微调整高度比例
-      backgroundColor: theme.colors.card,
-      borderRadius: theme.borderRadius.xl, // 使用更大的圆角
-      borderWidth: 1,
-      borderColor: isNew ? theme.colors.success : theme.colors.borderLight,
+      height: cardSize * 1.3,
+      backgroundColor: 'white',
+      borderRadius: 16,
+      borderWidth: 3,
+      borderColor: rarityColor,
+      borderStyle: isLocked ? 'dashed' : 'solid', // 未解锁用虚线边框
     },
-    theme.shadows.md, // 使用中等阴影
+    theme.shadows.lg,
     style,
   ];
 
@@ -99,121 +115,68 @@ export const FishCard = memo<FishCardProps>(({
       onLongPress={handleLongPress}
       disabled={!onPress}
     >
-      {/* 图片容器 */}
-      <View style={[styles.imageContainer, { height: cardSize * 0.65 }]}>
-        <View style={[
-          styles.imageWrapper,
-          {
-            width: cardSize * 0.9,
-            height: cardSize * 0.6,
-            borderRadius: theme.borderRadius.lg,
-            backgroundColor: isLocked 
-              ? theme.colors.surface + '80'
-              : rarityColor + '12',
-            overflow: 'hidden',
-          }
-        ]}>
-          {/* 鱼类图片 */}
-          <Image
-            source={FISH_IMAGES[fish.id] || require('@/assets/images/fish/1.png')}
-            style={{
-              width: '100%',
-              height: '100%',
-            }}
-            contentFit="cover"
-            transition={200}
-          />
-
-          {/* 渐变遮罩层 */}
-          <View style={styles.gradientOverlay} />
-
-          {/* 状态指示器 */}
-          <View style={styles.statusContainer}>
-            {isLocked && (
-              <View style={styles.modernLockBadge}>
-                <IconSymbol 
-                  name="lock.fill" 
-                  size={8} 
-                  color="white" 
-                />
-              </View>
-            )}
-            
-            {!isLocked && (
-              <View style={[styles.rarityIndicator, { backgroundColor: rarityColor }]} />
-            )}
-          </View>
-        </View>
-
-        {/* NEW 标识 */}
-        {isNew && (
-          <View style={styles.modernNewBadge}>
-            <ThemedText type="caption" style={styles.newBadgeText}>
-              NEW
-            </ThemedText>
-          </View>
-        )}
-      </View>
-
-      {/* 信息区域 */}
-      <View style={styles.modernInfoContainer}>
-        {/* 鱼类名称 */}
-        <ThemedText 
-          type="subtitle" 
-          style={[
-            styles.modernFishName,
-            { 
-              color: theme.colors.text,
-              fontSize: size === 'small' ? 13 : 15,
-            }
-          ]}
-          numberOfLines={1}
-        >
+      {/* 顶部鱼类名称区域 */}
+      <View style={styles.headerSection}>
+        <ThemedText style={[
+          styles.fishTitle,
+          { color: '#333' }
+        ]} numberOfLines={1}>
           {fish.name}
         </ThemedText>
+        
+        {/* 状态指示器 */}
+        <View style={styles.statusIndicators}>
+          {isLocked && (
+            <View style={styles.lockIndicator}>
+              <IconSymbol name="lock.fill" size={12} color="white" />
+            </View>
+          )}
+          {!isLocked && (
+            <View style={styles.newIndicator}>
+              <IconSymbol name="checkmark" size={12} color="white" />
+            </View>
+          )}
+        </View>
+      </View>
 
-        {/* ID 和稀有度 - 水平布局 */}
-        <View style={styles.modernMetaContainer}>
-          {showId && (
-            <View style={[
-              styles.modernIdBadge,
-              { backgroundColor: theme.colors.surface }
-            ]}>
-              <ThemedText 
-                type="caption" 
-                style={[
-                  styles.modernIdText,
-                  { color: theme.colors.textSecondary }
-                ]}
-              >
-                #{fish.id}
-              </ThemedText>
-            </View>
-          )}
+      {/* 中间图片区域 - 始终显示真实鱼类照片 */}
+      <View style={styles.imageSection}>
+        <View style={[
+          styles.imageBackground,
+          { backgroundColor: `${rarityColor}08` }
+        ]}>
+          <Image
+            source={FISH_IMAGES[fish.id] || require('@/assets/images/fish/1.png')}
+            style={[
+              styles.fishImageNew,
+              {
+                opacity: isLocked ? 0.7 : 1, // 未解锁稍微降低透明度但保持彩色
+              }
+            ]}
+            contentFit="contain"
+            transition={200}
+          />
           
-          {showRarity && !isLocked && (
-            <View style={[
-              styles.modernRarityBadge,
-              { backgroundColor: rarityColor + '20' }
-            ]}>
-              <View style={[
-                styles.rarityDot,
-                { backgroundColor: rarityColor }
-              ]} />
-              <ThemedText 
-                type="caption" 
-                style={[
-                  styles.modernRarityText,
-                  { 
-                    color: rarityColor,
-                    fontSize: size === 'small' ? 9 : 10,
-                  }
-                ]}
-              >
-                {RARITY_NAMES[fish.rarity]}
-              </ThemedText>
+          {/* 未解锁时在图片上添加锁定徽章 */}
+          {isLocked && (
+            <View style={styles.lockBadgeOverlay}>
+              <IconSymbol name="lock.fill" size={20} color="rgba(255,255,255,0.9)" />
             </View>
           )}
+        </View>
+      </View>
+
+      {/* 底部星级评定区域 */}
+      <View style={styles.starSection}>
+        <View style={styles.starContainer}>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <IconSymbol
+              key={index}
+              name="star.fill"
+              size={16}
+              color={index < starCount ? rarityColor : '#e0e0e0'}
+            />
+          ))}
         </View>
       </View>
     </AnimatedPressable>
@@ -221,183 +184,107 @@ export const FishCard = memo<FishCardProps>(({
 });
 
 const styles = StyleSheet.create({
-  container: {
+  cardContainer: {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 16,
-  },
-  imageContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    width: '100%',
-  },
-  imageWrapper: {
-    position: 'relative',
-  },
-  gradientOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.02)',
-  },
-  statusContainer: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    flexDirection: 'row',
-    gap: 4,
-  },
-  modernLockBadge: {
-    backgroundColor: 'rgba(0,0,0,0.8)',
-    borderRadius: 8,
-    width: 16,
-    height: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  rarityIndicator: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-  },
-  modernNewBadge: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    backgroundColor: '#22C55E',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 10,
-  },
-  newBadgeText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 9,
-    letterSpacing: 0.5,
-  },
-  modernInfoContainer: {
-    width: '100%',
-    paddingHorizontal: 4,
-    gap: 6,
-  },
-  modernFishName: {
-    textAlign: 'center',
-    fontWeight: '600',
-    lineHeight: 18,
-  },
-  modernMetaContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-  },
-  modernIdBadge: {
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
-  },
-  modernIdText: {
-    fontSize: 10,
-    fontWeight: '500',
-  },
-  modernRarityBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 8,
-    gap: 3,
-  },
-  rarityDot: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-  },
-  modernRarityText: {
-    fontWeight: '600',
+    overflow: 'hidden',
   },
   
-  // Legacy styles - can be removed later
-  fishImage: {
-    resizeMode: 'cover',
-  },
-  lockedImageContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  unlockedImageContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  lockBadge: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    borderRadius: 8,
-    width: 16,
-    height: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  lockIconContainer: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: [{ translateX: -10 }, { translateY: -10 }],
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    borderRadius: 15,
-    padding: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  newBadge: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-  },
-  infoContainer: {
+  // 顶部标题区域
+  headerSection: {
     width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 8,
+    marginBottom: 8,
+  },
+  
+  fishTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    flex: 1,
+  },
+  
+  statusIndicators: {
+    flexDirection: 'row',
     gap: 6,
   },
-  fishName: {
-    textAlign: 'center',
-    fontWeight: '600',
+  
+  lockIndicator: {
+    backgroundColor: '#666',
+    borderRadius: 12,
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  fishImageWrapper: {
+  
+  newIndicator: {
+    backgroundColor: '#22C55E',
+    borderRadius: 12,
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  
+  // 中间图片区域
+  imageSection: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 8,
+  },
+  
+  imageBackground: {
+    width: '85%',
+    height: '100%',
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
     position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  fishIconOverlay: {
+  
+  fishImageNew: {
+    width: '90%',
+    height: '90%',
+    resizeMode: 'contain',
+  },
+  
+  // 锁定徽章覆盖层
+  lockBadgeOverlay: {
     position: 'absolute',
-    bottom: 4,
-    right: 4,
-  },
-  metaContainer: {
-    flexDirection: 'row',
+    top: 10,
+    right: 10,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    borderRadius: 20,
+    width: 36,
+    height: 36,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-  fishId: {
-    fontSize: 11,
-    fontWeight: '500',
+  
+  // 底部星级区域
+  starSection: {
+    width: '100%',
+    alignItems: 'center',
+    paddingVertical: 8,
   },
-  rarityBadge: {
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-  },
-  rarityText: {
-    fontWeight: '500',
+  
+  starContainer: {
+    flexDirection: 'row',
+    gap: 4,
   },
 });
 
