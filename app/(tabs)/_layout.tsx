@@ -6,9 +6,11 @@ import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { useTheme } from '@/hooks/useThemeColor';
+import { useTranslation } from '@/lib/i18n';
 
 export default function TabLayout() {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Tabs
@@ -33,7 +35,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: '首页',
+          title: t('nav.home'),
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="house.fill" color={color} />
           ),
@@ -42,25 +44,16 @@ export default function TabLayout() {
       <Tabs.Screen
         name="fishdex"
         options={{
-          title: '图鉴',
+          title: t('nav.fishdex'),
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="book.fill" color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="equipment"
-        options={{
-          title: '装备',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="wrench.and.screwdriver.fill" color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="achievements"
         options={{
-          title: '成就',
+          title: t('nav.achievements'),
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="trophy.fill" color={color} />
           ),
@@ -69,10 +62,25 @@ export default function TabLayout() {
       <Tabs.Screen
         name="stats"
         options={{
-          title: '统计',
+          title: t('nav.stats'),
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="chart.bar.fill" color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: t('nav.settings'),
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="gear" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="equipment"
+        options={{
+          href: null, // Hide this tab from the tab bar
         }}
       />
     </Tabs>
