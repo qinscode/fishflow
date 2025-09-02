@@ -1,13 +1,13 @@
+import { Image } from 'expo-image';
 import React from 'react';
 import { View, StyleSheet, Pressable, ViewStyle } from 'react-native';
-import { Image } from 'expo-image';
 import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { useTheme } from '@/hooks/useThemeColor';
 import { useResponsive } from '@/hooks/useResponsive';
+import { useTheme } from '@/hooks/useThemeColor';
 
 export interface EmptyStateProps {
   type: 'no-data' | 'no-results' | 'error' | 'loading' | 'offline';

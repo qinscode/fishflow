@@ -9,17 +9,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { ProgressBar, ProgressRing } from '@/components/ui/ProgressBar';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { IconSymbol } from '@/components/ui/IconSymbol';
+import { ProgressBar, ProgressRing } from '@/components/ui/ProgressBar';
 import { useTheme } from '@/hooks/useThemeColor';
+import { RARITY_NAMES } from '@/lib/constants';
 import { 
   useFish, 
   useCatches, 
   useUserStats,
 } from '@/lib/store';
 import { formatDate, getRarityColor } from '@/lib/utils';
-import { RARITY_NAMES } from '@/lib/constants';
 
 const { width } = Dimensions.get('window');
 

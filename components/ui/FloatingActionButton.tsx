@@ -1,3 +1,4 @@
+import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { View, StyleSheet, Pressable, ViewStyle } from 'react-native';
 import Animated, { 
@@ -7,7 +8,6 @@ import Animated, {
   withSequence,
   runOnJS,
 } from 'react-native-reanimated';
-import * as Haptics from 'expo-haptics';
 
 import { ThemedText } from '@/components/ThemedText';
 import { IconSymbol } from '@/components/ui/IconSymbol';

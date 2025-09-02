@@ -131,16 +131,7 @@ export default function FishDetailScreen() {
       <View style={styles.fishImageContainer}>
         <View style={[styles.fishImageBg, { backgroundColor: rarityColor + '20' }]}>
           <View style={styles.fishImagePlaceholder}>
-            {currentFish.images.hero ? (
-              <Image
-                source={currentFish.images.hero}
-                style={styles.fishImage}
-                contentFit="contain"
-                transition={200}
-              />
-            ) : (
-              <IconSymbol name="fish" size={120} color={rarityColor} />
-            )}
+            <IconSymbol name="fish" size={120} color={rarityColor} />
           </View>
         </View>
       </View>

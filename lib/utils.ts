@@ -44,6 +44,7 @@ export function getRarityColor(rarity: FishRarity): string {
     rare: '#3B82F6',
     epic: '#8B5CF6',
     legendary: '#F59E0B',
+    unknown: '#9CA3AF',
   };
   return colors[rarity];
 }
@@ -82,6 +83,12 @@ export function getFishCardState(fish: Fish, catches: CatchRecord[]): 'locked' |
 
 // 排序鱼类
 export function sortFish(fish: Fish[], sortBy: 'name' | 'rarity' | 'recent', catches: CatchRecord[] = []): Fish[] {
+  // If already empty or single item, no need to sort
+  if (fish.length <= 1) {
+    return fish;
+  }
+
+  // Create a copy only when we actually need to sort
   const sorted = [...fish];
 
   switch (sortBy) {
@@ -96,6 +103,7 @@ export function sortFish(fish: Fish[], sortBy: 'name' | 'rarity' | 'recent', cat
         epic: 3,
         rare: 2,
         common: 1,
+        unknown: 0,
       };
       return sorted.sort(function(a, b) {
         return rarityOrder[b.rarity] - rarityOrder[a.rarity];
@@ -117,7 +125,7 @@ export function sortFish(fish: Fish[], sortBy: 'name' | 'rarity' | 'recent', cat
       });
       
     default:
-      return sorted;
+      return fish; // Return original reference if no sorting needed
   }
 }
 

@@ -1,3 +1,4 @@
+import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { View, StyleSheet, Pressable, ViewStyle } from 'react-native';
 import Animated, {
@@ -7,14 +8,13 @@ import Animated, {
   withSpring,
   interpolate,
 } from 'react-native-reanimated';
-import * as Haptics from 'expo-haptics';
 
 import { ThemedText } from '@/components/ThemedText';
 import { IconSymbol, MAPPING } from '@/components/ui/IconSymbol';
 import { ProgressRing } from '@/components/ui/ProgressBar';
 import { useTheme } from '@/hooks/useThemeColor';
-import { Achievement, AchievementTier } from '@/lib/types';
 import { ACHIEVEMENT_TIER_COLORS } from '@/lib/constants';
+import { Achievement, AchievementTier } from '@/lib/types';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -230,11 +230,11 @@ export function Badge({
 // 徽章墙组件
 export interface BadgeWallProps {
   achievements: Achievement[];
-  userProgress: Array<{
+  userProgress: {
     achievementId: string;
     progress: number;
     tier: AchievementTier | null;
-  }>;
+  }[];
   onBadgePress: (achievement: Achievement) => void;
   size?: 'small' | 'medium' | 'large';
   columns?: number;

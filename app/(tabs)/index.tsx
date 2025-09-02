@@ -1,17 +1,18 @@
+import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import React from 'react';
 import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
 
+import { FadeInView, SlideInView } from '@/components/animations';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import { FishCard } from '@/components/ui/FishCard';
 import { Badge } from '@/components/ui/Badge';
+import { FishCard } from '@/components/ui/FishCard';
+import { IconSymbol } from '@/components/ui/IconSymbol';
 import { ProgressBar } from '@/components/ui/ProgressBar';
-import { useTheme } from '@/hooks/useThemeColor';
 import { useResponsive } from '@/hooks/useResponsive';
+import { useTheme } from '@/hooks/useThemeColor';
 import { 
   useFish, 
   useCatches, 
@@ -19,7 +20,6 @@ import {
   useAchievements,
   useUserAchievements,
 } from '@/lib/store';
-import { FadeInView, SlideInView } from '@/components/animations';
 import { getFishCardState } from '@/lib/utils';
 
 export default function HomeScreen() {

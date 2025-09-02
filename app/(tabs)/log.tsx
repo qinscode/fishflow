@@ -1,6 +1,6 @@
+import { router } from 'expo-router';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';

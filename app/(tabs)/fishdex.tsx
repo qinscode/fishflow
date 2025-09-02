@@ -1,3 +1,6 @@
+import { FlashList } from '@shopify/flash-list';
+import * as Haptics from 'expo-haptics';
+import { router } from 'expo-router';
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
   View,
@@ -8,19 +11,17 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import { FlashList } from '@shopify/flash-list';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import * as Haptics from 'expo-haptics';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { FishCard } from '@/components/ui/FishCard';
-import { FilterChip, FilterChipGroup } from '@/components/ui/FilterChip';
-import { IconSymbol, MAPPING } from '@/components/ui/IconSymbol';
 import { EmptyState, EmptyStates } from '@/components/ui/EmptyState';
-import { useTheme } from '@/hooks/useThemeColor';
+import { FilterChip, FilterChipGroup } from '@/components/ui/FilterChip';
+import { FishCard } from '@/components/ui/FishCard';
+import { IconSymbol, MAPPING } from '@/components/ui/IconSymbol';
 import { useResponsive } from '@/hooks/useResponsive';
+import { useTheme } from '@/hooks/useThemeColor';
+import { RARITY_NAMES, WATER_TYPES } from '@/lib/constants';
 import { 
   useAppStore,
   useFish, 
@@ -32,7 +33,6 @@ import {
 } from '@/lib/store';
 import { Fish, FishRarity, WaterType } from '@/lib/types';
 import { getFishCardState, sortFish } from '@/lib/utils';
-import { RARITY_NAMES, WATER_TYPES } from '@/lib/constants';
 
 export default function FishdexScreen() {
   const theme = useTheme();
@@ -124,8 +124,8 @@ export default function FishdexScreen() {
     setRefreshing(true);
     // 简单的刷新逻辑，重新获取数据
     try {
-      const { MOCK_FISH_DATA } = await import('@/lib/mockData');
-      setFish(MOCK_FISH_DATA);
+      const { loadFishData } = await import('@/lib/fishDataLoader');
+      setFish(loadFishData());
       console.log('Data refreshed successfully');
     } catch (error) {
       console.error('Failed to refresh data:', error);

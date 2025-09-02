@@ -1,3 +1,4 @@
+import * as Haptics from 'expo-haptics';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Dimensions, Platform } from 'react-native';
 import Animated, { 
@@ -10,7 +11,6 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import * as Haptics from 'expo-haptics';
 
 import { ThemedText } from '@/components/ThemedText';
 import { IconSymbol } from '@/components/ui/IconSymbol';

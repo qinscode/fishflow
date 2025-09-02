@@ -4,10 +4,33 @@
 export type WaterType = 'river' | 'lake' | 'reservoir' | 'pond' | 'stream' | 'ocean' | 'estuary';
 
 // 鱼类稀有度
-export type FishRarity = 'common' | 'rare' | 'epic' | 'legendary';
+export type FishRarity = 'common' | 'rare' | 'epic' | 'legendary' | 'unknown';
 
 // 鱼类卡片状态
 export type FishCardState = 'locked' | 'hint' | 'unlocked' | 'new';
+
+// 澳洲各州类型
+export type AustralianState = 'NSW' | 'VIC' | 'QLD' | 'WA' | 'SA' | 'TAS' | 'NT' | 'ACT';
+
+// 地区法规接口
+export interface RegionalRegulations {
+  region: string;                  // 地区名称 (如 'NSW', 'VIC' 等)
+  minSizeCm?: number;             // 最小尺寸
+  maxSizeCm?: number;             // 最大尺寸（某些州有上限）
+  closedSeasons?: {               // 禁钓季节
+    start: string;                // MM-DD 格式
+    end: string;
+  }[];
+  dailyLimit?: number;            // 日钓获限制
+  possessionLimit?: number;       // 持有限制
+  slotLimit?: {                   // 尺寸槽限制
+    minCm: number;
+    maxCm: number;
+  };
+  specialRules?: string[];        // 特殊规定
+  requiresLicense?: boolean;      // 是否需要许可证
+  notes?: string;                 // 备注
+}
 
 // 鱼类物种数据
 export interface Fish {
@@ -34,11 +57,7 @@ export interface Fish {
     seasons: number[];           // 活跃季节(月份)
     depth?: string;              // 活动深度
   };
-  regulations?: {
-    minSizeCm?: number;          // 法定最小尺寸
-    closedSeasons?: number[];    // 禁钓季节
-    dailyLimit?: number;         // 日钓获限制
-  };
+  regulations?: RegionalRegulations[]; // 各地区法规数组
   behavior: {
     feedingHabits: string[];     // 食性
     activeTime: 'day' | 'night' | 'both';

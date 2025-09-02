@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { 
   View, 
   StyleSheet, 
@@ -7,22 +7,22 @@ import {
   FlatList,
   useWindowDimensions,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { 
   useAnimatedStyle, 
   useSharedValue, 
   withSpring,
 } from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Badge } from '@/components/ui/Badge';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { FilterChip, FilterChipGroup } from '@/components/ui/FilterChip';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { ProgressBar } from '@/components/ui/ProgressBar';
-import { EmptyState } from '@/components/ui/EmptyState';
-import { useTheme } from '@/hooks/useThemeColor';
 import { useResponsive } from '@/hooks/useResponsive';
+import { useTheme } from '@/hooks/useThemeColor';
 import { 
   useAchievements, 
   useUserAchievements, 
@@ -78,22 +78,30 @@ export default function AchievementsScreen() {
     { id: 'special', label: '特殊', count: achievements.filter(a => a.category === 'special').length },
   ], [achievements]);
 
-  const renderAchievement = ({ item: achievement }: { item: Achievement }) => {
+  const renderAchievement = useCallback(({ item: achievement }: { item: Achievement }) => {
     const userAchievement = userAchievements.find(ua => ua.achievementId === achievement.id);
     const isLocked = !userAchievement || userAchievement.tier === null;
     const tier = userAchievement?.tier || null;
 
+    const dynamicItemStyle = {
+      ...styles.achievementItem,
+      minWidth: isTablet ? 160 : 140,
+      maxWidth: isTablet ? 200 : 180,
+    };
+
     return (
-      <Badge
-        achievement={achievement}
-        tier={tier}
-        size="large"
-        isLocked={isLocked}
-        showTitle={true}
-        style={styles.achievementBadge}
-      />
+      <View style={dynamicItemStyle}>
+        <Badge
+          achievement={achievement}
+          tier={tier}
+          size="large"
+          isLocked={isLocked}
+          showTitle={true}
+          style={styles.achievementBadge}
+        />
+      </View>
     );
-  };
+  }, [userAchievements, isTablet]);
 
   const renderStats = () => (
     <ThemedView type="card" style={[styles.statsCard, theme.shadows.sm]}>
@@ -215,13 +223,18 @@ export default function AchievementsScreen() {
           </ThemedText>
           
           {filteredAchievements.length > 0 ? (
-            <View style={styles.achievementsGrid}>
-              {filteredAchievements.map((achievement) => (
-                <View key={achievement.id} style={styles.achievementItem}>
-                  {renderAchievement({ item: achievement })}
-                </View>
-              ))}
-            </View>
+            <FlatList
+              data={filteredAchievements}
+              renderItem={renderAchievement}
+              keyExtractor={(item) => item.id}
+              numColumns={gridColumns}
+              key={gridColumns} // Force re-render when columns change
+              contentContainerStyle={styles.achievementsList}
+              columnWrapperStyle={gridColumns > 1 ? styles.achievementRow : undefined}
+              showsVerticalScrollIndicator={false}
+              scrollEnabled={false} // Let parent ScrollView handle scrolling
+              ItemSeparatorComponent={() => <View style={styles.achievementSeparator} />}
+            />
           ) : (
             renderEmpty()
           )}
@@ -281,20 +294,29 @@ const styles = StyleSheet.create({
   },
   achievementsSection: {
     paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   sectionTitle: {
     marginBottom: 16,
     fontWeight: '600',
   },
-  achievementsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  achievementsList: {
+    paddingTop: 8,
+  },
+  achievementRow: {
     justifyContent: 'space-between',
-    gap: 16,
+    paddingHorizontal: 4,
   },
   achievementItem: {
-    width: '48%',
-    minWidth: 150,
+    flex: 1,
+    marginHorizontal: 8,
+    marginVertical: 6,
+    minWidth: 140,
+    maxWidth: 180,
+    alignItems: 'center',
+  },
+  achievementSeparator: {
+    height: 8,
   },
   achievementBadge: {
     width: '100%',

@@ -1,4 +1,10 @@
+import * as Camera from 'expo-camera';
+import * as Haptics from 'expo-haptics';
+import * as ImagePicker from 'expo-image-picker';
+import * as Location from 'expo-location';
+import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState, useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import {
   ScrollView,
   Pressable,
@@ -9,22 +15,16 @@ import {
   Modal,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import { useForm, Controller } from 'react-hook-form';
-import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
-import * as Camera from 'expo-camera';
-import * as Haptics from 'expo-haptics';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { FishCard } from '@/components/ui/FishCard';
+import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/hooks/useThemeColor';
+import { WATER_TYPES, WEATHER_CONDITIONS } from '@/lib/constants';
 import { useAppStore, useFish } from '@/lib/store';
 import { Fish, CatchRecord, WaterType } from '@/lib/types';
 import { generateUUID } from '@/lib/utils';
-import { WATER_TYPES, WEATHER_CONDITIONS } from '@/lib/constants';
 
 interface CatchFormData {
   fishId: string;
@@ -46,6 +46,7 @@ interface CatchFormData {
 
 export default function LogCatchScreen() {
   const theme = useTheme();
+  const params = useLocalSearchParams<{ fishId?: string; fishName?: string }>();
   const fish = useFish();
   const addCatch = useAppStore(state => state.addCatch);
   
@@ -65,6 +66,17 @@ export default function LogCatchScreen() {
   useEffect(() => {
     requestPermissions();
   }, []);
+
+  // Auto-select fish from URL parameters
+  useEffect(() => {
+    if (params.fishId && fish.length > 0) {
+      const preselectedFish = fish.find(f => f.id === params.fishId);
+      if (preselectedFish) {
+        setSelectedFish(preselectedFish);
+        setValue('fishId', preselectedFish.id);
+      }
+    }
+  }, [params.fishId, fish, setValue]);
 
   const requestPermissions = async () => {
     try {

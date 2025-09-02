@@ -39,6 +39,7 @@ interface AppActions {
   // 数据操作
   setFish: (fish: Fish[]) => void;
   setAchievements: (achievements: Achievement[]) => void;
+  setUserAchievements: (userAchievements: UserAchievement[]) => void;
   addCatch: (
     catchData: Omit<CatchRecord, 'id' | 'createdAt' | 'updatedAt'>
   ) => void;
@@ -117,11 +118,24 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
 
   // 数据操作
   setFish: fish => {
+    // Reset cache when fish data changes
+    cachedFilteredFish = [];
+    lastFilterState = '';
     set({ fish });
   },
 
   setAchievements: achievements => {
+    // Reset caches when achievements data changes
+    cachedAchievementStats = { totalCount: 0, unlockedCount: 0, progressPercent: 0 };
+    lastAchievementStatsState = '';
     set({ achievements });
+  },
+
+  setUserAchievements: userAchievements => {
+    // Reset caches when user achievements data changes
+    cachedAchievementStats = { totalCount: 0, unlockedCount: 0, progressPercent: 0 };
+    lastAchievementStatsState = '';
+    set({ userAchievements });
   },
 
   addCatch: catchData => {
@@ -131,6 +145,10 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
+
+    // Reset cache when adding new catch
+    cachedFilteredFish = [];
+    lastFilterState = '';
 
     set(state => {
       const updatedCatches = [...state.catches, newCatch];
@@ -143,6 +161,9 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
   },
 
   setCatches: catches => {
+    // Reset cache when catches data changes
+    cachedFilteredFish = [];
+    lastFilterState = '';
     set(state => {
       const unlockedIds = new Set(catches.map(c => c.fishId));
       return {
@@ -158,16 +179,25 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
   },
 
   setFilters: newFilters => {
+    // Reset cache when filters change
+    cachedFilteredFish = [];
+    lastFilterState = '';
     set(state => ({
       filters: { ...state.filters, ...newFilters },
     }));
   },
 
   setSearchQuery: searchQuery => {
+    // Reset cache when search query changes
+    cachedFilteredFish = [];
+    lastFilterState = '';
     set({ searchQuery });
   },
 
   clearFilters: () => {
+    // Reset cache when clearing filters
+    cachedFilteredFish = [];
+    lastFilterState = '';
     set({
       filters: {},
       searchQuery: '',
@@ -207,6 +237,10 @@ export const useSearchQuery = () => useAppStore(state => state.searchQuery);
 export const useUnlockedFishIds = () =>
   useAppStore(state => state.unlockedFishIds);
 
+// 导出单例实例的缓存选择器，确保引用稳定性
+let cachedFilteredFish: Fish[] = [];
+let lastFilterState: string = '';
+
 // 计算选择器
 export const useFilteredFish = () => {
   return useAppStore(state => {
@@ -214,8 +248,27 @@ export const useFilteredFish = () => {
 
     // Return early if no fish data
     if (!fish.length) {
-      return [];
+      cachedFilteredFish = [];
+      return cachedFilteredFish;
     }
+
+    // Create a stable hash of the filter state to detect changes
+    const currentFilterState = JSON.stringify({
+      searchQuery: searchQuery.trim(),
+      rarity: filters.rarity || [],
+      waterTypes: filters.waterTypes || [],
+      unlockedOnly: filters.unlockedOnly || false,
+      fishLength: fish.length, // Track if fish data changed
+      catchesLength: catches.length, // Track if catches changed
+    });
+
+    // If filter state hasn't changed, return cached result
+    if (currentFilterState === lastFilterState && cachedFilteredFish !== null) {
+      return cachedFilteredFish;
+    }
+
+    // Update the filter state cache
+    lastFilterState = currentFilterState;
 
     // Check if any filtering is needed
     const hasFilters = Boolean(
@@ -225,9 +278,10 @@ export const useFilteredFish = () => {
       filters.unlockedOnly
     );
 
-    // If no filters, return original array reference
+    // If no filters, return original array reference and cache it
     if (!hasFilters) {
-      return fish;
+      cachedFilteredFish = fish;
+      return cachedFilteredFish;
     }
 
     let filtered = fish;
@@ -262,14 +316,35 @@ export const useFilteredFish = () => {
       filtered = filtered.filter(f => unlockedIds.has(f.id));
     }
 
-    return filtered;
+    // Cache and return the filtered result
+    cachedFilteredFish = filtered;
+    return cachedFilteredFish;
   });
 };
+
+// 缓存变量用于成就统计选择器
+let cachedAchievementStats: { totalCount: number; unlockedCount: number; progressPercent: number } = { totalCount: 0, unlockedCount: 0, progressPercent: 0 };
+let lastAchievementStatsState: string = '';
 
 // 统计选择器
 export const useAchievementStats = () => {
   return useAppStore(state => {
     const { achievements, userAchievements } = state;
+
+    // Create hash for current state
+    const currentStatsState = JSON.stringify({
+      achievementsLength: achievements.length,
+      userAchievementsLength: userAchievements.length,
+      unlockedTiers: userAchievements.map(ua => ua.tier !== null ? 1 : 0),
+    });
+
+    // Return cached result if state hasn't changed
+    if (currentStatsState === lastAchievementStatsState) {
+      return cachedAchievementStats;
+    }
+
+    // Update cache state
+    lastAchievementStatsState = currentStatsState;
 
     const totalCount = achievements.length;
     const unlockedCount = userAchievements.filter(
@@ -278,10 +353,12 @@ export const useAchievementStats = () => {
     const progressPercent =
       totalCount > 0 ? (unlockedCount / totalCount) * 100 : 0;
 
-    return {
+    cachedAchievementStats = {
       totalCount,
       unlockedCount,
       progressPercent,
     };
+
+    return cachedAchievementStats;
   });
 };

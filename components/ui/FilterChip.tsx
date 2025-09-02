@@ -1,3 +1,4 @@
+import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { StyleSheet, Pressable, ViewStyle, View } from 'react-native';
 import Animated, {
@@ -6,7 +7,6 @@ import Animated, {
   withTiming,
   withSpring,
 } from 'react-native-reanimated';
-import * as Haptics from 'expo-haptics';
 
 import { ThemedText } from '@/components/ThemedText';
 import { IconSymbol, MAPPING } from '@/components/ui/IconSymbol';
@@ -205,12 +205,12 @@ export function FilterChip({
 
 // 筛选组合组件
 export interface FilterChipGroupProps {
-  chips: Array<{
+  chips: {
     id: string;
     label: string;
     icon?: keyof typeof MAPPING;
     count?: number;
-  }>;
+  }[];
   selectedIds: string[];
   onSelectionChange: (selectedIds: string[]) => void;
   multiSelect?: boolean;

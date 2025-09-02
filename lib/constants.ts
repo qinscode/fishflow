@@ -26,6 +26,7 @@ export const RARITY_COLORS: Record<FishRarity, string> = {
   rare: '#3B82F6',      // 蓝色  
   epic: '#8B5CF6',      // 紫色
   legendary: '#F59E0B', // 金色
+  unknown: '#9CA3AF',   // 更淡的灰色
 };
 
 // 稀有度中文名称
@@ -34,6 +35,7 @@ export const RARITY_NAMES: Record<FishRarity, string> = {
   rare: '稀有',
   epic: '史诗',
   legendary: '传说',
+  unknown: '未知',
 };
 
 // 水域类型配置
@@ -46,6 +48,17 @@ export const WATER_TYPES: Record<WaterType, { name: string; icon: string; color:
   ocean: { name: '海洋', icon: 'water.waves', color: '#312E81' },
   estuary: { name: '河口', icon: 'water.waves', color: '#4C1D95' },
 };
+
+// 水域类型名称映射（简化版本）
+export const WATER_TYPE_NAMES: Record<WaterType, string> = {
+  river: '河流',
+  lake: '湖泊', 
+  reservoir: '水库',
+  pond: '池塘',
+  stream: '溪流',
+  ocean: '海洋',
+  estuary: '河口',
+} as const;
 
 // 成就类别配置
 export const ACHIEVEMENT_CATEGORIES: Record<AchievementCategory, { name: string; icon: string; color: string }> = {
@@ -112,6 +125,15 @@ export const EQUIPMENT_TYPES = {
     '面包虫', '小虾', '泥鳅', '商品饵',
     '路亚', '铅头钩', '软虫', '硬饵'
   ],
+} as const;
+
+// 钓鱼难度等级名称
+export const DIFFICULTY_NAMES: Record<number, string> = {
+  1: '简单',
+  2: '容易', 
+  3: '普通',
+  4: '困难',
+  5: '专家',
 } as const;
 
 // 默认成就定义
