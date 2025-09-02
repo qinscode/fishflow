@@ -150,6 +150,9 @@ export interface UserProfile {
 
 // 用户偏好设置
 export interface UserPreferences {
+  // Fishing settings
+  fishingStartDate?: string;         // ISO date string when user started fishing
+  
   units: {
     length: 'cm' | 'inch';
     weight: 'kg' | 'lb';
@@ -166,8 +169,8 @@ export interface UserPreferences {
     weather: boolean;
   };
   appearance: {
-    theme: 'light' | 'dark' | 'auto';
-    language: string;
+    theme: 'light' | 'dark' | 'system';
+    language: 'zh' | 'en';
   };
 }
 
@@ -225,6 +228,7 @@ export interface CatchFormData {
   photos: string[];
   fishId?: string;
   customFishName?: string;
+  isSkunked?: boolean;              // 空军 - 没有钓到鱼
   measurements: {
     lengthCm?: number;
     weightKg?: number;
@@ -272,6 +276,58 @@ export interface PaginatedResponse<T> {
   totalPages: number;
   hasNext: boolean;
   hasPrevious: boolean;
+}
+
+// 装备组合
+export interface EquipmentSet {
+  id: string;
+  name: string;                   // 装备组合名称
+  description?: string;           // 描述
+  icon: string;                   // 图标名称
+  rod: string;                    // 钓竿
+  reel: string;                   // 渔轮
+  line: string;                   // 钓线
+  hook: string;                   // 鱼钩
+  bait: string;                   // 饵料
+  accessories?: string[];         // 附件（抄网、鱼护等）
+  waterTypes: WaterType[];        // 适用水域类型
+  targetFish?: string[];          // 目标鱼种
+  tags: string[];                 // 标签
+  isDefault: boolean;             // 是否为默认装备
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 单项装备
+export interface EquipmentItem {
+  id: string;
+  type: 'rod' | 'reel' | 'line' | 'hook' | 'bait' | 'accessory';
+  name: string;
+  brand?: string;                 // 品牌
+  model?: string;                 // 型号
+  specifications?: {              // 规格参数
+    length?: string;              // 长度（钓竿）
+    weight?: string;              // 重量
+    capacity?: string;            // 容量（线轮）
+    strength?: string;            // 强度（钓线）
+    size?: string;                // 尺寸（鱼钩）
+  };
+  notes?: string;                 // 备注
+  isCustom: boolean;              // 是否为用户自定义
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 装备使用统计
+export interface EquipmentStats {
+  equipmentSetId: string;
+  usageCount: number;             // 使用次数
+  successRate: number;            // 成功率
+  catchCount: number;             // 钓获数量
+  averageWeight: number;          // 平均重量
+  averageLength: number;          // 平均长度
+  favoriteWaterType: WaterType;   // 最常使用的水域类型
+  lastUsedAt: string;
 }
 
 // 设备信息
