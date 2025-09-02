@@ -23,6 +23,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
+import { useTranslation } from '@/lib/i18n';
 import { 
   useAchievements, 
   useUserAchievements, 
@@ -36,6 +37,7 @@ type FilterTier = AchievementTier | 'all';
 
 export default function AchievementsScreen() {
   const theme = useTheme();
+  const { t } = useTranslation();
   const { gridColumns, isTablet } = useResponsive();
   const { width } = useWindowDimensions();
   
@@ -70,12 +72,12 @@ export default function AchievementsScreen() {
 
   // Category options
   const categoryOptions = useMemo(() => [
-    { id: 'all', label: '全部', count: achievements.length },
-    { id: 'species', label: '物种', count: achievements.filter(a => a.category === 'species').length },
-    { id: 'quantity', label: '数量', count: achievements.filter(a => a.category === 'quantity').length },
-    { id: 'size', label: '尺寸', count: achievements.filter(a => a.category === 'size').length },
-    { id: 'location', label: '地点', count: achievements.filter(a => a.category === 'location').length },
-    { id: 'special', label: '特殊', count: achievements.filter(a => a.category === 'special').length },
+    { id: 'all', label: t('achievements.filter.all'), count: achievements.length },
+    { id: 'species', label: t('achievements.category.species'), count: achievements.filter(a => a.category === 'species').length },
+    { id: 'quantity', label: t('achievements.category.quantity'), count: achievements.filter(a => a.category === 'quantity').length },
+    { id: 'size', label: t('achievements.category.size'), count: achievements.filter(a => a.category === 'size').length },
+    { id: 'location', label: t('achievements.category.location'), count: achievements.filter(a => a.category === 'location').length },
+    { id: 'special', label: t('achievements.category.special'), count: achievements.filter(a => a.category === 'special').length },
   ], [achievements]);
 
   const renderAchievement = useCallback(({ item: achievement }: { item: Achievement }) => {
@@ -106,7 +108,7 @@ export default function AchievementsScreen() {
   const renderStats = () => (
     <ThemedView type="card" style={[styles.statsCard, theme.shadows.sm]}>
       <View style={styles.statsHeader}>
-        <ThemedText type="title">成就统计</ThemedText>
+        <ThemedText type="title">{t('achievements.stats')}</ThemedText>
         <ThemedText type="h3" style={{ color: theme.colors.primary }}>
           {stats.unlockedCount}/{stats.totalCount}
         </ThemedText>
@@ -123,7 +125,7 @@ export default function AchievementsScreen() {
       <View style={styles.statsDetails}>
         <View style={styles.statItem}>
           <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
-            完成率
+            {t('achievements.completion.rate')}
           </ThemedText>
           <ThemedText type="subtitle" style={{ color: theme.colors.primary }}>
             {Math.round(stats.progressPercent)}%
@@ -132,7 +134,7 @@ export default function AchievementsScreen() {
         
         <View style={styles.statItem}>
           <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
-            剩余成就
+            {t('achievements.remaining')}
           </ThemedText>
           <ThemedText type="subtitle" style={{ color: theme.colors.textSecondary }}>
             {stats.totalCount - stats.unlockedCount}
@@ -147,8 +149,8 @@ export default function AchievementsScreen() {
       return (
         <EmptyState
           type="no-data"
-          title="暂无成就数据"
-          description="成就系统正在加载中"
+          title={t('achievements.no.data.title')}
+          description={t('achievements.no.data.description')}
         />
       );
     }
@@ -157,10 +159,10 @@ export default function AchievementsScreen() {
       return (
         <EmptyState
           type="no-results"
-          title="还没有解锁任何成就"
-          description="开始钓鱼来获得你的第一个成就吧！"
+          title={t('achievements.no.unlocked.title')}
+          description={t('achievements.no.unlocked.description')}
           action={{
-            label: "开始钓鱼",
+            label: t('log.start.fishing'),
             onPress: () => {
               // Navigate to log screen
             },
@@ -176,9 +178,9 @@ export default function AchievementsScreen() {
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       {/* Header */}
       <ThemedView style={styles.header}>
-        <ThemedText type="h2">成就系统</ThemedText>
+        <ThemedText type="h2">{t('achievements.title')}</ThemedText>
         <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
-          完成挑战，收集成就徽章
+          {t('achievements.subtitle')}
         </ThemedText>
       </ThemedView>
 
@@ -192,7 +194,7 @@ export default function AchievementsScreen() {
         {/* Filters */}
         <ThemedView style={styles.filtersSection}>
           <ThemedText type="subtitle" style={styles.filterTitle}>
-            分类筛选
+            {t('achievements.category.filter')}
           </ThemedText>
           
           <FilterChipGroup
@@ -207,7 +209,7 @@ export default function AchievementsScreen() {
 
           <View style={styles.toggleFilters}>
             <FilterChip
-              label="仅显示已解锁"
+              label="{t('achievements.show.unlocked.only')}"
               selected={showOnlyUnlocked}
               onPress={() => setShowOnlyUnlocked(!showOnlyUnlocked)}
               icon="lock.open.fill"
@@ -219,7 +221,7 @@ export default function AchievementsScreen() {
         {/* Achievements Grid */}
         <ThemedView style={styles.achievementsSection}>
           <ThemedText type="subtitle" style={styles.sectionTitle}>
-            成就列表 ({filteredAchievements.length})
+            {t('achievements.list.title')} ({filteredAchievements.length})
           </ThemedText>
           
           {filteredAchievements.length > 0 ? (
