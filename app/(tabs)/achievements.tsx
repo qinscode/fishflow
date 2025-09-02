@@ -209,7 +209,7 @@ export default function AchievementsScreen() {
 
           <View style={styles.toggleFilters}>
             <FilterChip
-              label="{t('achievements.show.unlocked.only')}"
+              label={t('achievements.show.unlocked.only')}
               selected={showOnlyUnlocked}
               onPress={() => setShowOnlyUnlocked(!showOnlyUnlocked)}
               icon="lock.open.fill"

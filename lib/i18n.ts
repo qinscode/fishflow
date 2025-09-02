@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export type Language = 'zh' | 'en';
+export type Language = 'zh' | 'en' | 'system';
 export type TranslationKeys = keyof typeof translations.zh;
 
 const LANGUAGE_STORAGE_KEY = '@fishflow/language';
@@ -102,6 +102,20 @@ export const translations = {
     'equipment.form.tags.placeholder': '添加标签（用逗号分隔）',
     'equipment.form.save': '保存',
     'equipment.form.cancel': '取消',
+    'equipment.basic.info': '基本信息',
+    'equipment.config': '装备配置',
+    'equipment.validation.name.required': '请输入装备组合名称',
+    'equipment.validation.rod.required': '请选择钓竿',
+    'equipment.validation.reel.required': '请选择渔轮',
+    'equipment.validation.line.required': '请选择钓线',
+    'equipment.validation.hook.required': '请选择鱼钩',
+    'equipment.validation.bait.required': '请选择饵料',
+    'equipment.validation.water.type.required': '请至少选择一种适用水域类型',
+    'equipment.update.success': '装备组合已更新',
+    'equipment.create.success': '装备组合已创建',
+    'equipment.save.failed': '保存失败，请重试',
+    'equipment.form.set.default': '设为默认装备',
+    'equipment.form.set.default.description': '在记录钓获时优先显示',
 
     // Achievements Screen
     'achievements.title': '成就系统',
@@ -118,6 +132,21 @@ export const translations = {
     'achievements.reward': '奖励',
     'achievements.empty.title': '暂无成就',
     'achievements.empty.subtitle': '继续钓鱼来解锁成就',
+    'achievements.stats': '成就统计',
+    'achievements.category.species': '物种',
+    'achievements.category.quantity': '数量',
+    'achievements.category.size': '尺寸',
+    'achievements.category.location': '地点',
+    'achievements.category.special': '特殊',
+    'achievements.completion.rate': '完成率',
+    'achievements.remaining': '剩余成就',
+    'achievements.no.data.title': '暂无成就数据',
+    'achievements.no.data.description': '成就系统正在加载中',
+    'achievements.no.unlocked.title': '还没有解锁任何成就',
+    'achievements.no.unlocked.description': '开始钓鱼来获得你的第一个成就吧！',
+    'achievements.category.filter': '分类筛选',
+    'achievements.show.unlocked.only': '仅显示已解锁',
+    'achievements.list.title': '成就列表',
 
     // Stats Screen
     'stats.title': '钓鱼统计',
@@ -160,6 +189,7 @@ export const translations = {
     'log.weather.error': '无法获取天气信息',
     'log.skunked': '空军',
     'log.skunked.description': '没有钓到鱼',
+    'log.start.fishing': '开始钓鱼',
 
     // Fish Detail Screen
     'fish.detail.overview': '概览',
@@ -175,6 +205,33 @@ export const translations = {
     'fish.detail.bait': '推荐鱼饵',
     'fish.detail.no_catches': '暂无钓获记录',
     'fish.detail.add_catch': '添加钓获',
+    'fish.detail.not.found.title': '鱼类未找到',
+    'fish.detail.not.found.description': '无法找到指定的鱼类信息',
+    'fish.detail.unknown': 'UNKNOWN',
+    'fish.detail.image.id': '图片ID',
+    'fish.detail.basic.info': '基本信息',
+    'fish.detail.scientific.name': '学名',
+    'fish.detail.family': '科属',
+    'fish.detail.local.names': '别名',
+    'fish.detail.unlock.message': '钓获此鱼类后将解锁个人记录',
+    'fish.detail.stats': '属性数据',
+    'fish.detail.lifespan': '寿命',
+    'fish.detail.years': '年',
+    'fish.detail.max.weight': '最大',
+    'fish.detail.difficulty': '难度',
+    'fish.detail.water.types': '水域类型',
+    'fish.detail.regions': '分布地区',
+    'fish.detail.seasons': '活跃季节',
+    'fish.detail.month': '月',
+    'fish.detail.min.size': '最小尺寸',
+    'fish.detail.daily.limit': '日限制',
+    'fish.detail.fish.count': '尾',
+    'fish.detail.closed.seasons': '禁钓期',
+    'fish.detail.special.rules': '特殊规定',
+    'fish.detail.personal.record': '个人记录',
+    'fish.detail.caught.times': '已钓获 {count} 次',
+    'fish.detail.best.record': '最佳记录',
+    'fish.detail.catch.time': '钓获时间',
 
     // Settings Screen
     'settings.title': '设置',
@@ -231,6 +288,9 @@ export const translations = {
     'common.clear': '清除',
     'common.clear.search': '清除搜索',
     'common.clear.filters': '清除筛选',
+    'common.none': '无',
+    'common.unknown': '未知',
+    'common.notice': '提示',
 
     // Water Types
     'water.freshwater': '淡水',
@@ -348,6 +408,20 @@ export const translations = {
     'equipment.form.tags.placeholder': 'Add tags (comma separated)',
     'equipment.form.save': 'Save',
     'equipment.form.cancel': 'Cancel',
+    'equipment.basic.info': 'Basic Information',
+    'equipment.config': 'Equipment Configuration',
+    'equipment.validation.name.required': 'Please enter equipment set name',
+    'equipment.validation.rod.required': 'Please select a rod',
+    'equipment.validation.reel.required': 'Please select a reel',
+    'equipment.validation.line.required': 'Please select a line',
+    'equipment.validation.hook.required': 'Please select a hook',
+    'equipment.validation.bait.required': 'Please select bait',
+    'equipment.validation.water.type.required': 'Please select at least one water type',
+    'equipment.update.success': 'Equipment set updated successfully',
+    'equipment.create.success': 'Equipment set created successfully',
+    'equipment.save.failed': 'Save failed, please try again',
+    'equipment.form.set.default': 'Set as default equipment',
+    'equipment.form.set.default.description': 'Priority display when logging catches',
 
     // Achievements Screen
     'achievements.title': 'Achievement System',
@@ -364,6 +438,21 @@ export const translations = {
     'achievements.reward': 'Reward',
     'achievements.empty.title': 'No achievements',
     'achievements.empty.subtitle': 'Keep fishing to unlock achievements',
+    'achievements.stats': 'Achievement Statistics',
+    'achievements.category.species': 'Species',
+    'achievements.category.quantity': 'Quantity',
+    'achievements.category.size': 'Size',
+    'achievements.category.location': 'Location',
+    'achievements.category.special': 'Special',
+    'achievements.completion.rate': 'Completion Rate',
+    'achievements.remaining': 'Remaining',
+    'achievements.no.data.title': 'No achievement data',
+    'achievements.no.data.description': 'Achievement system is loading',
+    'achievements.no.unlocked.title': 'No achievements unlocked yet',
+    'achievements.no.unlocked.description': 'Start fishing to earn your first achievement!',
+    'achievements.category.filter': 'Category Filter',
+    'achievements.show.unlocked.only': 'Show Unlocked Only',
+    'achievements.list.title': 'Achievement List',
 
     // Stats Screen
     'stats.title': 'Fishing Statistics',
@@ -406,6 +495,7 @@ export const translations = {
     'log.weather.error': 'Unable to get weather information',
     'log.skunked': 'Skunked',
     'log.skunked.description': 'No fish caught',
+    'log.start.fishing': 'Start Fishing',
 
     // Fish Detail Screen
     'fish.detail.overview': 'Overview',
@@ -421,6 +511,37 @@ export const translations = {
     'fish.detail.bait': 'Recommended Bait',
     'fish.detail.no_catches': 'No catch records',
     'fish.detail.add_catch': 'Add Catch',
+    'fish.detail.not.found.title': 'Fish Not Found',
+    'fish.detail.not.found.description': 'Unable to find the specified fish information',
+    'fish.detail.unknown': 'UNKNOWN',
+    'fish.detail.image.id': 'Image ID',
+    'fish.detail.basic.info': 'Basic Information',
+    'fish.detail.scientific.name': 'Scientific Name',
+    'fish.detail.family': 'Family',
+    'fish.detail.local.names': 'Local Names',
+    'fish.detail.unlock.message': 'Catch this fish to unlock personal records',
+    'fish.detail.stats': 'Stats',
+
+    'fish.detail.lifespan': 'Lifespan',
+    'fish.detail.years': ' years',
+
+    'fish.detail.max.weight': 'Max',
+    'fish.detail.difficulty': 'Difficulty',
+
+    'fish.detail.water.types': 'Water Types',
+    'fish.detail.regions': 'Distribution',
+    'fish.detail.seasons': 'Active Seasons',
+    'fish.detail.month': '',
+
+    'fish.detail.min.size': 'Min Size',
+    'fish.detail.daily.limit': 'Daily Limit',
+    'fish.detail.fish.count': '',
+    'fish.detail.closed.seasons': 'Closed Seasons',
+    'fish.detail.special.rules': 'Special Rules',
+    'fish.detail.personal.record': 'Personal Record',
+    'fish.detail.caught.times': 'Caught {count} times',
+    'fish.detail.best.record': 'Best Record',
+    'fish.detail.catch.time': 'Catch Time',
 
     // Settings Screen
     'settings.title': 'Settings',
@@ -477,6 +598,9 @@ export const translations = {
     'common.clear': 'Clear',
     'common.clear.search': 'Clear Search',
     'common.clear.filters': 'Clear Filters',
+    'common.none': 'None',
+    'common.unknown': 'Unknown',
+    'common.notice': 'Notice',
 
     // Water Types
     'water.freshwater': 'Freshwater',
