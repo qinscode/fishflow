@@ -1,22 +1,22 @@
+import * as Haptics from 'expo-haptics';
+import { Image } from 'expo-image';
 import React, { memo } from 'react';
 import { View, StyleSheet, Pressable, ViewStyle } from 'react-native';
-import { Image } from 'expo-image';
 import Animated, { 
   useAnimatedStyle, 
   useSharedValue, 
   withTiming, 
   withSpring 
 } from 'react-native-reanimated';
-import * as Haptics from 'expo-haptics';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { useTheme } from '@/hooks/useThemeColor';
 import { useResponsive } from '@/hooks/useResponsive';
+import { useTheme } from '@/hooks/useThemeColor';
+import { RARITY_NAMES } from '@/lib/constants';
 import { Fish, FishCardState } from '@/lib/types';
 import { getRarityColor } from '@/lib/utils';
-import { RARITY_NAMES } from '@/lib/constants';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -126,19 +126,45 @@ export const FishCard = memo<FishCardProps>(({
             </View>
           </View>
         ) : (
-          <Image
-            source={{ uri: fish.images.card }}
-            style={[
-              styles.fishImage,
-              {
-                width: imageSize,
-                height: imageSize,
-                borderRadius: theme.borderRadius.md,
-              }
-            ]}
-            contentFit="cover"
-            transition={300}
-          />
+          <View style={[
+            styles.unlockedImageContainer,
+            {
+              width: imageSize,
+              height: imageSize,
+              borderRadius: theme.borderRadius.md,
+              backgroundColor: rarityColor + '20',
+            }
+          ]}>
+            {fish.images.card ? (
+              <View style={styles.fishImageWrapper}>
+                <Image
+                  source={fish.images.card}
+                  style={{
+                    width: imageSize * 0.9,
+                    height: imageSize * 0.9,
+                    borderRadius: theme.borderRadius.sm,
+                  }}
+                  contentFit="contain"
+                  transition={200}
+                />
+                {/* 鱼形图标作为装饰 */}
+                <View style={styles.fishIconOverlay}>
+                  <IconSymbol 
+                    name="fish" 
+                    size={imageSize * 0.15} 
+                    color={rarityColor} 
+                    style={{ opacity: 0.3 }}
+                  />
+                </View>
+              </View>
+            ) : (
+              <IconSymbol 
+                name="fish" 
+                size={imageSize * 0.4} 
+                color={rarityColor} 
+              />
+            )}
+          </View>
         )}
 
         {/* NEW 标识 */}
@@ -165,13 +191,13 @@ export const FishCard = memo<FishCardProps>(({
           style={[
             styles.fishName,
             { 
-              color: isLocked ? theme.colors.textDisabled : theme.colors.text,
+              color: theme.colors.text,
               fontSize: size === 'small' ? 14 : 16,
             }
           ]}
           numberOfLines={1}
         >
-          {isLocked ? '???' : fish.name}
+          {fish.name}
         </ThemedText>
 
         {/* ID 和稀有度 */}
@@ -237,6 +263,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'relative',
   },
+  unlockedImageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
   lockIconContainer: {
     position: 'absolute',
     top: 8,
@@ -264,6 +295,16 @@ const styles = StyleSheet.create({
   fishName: {
     textAlign: 'center',
     fontWeight: '600',
+  },
+  fishImageWrapper: {
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  fishIconOverlay: {
+    position: 'absolute',
+    bottom: 4,
+    right: 4,
   },
   metaContainer: {
     flexDirection: 'row',
