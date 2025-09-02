@@ -1,0 +1,56 @@
+// 鱼类图片资源映射
+// 这个文件为 React Native 提供静态图片资源映射
+
+export const fishImages: Record<string, any> = {
+  '1': require('../assets/images/fish/1.png'),
+  '2': require('../assets/images/fish/2.png'),
+  '3': require('../assets/images/fish/3.png'),
+  '4': require('../assets/images/fish/4.png'),
+  '5': require('../assets/images/fish/5.png'),
+  '6': require('../assets/images/fish/6.png'),
+  '7': require('../assets/images/fish/7.png'),
+  '8': require('../assets/images/fish/8.png'),
+  '9': require('../assets/images/fish/9.png'),
+  '10': require('../assets/images/fish/10.png'),
+  '11': require('../assets/images/fish/11.png'),
+  '12': require('../assets/images/fish/12.png'),
+  '13': require('../assets/images/fish/13.png'),
+  '14': require('../assets/images/fish/14.png'),
+  '15': require('../assets/images/fish/15.png'),
+  '16': require('../assets/images/fish/16.png'),
+  '17': require('../assets/images/fish/17.png'),
+  '18': require('../assets/images/fish/18.png'),
+  '19': require('../assets/images/fish/19.png'),
+  '20': require('../assets/images/fish/20.png'),
+  '21': require('../assets/images/fish/21.png'),
+  '22': require('../assets/images/fish/22.png'),
+  '23': require('../assets/images/fish/23.png'),
+  '24': require('../assets/images/fish/24.png'),
+  '25': require('../assets/images/fish/25.png'),
+  '26': require('../assets/images/fish/26.png'),
+  '27': require('../assets/images/fish/27.png'),
+  '28': require('../assets/images/fish/28.png'),
+  '29': require('../assets/images/fish/29.png'),
+  '30': require('../assets/images/fish/30.png'),
+  '31': require('../assets/images/fish/31.png'),
+  '32': require('../assets/images/fish/32.png'),
+  '33': require('../assets/images/fish/33.png'),
+  '34': require('../assets/images/fish/34.png'),
+  '35': require('../assets/images/fish/35.png'),
+  '36': require('../assets/images/fish/36.png'),
+  '37': require('../assets/images/fish/37.png'),
+  '38': require('../assets/images/fish/38.png'),
+  '39': require('../assets/images/fish/39.png'),
+  '40': require('../assets/images/fish/40.png'),
+  '41': require('../assets/images/fish/41.png'),
+};
+
+// 获取鱼类图片资源
+export function getFishImage(fishId: string): any {
+  return fishImages[fishId] || null;
+}
+
+// 检查鱼类图片是否存在
+export function hasFishImage(fishId: string): boolean {
+  return fishId in fishImages;
+}
