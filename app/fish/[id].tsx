@@ -11,12 +11,6 @@ import {
   StatusBar,
   Dimensions,
 } from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  interpolateColor,
-} from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/ThemedText';
@@ -29,6 +23,7 @@ import { useTheme } from '@/hooks/useThemeColor';
 import { RARITY_COLORS, WATER_TYPE_NAMES, DIFFICULTY_NAMES } from '@/lib/constants';
 import { useFish, useCatches, useUserStats } from '@/lib/store';
 import { Fish, FishCardState } from '@/lib/types';
+import { getFishImage } from '@/lib/fishImages';
 import { getFishCardState } from '@/lib/utils';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -48,8 +43,6 @@ export default function FishDetailScreen() {
   const fishState: FishCardState = currentFish ? getFishCardState(currentFish, catches) : 'locked';
   const isUnlocked = fishState === 'unlocked' || fishState === 'new';
   
-  const scrollY = useSharedValue(0);
-  const headerOpacity = useSharedValue(1);
 
   if (!currentFish) {
     return (
@@ -83,59 +76,56 @@ export default function FishDetailScreen() {
     return currentWeight > bestWeight ? current : best;
   }, userCatches[0]);
 
-  const headerAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      opacity: headerOpacity.value,
-      transform: [
-        {
-          translateY: withTiming(scrollY.value > 100 ? -50 : 0, { duration: 200 }),
-        },
-      ],
-    };
-  });
-
-  const backgroundAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      backgroundColor: interpolateColor(
-        scrollY.value,
-        [0, 200],
-        [rarityColor + '20', theme.colors.background]
-      ),
-    };
-  });
 
   const renderHeader = () => (
-    <Animated.View style={[styles.header, backgroundAnimatedStyle]}>
-      <LinearGradient
-        colors={[rarityColor + '30', rarityColor + '10', 'transparent']}
-        style={styles.headerGradient}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      />
-      
-      <Animated.View style={[styles.headerContent, headerAnimatedStyle]}>
-        <Pressable style={styles.backButton} onPress={() => router.back()}>
-          <IconSymbol name="chevron.left" size={28} color="white" />
-        </Pressable>
-        
-        <View style={styles.headerInfo}>
-          <ThemedText type="h1" style={[styles.fishName, { color: 'white' }]}>
-            {currentFish.name}
-          </ThemedText>
-          <ThemedText style={[styles.fishNumber, { color: 'rgba(255, 255, 255, 0.8)' }]}>
-            #{currentFish.id.split('-')[0].toUpperCase()} • {currentIndex + 1}/{fish.length}
-          </ThemedText>
+    <View style={[styles.header, { backgroundColor: theme.colors.background }]}>
+      <SafeAreaView edges={['top']} style={styles.headerSafeArea}>
+        <View style={styles.headerContent}>
+          <Pressable style={styles.backButton} onPress={() => router.back()}>
+            <IconSymbol name="chevron.left" size={24} color={theme.colors.text} />
+          </Pressable>
+          
+          <View style={styles.headerTitleContainer}>
+            <ThemedText type="h2" style={styles.fishName}>
+              {currentFish.name}
+            </ThemedText>
+            <ThemedText style={[styles.fishNumber, { color: theme.colors.textSecondary }]}>
+              #{(currentIndex + 1).toString().padStart(1, '0')} • {currentIndex + 1}/{fish.length}
+            </ThemedText>
+          </View>
+          
+          {!isUnlocked && (
+            <View style={[styles.statusBadge, { backgroundColor: theme.colors.textSecondary + '20' }]}>
+              <ThemedText style={[styles.statusText, { color: theme.colors.textSecondary }]}>
+                UNKNOWN
+              </ThemedText>
+            </View>
+          )}
         </View>
-      </Animated.View>
-      
-      <View style={styles.fishImageContainer}>
-        <View style={[styles.fishImageBg, { backgroundColor: rarityColor + '20' }]}>
-          <View style={styles.fishImagePlaceholder}>
-            <IconSymbol name="fish" size={120} color={rarityColor} />
+        
+        <View style={styles.fishImageContainer}>
+          <View style={styles.fishImageWrapper}>
+            {isUnlocked ? (
+              <View style={[styles.fishImagePlaceholder, { backgroundColor: rarityColor + '10' }]}>
+                {getFishImage(currentFish.id) ? (
+                  <Image
+                    source={getFishImage(currentFish.id)}
+                    style={styles.fishImage}
+                    contentFit="contain"
+                  />
+                ) : (
+                  <IconSymbol name="fish" size={120} color={rarityColor} />
+                )}
+              </View>
+            ) : (
+              <View style={styles.fishImagePlaceholder}>
+                <IconSymbol name="fish" size={120} color={theme.colors.textSecondary} style={{ opacity: 0.3 }} />
+              </View>
+            )}
           </View>
         </View>
-      </View>
-    </Animated.View>
+      </SafeAreaView>
+    </View>
   );
 
   const renderBasicInfo = () => (
@@ -151,28 +141,34 @@ export default function FishDetailScreen() {
       
       <View style={styles.infoRow}>
         <IconSymbol name="text.book.closed" size={16} color={theme.colors.textSecondary} />
-        <ThemedText style={styles.infoLabel}>学名：</ThemedText>
-        <ThemedText style={styles.infoValue}>{currentFish.scientificName}</ThemedText>
+        <View style={styles.infoContent}>
+          <ThemedText style={styles.infoLabel}>学名：</ThemedText>
+          <ThemedText style={styles.infoValue}>{currentFish.scientificName}</ThemedText>
+        </View>
       </View>
       
       <View style={styles.infoRow}>
         <IconSymbol name="tree" size={16} color={theme.colors.textSecondary} />
-        <ThemedText style={styles.infoLabel}>科属：</ThemedText>
-        <ThemedText style={styles.infoValue}>{currentFish.family}</ThemedText>
+        <View style={styles.infoContent}>
+          <ThemedText style={styles.infoLabel}>科属：</ThemedText>
+          <ThemedText style={styles.infoValue}>{currentFish.family}</ThemedText>
+        </View>
       </View>
       
       <View style={styles.infoRow}>
         <IconSymbol name="location" size={16} color={theme.colors.textSecondary} />
-        <ThemedText style={styles.infoLabel}>别名：</ThemedText>
-        <ThemedText style={styles.infoValue}>
-          {currentFish.localNames?.join('、') || '无'}
-        </ThemedText>
+        <View style={styles.infoContent}>
+          <ThemedText style={styles.infoLabel}>别名：</ThemedText>
+          <ThemedText style={styles.infoValue}>
+            {currentFish.localNames?.join('、') || '无'}
+          </ThemedText>
+        </View>
       </View>
       
       {!isUnlocked && (
-        <View style={styles.unlockStatus}>
-          <IconSymbol name="lock.open" size={16} color={theme.colors.warning} />
-          <ThemedText style={[styles.unlockText, { color: theme.colors.warning }]}>
+        <View style={[styles.unlockStatus, { backgroundColor: '#FFF3CD', borderColor: '#FFE69C' }]}>
+          <IconSymbol name="exclamationmark.triangle" size={16} color="#856404" />
+          <ThemedText style={[styles.unlockText, { color: '#856404' }]}>
             钓获此鱼类后将解锁个人记录
           </ThemedText>
         </View>
@@ -189,8 +185,8 @@ export default function FishDetailScreen() {
       <View style={styles.statsList}>
         <View style={styles.statRow}>
           <View style={styles.statLabel}>
-            <IconSymbol name="ruler" size={16} color={theme.colors.primary} />
-            <ThemedText>长度</ThemedText>
+            <IconSymbol name="ruler" size={20} color="#007AFF" />
+            <ThemedText style={styles.statLabelText}>长度</ThemedText>
           </View>
           <View style={styles.statValue}>
             <ThemedText style={styles.statNumber}>
@@ -201,8 +197,8 @@ export default function FishDetailScreen() {
         
         <View style={styles.statRow}>
           <View style={styles.statLabel}>
-            <IconSymbol name="scalemass" size={16} color={theme.colors.secondary} />
-            <ThemedText>重量</ThemedText>
+            <IconSymbol name="scalemass" size={20} color="#007AFF" />
+            <ThemedText style={styles.statLabelText}>重量</ThemedText>
           </View>
           <View style={styles.statValue}>
             <ThemedText style={styles.statNumber}>
@@ -213,8 +209,8 @@ export default function FishDetailScreen() {
         
         <View style={styles.statRow}>
           <View style={styles.statLabel}>
-            <IconSymbol name="clock" size={16} color={theme.colors.accent} />
-            <ThemedText>寿命</ThemedText>
+            <IconSymbol name="clock" size={20} color="#007AFF" />
+            <ThemedText style={styles.statLabelText}>寿命</ThemedText>
           </View>
           <View style={styles.statValue}>
             <ThemedText style={styles.statNumber}>
@@ -225,19 +221,22 @@ export default function FishDetailScreen() {
         
         <View style={styles.statRow}>
           <View style={styles.statLabel}>
-            <IconSymbol name="target" size={16} color={theme.colors.warning} />
-            <ThemedText>难度</ThemedText>
+            <IconSymbol name="target" size={20} color="#007AFF" />
+            <ThemedText style={styles.statLabelText}>难度</ThemedText>
           </View>
           <View style={styles.statValue}>
-            <ProgressBar
-              progress={currentFish.behavior.difficulty / 5}
-              height={8}
-              color={theme.colors.warning}
-              style={styles.difficultyBar}
-            />
-            <ThemedText style={styles.statNumber}>
-              {DIFFICULTY_NAMES[currentFish.behavior.difficulty] || currentFish.behavior.difficulty}
-            </ThemedText>
+            <View style={styles.difficultyContainer}>
+              <ProgressBar
+                progress={currentFish.behavior.difficulty / 5}
+                height={8}
+                color="#FF9500"
+                backgroundColor="#F2F2F7"
+                style={styles.difficultyBar}
+              />
+              <ThemedText style={styles.difficultyText}>
+                {DIFFICULTY_NAMES[currentFish.behavior.difficulty] || currentFish.behavior.difficulty}
+              </ThemedText>
+            </View>
           </View>
         </View>
       </View>
@@ -394,11 +393,6 @@ export default function FishDetailScreen() {
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
-        onScroll={(event) => {
-          scrollY.value = event.nativeEvent.contentOffset.y;
-          headerOpacity.value = event.nativeEvent.contentOffset.y > 100 ? 0.8 : 1;
-        }}
-        scrollEventThrottle={16}
       >
         {renderHeader()}
         
@@ -435,34 +429,32 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 100, // 给底部按钮留空间
+    paddingBottom: 100,
   },
   header: {
-    height: 300,
-    position: 'relative',
+    backgroundColor: 'transparent',
   },
-  headerGradient: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+  headerSafeArea: {
+    paddingHorizontal: 20,
   },
   headerContent: {
-    position: 'absolute',
-    top: 60,
-    left: 0,
-    right: 0,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    zIndex: 10,
+    justifyContent: 'space-between',
+    paddingVertical: 16,
+    position: 'relative',
+  },
+  headerTitleContainer: {
+    flex: 1,
+    alignItems: 'center',
+    marginHorizontal: 20,
   },
   backButton: {
-    width: 44,
-    height: 44,
+    width: 40,
+    height: 40,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 20,
   },
   backButtonText: {
     fontSize: 16,
@@ -497,43 +489,54 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
   },
-  headerInfo: {
-    flex: 1,
-    marginLeft: 16,
+  statusBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+    position: 'absolute',
+    right: 0,
+    top: 16,
+  },
+  statusText: {
+    fontSize: 12,
+    fontWeight: '600',
+    letterSpacing: 0.5,
   },
   fishName: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
+    textAlign: 'center',
     marginBottom: 4,
   },
   fishNumber: {
-    fontSize: 16,
+    fontSize: 14,
+    textAlign: 'center',
+    opacity: 0.7,
   },
   fishImageContainer: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 40,
+  },
+  fishImageWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  fishImageBg: {
-    width: 160,
-    height: 160,
-    borderRadius: 80,
-    alignItems: 'center',
-    justifyContent: 'center',
+  fishImage: {
+    width: 180,
+    height: 140,
+    borderRadius: 8,
   },
   fishImagePlaceholder: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 200,
+    height: 160,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 16,
   },
   content: {
     flex: 1,
     paddingHorizontal: 20,
-    marginTop: -30,
   },
   infoCard: {
     marginBottom: 16,
@@ -561,28 +564,32 @@ const styles = StyleSheet.create({
   },
   infoRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-    gap: 8,
+    alignItems: 'flex-start',
+    paddingVertical: 12,
+    gap: 12,
+  },
+  infoContent: {
+    flex: 1,
   },
   infoLabel: {
     fontSize: 14,
     fontWeight: '500',
-    minWidth: 60,
+    marginBottom: 2,
   },
   infoValue: {
-    fontSize: 14,
-    flex: 1,
+    fontSize: 15,
+    fontWeight: '400',
+    lineHeight: 20,
   },
   unlockStatus: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 16,
-    backgroundColor: 'rgba(255, 193, 7, 0.1)',
     borderRadius: 8,
     marginTop: 16,
     gap: 8,
+    borderWidth: 1,
   },
   unlockText: {
     fontSize: 12,
@@ -595,24 +602,35 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: 4,
   },
   statLabel: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 12,
     flex: 1,
   },
+  statLabelText: {
+    fontSize: 16,
+    fontWeight: '400',
+  },
   statValue: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    alignItems: 'flex-end',
   },
   statNumber: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
   },
+  difficultyContainer: {
+    alignItems: 'flex-end',
+    gap: 8,
+  },
   difficultyBar: {
-    width: 60,
+    width: 80,
+  },
+  difficultyText: {
+    fontSize: 14,
+    fontWeight: '500',
   },
   habitatInfo: {
     gap: 16,
@@ -658,11 +676,6 @@ const styles = StyleSheet.create({
   recordValue: {
     fontSize: 14,
     fontWeight: '600',
-  },
-  fishImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 8,
   },
   regulationItem: {
     marginBottom: 16,

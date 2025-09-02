@@ -4,7 +4,7 @@
 export type WaterType = 'river' | 'lake' | 'reservoir' | 'pond' | 'stream' | 'ocean' | 'estuary';
 
 // 鱼类稀有度
-export type FishRarity = 'common' | 'rare' | 'epic' | 'legendary' | 'unknown';
+export type FishRarity = 'common' | 'unique' | 'rare' | 'epic' | 'legendary' | 'unknown';
 
 // 鱼类卡片状态
 export type FishCardState = 'locked' | 'hint' | 'unlocked' | 'new';
