@@ -11,6 +11,7 @@ import { Platform } from 'react-native';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { initializeLanguage } from '@/lib/i18n';
 import { useAppStore } from '@/lib/store';
 import { generateUUID } from '@/lib/utils';
 
@@ -34,6 +35,9 @@ export default function RootLayout() {
       
       const initData = async () => {
         try {
+          // Initialize language preference
+          await initializeLanguage();
+          
           const { loadFishData } = await import('@/lib/fishDataLoader');
           const { MOCK_ACHIEVEMENT_DATA, MOCK_EQUIPMENT_DATA } = await import('@/lib/mockData');
           const fishData = loadFishData();
