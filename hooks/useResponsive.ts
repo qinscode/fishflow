@@ -101,5 +101,5 @@ export function useBreakpoint<T>(values: {
       return values.sm;
     }
     return values.default;
-  }, [width, values]);
+  }, [width, values.sm, values.md, values.lg, values.xl, values.default]);
 }

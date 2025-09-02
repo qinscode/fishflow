@@ -33,7 +33,6 @@ import {
 import { Fish, FishRarity, WaterType } from '@/lib/types';
 import { getFishCardState, sortFish } from '@/lib/utils';
 import { RARITY_NAMES, WATER_TYPES } from '@/lib/constants';
-import { initializeMockData } from '@/lib/mockData';
 
 export default function FishdexScreen() {
   const theme = useTheme();
@@ -59,26 +58,6 @@ export default function FishdexScreen() {
   const [sortBy, setSortBy] = useState<'name' | 'rarity' | 'recent'>('name');
   const [showFilters, setShowFilters] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-
-  // Initialize data
-  useEffect(() => {
-    if (fish.length === 0) {
-      initializeData();
-    }
-  }, []);
-
-  const initializeData = async () => {
-    try {
-      const success = await initializeMockData();
-      if (success) {
-        // 这里应该从数据库加载数据到store
-        // 暂时先不实现，等数据库集成完成
-        console.log('Data initialized successfully');
-      }
-    } catch (error) {
-      console.error('Failed to initialize data:', error);
-    }
-  };
 
   // Memoized sorted fish list
   const sortedFish = useMemo(() => {
@@ -143,9 +122,16 @@ export default function FishdexScreen() {
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);
-    await initializeData();
+    // 简单的刷新逻辑，重新获取数据
+    try {
+      const { MOCK_FISH_DATA } = await import('@/lib/mockData');
+      setFish(MOCK_FISH_DATA);
+      console.log('Data refreshed successfully');
+    } catch (error) {
+      console.error('Failed to refresh data:', error);
+    }
     setRefreshing(false);
-  }, []);
+  }, [setFish]);
 
   const renderFishItem = useCallback(({ item }: { item: Fish }) => {
     const state = getFishCardState(item, catches);
@@ -293,7 +279,7 @@ export default function FishdexScreen() {
         <EmptyStates.NoFish
           action={{
             label: "初始化数据",
-            onPress: initializeData,
+            onPress: handleRefresh,
           }}
         />
       </SafeAreaView>

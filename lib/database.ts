@@ -48,7 +48,9 @@ export class DatabaseService {
 
   // 创建数据表
   private async createTables(): Promise<void> {
-    if (!this.db) throw new Error('Database not initialized');
+    if (!this.db) {
+      throw new Error('Database not initialized');
+    }
 
     const tables = [
       // 鱼类表
@@ -299,7 +301,9 @@ export class DatabaseService {
       const values: any[] = [];
 
       Object.entries(updates).forEach(([key, value]) => {
-        if (key === 'id' || key === 'createdAt') return; // Skip immutable fields
+        if (key === 'id' || key === 'createdAt') {
+          return; // Skip immutable fields
+        }
 
         const dbKey = this.camelToSnake(key);
         
@@ -315,7 +319,9 @@ export class DatabaseService {
         }
       });
 
-      if (fields.length === 0) return;
+      if (fields.length === 0) {
+        return;
+      }
 
       fields.push('updated_at = CURRENT_TIMESTAMP');
       values.push(id);

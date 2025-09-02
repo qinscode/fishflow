@@ -22,7 +22,6 @@ import {
 } from '@/lib/store';
 import { FadeInView, SlideInView } from '@/components/animations';
 import { getFishCardState } from '@/lib/utils';
-import { initializeMockData } from '@/lib/mockData';
 
 export default function HomeScreen() {
   const theme = useTheme();
@@ -62,7 +61,7 @@ export default function HomeScreen() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [fish.length, setFish, setAchievements]);
 
   // Get recent unlocks (last 3)
   const recentUnlocks = React.useMemo(() => {
