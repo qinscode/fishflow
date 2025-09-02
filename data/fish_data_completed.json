@@ -1,16 +1,13 @@
 [
   {
     "id": "1",
-    "name": "隆額豥齒魚",
+    "name": "Baldchin groper",
     "scientificName": "Choerodon rubescens",
-    "localNames": [
-      "Baldchin tuskfish",
-      "Baldies"
-    ],
+    "localNames": ["Baldchin tuskfish", "Baldies"],
     "family": "Labridae",
     "rarity": "uncommon",
     "images": {
-      "card": "1.jpeg"
+      "card": "1.png"
     },
     "characteristics": {
       "minLengthCm": 40,
@@ -19,19 +16,9 @@
       "lifespan": 25
     },
     "habitat": {
-      "waterTypes": [
-        "marine"
-      ],
-      "regions": [
-        "WA"
-      ],
-      "seasons": [
-        9,
-        10,
-        11,
-        12,
-        1
-      ],
+      "waterTypes": ["marine"],
+      "regions": ["WA"],
+      "seasons": [9, 10, 11, 12, 1],
       "depth": "0-100 m"
     },
     "regulations": [
@@ -60,19 +47,10 @@
         ],
         "requiresLicense": true,
         "notes": "Daily limit 2 in West Coast, 1 in Abrolhos, 3 in other bioregions; demersal closure periods apply"
-      },
-      {
-        "region": "QLD",
-        "dailyLimit": null,
-        "notes": "Baldchin groper is endemic to WA; not subject to QLD regulations"
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "echinoderms",
-        "molluscs",
-        "crustaceans"
-      ],
+      "feedingHabits": ["echinoderms", "molluscs", "crustaceans"],
       "activeTime": "day",
       "difficulty": 3
     },
@@ -80,16 +58,13 @@
   },
   {
     "id": "2",
-    "name": "舒氏豥齒魚",
+    "name": "Blackspot tuskfish",
     "scientificName": "Choerodon schoenleinii",
-    "localNames": [
-      "Blackspot tuskfish",
-      "Blue tuskfish"
-    ],
+    "localNames": ["Blackspot tuskfish", "Blue tuskfish"],
     "family": "Labridae",
     "rarity": "uncommon",
     "images": {
-      "card": "2.jpeg"
+      "card": "2.png"
     },
     "characteristics": {
       "minLengthCm": 40,
@@ -98,29 +73,9 @@
       "lifespan": null
     },
     "habitat": {
-      "waterTypes": [
-        "marine"
-      ],
-      "regions": [
-        "WA",
-        "NT",
-        "QLD",
-        "NSW"
-      ],
-      "seasons": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT", "QLD", "NSW"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "depth": "0-60 m"
     },
     "regulations": [
@@ -153,16 +108,13 @@
   },
   {
     "id": "3",
-    "name": "蓝棒石斑鱼",
+    "name": "Rankin cod",
     "scientificName": "Epinephelus multinotatus",
-    "localNames": [
-      "Rankin cod",
-      "Rankin rockcod"
-    ],
+    "localNames": ["Rankin cod", "Rankin rockcod"],
     "family": "Serranidae",
     "rarity": "uncommon",
     "images": {
-      "card": "3.jpeg"
+      "card": "3.png"
     },
     "characteristics": {
       "minLengthCm": 30,
@@ -171,27 +123,9 @@
       "lifespan": 22
     },
     "habitat": {
-      "waterTypes": [
-        "marine"
-      ],
-      "regions": [
-        "WA",
-        "NT"
-      ],
-      "seasons": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "depth": "10-110 m"
     },
     "regulations": [
@@ -212,10 +146,7 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "small fishes",
-        "crustaceans"
-      ],
+      "feedingHabits": ["small fishes", "crustaceans"],
       "activeTime": "both",
       "difficulty": 4
     },
@@ -223,17 +154,13 @@
   },
   {
     "id": "4",
-    "name": "川紋笛鯛",
+    "name": "Red emperor",
     "scientificName": "Lutjanus sebae",
-    "localNames": [
-      "Red emperor",
-      "King snapper",
-      "Scarlet emperor"
-    ],
+    "localNames": ["Red emperor", "King snapper", "Scarlet emperor"],
     "family": "Lutjanidae",
     "rarity": "uncommon",
     "images": {
-      "card": "4.jpeg"
+      "card": "4.png"
     },
     "characteristics": {
       "minLengthCm": 41,
@@ -242,29 +169,9 @@
       "lifespan": null
     },
     "habitat": {
-      "waterTypes": [
-        "marine"
-      ],
-      "regions": [
-        "WA",
-        "NT",
-        "QLD",
-        "NSW"
-      ],
-      "seasons": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT", "QLD", "NSW"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "depth": "0-180 m"
     },
     "regulations": [
@@ -284,12 +191,7 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "fishes",
-        "crabs",
-        "shrimps",
-        "cephalopods"
-      ],
+      "feedingHabits": ["fishes", "crabs", "shrimps", "cephalopods"],
       "activeTime": "both",
       "difficulty": 4
     },
@@ -297,16 +199,13 @@
   },
   {
     "id": "5",
-    "name": "斑紋裸頜魚",
+    "name": "Spangled emperor (Nor\u2019west snapper)",
     "scientificName": "Lethrinus nebulosus",
-    "localNames": [
-      "Spangled emperor",
-      "Nor’west snapper"
-    ],
+    "localNames": ["Spangled emperor", "Nor’west snapper"],
     "family": "Lethrinidae",
     "rarity": "common",
     "images": {
-      "card": "5.jpeg"
+      "card": "5.png"
     },
     "characteristics": {
       "minLengthCm": 41,
@@ -315,29 +214,9 @@
       "lifespan": 25
     },
     "habitat": {
-      "waterTypes": [
-        "marine"
-      ],
-      "regions": [
-        "WA",
-        "NT",
-        "QLD",
-        "NSW"
-      ],
-      "seasons": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT", "QLD", "NSW"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "depth": "0-80 m"
     },
     "regulations": [
@@ -357,12 +236,7 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "sea snails",
-        "crabs",
-        "sea urchins",
-        "worms"
-      ],
+      "feedingHabits": ["sea snails", "crabs", "sea urchins", "worms"],
       "activeTime": "day",
       "difficulty": 3
     },
@@ -370,16 +244,13 @@
   },
   {
     "id": "6",
-    "name": "條紋笛鯛",
+    "name": "Stripey snapper (Spanish flag)",
     "scientificName": "Lutjanus carponotatus",
-    "localNames": [
-      "Stripey snapper",
-      "Spanish flag"
-    ],
+    "localNames": ["Stripey snapper", "Spanish flag"],
     "family": "Lutjanidae",
     "rarity": "common",
     "images": {
-      "card": "6.jpeg"
+      "card": "6.png"
     },
     "characteristics": {
       "minLengthCm": 25,
@@ -388,28 +259,9 @@
       "lifespan": 20
     },
     "habitat": {
-      "waterTypes": [
-        "marine"
-      ],
-      "regions": [
-        "WA",
-        "NT",
-        "QLD"
-      ],
-      "seasons": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT", "QLD"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "depth": "0-35 m"
     },
     "regulations": [
@@ -429,11 +281,7 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "fishes",
-        "crustaceans",
-        "cephalopods"
-      ],
+      "feedingHabits": ["fishes", "crustaceans", "cephalopods"],
       "activeTime": "day",
       "difficulty": 2
     },
@@ -441,16 +289,13 @@
   },
   {
     "id": "7",
-    "name": "黃尾裸頜魚",
+    "name": "Yellowtail emperor",
     "scientificName": "Lethrinus atkinsoni",
-    "localNames": [
-      "Pacific yellowtail emperor",
-      "Reticulated emperor"
-    ],
+    "localNames": ["Pacific yellowtail emperor", "Reticulated emperor"],
     "family": "Lethrinidae",
     "rarity": "uncommon",
     "images": {
-      "card": "7.jpeg"
+      "card": "7.png"
     },
     "characteristics": {
       "minLengthCm": 25,
@@ -459,28 +304,9 @@
       "lifespan": 10
     },
     "habitat": {
-      "waterTypes": [
-        "marine"
-      ],
-      "regions": [
-        "WA",
-        "QLD",
-        "NT"
-      ],
-      "seasons": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
+      "waterTypes": ["marine"],
+      "regions": ["WA", "QLD", "NT"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "depth": "0-30 m"
     },
     "regulations": [
@@ -500,12 +326,7 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "plankton",
-        "molluscs",
-        "crustaceans",
-        "small fish"
-      ],
+      "feedingHabits": ["plankton", "molluscs", "crustaceans", "small fish"],
       "activeTime": "day",
       "difficulty": 2
     },
@@ -513,16 +334,13 @@
   },
   {
     "id": "8",
-    "name": "青鰺魚",
+    "name": "Tailor",
     "scientificName": "Pomatomus saltatrix",
-    "localNames": [
-      "Tailor",
-      "Bluefish"
-    ],
+    "localNames": ["Tailor", "Bluefish"],
     "family": "Pomatomidae",
     "rarity": "common",
     "images": {
-      "card": "8.jpeg"
+      "card": "8.png"
     },
     "characteristics": {
       "minLengthCm": 30,
@@ -531,29 +349,9 @@
       "lifespan": 10
     },
     "habitat": {
-      "waterTypes": [
-        "marine"
-      ],
-      "regions": [
-        "WA",
-        "NT",
-        "QLD",
-        "NSW"
-      ],
-      "seasons": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT", "QLD", "NSW"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "depth": "surface to 60 m"
     },
     "regulations": [
@@ -561,9 +359,7 @@
         "region": "WA",
         "minSizeCm": 30,
         "dailyLimit": 8,
-        "specialRules": [
-          "Only two fish over 50 cm may be kept"
-        ],
+        "specialRules": ["Only two fish over 50 cm may be kept"],
         "requiresLicense": true,
         "notes": "Wire trace banned around some areas; boat fishing licence required"
       },
@@ -576,10 +372,7 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "schooling fishes",
-        "crustaceans"
-      ],
+      "feedingHabits": ["schooling fishes", "crustaceans"],
       "activeTime": "both",
       "difficulty": 3
     },
@@ -587,16 +380,13 @@
   },
   {
     "id": "9",
-    "name": "銀鯛魚",
+    "name": "Tarwhine (silver bream)",
     "scientificName": "Rhabdosargus sarba",
-    "localNames": [
-      "Tarwhine",
-      "Silver bream"
-    ],
+    "localNames": ["Tarwhine", "Silver bream"],
     "family": "Sparidae",
     "rarity": "common",
     "images": {
-      "card": "9.jpeg"
+      "card": "9.png"
     },
     "characteristics": {
       "minLengthCm": 25,
@@ -605,31 +395,9 @@
       "lifespan": 15
     },
     "habitat": {
-      "waterTypes": [
-        "marine",
-        "estuarine"
-      ],
-      "regions": [
-        "WA",
-        "SA",
-        "QLD",
-        "NSW",
-        "VIC"
-      ],
-      "seasons": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
+      "waterTypes": ["marine", "estuarine"],
+      "regions": ["WA", "SA", "QLD", "NSW", "VIC"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "depth": "shallow estuaries to inshore reefs"
     },
     "regulations": [
@@ -663,7 +431,7 @@
   },
   {
     "id": "10",
-    "name": "西部學校鰏",
+    "name": "Western school whiting",
     "scientificName": "Sillago vittata",
     "localNames": [
       "Western school whiting",
@@ -673,7 +441,7 @@
     "family": "Sillaginidae",
     "rarity": "common",
     "images": {
-      "card": "10.jpeg"
+      "card": "10.png"
     },
     "characteristics": {
       "minLengthCm": 10,
@@ -682,26 +450,9 @@
       "lifespan": 5
     },
     "habitat": {
-      "waterTypes": [
-        "marine"
-      ],
-      "regions": [
-        "WA"
-      ],
-      "seasons": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
+      "waterTypes": ["marine"],
+      "regions": ["WA"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "depth": "0-55 m"
     },
     "regulations": [
@@ -714,11 +465,7 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "crustaceans",
-        "molluscs",
-        "echinoderms"
-      ],
+      "feedingHabits": ["crustaceans", "molluscs", "echinoderms"],
       "activeTime": "day",
       "difficulty": 2
     },
@@ -726,16 +473,13 @@
   },
   {
     "id": "11",
-    "name": "銀魨",
+    "name": "Silver toadfish (North-West blowfish)",
     "scientificName": "Lagocephalus sceleratus",
-    "localNames": [
-      "Silver toadfish",
-      "North-West blowfish"
-    ],
+    "localNames": ["Silver toadfish", "North-West blowfish"],
     "family": "Tetraodontidae",
     "rarity": "rare",
     "images": {
-      "card": "11.jpeg"
+      "card": "11.png"
     },
     "characteristics": {
       "minLengthCm": 10,
@@ -744,28 +488,9 @@
       "lifespan": 5
     },
     "habitat": {
-      "waterTypes": [
-        "marine"
-      ],
-      "regions": [
-        "WA",
-        "NT",
-        "QLD"
-      ],
-      "seasons": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT", "QLD"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "depth": "0-250 m"
     },
     "regulations": [
@@ -776,9 +501,7 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "benthic invertebrates"
-      ],
+      "feedingHabits": ["benthic invertebrates"],
       "activeTime": "both",
       "difficulty": 1
     },
@@ -786,16 +509,13 @@
   },
   {
     "id": "12",
-    "name": "花鯧魚",
+    "name": "Mulloway",
     "scientificName": "Argyrosomus japonicus",
-    "localNames": [
-      "Mulloway",
-      "Jewfish"
-    ],
+    "localNames": ["Mulloway", "Jewfish"],
     "family": "Sciaenidae",
     "rarity": "common",
     "images": {
-      "card": "12.jpeg"
+      "card": "12.png"
     },
     "characteristics": {
       "minLengthCm": 50,
@@ -804,31 +524,9 @@
       "lifespan": 20
     },
     "habitat": {
-      "waterTypes": [
-        "marine",
-        "estuarine"
-      ],
-      "regions": [
-        "WA",
-        "SA",
-        "VIC",
-        "NSW",
-        "QLD"
-      ],
-      "seasons": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
+      "waterTypes": ["marine", "estuarine"],
+      "regions": ["WA", "SA", "VIC", "NSW", "QLD"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "depth": "0-120 m"
     },
     "regulations": [
@@ -848,11 +546,7 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "mysid shrimps",
-        "small fish",
-        "cephalopods"
-      ],
+      "feedingHabits": ["mysid shrimps", "small fish", "cephalopods"],
       "activeTime": "night",
       "difficulty": 4
     },
@@ -860,17 +554,13 @@
   },
   {
     "id": "13",
-    "name": "草裸頜魚",
+    "name": "Bluelined emperor (black snapper)",
     "scientificName": "Lethrinus laticaudis",
-    "localNames": [
-      "Bluelined emperor",
-      "Grass emperor",
-      "Black snapper"
-    ],
+    "localNames": ["Bluelined emperor", "Grass emperor", "Black snapper"],
     "family": "Lethrinidae",
     "rarity": "common",
     "images": {
-      "card": "13.jpeg"
+      "card": "13.png"
     },
     "characteristics": {
       "minLengthCm": 32,
@@ -879,28 +569,9 @@
       "lifespan": 20
     },
     "habitat": {
-      "waterTypes": [
-        "marine"
-      ],
-      "regions": [
-        "WA",
-        "NT",
-        "QLD"
-      ],
-      "seasons": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT", "QLD"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "depth": "0-50 m"
     },
     "regulations": [
@@ -920,11 +591,7 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "benthic invertebrates",
-        "crustaceans",
-        "molluscs"
-      ],
+      "feedingHabits": ["benthic invertebrates", "crustaceans", "molluscs"],
       "activeTime": "day",
       "difficulty": 3
     },
@@ -932,17 +599,13 @@
   },
   {
     "id": "14",
-    "name": "藍泳蟹",
+    "name": "Blue swimmer crab",
     "scientificName": "Portunus armatus",
-    "localNames": [
-      "Blue swimmer crab",
-      "Blue manna crab",
-      "Blueys"
-    ],
+    "localNames": ["Blue swimmer crab", "Blue manna crab", "Blueys"],
     "family": "Portunidae",
     "rarity": "common",
     "images": {
-      "card": "14.jpeg"
+      "card": "14.png"
     },
     "characteristics": {
       "minLengthCm": 12.7,
@@ -951,30 +614,9 @@
       "lifespan": 3
     },
     "habitat": {
-      "waterTypes": [
-        "marine",
-        "estuarine"
-      ],
-      "regions": [
-        "WA",
-        "SA",
-        "NT",
-        "NSW"
-      ],
-      "seasons": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
+      "waterTypes": ["marine", "estuarine"],
+      "regions": ["WA", "SA", "NT", "NSW"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "depth": "intertidal to 50 m"
     },
     "regulations": [
@@ -1019,7 +661,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "15.jpeg"
+      "card": "15.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1046,7 +688,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "16.jpeg"
+      "card": "16.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1073,7 +715,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "17.jpeg"
+      "card": "17.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1095,7 +737,7 @@
   },
   {
     "id": "18",
-    "name": "黃鰭鰏",
+    "name": "Yellowfin whiting",
     "scientificName": "Sillago schomburgkii",
     "localNames": [
       "Yellowfin whiting",
@@ -1105,7 +747,7 @@
     "family": "Sillaginidae",
     "rarity": "common",
     "images": {
-      "card": "18.jpeg"
+      "card": "18.png"
     },
     "characteristics": {
       "minLengthCm": 20,
@@ -1114,20 +756,9 @@
       "lifespan": 5
     },
     "habitat": {
-      "waterTypes": [
-        "marine",
-        "estuarine"
-      ],
-      "regions": [
-        "WA",
-        "SA"
-      ],
-      "seasons": [
-        12,
-        1,
-        2,
-        3
-      ],
+      "waterTypes": ["marine", "estuarine"],
+      "regions": ["WA", "SA"],
+      "seasons": [12, 1, 2, 3],
       "depth": "0-20 m"
     },
     "regulations": [
@@ -1165,7 +796,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "19.jpeg"
+      "card": "19.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1192,7 +823,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "20.jpeg"
+      "card": "20.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1219,7 +850,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "21.jpeg"
+      "card": "21.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1241,17 +872,13 @@
   },
   {
     "id": "22",
-    "name": "長槍魚",
+    "name": "Longtom",
     "scientificName": "Belonidae family",
-    "localNames": [
-      "Longtom",
-      "Stout longtom",
-      "Needlefish"
-    ],
+    "localNames": ["Longtom", "Stout longtom", "Needlefish"],
     "family": "Belonidae",
     "rarity": "common",
     "images": {
-      "card": "22.jpeg"
+      "card": "22.png"
     },
     "characteristics": {
       "minLengthCm": 40,
@@ -1260,29 +887,9 @@
       "lifespan": 10
     },
     "habitat": {
-      "waterTypes": [
-        "marine"
-      ],
-      "regions": [
-        "WA",
-        "NT",
-        "QLD",
-        "NSW"
-      ],
-      "seasons": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
+      "waterTypes": ["marine"],
+      "regions": ["WA", "NT", "QLD", "NSW"],
+      "seasons": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "depth": "surface to 20 m"
     },
     "regulations": [
@@ -1295,10 +902,7 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "small fish",
-        "crustaceans"
-      ],
+      "feedingHabits": ["small fish", "crustaceans"],
       "activeTime": "day",
       "difficulty": 2
     },
@@ -1311,7 +915,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "23.jpeg"
+      "card": "23.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1338,7 +942,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "24.jpeg"
+      "card": "24.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1365,7 +969,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "25.jpeg"
+      "card": "25.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1392,7 +996,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "26.jpeg"
+      "card": "26.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1419,7 +1023,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "27.jpeg"
+      "card": "27.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1446,7 +1050,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "28.jpeg"
+      "card": "28.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1473,7 +1077,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "29.jpeg"
+      "card": "29.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1500,7 +1104,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "30.jpeg"
+      "card": "30.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1527,7 +1131,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "31.jpeg"
+      "card": "31.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1554,7 +1158,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "32.jpeg"
+      "card": "32.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1581,7 +1185,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "33.jpeg"
+      "card": "33.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1608,7 +1212,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "34.jpeg"
+      "card": "34.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1635,7 +1239,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "35.jpeg"
+      "card": "35.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1662,7 +1266,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "36.jpeg"
+      "card": "36.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1689,7 +1293,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "37.jpeg"
+      "card": "37.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1716,7 +1320,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "38.jpeg"
+      "card": "38.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1743,7 +1347,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "39.jpeg"
+      "card": "39.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1770,7 +1374,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "40.jpeg"
+      "card": "40.png"
     },
     "characteristics": {
       "minLengthCm": null,
@@ -1797,7 +1401,7 @@
     "family": "",
     "rarity": "unknown",
     "images": {
-      "card": "41.jpeg"
+      "card": "41.png"
     },
     "characteristics": {
       "minLengthCm": null,

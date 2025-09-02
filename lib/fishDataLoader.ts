@@ -1,6 +1,6 @@
 import fishData from '../data/fish_data_completed.json';
 
-import { getFishImage } from './fishImages';
+import { fishImages } from './fishImages';
 import { Fish, FishRarity } from './types';
 
 // 稀有度映射
@@ -19,13 +19,11 @@ function transformFishData(rawData: any[]): Fish[] {
     // 处理稀有度映射
     const mappedRarity = rarityMapping[rawFish.rarity] || 'unknown';
     
-    // 处理图片路径 - 使用图片映射获取静态资源
-    const fishId = rawFish.id;
-    const fishImage = getFishImage(fishId);
+    // 图片将在组件中直接映射，这里只需要提供ID
     const images = {
-      card: fishImage,
-      hero: fishImage,
-      silhouette: fishImage,
+      card: rawFish.id, // 直接使用鱼类ID
+      hero: rawFish.id,
+      silhouette: rawFish.id,
     };
 
     // 转换数据结构以匹配 Fish 接口
