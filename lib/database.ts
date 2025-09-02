@@ -7,6 +7,9 @@ import {
   UserAchievement, 
   UserProfile,
   UserPreferences,
+  EquipmentSet,
+  EquipmentItem,
+  EquipmentStats,
 } from './types';
 import { generateUUID } from './utils';
 
@@ -139,6 +142,53 @@ export class DatabaseService {
         created_at TEXT DEFAULT CURRENT_TIMESTAMP,
         updated_at TEXT DEFAULT CURRENT_TIMESTAMP
       )`,
+
+      // 装备组合表
+      `CREATE TABLE IF NOT EXISTS equipment_sets (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        description TEXT,
+        rod TEXT NOT NULL,
+        reel TEXT NOT NULL,
+        line TEXT NOT NULL,
+        hook TEXT NOT NULL,
+        bait TEXT NOT NULL,
+        accessories TEXT,
+        water_types TEXT NOT NULL,
+        target_fish TEXT,
+        tags TEXT,
+        is_default INTEGER DEFAULT 0,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+      )`,
+
+      // 装备单品表
+      `CREATE TABLE IF NOT EXISTS equipment_items (
+        id TEXT PRIMARY KEY,
+        type TEXT NOT NULL CHECK (type IN ('rod', 'reel', 'line', 'hook', 'bait', 'accessory')),
+        name TEXT NOT NULL,
+        brand TEXT,
+        model TEXT,
+        specifications TEXT,
+        notes TEXT,
+        is_custom INTEGER DEFAULT 1,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+      )`,
+
+      // 装备统计表
+      `CREATE TABLE IF NOT EXISTS equipment_stats (
+        equipment_set_id TEXT PRIMARY KEY,
+        usage_count INTEGER DEFAULT 0,
+        success_rate REAL DEFAULT 0,
+        catch_count INTEGER DEFAULT 0,
+        average_weight REAL DEFAULT 0,
+        average_length REAL DEFAULT 0,
+        favorite_water_type TEXT,
+        last_used_at TEXT,
+        updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (equipment_set_id) REFERENCES equipment_sets (id)
+      )`,
     ];
 
     // 创建索引
@@ -148,6 +198,9 @@ export class DatabaseService {
       'CREATE INDEX IF NOT EXISTS idx_catch_records_user_id ON catch_records (user_id)',
       'CREATE INDEX IF NOT EXISTS idx_fish_rarity ON fish (rarity)',
       'CREATE INDEX IF NOT EXISTS idx_fish_family ON fish (family)',
+      'CREATE INDEX IF NOT EXISTS idx_equipment_sets_name ON equipment_sets (name)',
+      'CREATE INDEX IF NOT EXISTS idx_equipment_items_type ON equipment_items (type)',
+      'CREATE INDEX IF NOT EXISTS idx_equipment_stats_usage ON equipment_stats (usage_count)',
     ];
 
     try {
@@ -480,6 +533,197 @@ export class DatabaseService {
     }
   }
 
+  // === 装备相关操作 ===
+
+  async getAllEquipmentSets(): Promise<EquipmentSet[]> {
+    const db = await this.init();
+    try {
+      const rows = await db.getAllAsync<any>('SELECT * FROM equipment_sets ORDER BY name');
+      return rows.map(this.parseEquipmentSetFromRow);
+    } catch (error) {
+      console.error('Error fetching equipment sets:', error);
+      return [];
+    }
+  }
+
+  async getEquipmentSetById(id: string): Promise<EquipmentSet | null> {
+    const db = await this.init();
+    try {
+      const row = await db.getFirstAsync<any>('SELECT * FROM equipment_sets WHERE id = ?', [id]);
+      return row ? this.parseEquipmentSetFromRow(row) : null;
+    } catch (error) {
+      console.error('Error fetching equipment set by id:', error);
+      return null;
+    }
+  }
+
+  async insertEquipmentSet(equipmentSet: EquipmentSet): Promise<void> {
+    const db = await this.init();
+    try {
+      await db.runAsync(
+        `INSERT OR REPLACE INTO equipment_sets (
+          id, name, description, rod, reel, line, hook, bait,
+          accessories, water_types, target_fish, tags, is_default, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
+        [
+          equipmentSet.id,
+          equipmentSet.name,
+          equipmentSet.description || null,
+          equipmentSet.rod,
+          equipmentSet.reel,
+          equipmentSet.line,
+          equipmentSet.hook,
+          equipmentSet.bait,
+          JSON.stringify(equipmentSet.accessories || []),
+          JSON.stringify(equipmentSet.waterTypes),
+          JSON.stringify(equipmentSet.targetFish || []),
+          JSON.stringify(equipmentSet.tags),
+          equipmentSet.isDefault ? 1 : 0,
+        ]
+      );
+    } catch (error) {
+      console.error('Error inserting equipment set:', error);
+      throw error;
+    }
+  }
+
+  async updateEquipmentSet(id: string, updates: Partial<EquipmentSet>): Promise<void> {
+    const db = await this.init();
+    try {
+      const fields: string[] = [];
+      const values: any[] = [];
+
+      Object.entries(updates).forEach(([key, value]) => {
+        if (key === 'id' || key === 'createdAt') {
+          return; // Skip immutable fields
+        }
+
+        const dbKey = this.camelToSnake(key);
+        
+        if (typeof value === 'object' && value !== null) {
+          fields.push(`${dbKey} = ?`);
+          values.push(JSON.stringify(value));
+        } else if (typeof value === 'boolean') {
+          fields.push(`${dbKey} = ?`);
+          values.push(value ? 1 : 0);
+        } else {
+          fields.push(`${dbKey} = ?`);
+          values.push(value);
+        }
+      });
+
+      if (fields.length === 0) {
+        return;
+      }
+
+      fields.push('updated_at = CURRENT_TIMESTAMP');
+      values.push(id);
+
+      const sql = `UPDATE equipment_sets SET ${fields.join(', ')} WHERE id = ?`;
+      await db.runAsync(sql, values);
+    } catch (error) {
+      console.error('Error updating equipment set:', error);
+      throw error;
+    }
+  }
+
+  async deleteEquipmentSet(id: string): Promise<void> {
+    const db = await this.init();
+    try {
+      await db.withTransactionAsync(async () => {
+        // 删除相关统计数据
+        await db.runAsync('DELETE FROM equipment_stats WHERE equipment_set_id = ?', [id]);
+        // 删除装备组合
+        await db.runAsync('DELETE FROM equipment_sets WHERE id = ?', [id]);
+      });
+    } catch (error) {
+      console.error('Error deleting equipment set:', error);
+      throw error;
+    }
+  }
+
+  async getAllEquipmentItems(): Promise<EquipmentItem[]> {
+    const db = await this.init();
+    try {
+      const rows = await db.getAllAsync<any>('SELECT * FROM equipment_items ORDER BY type, name');
+      return rows.map(this.parseEquipmentItemFromRow);
+    } catch (error) {
+      console.error('Error fetching equipment items:', error);
+      return [];
+    }
+  }
+
+  async getEquipmentItemsByType(type: string): Promise<EquipmentItem[]> {
+    const db = await this.init();
+    try {
+      const rows = await db.getAllAsync<any>('SELECT * FROM equipment_items WHERE type = ? ORDER BY name', [type]);
+      return rows.map(this.parseEquipmentItemFromRow);
+    } catch (error) {
+      console.error('Error fetching equipment items by type:', error);
+      return [];
+    }
+  }
+
+  async insertEquipmentItem(item: EquipmentItem): Promise<void> {
+    const db = await this.init();
+    try {
+      await db.runAsync(
+        `INSERT OR REPLACE INTO equipment_items (
+          id, type, name, brand, model, specifications, notes, is_custom, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
+        [
+          item.id,
+          item.type,
+          item.name,
+          item.brand || null,
+          item.model || null,
+          JSON.stringify(item.specifications || {}),
+          item.notes || null,
+          item.isCustom ? 1 : 0,
+        ]
+      );
+    } catch (error) {
+      console.error('Error inserting equipment item:', error);
+      throw error;
+    }
+  }
+
+  async getAllEquipmentStats(): Promise<EquipmentStats[]> {
+    const db = await this.init();
+    try {
+      const rows = await db.getAllAsync<any>('SELECT * FROM equipment_stats');
+      return rows.map(this.parseEquipmentStatsFromRow);
+    } catch (error) {
+      console.error('Error fetching equipment stats:', error);
+      return [];
+    }
+  }
+
+  async updateEquipmentStats(stats: EquipmentStats): Promise<void> {
+    const db = await this.init();
+    try {
+      await db.runAsync(
+        `INSERT OR REPLACE INTO equipment_stats (
+          equipment_set_id, usage_count, success_rate, catch_count,
+          average_weight, average_length, favorite_water_type, last_used_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
+        [
+          stats.equipmentSetId,
+          stats.usageCount,
+          stats.successRate,
+          stats.catchCount,
+          stats.averageWeight,
+          stats.averageLength,
+          stats.favoriteWaterType || null,
+          stats.lastUsedAt || null,
+        ]
+      );
+    } catch (error) {
+      console.error('Error updating equipment stats:', error);
+      throw error;
+    }
+  }
+
   // === 工具方法 ===
 
   async clearAllData(): Promise<void> {
@@ -587,6 +831,54 @@ export class DatabaseService {
       privacy: JSON.parse(row.privacy),
       notifications: JSON.parse(row.notifications),
       appearance: JSON.parse(row.appearance),
+    };
+  }
+
+  private parseEquipmentSetFromRow(row: any): EquipmentSet {
+    return {
+      id: row.id,
+      name: row.name,
+      description: row.description,
+      rod: row.rod,
+      reel: row.reel,
+      line: row.line,
+      hook: row.hook,
+      bait: row.bait,
+      accessories: JSON.parse(row.accessories || '[]'),
+      waterTypes: JSON.parse(row.water_types),
+      targetFish: JSON.parse(row.target_fish || '[]'),
+      tags: JSON.parse(row.tags || '[]'),
+      isDefault: Boolean(row.is_default),
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    };
+  }
+
+  private parseEquipmentItemFromRow(row: any): EquipmentItem {
+    return {
+      id: row.id,
+      type: row.type as 'rod' | 'reel' | 'line' | 'hook' | 'bait' | 'accessory',
+      name: row.name,
+      brand: row.brand,
+      model: row.model,
+      specifications: JSON.parse(row.specifications || '{}'),
+      notes: row.notes,
+      isCustom: Boolean(row.is_custom),
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    };
+  }
+
+  private parseEquipmentStatsFromRow(row: any): EquipmentStats {
+    return {
+      equipmentSetId: row.equipment_set_id,
+      usageCount: row.usage_count,
+      successRate: row.success_rate,
+      catchCount: row.catch_count,
+      averageWeight: row.average_weight,
+      averageLength: row.average_length,
+      favoriteWaterType: row.favorite_water_type as any,
+      lastUsedAt: row.last_used_at,
     };
   }
 

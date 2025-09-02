@@ -376,6 +376,9 @@ export const DEFAULT_ACHIEVEMENTS = [
   }
 ] as const;
 
+// 默认装备组合（空数组，用户自行创建）
+export const DEFAULT_EQUIPMENT_SETS = [] as const;
+
 // 图标映射
 export const ICON_MAPPING = {
   // 鱼类相关
