@@ -9,6 +9,9 @@ import {
   UserPreferences,
   UserStats,
   FishdexFilters,
+  EquipmentSet,
+  EquipmentItem,
+  EquipmentStats,
 } from './types';
 
 // 简化的App状态接口
@@ -18,6 +21,11 @@ interface AppState {
   catches: CatchRecord[];
   achievements: Achievement[];
   userAchievements: UserAchievement[];
+
+  // 装备数据
+  equipmentSets: EquipmentSet[];
+  equipmentItems: EquipmentItem[];
+  equipmentStats: EquipmentStats[];
 
   // 用户数据
   userProfile: UserProfile | null;
@@ -44,6 +52,18 @@ interface AppActions {
     catchData: Omit<CatchRecord, 'id' | 'createdAt' | 'updatedAt'>
   ) => void;
   setCatches: (catches: CatchRecord[]) => void;
+
+  // 装备操作
+  setEquipmentSets: (equipmentSets: EquipmentSet[]) => void;
+  addEquipmentSet: (equipmentSet: Omit<EquipmentSet, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  updateEquipmentSet: (id: string, updates: Partial<EquipmentSet>) => void;
+  deleteEquipmentSet: (id: string) => void;
+  setEquipmentItems: (equipmentItems: EquipmentItem[]) => void;
+  setEquipmentStats: (equipmentStats: EquipmentStats[]) => void;
+
+  // 用户偏好操作
+  updateUserPreferences: (updates: Partial<UserPreferences>) => void;
+  updateUserProfile: (updates: Partial<UserProfile>) => void;
 
   // UI 操作
   setLoading: (loading: boolean) => void;
@@ -73,8 +93,8 @@ const defaultUserPreferences: UserPreferences = {
     weather: true,
   },
   appearance: {
-    theme: 'auto',
-    language: 'zh-CN',
+    theme: 'system',
+    language: 'zh',
   },
 };
 
@@ -107,6 +127,9 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
   catches: [],
   achievements: [],
   userAchievements: [],
+  equipmentSets: [],
+  equipmentItems: [],
+  equipmentStats: [],
   userProfile: null,
   userPreferences: defaultUserPreferences,
   userStats: defaultUserStats,
@@ -149,6 +172,8 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     // Reset cache when adding new catch
     cachedFilteredFish = [];
     lastFilterState = '';
+    cachedUserStats = defaultUserStats;
+    lastUserStatsState = '';
 
     set(state => {
       const updatedCatches = [...state.catches, newCatch];
@@ -164,6 +189,8 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     // Reset cache when catches data changes
     cachedFilteredFish = [];
     lastFilterState = '';
+    cachedUserStats = defaultUserStats;
+    lastUserStatsState = '';
     set(state => {
       const unlockedIds = new Set(catches.map(c => c.fishId));
       return {
@@ -171,6 +198,64 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
         unlockedFishIds: unlockedIds,
       };
     });
+  },
+
+  // 装备操作
+  setEquipmentSets: equipmentSets => {
+    set({ equipmentSets });
+  },
+
+  addEquipmentSet: equipmentData => {
+    const newEquipmentSet: EquipmentSet = {
+      ...equipmentData,
+      id: generateId(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    set(state => ({
+      equipmentSets: [...state.equipmentSets, newEquipmentSet],
+    }));
+  },
+
+  updateEquipmentSet: (id, updates) => {
+    set(state => ({
+      equipmentSets: state.equipmentSets.map(set =>
+        set.id === id
+          ? { ...set, ...updates, updatedAt: new Date().toISOString() }
+          : set
+      ),
+    }));
+  },
+
+  deleteEquipmentSet: id => {
+    set(state => ({
+      equipmentSets: state.equipmentSets.filter(set => set.id !== id),
+      equipmentStats: state.equipmentStats.filter(stat => stat.equipmentSetId !== id),
+    }));
+  },
+
+  setEquipmentItems: equipmentItems => {
+    set({ equipmentItems });
+  },
+
+  setEquipmentStats: equipmentStats => {
+    set({ equipmentStats });
+  },
+
+  // 用户偏好操作
+  updateUserPreferences: updates => {
+    set(state => ({
+      userPreferences: { ...state.userPreferences, ...updates },
+    }));
+  },
+
+  updateUserProfile: updates => {
+    set(state => ({
+      userProfile: state.userProfile 
+        ? { ...state.userProfile, ...updates }
+        : null,
+    }));
   },
 
   // UI 操作
@@ -226,10 +311,94 @@ export const useCatches = () => useAppStore(state => state.catches);
 export const useAchievements = () => useAppStore(state => state.achievements);
 export const useUserAchievements = () =>
   useAppStore(state => state.userAchievements);
+export const useEquipmentSets = () => useAppStore(state => state.equipmentSets);
+export const useEquipmentItems = () => useAppStore(state => state.equipmentItems);
+export const useEquipmentStats = () => useAppStore(state => state.equipmentStats);
 export const useUserProfile = () => useAppStore(state => state.userProfile);
 export const useUserPreferences = () =>
   useAppStore(state => state.userPreferences);
-export const useUserStats = () => useAppStore(state => state.userStats);
+// 缓存变量用于用户统计选择器
+let cachedUserStats: UserStats = defaultUserStats;
+let lastUserStatsState: string = '';
+
+// 动态计算用户统计数据的选择器
+export const useUserStats = () => {
+  return useAppStore(state => {
+    const { catches, fish } = state;
+    
+    // Create hash for current state
+    const currentStatsState = JSON.stringify({
+      catchesLength: catches.length,
+      catchesData: catches.map(c => ({ 
+        fishId: c.fishId, 
+        timestamp: c.timestamp,
+        weight: c.measurements?.weight || 0,
+        length: c.measurements?.length || 0
+      }))
+    });
+
+    // Return cached result if state hasn't changed
+    if (currentStatsState === lastUserStatsState) {
+      return cachedUserStats;
+    }
+
+    // Update cache state
+    lastUserStatsState = currentStatsState;
+    
+    if (catches.length === 0) {
+      cachedUserStats = defaultUserStats;
+      return cachedUserStats;
+    }
+
+    // 计算总钓获数
+    const totalCatches = catches.length;
+    
+    // 计算独特鱼种数
+    const uniqueSpeciesIds = new Set(catches.map(c => c.fishId));
+    const uniqueSpecies = uniqueSpeciesIds.size;
+    
+    // 计算开始钓鱼的天数（从第一条记录到现在）
+    const sortedCatches = [...catches].sort((a, b) => 
+      new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    );
+    const firstCatchDate = new Date(sortedCatches[0].timestamp);
+    const daysSinceFirstCatch = Math.floor(
+      (Date.now() - firstCatchDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
+    
+    // 计算总重量和总长度
+    let totalWeight = 0;
+    let totalLength = 0;
+    catches.forEach(catchRecord => {
+      if (catchRecord.measurements) {
+        if (catchRecord.measurements.weight) {
+          totalWeight += catchRecord.measurements.weight;
+        }
+        if (catchRecord.measurements.length) {
+          totalLength += catchRecord.measurements.length;
+        }
+      }
+    });
+
+    cachedUserStats = {
+      totalCatches,
+      uniqueSpecies,
+      totalWeight: Math.round(totalWeight * 100) / 100, // 保留两位小数
+      totalLength: Math.round(totalLength * 100) / 100, // 保留两位小数
+      longestStreak: 0, // 暂时保持为0，可以后续实现
+      currentStreak: daysSinceFirstCatch, // 改为开始钓鱼的天数
+      favoriteWaterType: 'lake', // 暂时保持默认值
+      mostActiveMonth: 1, // 暂时保持默认值
+      personalBests: {
+        largestByWeight: { fishId: '', catchId: '', weight: 0 },
+        largestByLength: { fishId: '', catchId: '', length: 0 },
+        rarest: { fishId: '', catchId: '', rarity: 'common' },
+      },
+    };
+
+    return cachedUserStats;
+  });
+};
 export const useIsLoading = () => useAppStore(state => state.isLoading);
 export const useCurrentView = () => useAppStore(state => state.currentView);
 export const useFilters = () => useAppStore(state => state.filters);
