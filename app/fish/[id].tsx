@@ -28,6 +28,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
+import { useTranslation } from '@/lib/i18n';
 import { RARITY_COLORS, WATER_TYPE_NAMES, DIFFICULTY_NAMES } from '@/lib/constants';
 import { useFish, useCatches, useUserStats } from '@/lib/store';
 import { Fish, FishCardState } from '@/lib/types';
@@ -38,6 +39,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 export default function FishDetailScreen() {
   const theme = useTheme();
+  const { t } = useTranslation();
   const { isTablet } = useResponsive();
   const params = useLocalSearchParams<{ id: string }>();
   const fishId = params.id;
@@ -57,16 +59,16 @@ export default function FishDetailScreen() {
       <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
         <View style={styles.errorContainer}>
           <IconSymbol name="exclamationmark.triangle" size={64} color={theme.colors.textSecondary} />
-          <ThemedText type="h3" style={styles.errorTitle}>鱼类未找到</ThemedText>
+          <ThemedText type="h3" style={styles.errorTitle}>{t('fish.detail.not.found.title')}</ThemedText>
           <ThemedText style={styles.errorDescription}>
-            无法找到指定的鱼类信息
+            {t('fish.detail.not.found.description')}
           </ThemedText>
           <Pressable 
             style={[styles.backButton, { backgroundColor: theme.colors.primary }]}
             onPress={() => router.back()}
           >
             <ThemedText style={[styles.backButtonText, { color: 'white' }]}>
-              返回
+              {t('common.back')}
             </ThemedText>
           </Pressable>
         </View>
@@ -203,7 +205,7 @@ export default function FishDetailScreen() {
           {!isUnlocked && (
             <View style={[styles.statusBadge, { backgroundColor: theme.colors.textSecondary + '20' }]}>
               <ThemedText style={[styles.statusText, { color: theme.colors.textSecondary }]}>
-                UNKNOWN
+                {t('fish.detail.unknown')}
               </ThemedText>
             </View>
           )}
@@ -222,7 +224,7 @@ export default function FishDetailScreen() {
                 <View>
                   <IconSymbol name="fish" size={120} color={rarityColor} />
                   <ThemedText style={{ fontSize: 10, textAlign: 'center', marginTop: 4, color: theme.colors.textSecondary }}>
-                    图片ID: {currentFish.id}
+                    {t('fish.detail.image.id')}: {currentFish.id}
                   </ThemedText>
                 </View>
               )}
@@ -236,7 +238,7 @@ export default function FishDetailScreen() {
   const renderBasicInfo = () => (
     <ThemedView type="card" style={[styles.infoCard, theme.shadows.md]}>
       <View style={styles.cardHeader}>
-        <ThemedText type="title" style={styles.cardTitle}>基本信息</ThemedText>
+        <ThemedText type="title" style={styles.cardTitle}>{t('fish.detail.basic.info')}</ThemedText>
         <View style={[styles.rarityBadge, { backgroundColor: rarityColor + '20' }]}>
           <ThemedText style={[styles.rarityText, { color: rarityColor }]}>
             {currentFish.rarity.toUpperCase()}
@@ -247,21 +249,21 @@ export default function FishDetailScreen() {
       <View style={styles.leftAlignedInfoList}>
         <View style={styles.leftAlignedInfoRow}>
           <IconSymbol name="text.book.closed" size={16} color="#8B5CF6" />
-          <ThemedText style={styles.leftAlignedLabel}>学名：</ThemedText>
+          <ThemedText style={styles.leftAlignedLabel}>{t('fish.detail.scientific.name')}：</ThemedText>
           <ThemedText style={styles.leftAlignedValue}>{currentFish.scientificName}</ThemedText>
         </View>
         
         <View style={styles.leftAlignedInfoRow}>
           <IconSymbol name="tree" size={16} color="#059669" />
-          <ThemedText style={styles.leftAlignedLabel}>科属：</ThemedText>
+          <ThemedText style={styles.leftAlignedLabel}>{t('fish.detail.family')}：</ThemedText>
           <ThemedText style={styles.leftAlignedValue}>{currentFish.family}</ThemedText>
         </View>
         
         <View style={styles.leftAlignedInfoRow}>
           <IconSymbol name="location" size={16} color="#DC2626" />
-          <ThemedText style={styles.leftAlignedLabel}>别名：</ThemedText>
+          <ThemedText style={styles.leftAlignedLabel}>{t('fish.detail.local.names')}：</ThemedText>
           <ThemedText style={styles.leftAlignedValue}>
-            {currentFish.localNames?.join('、') || '无'}
+            {currentFish.localNames?.join('、') || t('common.none')}
           </ThemedText>
         </View>
       </View>
@@ -270,7 +272,7 @@ export default function FishDetailScreen() {
         <View style={[styles.unlockStatus, { backgroundColor: '#FFF3CD', borderColor: '#FFE69C' }]}>
           <IconSymbol name="exclamationmark.triangle" size={16} color="#856404" />
           <ThemedText style={[styles.unlockText, { color: '#856404' }]}>
-            钓获此鱼类后将解锁个人记录
+            {t('fish.detail.unlock.message')}
           </ThemedText>
         </View>
       )}
@@ -280,7 +282,7 @@ export default function FishDetailScreen() {
   const renderStats = () => (
     <ThemedView type="card" style={[styles.infoCard, theme.shadows.md]}>
       <View style={styles.cardHeader}>
-        <ThemedText type="title" style={styles.cardTitle}>属性数据</ThemedText>
+        <ThemedText type="title" style={styles.cardTitle}>{t('fish.detail.stats')}</ThemedText>
       </View>
       
       <View style={styles.twoColumnStatsList}>
@@ -288,7 +290,7 @@ export default function FishDetailScreen() {
         <View style={styles.statsColumn}>
           <View style={styles.leftAlignedStatRow}>
             <IconSymbol name="ruler" size={18} color="#3B82F6" />
-            <ThemedText style={styles.leftAlignedStatLabel}>长度</ThemedText>
+            <ThemedText style={styles.leftAlignedStatLabel}>{t('fish.detail.length')}</ThemedText>
             <ThemedText style={styles.leftAlignedStatValue}>
               {currentFish.characteristics.minLengthCm}-{currentFish.characteristics.maxLengthCm}cm
             </ThemedText>
@@ -296,9 +298,9 @@ export default function FishDetailScreen() {
           
           <View style={styles.leftAlignedStatRow}>
             <IconSymbol name="clock" size={18} color="#F59E0B" />
-            <ThemedText style={styles.leftAlignedStatLabel}>寿命</ThemedText>
+            <ThemedText style={styles.leftAlignedStatLabel}>{t('fish.detail.lifespan')}</ThemedText>
             <ThemedText style={styles.leftAlignedStatValue}>
-              {currentFish.characteristics.lifespan}年
+              {currentFish.characteristics.lifespan}{t('fish.detail.years')}
             </ThemedText>
           </View>
         </View>
@@ -307,15 +309,15 @@ export default function FishDetailScreen() {
         <View style={styles.statsColumn}>
           <View style={styles.leftAlignedStatRow}>
             <IconSymbol name="scalemass" size={18} color="#10B981" />
-            <ThemedText style={styles.leftAlignedStatLabel}>重量</ThemedText>
+            <ThemedText style={styles.leftAlignedStatLabel}>{t('fish.detail.weight')}</ThemedText>
             <ThemedText style={styles.leftAlignedStatValue}>
-              最大 {currentFish.characteristics.maxWeightKg}kg
+              {t('fish.detail.max.weight')} {currentFish.characteristics.maxWeightKg}kg
             </ThemedText>
           </View>
           
           <View style={styles.leftAlignedStatRow}>
             <IconSymbol name="target" size={18} color="#EF4444" />
-            <ThemedText style={styles.leftAlignedStatLabel}>难度</ThemedText>
+            <ThemedText style={styles.leftAlignedStatLabel}>{t('fish.detail.difficulty')}</ThemedText>
             <View style={styles.difficultyRow}>
               <ProgressBar
                 progress={currentFish.behavior.difficulty / 5}
@@ -337,17 +339,17 @@ export default function FishDetailScreen() {
   const renderHabitat = () => (
     <ThemedView type="card" style={[styles.infoCard, theme.shadows.md]}>
       <View style={styles.cardHeader}>
-        <ThemedText type="title" style={styles.cardTitle}>栖息环境</ThemedText>
+        <ThemedText type="title" style={styles.cardTitle}>{t('fish.detail.habitat')}</ThemedText>
       </View>
       
       <View style={styles.compactHabitatInfo}>
         <View style={styles.compactHabitatRow}>
-          <ThemedText style={styles.compactHabitatLabel}>水域类型：</ThemedText>
+          <ThemedText style={styles.compactHabitatLabel}>{t('fish.detail.water.types')}：</ThemedText>
           <View style={styles.compactTagContainer}>
             {currentFish.habitat.waterTypes?.filter(type => type).map((type, index) => (
               <View key={index} style={[styles.compactTag, { backgroundColor: theme.colors.primary + '20' }]}>
                 <ThemedText style={[styles.compactTagText, { color: theme.colors.primary }]}>
-                  {WATER_TYPE_NAMES[type] || type || '未知'}
+                  {WATER_TYPE_NAMES[type] || type || t('common.unknown')}
                 </ThemedText>
               </View>
             ))}
@@ -355,7 +357,7 @@ export default function FishDetailScreen() {
         </View>
         
         <View style={styles.compactHabitatRow}>
-          <ThemedText style={styles.compactHabitatLabel}>分布地区：</ThemedText>
+          <ThemedText style={styles.compactHabitatLabel}>{t('fish.detail.regions')}：</ThemedText>
           <View style={styles.compactTagContainer}>
             {currentFish.habitat.regions.map((region, index) => {
               // 使用与法规信息相同的颜色系统
@@ -380,12 +382,12 @@ export default function FishDetailScreen() {
         </View>
         
         <View style={styles.compactHabitatRow}>
-          <ThemedText style={styles.compactHabitatLabel}>活跃季节：</ThemedText>
+          <ThemedText style={styles.compactHabitatLabel}>{t('fish.detail.seasons')}：</ThemedText>
           <View style={styles.compactTagContainer}>
             {currentFish.habitat.seasons.map((month, index) => (
               <View key={index} style={[styles.compactTag, { backgroundColor: theme.colors.accent + '20' }]}>
                 <ThemedText style={[styles.compactTagText, { color: theme.colors.accent }]}>
-                  {month}月
+                  {month}{t('fish.detail.month')}
                 </ThemedText>
               </View>
             ))}
@@ -410,7 +412,7 @@ export default function FishDetailScreen() {
     return (
       <ThemedView type="card" style={[styles.infoCard, theme.shadows.md]}>
         <View style={styles.cardHeader}>
-          <ThemedText type="title" style={styles.cardTitle}>法规信息</ThemedText>
+          <ThemedText type="title" style={styles.cardTitle}>{t('fish.detail.regulations')}</ThemedText>
         </View>
         
         <View style={styles.regulationsGrid}>
@@ -433,7 +435,7 @@ export default function FishDetailScreen() {
                         <View style={styles.regulationRow}>
                           <IconSymbol name="ruler" size={14} color="#3B82F6" />
                           <View style={styles.regulationTextContainer}>
-                            <ThemedText style={styles.regulationLabel}>最小尺寸</ThemedText>
+                            <ThemedText style={styles.regulationLabel}>{t('fish.detail.min.size')}</ThemedText>
                             <ThemedText style={styles.regulationValue}>{regulation.minSizeCm}cm</ThemedText>
                           </View>
                         </View>
@@ -445,8 +447,8 @@ export default function FishDetailScreen() {
                         <View style={styles.regulationRow}>
                           <IconSymbol name="clock.badge" size={14} color="#10B981" />
                           <View style={styles.regulationTextContainer}>
-                            <ThemedText style={styles.regulationLabel}>日限制</ThemedText>
-                            <ThemedText style={styles.regulationValue}>{regulation.dailyLimit}尾</ThemedText>
+                            <ThemedText style={styles.regulationLabel}>{t('fish.detail.daily.limit')}</ThemedText>
+                            <ThemedText style={styles.regulationValue}>{regulation.dailyLimit}{t('fish.detail.fish.count')}</ThemedText>
                           </View>
                         </View>
                       </View>
@@ -457,7 +459,7 @@ export default function FishDetailScreen() {
                         <View style={styles.regulationRow}>
                           <IconSymbol name="calendar" size={14} color="#F59E0B" />
                           <View style={styles.regulationTextContainer}>
-                            <ThemedText style={styles.regulationLabel}>禁钓期</ThemedText>
+                            <ThemedText style={styles.regulationLabel}>{t('fish.detail.closed.seasons')}</ThemedText>
                             <ThemedText style={styles.regulationValue}>
                               {regulation.closedSeasons.map(season => 
                                 `${season.start}-${season.end}`
@@ -473,7 +475,7 @@ export default function FishDetailScreen() {
                         <View style={styles.regulationRow}>
                           <IconSymbol name="exclamationmark.triangle" size={14} color="#EF4444" />
                           <View style={styles.regulationTextContainer}>
-                            <ThemedText style={styles.regulationLabel}>特殊规定</ThemedText>
+                            <ThemedText style={styles.regulationLabel}>{t('fish.detail.special.rules')}</ThemedText>
                             <ThemedText style={styles.regulationValue}>
                               {regulation.specialRules.join(', ')}
                             </ThemedText>
@@ -497,21 +499,21 @@ export default function FishDetailScreen() {
     return (
       <ThemedView type="card" style={[styles.infoCard, theme.shadows.md]}>
         <View style={styles.cardHeader}>
-          <ThemedText type="title" style={styles.cardTitle}>个人记录</ThemedText>
-          <ThemedText style={styles.recordCount}>已钓获 {userCatches.length} 次</ThemedText>
+          <ThemedText type="title" style={styles.cardTitle}>{t('fish.detail.personal.record')}</ThemedText>
+          <ThemedText style={styles.recordCount}>{t('fish.detail.caught.times', { count: userCatches.length.toString() })}</ThemedText>
         </View>
         
         {bestCatch && (
           <View style={styles.recordInfo}>
             <View style={styles.recordRow}>
-              <ThemedText style={styles.recordLabel}>最佳记录：</ThemedText>
+              <ThemedText style={styles.recordLabel}>{t('fish.detail.best.record')}：</ThemedText>
               <ThemedText style={styles.recordValue}>
                 {bestCatch.measurements.lengthCm ? `${bestCatch.measurements.lengthCm}cm` : ''} 
                 {bestCatch.measurements.weightKg ? ` ${bestCatch.measurements.weightKg}kg` : ''}
               </ThemedText>
             </View>
             <View style={styles.recordRow}>
-              <ThemedText style={styles.recordLabel}>钓获时间：</ThemedText>
+              <ThemedText style={styles.recordLabel}>{t('fish.detail.catch.time')}：</ThemedText>
               <ThemedText style={styles.recordValue}>
                 {new Date(bestCatch.timestamp).toLocaleDateString()}
               </ThemedText>
