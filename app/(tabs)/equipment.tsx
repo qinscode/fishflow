@@ -8,12 +8,14 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/hooks/useThemeColor';
+import { useTranslation } from '@/lib/i18n';
 import { useEquipmentSets, useEquipmentStats } from '@/lib/store';
 import { EquipmentSet } from '@/lib/types';
 import { WATER_TYPE_NAMES } from '@/lib/constants';
 
 export default function EquipmentScreen() {
   const theme = useTheme();
+  const { t } = useTranslation();
   const equipmentSets = useEquipmentSets();
   const equipmentStats = useEquipmentStats();
 
@@ -46,12 +48,12 @@ export default function EquipmentScreen() {
 
   const handleDeleteSet = (set: EquipmentSet) => {
     Alert.alert(
-      '确认删除',
-      `确定要删除装备组合「${set.name}」吗？`,
+      t('equipment.delete.title'),
+      t('equipment.delete.message', { name: set.name }),
       [
-        { text: '取消', style: 'cancel' },
+        { text: t('equipment.delete.cancel'), style: 'cancel' },
         {
-          text: '删除',
+          text: t('equipment.delete.confirm'),
           style: 'destructive',
           onPress: () => {
             // TODO: 调用删除装备组合的方法
@@ -66,9 +68,9 @@ export default function EquipmentScreen() {
   };
 
   const filters = [
-    { key: 'all', label: '全部', icon: 'list.bullet' },
-    { key: 'favorites', label: '收藏', icon: 'heart.fill' },
-    { key: 'recent', label: '最近', icon: 'clock.fill' },
+    { key: 'all', label: t('equipment.filter.all'), icon: 'list.bullet' },
+    { key: 'favorites', label: t('equipment.filter.favorites'), icon: 'heart.fill' },
+    { key: 'recent', label: t('equipment.filter.recent'), icon: 'clock.fill' },
   ];
 
   return (
@@ -78,10 +80,10 @@ export default function EquipmentScreen() {
         <ThemedView style={styles.header}>
           <View>
             <ThemedText type="h2" style={styles.title}>
-              钓鱼装备
+              {t('equipment.title')}
             </ThemedText>
             <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
-              管理你的钓鱼装备组合
+              {t('equipment.subtitle')}
             </ThemedText>
           </View>
 
@@ -144,17 +146,17 @@ export default function EquipmentScreen() {
             <ThemedView type="card" style={[styles.emptyState, theme.shadows.sm]}>
               <IconSymbol name="wrench.and.screwdriver" size={48} color={theme.colors.textSecondary} />
               <ThemedText type="subtitle" style={{ color: theme.colors.textSecondary, marginTop: 16 }}>
-                暂无装备组合
+                {t('equipment.empty.title')}
               </ThemedText>
               <ThemedText type="body" style={{ color: theme.colors.textSecondary, marginTop: 8, textAlign: 'center' }}>
-                创建你的第一个钓鱼装备组合
+                {t('equipment.empty.subtitle')}
               </ThemedText>
               <Pressable 
                 style={[styles.createButton, { backgroundColor: theme.colors.primary }]}
                 onPress={handleCreateNew}
               >
                 <ThemedText type="bodySmall" style={{ color: 'white', fontWeight: '600' }}>
-                  创建装备组合
+                  {t('equipment.create')}
                 </ThemedText>
               </Pressable>
             </ThemedView>
@@ -261,7 +263,7 @@ function EquipmentSetCard({ set, stats, onPress, onDelete, theme }: EquipmentSet
                 {stats.usageCount}
               </ThemedText>
               <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
-                使用次数
+                {t('equipment.stats.usage')}
               </ThemedText>
             </View>
             <View style={styles.statItem}>
@@ -269,7 +271,7 @@ function EquipmentSetCard({ set, stats, onPress, onDelete, theme }: EquipmentSet
                 {Math.round(stats.successRate * 100)}%
               </ThemedText>
               <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
-                成功率
+                {t('equipment.stats.success')}
               </ThemedText>
             </View>
             <View style={styles.statItem}>
@@ -277,7 +279,7 @@ function EquipmentSetCard({ set, stats, onPress, onDelete, theme }: EquipmentSet
                 {stats.catchCount}
               </ThemedText>
               <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
-                钓获数
+                {t('equipment.stats.catches')}
               </ThemedText>
             </View>
           </View>
@@ -292,7 +294,7 @@ function EquipmentSetCard({ set, stats, onPress, onDelete, theme }: EquipmentSet
         >
           <IconSymbol name="pencil" size={16} color={theme.colors.primary} />
           <ThemedText type="bodySmall" style={{ color: theme.colors.primary }}>
-            编辑
+            {t('equipment.actions.edit')}
           </ThemedText>
         </Pressable>
         
@@ -302,7 +304,7 @@ function EquipmentSetCard({ set, stats, onPress, onDelete, theme }: EquipmentSet
         >
           <IconSymbol name="trash" size={16} color={theme.colors.error} />
           <ThemedText type="bodySmall" style={{ color: theme.colors.error }}>
-            删除
+            {t('equipment.actions.delete')}
           </ThemedText>
         </Pressable>
       </View>
