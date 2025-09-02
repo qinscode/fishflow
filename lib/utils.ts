@@ -40,10 +40,11 @@ export function formatDate(date: Date | string, format: 'short' | 'long' | 'time
 // 获取稀有度颜色
 export function getRarityColor(rarity: FishRarity): string {
   const colors = {
-    common: '#6B7280',
-    rare: '#3B82F6',
-    epic: '#8B5CF6',
-    legendary: '#F59E0B',
+    common: '#9AA0A6',        // 普通 - 灰色
+    unique: '#1DB954',        // 优秀/精良 - 绿色 
+    rare: '#2F80ED',          // 稀有 - 蓝色
+    epic: '#8B5CF6',          // 史诗 - 紫色
+    legendary: '#F59E0B',     // 传奇 - 橙色
     unknown: '#9CA3AF',
   };
   return colors[rarity];
@@ -99,9 +100,10 @@ export function sortFish(fish: Fish[], sortBy: 'name' | 'rarity' | 'recent', cat
       
     case 'rarity':
       const rarityOrder = {
-        legendary: 4,
-        epic: 3,
-        rare: 2,
+        legendary: 5,
+        epic: 4,
+        rare: 3,
+        unique: 2,
         common: 1,
         unknown: 0,
       };
