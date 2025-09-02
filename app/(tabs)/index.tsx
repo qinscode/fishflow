@@ -13,6 +13,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
+import { useTranslation } from '@/lib/i18n';
 import { 
   useFish, 
   useCatches, 
@@ -25,6 +26,7 @@ import { getFishCardState } from '@/lib/utils';
 export default function HomeScreen() {
   const theme = useTheme();
   const { isTablet } = useResponsive();
+  const { t } = useTranslation();
   
   const fish = useFish();
   const catches = useCatches();
@@ -57,27 +59,27 @@ export default function HomeScreen() {
   const quickActions = [
     {
       id: 'log-catch',
-      title: '记录钓鱼',
-      description: '记录新的钓鱼经历',
+      title: t('home.quick.log'),
+      description: t('log.subtitle'),
       icon: 'plus.circle.fill' as const,
       color: theme.colors.primary,
       onPress: () => router.push('/log'),
     },
     {
-      id: 'fishdex',
-      title: '浏览图鉴',
-      description: '探索鱼类图鉴',
-      icon: 'book.fill' as const,
+      id: 'equipment',
+      title: t('home.quick.equipment'),
+      description: t('equipment.subtitle'),
+      icon: 'wrench.and.screwdriver.fill' as const,
       color: theme.colors.secondary,
-      onPress: () => router.push('/fishdex'),
+      onPress: () => router.push('/equipment'),
     },
     {
-      id: 'stats',
-      title: '查看统计',
-      description: '分析钓鱼数据',
-      icon: 'chart.bar.fill' as const,
+      id: 'fishdex',
+      title: t('home.quick.fishdex'),
+      description: t('fishdex.subtitle'),
+      icon: 'book.fill' as const,
       color: theme.colors.accent,
-      onPress: () => router.push('/stats'),
+      onPress: () => router.push('/fishdex'),
     },
   ];
 
@@ -92,10 +94,10 @@ export default function HomeScreen() {
           <ThemedView style={styles.header}>
             <View>
               <ThemedText type="h2" style={styles.greeting}>
-                欢迎回来！
+                {t('home.welcome')}
               </ThemedText>
               <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
-                继续你的钓鱼之旅
+                {t('home.subtitle')}
               </ThemedText>
             </View>
             
@@ -123,7 +125,7 @@ export default function HomeScreen() {
                   {userStats.totalCatches}
                 </ThemedText>
                 <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
-                  总钓获
+                  {t('home.stats.catches')}
                 </ThemedText>
               </View>
               
@@ -132,7 +134,7 @@ export default function HomeScreen() {
                   {userStats.uniqueSpecies}
                 </ThemedText>
                 <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
-                  种类
+                  {t('home.stats.species')}
                 </ThemedText>
               </View>
               
@@ -141,7 +143,7 @@ export default function HomeScreen() {
                   {userStats.currentStreak}
                 </ThemedText>
                 <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
-                  连续天数
+                  {t('home.stats.days')}
                 </ThemedText>
               </View>
             </View>
@@ -152,16 +154,9 @@ export default function HomeScreen() {
         {/* Recent Unlocks */}
         {recentUnlocks.length > 0 && (
           <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <ThemedText type="title" style={styles.sectionTitle}>
-                最新解锁
-              </ThemedText>
-              <Pressable onPress={() => router.push('/fishdex')}>
-                <ThemedText type="bodySmall" style={{ color: theme.colors.primary }}>
-                  查看全部
-                </ThemedText>
-              </Pressable>
-            </View>
+            <ThemedText type="title" style={styles.sectionTitle}>
+              {t('home.recent.unlocks')}
+            </ThemedText>
             
             <ScrollView 
               horizontal 
@@ -183,16 +178,9 @@ export default function HomeScreen() {
         {/* Recent Achievements */}
         {recentAchievements.length > 0 && (
           <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <ThemedText type="title" style={styles.sectionTitle}>
-                最新成就
-              </ThemedText>
-              <Pressable onPress={() => router.push('/achievements')}>
-                <ThemedText type="bodySmall" style={{ color: theme.colors.primary }}>
-                  查看全部
-                </ThemedText>
-              </Pressable>
-            </View>
+            <ThemedText type="title" style={styles.sectionTitle}>
+              最新成就
+            </ThemedText>
             
             <ScrollView 
               horizontal 
@@ -214,6 +202,51 @@ export default function HomeScreen() {
             </ScrollView>
           </View>
         )}
+
+        {/* Quick Actions */}
+        <View style={styles.section}>
+          <ThemedText type="title" style={styles.sectionTitle}>
+            {t('home.quick.actions')}
+          </ThemedText>
+          
+          <View style={styles.quickActions}>
+            {quickActions.map((action) => (
+              <SlideInView key={action.id} direction="up" delay={300}>
+                <Pressable
+                  style={[
+                    styles.actionCard,
+                    { backgroundColor: theme.colors.surface },
+                    theme.shadows.sm
+                  ]}
+                  onPress={action.onPress}
+                >
+                  <View style={[styles.actionIcon, { backgroundColor: `${action.color}20` }]}>
+                    <IconSymbol
+                      name={action.icon}
+                      size={24}
+                      color={action.color}
+                    />
+                  </View>
+                  
+                  <View style={styles.actionContent}>
+                    <ThemedText type="bodyBold" style={styles.actionTitle}>
+                      {action.title}
+                    </ThemedText>
+                    <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
+                      {action.description}
+                    </ThemedText>
+                  </View>
+                  
+                  <IconSymbol
+                    name="chevron.right"
+                    size={16}
+                    color={theme.colors.textSecondary}
+                  />
+                </Pressable>
+              </SlideInView>
+            ))}
+          </View>
+        </View>
 
         {/* Progress Overview */}
         <View style={styles.section}>
@@ -257,7 +290,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 20,
+    paddingBottom: 100, // Increased padding for tab bar
   },
   header: {
     flexDirection: 'row',
@@ -293,14 +326,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 24,
   },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
   sectionTitle: {
     fontWeight: '600',
+    marginBottom: 20,
   },
   quickActions: {
     gap: 12,
