@@ -118,10 +118,6 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
   // 数据操作
   setFish: fish => {
     set({ fish });
-    // 更新解锁的鱼类ID集合
-    const catches = get().catches;
-    const unlockedIds = new Set(catches.map(c => c.fishId));
-    set({ unlockedFishIds: unlockedIds });
   },
 
   setAchievements: achievements => {
@@ -136,21 +132,24 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
       updatedAt: new Date().toISOString(),
     };
 
-    set(state => ({
-      catches: [...state.catches, newCatch],
-    }));
-
-    // 更新解锁的鱼类ID集合
-    const updatedCatches = get().catches;
-    const unlockedIds = new Set(updatedCatches.map(c => c.fishId));
-    set({ unlockedFishIds: unlockedIds });
+    set(state => {
+      const updatedCatches = [...state.catches, newCatch];
+      const unlockedIds = new Set(updatedCatches.map(c => c.fishId));
+      return {
+        catches: updatedCatches,
+        unlockedFishIds: unlockedIds,
+      };
+    });
   },
 
   setCatches: catches => {
-    set({ catches });
-    // 更新解锁的鱼类ID集合
-    const unlockedIds = new Set(catches.map(c => c.fishId));
-    set({ unlockedFishIds: unlockedIds });
+    set(state => {
+      const unlockedIds = new Set(catches.map(c => c.fishId));
+      return {
+        catches,
+        unlockedFishIds: unlockedIds,
+      };
+    });
   },
 
   // UI 操作
@@ -213,7 +212,25 @@ export const useFilteredFish = () => {
   return useAppStore(state => {
     const { fish, filters, searchQuery, catches } = state;
 
-    let filtered = [...fish];
+    // Return early if no fish data
+    if (!fish.length) {
+      return [];
+    }
+
+    // Check if any filtering is needed
+    const hasFilters = Boolean(
+      searchQuery.trim() ||
+      (filters.rarity && filters.rarity.length > 0) ||
+      (filters.waterTypes && filters.waterTypes.length > 0) ||
+      filters.unlockedOnly
+    );
+
+    // If no filters, return original array reference
+    if (!hasFilters) {
+      return fish;
+    }
+
+    let filtered = fish;
 
     // 搜索查询
     if (searchQuery.trim()) {

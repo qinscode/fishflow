@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -13,7 +13,6 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useTheme } from '@/hooks/useThemeColor';
 import { useResponsive } from '@/hooks/useResponsive';
 import { 
-  useAppStore,
   useFish, 
   useCatches, 
   useUserStats,
@@ -32,36 +31,8 @@ export default function HomeScreen() {
   const userStats = useUserStats();
   const achievements = useAchievements();
   const userAchievements = useUserAchievements();
-  const { setFish, setAchievements } = useAppStore(state => ({ 
-    setFish: state.setFish, 
-    setAchievements: state.setAchievements 
-  }));
 
-  // Initialize data on mount
-  useEffect(() => {
-    let mounted = true;
-    
-    const initData = async () => {
-      if (fish.length === 0 && mounted) {
-        try {
-          const { MOCK_FISH_DATA, MOCK_ACHIEVEMENT_DATA } = await import('@/lib/mockData');
-          if (mounted) {
-            setFish(MOCK_FISH_DATA);
-            setAchievements && setAchievements(MOCK_ACHIEVEMENT_DATA);
-            console.log('Data initialized successfully');
-          }
-        } catch (error) {
-          console.error('Failed to initialize data:', error);
-        }
-      }
-    };
-    
-    initData();
-    
-    return () => {
-      mounted = false;
-    };
-  }, [fish.length, setFish, setAchievements]);
+  // Data is initialized in root layout, no need for component-level initialization
 
   // Get recent unlocks (last 3)
   const recentUnlocks = React.useMemo(() => {
