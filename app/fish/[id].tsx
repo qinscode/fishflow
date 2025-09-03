@@ -543,7 +543,7 @@ export default function FishDetailScreen() {
         {/* 水域类型 */}
         <View style={styles.habitatOptimizedRow}>
           <View style={styles.habitatOptimizedIconLabel}>
-            <IconSymbol name="drop.fill" size={12} color="#3B82F6" />
+            <IconSymbol name="drop.fill" size={18} color="#3B82F6" />
             <ThemedText style={styles.habitatOptimizedLabel}>
               {t('fish.detail.water.types')}
             </ThemedText>
@@ -575,7 +575,7 @@ export default function FishDetailScreen() {
         {/* 分布地区 */}
         <View style={styles.habitatOptimizedRow}>
           <View style={styles.habitatOptimizedIconLabel}>
-            <IconSymbol name="location.fill" size={12} color="#10B981" />
+            <IconSymbol name="location.fill" size={18} color="#10B981" />
             <ThemedText style={styles.habitatOptimizedLabel}>
               {t('fish.detail.regions')}
             </ThemedText>
@@ -602,7 +602,7 @@ export default function FishDetailScreen() {
         {/* 活跃季节 */}
         <View style={styles.habitatOptimizedRow}>
           <View style={styles.habitatOptimizedIconLabel}>
-            <IconSymbol name="calendar" size={12} color="#F59E0B" />
+            <IconSymbol name="calendar" size={18} color="#F59E0B" />
             <ThemedText style={styles.habitatOptimizedLabel}>
               {t('fish.detail.seasons')}
             </ThemedText>
@@ -645,7 +645,7 @@ export default function FishDetailScreen() {
         {currentFish.habitat.depth && (
           <View style={styles.habitatOptimizedRow}>
             <View style={styles.habitatOptimizedIconLabel}>
-              <IconSymbol name="arrow.down" size={12} color="#6B7280" />
+              <IconSymbol name="arrow.down" size={18} color="#6B7280" />
               <ThemedText style={styles.habitatOptimizedLabel}>水深</ThemedText>
             </View>
             <View style={styles.habitatOptimizedTags}>
@@ -681,19 +681,19 @@ export default function FishDetailScreen() {
           </ThemedText>
         </View>
 
-        <View style={styles.regulationsOptimizedContainer}>
+        <View style={styles.regulationsHorizontalContainer}>
           {currentFish.regulations.map((regulation, index) => (
-            <View key={index} style={styles.regulationOptimizedItem}>
+            <View key={index} style={styles.regulationHorizontalItem}>
               {/* 地区徽章 */}
-              <View style={styles.regulationOptimizedHeader}>
+              <View style={styles.regulationHorizontalHeader}>
                 <IconSymbol
                   name="location"
-                  size={12}
+                  size={18}
                   color={theme.colors.primary}
                 />
                 <ThemedText
                   style={[
-                    styles.regulationOptimizedRegion,
+                    styles.regulationHorizontalRegion,
                     { color: theme.colors.primary },
                   ]}
                 >
@@ -701,16 +701,16 @@ export default function FishDetailScreen() {
                 </ThemedText>
               </View>
 
-              {/* 规定信息 - 紧凑3栏网格 */}
-              <View style={styles.regulationOptimizedGrid}>
+              {/* 规定信息 - 水平排列 */}
+              <View style={styles.regulationHorizontalGrid}>
                 {regulation.dailyLimit && (
-                  <View style={styles.regulationOptimizedItem}>
+                  <View style={styles.regulationHorizontalInfoItem}>
                     <IconSymbol name="clock.badge" size={10} color="#10B981" />
-                    <View style={styles.regulationOptimizedContent}>
-                      <ThemedText style={styles.regulationOptimizedLabel}>
+                    <View style={styles.regulationHorizontalContent}>
+                      <ThemedText style={styles.regulationHorizontalLabel}>
                         日限
                       </ThemedText>
-                      <ThemedText style={styles.regulationOptimizedValue}>
+                      <ThemedText style={styles.regulationHorizontalValue}>
                         {regulation.dailyLimit}
                       </ThemedText>
                     </View>
@@ -718,13 +718,13 @@ export default function FishDetailScreen() {
                 )}
 
                 {regulation.possessionLimit && (
-                  <View style={styles.regulationOptimizedItem}>
+                  <View style={styles.regulationHorizontalInfoItem}>
                     <IconSymbol name="bag" size={10} color="#F59E0B" />
-                    <View style={styles.regulationOptimizedContent}>
-                      <ThemedText style={styles.regulationOptimizedLabel}>
+                    <View style={styles.regulationHorizontalContent}>
+                      <ThemedText style={styles.regulationHorizontalLabel}>
                         持有
                       </ThemedText>
-                      <ThemedText style={styles.regulationOptimizedValue}>
+                      <ThemedText style={styles.regulationHorizontalValue}>
                         {regulation.possessionLimit}
                       </ThemedText>
                     </View>
@@ -732,13 +732,13 @@ export default function FishDetailScreen() {
                 )}
 
                 {regulation.minSizeCm && (
-                  <View style={styles.regulationOptimizedItem}>
+                  <View style={styles.regulationHorizontalInfoItem}>
                     <IconSymbol name="ruler" size={10} color="#3B82F6" />
-                    <View style={styles.regulationOptimizedContent}>
-                      <ThemedText style={styles.regulationOptimizedLabel}>
+                    <View style={styles.regulationHorizontalContent}>
+                      <ThemedText style={styles.regulationHorizontalLabel}>
                         尺寸
                       </ThemedText>
-                      <ThemedText style={styles.regulationOptimizedValue}>
+                      <ThemedText style={styles.regulationHorizontalValue}>
                         {regulation.minSizeCm}cm
                       </ThemedText>
                     </View>
@@ -747,13 +747,13 @@ export default function FishDetailScreen() {
 
                 {regulation.closedSeasons &&
                   regulation.closedSeasons.length > 0 && (
-                    <View style={styles.regulationOptimizedItem}>
+                    <View style={styles.regulationHorizontalInfoItem}>
                       <IconSymbol name="calendar" size={10} color="#EF4444" />
-                      <View style={styles.regulationOptimizedContent}>
-                        <ThemedText style={styles.regulationOptimizedLabel}>
+                      <View style={styles.regulationHorizontalContent}>
+                        <ThemedText style={styles.regulationHorizontalLabel}>
                           禁期
                         </ThemedText>
-                        <ThemedText style={styles.regulationOptimizedValue}>
+                        <ThemedText style={styles.regulationHorizontalValue}>
                           {regulation.closedSeasons.length}
                         </ThemedText>
                       </View>
@@ -762,17 +762,17 @@ export default function FishDetailScreen() {
 
                 {regulation.specialRules &&
                   regulation.specialRules.length > 0 && (
-                    <View style={styles.regulationOptimizedItem}>
+                    <View style={styles.regulationHorizontalInfoItem}>
                       <IconSymbol
                         name="exclamationmark.triangle"
                         size={10}
                         color="#8B5CF6"
                       />
-                      <View style={styles.regulationOptimizedContent}>
-                        <ThemedText style={styles.regulationOptimizedLabel}>
+                      <View style={styles.regulationHorizontalContent}>
+                        <ThemedText style={styles.regulationHorizontalLabel}>
                           特殊
                         </ThemedText>
-                        <ThemedText style={styles.regulationOptimizedValue}>
+                        <ThemedText style={styles.regulationHorizontalValue}>
                           {regulation.specialRules.length}
                         </ThemedText>
                       </View>
@@ -1865,8 +1865,8 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   habitatOptimizedLabel: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: 14,
+    fontWeight: '400',
     color: '#374151',
   },
   habitatOptimizedTags: {
@@ -1880,8 +1880,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   habitatOptimizedTagText: {
-    fontSize: 10,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '600',
   },
   regulationsOptimizedContainer: {
     gap: 8,
@@ -1936,5 +1936,50 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '600',
     color: '#1F2937',
+  },
+  // New styles for horizontal regulations layout
+  regulationsHorizontalContainer: {
+    gap: 16,
+  },
+  regulationHorizontalItem: {
+    paddingVertical: 8,
+  },
+  regulationHorizontalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 10,
+  },
+  regulationHorizontalRegion: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  regulationHorizontalGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 16,
+    justifyContent: 'space-between',
+  },
+  regulationHorizontalInfoItem: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    minWidth: 50,
+  },
+  regulationHorizontalContent: {
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  regulationHorizontalLabel: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#374151',
+    textAlign: 'center',
+    marginBottom: 2,
+  },
+  regulationHorizontalValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1F2937',
+    textAlign: 'center',
   },
 });
