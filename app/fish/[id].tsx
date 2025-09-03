@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -44,7 +45,7 @@ import {
 } from '@/lib/store';
 import { Fish, FishCardState } from '@/lib/types';
 import { getFishCardState, getColorByEdibility, sortFish } from '@/lib/utils';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -167,6 +168,30 @@ export default function FishDetailScreen() {
     ? getFishCardState(currentFish, catches)
     : 'locked';
   const isUnlocked = fishState === 'unlocked' || fishState === 'new';
+
+  // Helpers: map strings to MaterialCommunityIcons names
+  const getCookingMethodIcon = (method: string): string => {
+    const m = method.toLowerCase();
+    if (m.includes('sashimi') || m.includes('生食')) return 'fish';
+    if (m.includes('grill') || m.includes('烤')) return 'fire';
+    if (m.includes('barbecue') || m.includes('烧烤')) return 'grill';
+    if (m.includes('bake') || m.includes('烘')) return 'bread-slice-outline';
+    if (m.includes('smoke') || m.includes('熏')) return 'smoke';
+    if (m.includes('poach') || m.includes('水煮')) return 'pot-steam';
+    if (m.includes('pan') || m.includes('煎')) return 'frying-pan';
+    if (m.includes('stir') || m.includes('翻炒')) return 'pot-mix';
+    return 'silverware-fork-knife';
+  };
+
+  const getFeedingHabitIcon = (habit: string): string => {
+    const h = habit.toLowerCase();
+    if (h.includes('fish') || h.includes('鱼')) return 'fish';
+    if (h.includes('squid') || h.includes('乌贼') || h.includes('鱿'))
+      return 'octopus';
+    if (h.includes('crustacean') || h.includes('甲壳')) return 'crab';
+    if (h.includes('cephalopod') || h.includes('头足')) return 'octopus';
+    return 'food';
+  };
 
   // 确保数据已加载完成再判断状态
   const shouldShowUnknown = currentFish && catches.length >= 0 && !isUnlocked;
@@ -438,8 +463,8 @@ export default function FishDetailScreen() {
 
       <View style={styles.leftAlignedInfoList}>
         <View style={styles.leftAlignedInfoRow}>
-          <IconSymbol
-            name="text.book.closed"
+          <MaterialCommunityIcons
+            name="book-open-page-variant"
             size={16}
             color="#8B5CF6"
             style={styles.leftAlignedIcon}
@@ -453,8 +478,8 @@ export default function FishDetailScreen() {
         </View>
 
         <View style={styles.leftAlignedInfoRow}>
-          <IconSymbol
-            name="tree"
+          <MaterialCommunityIcons
+            name="tree-outline"
             size={16}
             color="#059669"
             style={styles.leftAlignedIcon}
@@ -468,8 +493,8 @@ export default function FishDetailScreen() {
         </View>
 
         <View style={styles.leftAlignedInfoRow}>
-          <IconSymbol
-            name="location"
+          <MaterialCommunityIcons
+            name="tag-multiple-outline"
             size={16}
             color="#DC2626"
             style={styles.leftAlignedIcon}
@@ -515,7 +540,7 @@ export default function FishDetailScreen() {
         {/* 第一列 */}
         <View style={styles.statsColumn}>
           <View style={styles.leftAlignedStatRow}>
-            <IconSymbol name="ruler" size={18} color="#3B82F6" />
+            <MaterialCommunityIcons name="ruler" size={18} color="#3B82F6" />
             <ThemedText style={styles.leftAlignedStatLabel}>
               {t('fish.detail.length')}
             </ThemedText>
@@ -526,7 +551,11 @@ export default function FishDetailScreen() {
           </View>
 
           <View style={styles.leftAlignedStatRow}>
-            <IconSymbol name="clock" size={18} color="#F59E0B" />
+            <MaterialCommunityIcons
+              name="timeline-clock-outline"
+              size={18}
+              color="#F59E0B"
+            />
             <ThemedText style={styles.leftAlignedStatLabel}>
               {t('fish.detail.lifespan')}
             </ThemedText>
@@ -540,7 +569,7 @@ export default function FishDetailScreen() {
         {/* 第二列 */}
         <View style={styles.statsColumn}>
           <View style={styles.leftAlignedStatRow}>
-            <IconSymbol name="scalemass" size={18} color="#10B981" />
+            <MaterialCommunityIcons name="weight" size={18} color="#10B981" />
             <ThemedText style={styles.leftAlignedStatLabel}>
               {t('fish.detail.weight')}
             </ThemedText>
@@ -551,7 +580,7 @@ export default function FishDetailScreen() {
           </View>
 
           <View style={styles.leftAlignedStatRow}>
-            <IconSymbol name="target" size={18} color="#EF4444" />
+            <MaterialCommunityIcons name="target" size={18} color="#EF4444" />
             <ThemedText style={styles.leftAlignedStatLabel}>
               {t('fish.detail.difficulty')}
             </ThemedText>
@@ -585,7 +614,7 @@ export default function FishDetailScreen() {
         {/* 水域类型 */}
         <View style={styles.habitatOptimizedRow}>
           <View style={styles.habitatOptimizedIconLabel}>
-            <IconSymbol name="drop.fill" size={18} color="#3B82F6" />
+            <MaterialCommunityIcons name="water" size={18} color="#3B82F6" />
             <ThemedText style={styles.habitatOptimizedLabel}>
               {t('fish.detail.water.types')}
             </ThemedText>
@@ -617,7 +646,11 @@ export default function FishDetailScreen() {
         {/* 分布地区 */}
         <View style={styles.habitatOptimizedRow}>
           <View style={styles.habitatOptimizedIconLabel}>
-            <IconSymbol name="location.fill" size={18} color="#10B981" />
+            <MaterialCommunityIcons
+              name="map-marker"
+              size={18}
+              color="#10B981"
+            />
             <ThemedText style={styles.habitatOptimizedLabel}>
               {t('fish.detail.regions')}
             </ThemedText>
@@ -644,7 +677,7 @@ export default function FishDetailScreen() {
         {/* 活跃季节 */}
         <View style={styles.habitatOptimizedRow}>
           <View style={styles.habitatOptimizedIconLabel}>
-            <IconSymbol name="calendar" size={18} color="#F59E0B" />
+            <MaterialCommunityIcons name="calendar" size={18} color="#F59E0B" />
             <ThemedText style={styles.habitatOptimizedLabel}>
               {t('fish.detail.seasons')}
             </ThemedText>
@@ -858,7 +891,11 @@ export default function FishDetailScreen() {
         <View style={styles.leftAlignedInfoList}>
           {currentFish.edibility.taste && (
             <View style={styles.leftAlignedInfoRow}>
-              <IconSymbol name="mouth" size={16} color="#F59E0B" />
+              <MaterialCommunityIcons
+                name="silverware-fork-knife"
+                size={16}
+                color="#F59E0B"
+              />
               <ThemedText style={styles.leftAlignedLabel}>
                 {t('fish.detail.taste')}：
               </ThemedText>
@@ -883,6 +920,12 @@ export default function FishDetailScreen() {
                         { backgroundColor: '#F59E0B' + '20' },
                       ]}
                     >
+                      <MaterialCommunityIcons
+                        name={getCookingMethodIcon(method) as any}
+                        size={14}
+                        color="#F59E0B"
+                        style={{ marginRight: 4 }}
+                      />
                       <ThemedText
                         style={[styles.compactTagText, { color: '#F59E0B' }]}
                       >
@@ -896,7 +939,11 @@ export default function FishDetailScreen() {
 
           {currentFish.edibility.notes && (
             <View style={styles.leftAlignedInfoRow}>
-              <IconSymbol name="note.text" size={16} color="#6B7280" />
+              <MaterialCommunityIcons
+                name="note-text-outline"
+                size={16}
+                color="#6B7280"
+              />
               <ThemedText style={styles.leftAlignedLabel}>
                 {t('fish.detail.notes')}：
               </ThemedText>
@@ -920,7 +967,11 @@ export default function FishDetailScreen() {
 
       <View style={styles.leftAlignedInfoList}>
         <View style={styles.leftAlignedInfoRow}>
-          <IconSymbol name="clock" size={16} color="#3B82F6" />
+          <MaterialCommunityIcons
+            name="clock-time-four-outline"
+            size={16}
+            color="#3B82F6"
+          />
           <ThemedText style={styles.leftAlignedLabel}>
             {t('fish.detail.active.time')}：
           </ThemedText>
@@ -942,6 +993,12 @@ export default function FishDetailScreen() {
                   { backgroundColor: '#10B981' + '20' },
                 ]}
               >
+                <MaterialCommunityIcons
+                  name={getFeedingHabitIcon(habit) as any}
+                  size={14}
+                  color="#10B981"
+                  style={{ marginRight: 4 }}
+                />
                 <ThemedText
                   style={[styles.compactTagText, { color: '#10B981' }]}
                 >
