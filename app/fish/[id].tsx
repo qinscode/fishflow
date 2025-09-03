@@ -182,6 +182,11 @@ export default function FishDetailScreen() {
     return currentWeight > bestWeight ? current : best;
   }, userCatches[0]);
 
+  // Helper function to get difficulty name
+  const getDifficultyName = (difficulty: number) => {
+    return t(`difficulty.${difficulty}` as any);
+  };
+
   const renderHeader = () => (
     <View style={styles.header}>
       <LinearGradient
@@ -523,8 +528,7 @@ export default function FishDetailScreen() {
                 style={styles.inlineDifficultyBar}
               />
               <ThemedText style={styles.inlineDifficultyText}>
-                {DIFFICULTY_NAMES[currentFish.behavior.difficulty] ||
-                  currentFish.behavior.difficulty}
+                {getDifficultyName(currentFish.behavior.difficulty)}
               </ThemedText>
             </View>
           </View>

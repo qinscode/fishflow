@@ -17,7 +17,7 @@ import { useTheme } from '@/hooks/useThemeColor';
 import { RARITY_NAMES } from '@/lib/constants';
 import { FISH_IMAGES } from '@/lib/fishImagesMap';
 import { Fish, FishCardState } from '@/lib/types';
-import { getRarityColor } from '@/lib/utils';
+import { getRarityColor, getStarCountByEdibility, getStarRatingColor } from '@/lib/utils';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -78,25 +78,11 @@ export const FishCard = memo<FishCardProps>(
     const isLocked = state === 'locked';
     const isNew = state === 'new';
 
-    // 根据稀有度获取星星数量
-    const getStarCount = (rarity: string): number => {
-      switch (rarity) {
-        case 'common':
-          return 1;
-        case 'unique':
-          return 2;
-        case 'rare':
-          return 3;
-        case 'epic':
-          return 4;
-        case 'legendary':
-          return 5;
-        default:
-          return 1;
-      }
-    };
-
-    const starCount = getStarCount(fish.rarity);
+    // 根据食用评级获取星星数量
+    const starCount = getStarCountByEdibility(fish.edibility?.rating);
+    
+    // 根据星级获取边框和星星颜色
+    const starRatingColor = getStarRatingColor(starCount);
 
     const cardStyles = [
       styles.cardContainer,
@@ -106,7 +92,7 @@ export const FishCard = memo<FishCardProps>(
         backgroundColor: 'white',
         borderRadius: 16,
         borderWidth: 2, // 减少边框宽度从3到2
-        borderColor: rarityColor, // 只根据稀有度显示边框颜色
+        borderColor: starRatingColor, // 使用星级颜色而不是稀有度颜色
       },
       theme.shadows.lg,
       style,
@@ -155,7 +141,7 @@ export const FishCard = memo<FishCardProps>(
                 key={index}
                 name="star.fill"
                 size={16}
-                color={index < starCount ? rarityColor : '#e0e0e0'}
+                color={index < starCount ? starRatingColor : '#e0e0e0'}
               />
             ))}
           </View>

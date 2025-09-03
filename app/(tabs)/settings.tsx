@@ -69,7 +69,7 @@ export default function SettingsScreen() {
         return;
       }
     }
-    Alert.alert('错误', '请输入有效的日期格式 (YYYY-MM-DD)');
+    Alert.alert(t('common.error'), t('settings.error.invalid.date'));
   };
 
   const handleNotificationToggle = (
@@ -225,7 +225,7 @@ export default function SettingsScreen() {
         <SlideInView direction="up" delay={200}>
           <ThemedView type="card" style={[styles.section, theme.shadows.sm]}>
             <ThemedText type="subtitle" style={styles.sectionTitle}>
-              钓鱼设置
+              {t('settings.fishing')}
             </ThemedText>
 
             <Pressable
@@ -239,12 +239,14 @@ export default function SettingsScreen() {
                   color={theme.colors.primary}
                 />
                 <View style={styles.settingText}>
-                  <ThemedText type="body">钓鱼开始时间</ThemedText>
+                  <ThemedText type="body">
+                    {t('settings.fishing.start.date')}
+                  </ThemedText>
                   <ThemedText
                     type="bodySmall"
                     style={{ color: theme.colors.textSecondary }}
                   >
-                    设置你开始钓鱼的时间
+                    {t('settings.fishing.start.date.subtitle')}
                   </ThemedText>
                 </View>
               </View>
@@ -415,7 +417,9 @@ export default function SettingsScreen() {
                   color={theme.colors.primary}
                 />
                 <View style={styles.settingText}>
-                  <ThemedText type="body">天气通知</ThemedText>
+                  <ThemedText type="body">
+                    {t('settings.notifications.weather')}
+                  </ThemedText>
                 </View>
               </View>
               <Switch
@@ -450,7 +454,9 @@ export default function SettingsScreen() {
                   color={theme.colors.primary}
                 />
                 <View style={styles.settingText}>
-                  <ThemedText type="body">分享成就</ThemedText>
+                  <ThemedText type="body">
+                    {t('settings.privacy.share.achievements')}
+                  </ThemedText>
                 </View>
               </View>
               <Switch
@@ -476,7 +482,9 @@ export default function SettingsScreen() {
                   color={theme.colors.primary}
                 />
                 <View style={styles.settingText}>
-                  <ThemedText type="body">分享统计</ThemedText>
+                  <ThemedText type="body">
+                    {t('settings.privacy.share.stats')}
+                  </ThemedText>
                 </View>
               </View>
               <Switch
@@ -748,7 +756,7 @@ export default function SettingsScreen() {
         >
           <ThemedView type="card" style={[styles.picker, theme.shadows.lg]}>
             <ThemedText type="subtitle" style={styles.pickerTitle}>
-              设置钓鱼开始时间
+              {t('settings.date.picker.title')}
             </ThemedText>
 
             <ThemedText
@@ -759,7 +767,7 @@ export default function SettingsScreen() {
                 marginBottom: 16,
               }}
             >
-              请输入日期 (YYYY-MM-DD 格式)
+              {t('settings.date.picker.subtitle')}
             </ThemedText>
 
             <TextInput

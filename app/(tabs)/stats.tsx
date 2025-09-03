@@ -1,10 +1,5 @@
 import React, { useMemo } from 'react';
-import { 
-  View, 
-  StyleSheet, 
-  ScrollView, 
-  Dimensions,
-} from 'react-native';
+import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/ThemedText';
@@ -13,22 +8,25 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { ProgressBar, ProgressRing } from '@/components/ui/ProgressBar';
 import { useTheme } from '@/hooks/useThemeColor';
+import { useTranslation } from '@/lib/i18n';
 import { RARITY_NAMES } from '@/lib/constants';
-import { 
-  useFish, 
-  useCatches, 
-  useUserStats,
-} from '@/lib/store';
+import { useFish, useCatches, useUserStats } from '@/lib/store';
 import { formatDate, getRarityColor } from '@/lib/utils';
 
 const { width } = Dimensions.get('window');
 
 export default function StatsScreen() {
   const theme = useTheme();
-  
+  const { t } = useTranslation();
+
   const fish = useFish();
   const catches = useCatches();
   const userStats = useUserStats();
+
+  // Helper function to get month name
+  const getMonthName = (monthIndex: number) => {
+    return t(`stats.month.${monthIndex + 1}` as any);
+  };
 
   // Calculate statistics
   const stats = useMemo(() => {
@@ -39,42 +37,64 @@ export default function StatsScreen() {
     // Basic stats
     const totalCatches = catches.length;
     const uniqueSpecies = new Set(catches.map(c => c.fishId)).size;
-    const totalWeight = catches.reduce((sum, c) => sum + (c.measurements.weightKg || 0), 0);
-    const totalLength = catches.reduce((sum, c) => sum + (c.measurements.lengthCm || 0), 0);
+    const totalWeight = catches.reduce(
+      (sum, c) => sum + (c.measurements.weightKg || 0),
+      0
+    );
+    const totalLength = catches.reduce(
+      (sum, c) => sum + (c.measurements.lengthCm || 0),
+      0
+    );
 
     // Rarity distribution
-    const rarityStats = fish.reduce((acc, fishItem) => {
-      const fishCatches = catches.filter(c => c.fishId === fishItem.id);
-      if (fishCatches.length > 0) {
-        acc[fishItem.rarity] = (acc[fishItem.rarity] || 0) + fishCatches.length;
-      }
-      return acc;
-    }, {} as Record<string, number>);
+    const rarityStats = fish.reduce(
+      (acc, fishItem) => {
+        const fishCatches = catches.filter(c => c.fishId === fishItem.id);
+        if (fishCatches.length > 0) {
+          acc[fishItem.rarity] =
+            (acc[fishItem.rarity] || 0) + fishCatches.length;
+        }
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     // Personal bests
     const heaviest = catches.reduce((max, c) => {
-      return (c.measurements.weightKg || 0) > (max?.measurements.weightKg || 0) ? c : max;
+      return (c.measurements.weightKg || 0) > (max?.measurements.weightKg || 0)
+        ? c
+        : max;
     }, catches[0]);
 
     const longest = catches.reduce((max, c) => {
-      return (c.measurements.lengthCm || 0) > (max?.measurements.lengthCm || 0) ? c : max;
+      return (c.measurements.lengthCm || 0) > (max?.measurements.lengthCm || 0)
+        ? c
+        : max;
     }, catches[0]);
 
     // Monthly stats
-    const monthlyStats = catches.reduce((acc, c) => {
-      const month = new Date(c.timestamp).getMonth();
-      acc[month] = (acc[month] || 0) + 1;
-      return acc;
-    }, {} as Record<number, number>);
+    const monthlyStats = catches.reduce(
+      (acc, c) => {
+        const month = new Date(c.timestamp).getMonth();
+        acc[month] = (acc[month] || 0) + 1;
+        return acc;
+      },
+      {} as Record<number, number>
+    );
 
-    const mostActiveMonth = Object.entries(monthlyStats).reduce((max, [month, count]) => {
-      return count > max.count ? { month: parseInt(month), count } : max;
-    }, { month: 0, count: 0 });
+    const mostActiveMonth = Object.entries(monthlyStats).reduce(
+      (max, [month, count]) => {
+        return count > max.count ? { month: parseInt(month), count } : max;
+      },
+      { month: 0, count: 0 }
+    );
 
     // Recent activity (last 30 days)
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    const recentCatches = catches.filter(c => new Date(c.timestamp) > thirtyDaysAgo);
+    const recentCatches = catches.filter(
+      c => new Date(c.timestamp) > thirtyDaysAgo
+    );
 
     return {
       totalCatches,
@@ -85,16 +105,20 @@ export default function StatsScreen() {
       averageLength: Math.round((totalLength / totalCatches) * 100) / 100,
       rarityStats,
       personalBests: {
-        heaviest: heaviest ? {
-          fish: fish.find(f => f.id === heaviest.fishId),
-          weight: heaviest.measurements.weightKg,
-          date: heaviest.timestamp,
-        } : null,
-        longest: longest ? {
-          fish: fish.find(f => f.id === longest.fishId),
-          length: longest.measurements.lengthCm,
-          date: longest.timestamp,
-        } : null,
+        heaviest: heaviest
+          ? {
+              fish: fish.find(f => f.id === heaviest.fishId),
+              weight: heaviest.measurements.weightKg,
+              date: heaviest.timestamp,
+            }
+          : null,
+        longest: longest
+          ? {
+              fish: fish.find(f => f.id === longest.fishId),
+              length: longest.measurements.lengthCm,
+              date: longest.timestamp,
+            }
+          : null,
       },
       mostActiveMonth: {
         month: mostActiveMonth.month,
@@ -110,14 +134,16 @@ export default function StatsScreen() {
 
   if (!stats) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.colors.background }]}
+      >
         <ThemedView style={styles.emptyContainer}>
           <EmptyState
             type="no-data"
-            title="暂无统计数据"
-            description="开始记录钓鱼来查看你的统计信息"
+            title={t('stats.no.data.title')}
+            description={t('stats.no.data.description')}
             action={{
-              label: "开始记录",
+              label: t('stats.start.recording'),
               onPress: () => {
                 // Navigate to log screen
               },
@@ -128,66 +154,90 @@ export default function StatsScreen() {
     );
   }
 
-  const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+    >
       {/* Header */}
       <ThemedView style={styles.header}>
-        <ThemedText type="h2">钓鱼统计</ThemedText>
+        <ThemedText type="h2">{t('stats.title')}</ThemedText>
         <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
-          分析你的钓鱼数据
+          {t('stats.subtitle')}
         </ThemedText>
       </ThemedView>
 
-      <ScrollView 
+      <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
         {/* Overview Stats */}
         <ThemedView type="card" style={[styles.statsCard, theme.shadows.sm]}>
           <ThemedText type="title" style={styles.cardTitle}>
-            总览统计
+            {t('stats.overview.stats')}
           </ThemedText>
-          
+
           <View style={styles.statsGrid}>
             <View style={styles.statBox}>
-              <IconSymbol name="fish.fill" size={24} color={theme.colors.primary} />
+              <IconSymbol
+                name="fish.fill"
+                size={24}
+                color={theme.colors.primary}
+              />
               <ThemedText type="h3" style={{ color: theme.colors.primary }}>
                 {stats.totalCatches}
               </ThemedText>
-              <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
-                总钓获数
+              <ThemedText
+                type="caption"
+                style={{ color: theme.colors.textSecondary }}
+              >
+                {t('stats.catches.total')}
               </ThemedText>
             </View>
-            
+
             <View style={styles.statBox}>
-              <IconSymbol name="sparkles" size={24} color={theme.colors.secondary} />
+              <IconSymbol
+                name="sparkles"
+                size={24}
+                color={theme.colors.secondary}
+              />
               <ThemedText type="h3" style={{ color: theme.colors.secondary }}>
                 {stats.uniqueSpecies}
               </ThemedText>
-              <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
-                不同物种
+              <ThemedText
+                type="caption"
+                style={{ color: theme.colors.textSecondary }}
+              >
+                {t('stats.unique.species')}
               </ThemedText>
             </View>
-            
+
             <View style={styles.statBox}>
-              <IconSymbol name="scalemass.fill" size={24} color={theme.colors.accent} />
+              <IconSymbol
+                name="scalemass.fill"
+                size={24}
+                color={theme.colors.accent}
+              />
               <ThemedText type="h3" style={{ color: theme.colors.accent }}>
                 {stats.totalWeight}kg
               </ThemedText>
-              <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
-                总重量
+              <ThemedText
+                type="caption"
+                style={{ color: theme.colors.textSecondary }}
+              >
+                {t('stats.total.weight')}
               </ThemedText>
             </View>
-            
+
             <View style={styles.statBox}>
               <IconSymbol name="ruler" size={24} color={theme.colors.warning} />
               <ThemedText type="h3" style={{ color: theme.colors.warning }}>
                 {stats.totalLength}cm
               </ThemedText>
-              <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
-                总长度
+              <ThemedText
+                type="caption"
+                style={{ color: theme.colors.textSecondary }}
+              >
+                {t('stats.total.length')}
               </ThemedText>
             </View>
           </View>
@@ -196,9 +246,9 @@ export default function StatsScreen() {
         {/* Collection Progress */}
         <ThemedView type="card" style={[styles.statsCard, theme.shadows.sm]}>
           <ThemedText type="title" style={styles.cardTitle}>
-            收集进度
+            {t('stats.collection.progress')}
           </ThemedText>
-          
+
           <View style={styles.progressContainer}>
             <ProgressRing
               progress={stats.completionRate / 100}
@@ -207,25 +257,38 @@ export default function StatsScreen() {
               animated={true}
               label={`${stats.completionRate}%`}
             />
-            
+
             <View style={styles.progressDetails}>
               <ThemedText type="h3" style={{ color: theme.colors.primary }}>
                 {stats.uniqueSpecies} / {fish.length}
               </ThemedText>
-              <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
-                已解锁鱼类
+              <ThemedText
+                type="body"
+                style={{ color: theme.colors.textSecondary }}
+              >
+                {t('stats.unlocked.fish')}
               </ThemedText>
-              
+
               <View style={styles.progressStats}>
                 <View style={styles.progressStat}>
-                  <ThemedText type="subtitle">平均重量</ThemedText>
-                  <ThemedText type="body" style={{ color: theme.colors.primary }}>
+                  <ThemedText type="subtitle">
+                    {t('stats.average.weight')}
+                  </ThemedText>
+                  <ThemedText
+                    type="body"
+                    style={{ color: theme.colors.primary }}
+                  >
                     {stats.averageWeight}kg
                   </ThemedText>
                 </View>
                 <View style={styles.progressStat}>
-                  <ThemedText type="subtitle">平均长度</ThemedText>
-                  <ThemedText type="body" style={{ color: theme.colors.secondary }}>
+                  <ThemedText type="subtitle">
+                    {t('stats.average.length')}
+                  </ThemedText>
+                  <ThemedText
+                    type="body"
+                    style={{ color: theme.colors.secondary }}
+                  >
                     {stats.averageLength}cm
                   </ThemedText>
                 </View>
@@ -237,24 +300,35 @@ export default function StatsScreen() {
         {/* Rarity Distribution */}
         <ThemedView type="card" style={[styles.statsCard, theme.shadows.sm]}>
           <ThemedText type="title" style={styles.cardTitle}>
-            稀有度分布
+            {t('stats.rarity.distribution')}
           </ThemedText>
-          
+
           <View style={styles.rarityStats}>
             {Object.entries(stats.rarityStats).map(([rarity, count]) => {
-              const total = Object.values(stats.rarityStats).reduce((sum, c) => sum + c, 0);
+              const total = Object.values(stats.rarityStats).reduce(
+                (sum, c) => sum + c,
+                0
+              );
               const percentage = Math.round((count / total) * 100);
               const color = getRarityColor(rarity as any);
-              
+
               return (
                 <View key={rarity} style={styles.rarityItem}>
                   <View style={styles.rarityHeader}>
-                    <View style={[styles.rarityDot, { backgroundColor: color }]} />
+                    <View
+                      style={[styles.rarityDot, { backgroundColor: color }]}
+                    />
                     <ThemedText type="subtitle">
                       {RARITY_NAMES[rarity as keyof typeof RARITY_NAMES]}
                     </ThemedText>
-                    <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
-                      {count}条 ({percentage}%)
+                    <ThemedText
+                      type="body"
+                      style={{ color: theme.colors.textSecondary }}
+                    >
+                      {t('stats.count.with.percentage', {
+                        count: count.toString(),
+                        percentage: percentage.toString(),
+                      })}
                     </ThemedText>
                   </View>
                   <ProgressBar
@@ -273,35 +347,67 @@ export default function StatsScreen() {
         {(stats.personalBests.heaviest || stats.personalBests.longest) && (
           <ThemedView type="card" style={[styles.statsCard, theme.shadows.sm]}>
             <ThemedText type="title" style={styles.cardTitle}>
-              个人纪录
+              {t('stats.personal.bests')}
             </ThemedText>
-            
+
             <View style={styles.personalBests}>
               {stats.personalBests.heaviest && (
                 <View style={styles.bestRecord}>
-                  <IconSymbol name="scalemass.fill" size={20} color={theme.colors.accent} />
+                  <IconSymbol
+                    name="scalemass.fill"
+                    size={20}
+                    color={theme.colors.accent}
+                  />
                   <View style={styles.bestDetails}>
-                    <ThemedText type="subtitle">最重记录</ThemedText>
-                    <ThemedText type="body" style={{ color: theme.colors.primary }}>
-                      {stats.personalBests.heaviest.fish?.name} - {stats.personalBests.heaviest.weight}kg
+                    <ThemedText type="subtitle">
+                      {t('stats.heaviest.record')}
                     </ThemedText>
-                    <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
-                      {formatDate(new Date(stats.personalBests.heaviest.date), 'short')}
+                    <ThemedText
+                      type="body"
+                      style={{ color: theme.colors.primary }}
+                    >
+                      {stats.personalBests.heaviest.fish?.name} -{' '}
+                      {stats.personalBests.heaviest.weight}kg
+                    </ThemedText>
+                    <ThemedText
+                      type="caption"
+                      style={{ color: theme.colors.textSecondary }}
+                    >
+                      {formatDate(
+                        new Date(stats.personalBests.heaviest.date),
+                        'short'
+                      )}
                     </ThemedText>
                   </View>
                 </View>
               )}
-              
+
               {stats.personalBests.longest && (
                 <View style={styles.bestRecord}>
-                  <IconSymbol name="ruler" size={20} color={theme.colors.warning} />
+                  <IconSymbol
+                    name="ruler"
+                    size={20}
+                    color={theme.colors.warning}
+                  />
                   <View style={styles.bestDetails}>
-                    <ThemedText type="subtitle">最长记录</ThemedText>
-                    <ThemedText type="body" style={{ color: theme.colors.secondary }}>
-                      {stats.personalBests.longest.fish?.name} - {stats.personalBests.longest.length}cm
+                    <ThemedText type="subtitle">
+                      {t('stats.longest.record')}
                     </ThemedText>
-                    <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
-                      {formatDate(new Date(stats.personalBests.longest.date), 'short')}
+                    <ThemedText
+                      type="body"
+                      style={{ color: theme.colors.secondary }}
+                    >
+                      {stats.personalBests.longest.fish?.name} -{' '}
+                      {stats.personalBests.longest.length}cm
+                    </ThemedText>
+                    <ThemedText
+                      type="caption"
+                      style={{ color: theme.colors.textSecondary }}
+                    >
+                      {formatDate(
+                        new Date(stats.personalBests.longest.date),
+                        'short'
+                      )}
                     </ThemedText>
                   </View>
                 </View>
@@ -313,26 +419,48 @@ export default function StatsScreen() {
         {/* Activity Stats */}
         <ThemedView type="card" style={[styles.statsCard, theme.shadows.sm]}>
           <ThemedText type="title" style={styles.cardTitle}>
-            活动统计
+            {t('stats.activity.stats')}
           </ThemedText>
-          
+
           <View style={styles.activityStats}>
             <View style={styles.activityItem}>
-              <IconSymbol name="calendar" size={20} color={theme.colors.primary} />
+              <IconSymbol
+                name="calendar"
+                size={20}
+                color={theme.colors.primary}
+              />
               <View style={styles.activityDetails}>
-                <ThemedText type="subtitle">最活跃月份</ThemedText>
+                <ThemedText type="subtitle">
+                  {t('stats.most.active.month')}
+                </ThemedText>
                 <ThemedText type="body" style={{ color: theme.colors.primary }}>
-                  {monthNames[stats.mostActiveMonth.month]} ({stats.mostActiveMonth.count}次)
+                  {getMonthName(stats.mostActiveMonth.month)} (
+                  {t('stats.times.with.count', {
+                    count: stats.mostActiveMonth.count.toString(),
+                  })}
+                  )
                 </ThemedText>
               </View>
             </View>
-            
+
             <View style={styles.activityItem}>
-              <IconSymbol name="timer" size={20} color={theme.colors.secondary} />
+              <IconSymbol
+                name="timer"
+                size={20}
+                color={theme.colors.secondary}
+              />
               <View style={styles.activityDetails}>
-                <ThemedText type="subtitle">近30天活跃度</ThemedText>
-                <ThemedText type="body" style={{ color: theme.colors.secondary }}>
-                  {stats.recentActivity.count}次 ({stats.recentActivity.percentage}%)
+                <ThemedText type="subtitle">
+                  {t('stats.recent.30.days')}
+                </ThemedText>
+                <ThemedText
+                  type="body"
+                  style={{ color: theme.colors.secondary }}
+                >
+                  {t('stats.times.with.count', {
+                    count: stats.recentActivity.count.toString(),
+                  })}{' '}
+                  ({stats.recentActivity.percentage}%)
                 </ThemedText>
               </View>
             </View>

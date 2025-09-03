@@ -63,6 +63,12 @@ export interface Fish {
     activeTime: 'day' | 'night' | 'both';
     difficulty: 1 | 2 | 3 | 4 | 5; // 钓获难度
   };
+  edibility?: {
+    rating?: string;             // 食用评级 (excellent, good, fair, poor, etc.)
+    taste?: string;              // 口感描述
+    cookingMethods?: string[];   // 烹饪方法
+    notes?: string;              // 食用备注
+  };
 }
 
 // 钓鱼记录

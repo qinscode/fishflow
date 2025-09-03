@@ -11,7 +11,7 @@ export const APP_CONFIG = {
   },
   cache: {
     imageCacheDuration: 7 * 24 * 60 * 60 * 1000, // 7天
-    dataCacheDuration: 24 * 60 * 60 * 1000,      // 24小时
+    dataCacheDuration: 24 * 60 * 60 * 1000, // 24小时
   },
   limits: {
     maxPhotosPerCatch: 5,
@@ -22,17 +22,18 @@ export const APP_CONFIG = {
 
 // 稀有度配色方案
 export const RARITY_COLORS: Record<FishRarity, string> = {
-  common: '#6B7280',    // 灰色
-  unique: '#10B981',    // 绿色
-  rare: '#3B82F6',      // 蓝色  
-  epic: '#8B5CF6',      // 紫色
+  common: '#6B7280', // 灰色
+  unique: '#10B981', // 绿色
+  rare: '#3B82F6', // 蓝色
+  epic: '#8B5CF6', // 紫色
   legendary: '#F59E0B', // 金色
-  unknown: '#9CA3AF',   // 更淡的灰色
+  unknown: '#9CA3AF', // 更淡的灰色
 };
 
 // 稀有度中文名称
 export const RARITY_NAMES: Record<FishRarity, string> = {
   common: '常见',
+  unique: '独特',
   rare: '稀有',
   epic: '史诗',
   legendary: '传说',
@@ -40,7 +41,10 @@ export const RARITY_NAMES: Record<FishRarity, string> = {
 };
 
 // 水域类型配置
-export const WATER_TYPES: Record<WaterType, { name: string; icon: string; color: string }> = {
+export const WATER_TYPES: Record<
+  WaterType,
+  { name: string; icon: string; color: string }
+> = {
   river: { name: '河流', icon: 'water', color: '#2563EB' },
   lake: { name: '湖泊', icon: 'location', color: '#1D4ED8' },
   reservoir: { name: '水库', icon: 'location.fill', color: '#1E40AF' },
@@ -53,7 +57,7 @@ export const WATER_TYPES: Record<WaterType, { name: string; icon: string; color:
 // 水域类型名称映射（简化版本）
 export const WATER_TYPE_NAMES: Record<WaterType, string> = {
   river: '河流',
-  lake: '湖泊', 
+  lake: '湖泊',
   reservoir: '水库',
   pond: '池塘',
   stream: '溪流',
@@ -62,7 +66,10 @@ export const WATER_TYPE_NAMES: Record<WaterType, string> = {
 } as const;
 
 // 成就类别配置
-export const ACHIEVEMENT_CATEGORIES: Record<AchievementCategory, { name: string; icon: string; color: string }> = {
+export const ACHIEVEMENT_CATEGORIES: Record<
+  AchievementCategory,
+  { name: string; icon: string; color: string }
+> = {
   species: { name: '物种收集', icon: 'fish.fill', color: '#10B981' },
   quantity: { name: '数量统计', icon: 'number', color: '#3B82F6' },
   size: { name: '尺寸记录', icon: 'ruler', color: '#F59E0B' },
@@ -80,8 +87,18 @@ export const ACHIEVEMENT_TIER_COLORS = {
 
 // 月份名称
 export const MONTH_NAMES = [
-  '一月', '二月', '三月', '四月', '五月', '六月',
-  '七月', '八月', '九月', '十月', '十一月', '十二月'
+  '一月',
+  '二月',
+  '三月',
+  '四月',
+  '五月',
+  '六月',
+  '七月',
+  '八月',
+  '九月',
+  '十月',
+  '十一月',
+  '十二月',
 ];
 
 // 季节配置
@@ -106,35 +123,60 @@ export const WEATHER_CONDITIONS = [
 // 钓具类型
 export const EQUIPMENT_TYPES = {
   rods: [
-    '手竿', '海竿', '路亚竿', '飞钓竿', '矶竿',
-    '筏竿', '前打竿', '鲫鱼竿', '鲤鱼竿'
+    '手竿',
+    '海竿',
+    '路亚竿',
+    '飞钓竿',
+    '矶竿',
+    '筏竿',
+    '前打竿',
+    '鲫鱼竿',
+    '鲤鱼竿',
   ],
-  reels: [
-    '纺车轮', '水滴轮', '鼓式轮', '飞钓轮',
-    '前打轮', '筏钓轮', '海钓轮'
-  ],
+  reels: ['纺车轮', '水滴轮', '鼓式轮', '飞钓轮', '前打轮', '筏钓轮', '海钓轮'],
   lines: [
-    '尼龙线', '碳素线', 'PE编织线', '大力马线',
-    '钢丝线', '前导线', '子线'
+    '尼龙线',
+    '碳素线',
+    'PE编织线',
+    '大力马线',
+    '钢丝线',
+    '前导线',
+    '子线',
   ],
   hooks: [
-    '伊势尼', '新关东', '袖钩', '朝天钩',
-    '三角钩', '倒刺钩', '无倒刺钩', '圆形钩'
+    '伊势尼',
+    '新关东',
+    '袖钩',
+    '朝天钩',
+    '三角钩',
+    '倒刺钩',
+    '无倒刺钩',
+    '圆形钩',
   ],
   baits: [
-    '蚯蚓', '红虫', '玉米', '麦子', '蚕豆',
-    '面包虫', '小虾', '泥鳅', '商品饵',
-    '路亚', '铅头钩', '软虫', '硬饵'
+    '蚯蚓',
+    '红虫',
+    '玉米',
+    '麦子',
+    '蚕豆',
+    '面包虫',
+    '小虾',
+    '泥鳅',
+    '商品饵',
+    '路亚',
+    '铅头钩',
+    '软虫',
+    '硬饵',
   ],
 } as const;
 
-// 钓鱼难度等级名称
+// 钓鱼难度等级名称 - 使用翻译键替代硬编码文本
 export const DIFFICULTY_NAMES: Record<number, string> = {
-  1: '简单',
-  2: '容易', 
-  3: '普通',
-  4: '困难',
-  5: '专家',
+  1: 'difficulty.1',
+  2: 'difficulty.2',
+  3: 'difficulty.3',
+  4: 'difficulty.4',
+  5: 'difficulty.5',
 } as const;
 
 // 默认成就定义
@@ -186,8 +228,8 @@ export const DEFAULT_ACHIEVEMENTS = [
     icon: 'ruler',
     tiers: {
       bronze: { requirement: 1, reward: '第一条大鱼' }, // 1kg
-      silver: { requirement: 3, reward: '大鱼克星' },   // 3kg
-      gold: { requirement: 5, reward: '巨鱼传说' },     // 5kg
+      silver: { requirement: 3, reward: '大鱼克星' }, // 3kg
+      gold: { requirement: 5, reward: '巨鱼传说' }, // 5kg
     },
     isHidden: false,
   },
@@ -373,7 +415,7 @@ export const DEFAULT_ACHIEVEMENTS = [
       gold: { requirement: 12, reward: '马拉松钓神' }, // 12小时
     },
     isHidden: false,
-  }
+  },
 ] as const;
 
 // 默认装备组合（空数组，用户自行创建）
@@ -384,40 +426,40 @@ export const ICON_MAPPING = {
   // 鱼类相关
   fish: 'fish.fill',
   fishOutline: 'fish',
-  
+
   // 导航
   home: 'house.fill',
   fishdex: 'book.fill',
   log: 'plus.circle.fill',
   achievements: 'trophy.fill',
   stats: 'chart.bar.fill',
-  
+
   // 功能
   camera: 'camera.fill',
   location: 'location.fill',
   search: 'magnifyingglass',
   filter: 'line.3.horizontal.decrease',
   sort: 'arrow.up.arrow.down',
-  
+
   // 状态
   locked: 'lock.fill',
   unlocked: 'lock.open.fill',
   new: 'sparkles',
   star: 'star.fill',
   heart: 'heart.fill',
-  
+
   // 天气
   sun: 'sun.max.fill',
   cloud: 'cloud.fill',
   rain: 'cloud.rain.fill',
   wind: 'wind',
-  
+
   // 工具
   ruler: 'ruler',
   scale: 'scalemass.fill',
   timer: 'timer',
   calendar: 'calendar',
-  
+
   // 设置
   settings: 'gearshape.fill',
   profile: 'person.fill',
@@ -427,9 +469,9 @@ export const ICON_MAPPING = {
 
 // 响应式断点
 export const BREAKPOINTS = {
-  sm: 375,  // 小屏手机
-  md: 414,  // 大屏手机
-  lg: 768,  // 平板竖屏
+  sm: 375, // 小屏手机
+  md: 414, // 大屏手机
+  lg: 768, // 平板竖屏
   xl: 1024, // 平板横屏
 } as const;
 

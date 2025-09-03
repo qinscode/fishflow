@@ -14,6 +14,7 @@ import { IconSymbol, MAPPING } from '@/components/ui/IconSymbol';
 import { ProgressRing } from '@/components/ui/ProgressBar';
 import { useTheme } from '@/hooks/useThemeColor';
 import { ACHIEVEMENT_TIER_COLORS } from '@/lib/constants';
+import { useTranslation } from '@/lib/i18n';
 import { Achievement, AchievementTier } from '@/lib/types';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -42,8 +43,19 @@ export function Badge({
   style,
 }: BadgeProps) {
   const theme = useTheme();
+  const { t } = useTranslation();
   const scale = useSharedValue(1);
   const shimmer = useSharedValue(0);
+
+  // Helper function to get achievement name from translation or fallback to default
+  const getAchievementName = (achievement: Achievement) => {
+    const translationKey = `achievement.${achievement.id.replace(/-/g, '.')}.name`;
+    try {
+      return t(translationKey as any);
+    } catch {
+      return achievement.name; // Fallback to original name if translation not found
+    }
+  };
 
   const badgeSize = size === 'large' ? 80 : size === 'small' ? 48 : 64;
   const iconSize = badgeSize * 0.4;
@@ -188,7 +200,7 @@ export function Badge({
             ]}
           >
             <ThemedText type="caption" style={styles.tierText}>
-              {tier === 'bronze' ? '铜' : tier === 'silver' ? '银' : '金'}
+              {t(`achievements.tier.${tier}` as any)}
             </ThemedText>
           </View>
         )}
@@ -208,7 +220,7 @@ export function Badge({
             ]}
             numberOfLines={2}
           >
-            {achievement.name}
+            {getAchievementName(achievement)}
           </ThemedText>
 
           {isLocked && showProgress && (

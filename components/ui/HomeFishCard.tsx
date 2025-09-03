@@ -15,7 +15,7 @@ import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
 import { FISH_IMAGES } from '@/lib/fishImagesMap';
 import { Fish } from '@/lib/types';
-import { getRarityColor } from '@/lib/utils';
+import { getRarityColor, getStarCountByEdibility, getStarRatingColor } from '@/lib/utils';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -55,25 +55,11 @@ export const HomeFishCard = memo<HomeFishCardProps>(
 
     const rarityColor = getRarityColor(fish.rarity);
 
-    // 根据稀有度获取星星数量
-    const getStarCount = (rarity: string): number => {
-      switch (rarity) {
-        case 'common':
-          return 1;
-        case 'unique':
-          return 2;
-        case 'rare':
-          return 3;
-        case 'epic':
-          return 4;
-        case 'legendary':
-          return 5;
-        default:
-          return 1;
-      }
-    };
-
-    const starCount = getStarCount(fish.rarity);
+    // 根据食用评级获取星星数量
+    const starCount = getStarCountByEdibility(fish.edibility?.rating);
+    
+    // 根据星级获取边框和星星颜色
+    const starRatingColor = getStarRatingColor(starCount);
 
     const cardStyles = [
       styles.homeCard,
@@ -83,7 +69,7 @@ export const HomeFishCard = memo<HomeFishCardProps>(
         backgroundColor: 'white',
         borderRadius: 12,
         borderWidth: 2,
-        borderColor: rarityColor,
+        borderColor: starRatingColor,
       },
       theme.shadows.md,
       style,
@@ -129,7 +115,7 @@ export const HomeFishCard = memo<HomeFishCardProps>(
                 key={index}
                 name="star.fill"
                 size={12}
-                color={index < starCount ? rarityColor : '#e0e0e0'}
+                color={index < starCount ? starRatingColor : '#e0e0e0'}
               />
             ))}
           </View>

@@ -27,6 +27,15 @@ export default function CreateEquipmentScreen() {
   const { addEquipmentSet, updateEquipmentSet } = useAppStore();
   const equipmentSets = useEquipmentSets();
 
+  // Helper function to get water type names with translations
+  const getWaterTypeName = (waterType: string) => {
+    return (
+      t(`water.${waterType}` as any) ||
+      WATER_TYPE_NAMES[waterType as keyof typeof WATER_TYPE_NAMES] ||
+      waterType
+    );
+  };
+
   const isEditing = !!id;
   const existingSet = isEditing
     ? equipmentSets.find(set => set.id === id)
@@ -203,32 +212,32 @@ export default function CreateEquipmentScreen() {
   };
 
   const commonTargetFish = [
-    '鲫鱼',
-    '鲤鱼',
-    '草鱼',
-    '鳊鱼',
-    '青鱼',
-    '鲢鱼',
-    '鳙鱼',
-    '黑鱼',
-    '鲈鱼',
-    '鳜鱼',
-    '黄颡鱼',
-    '鲶鱼',
-    '罗非鱼',
-    '带鱼',
-    '黄花鱼',
+    t('fish.crucian.carp'),
+    t('fish.common.carp'),
+    t('fish.grass.carp'),
+    t('fish.bream'),
+    t('fish.black.carp'),
+    t('fish.silver.carp'),
+    t('fish.bighead.carp'),
+    t('fish.snakehead'),
+    t('fish.bass'),
+    t('fish.mandarin.fish'),
+    t('fish.yellow.catfish'),
+    t('fish.catfish'),
+    t('fish.tilapia'),
+    t('fish.ribbon.fish'),
+    t('fish.yellow.croaker'),
   ];
 
   const commonTags = [
-    '新手友好',
-    '经济实惠',
-    '野钓',
-    '抛投',
-    '海钓',
-    '矶钓',
-    '路亚',
-    '夜钓',
+    t('tag.beginner.friendly'),
+    t('tag.economical'),
+    t('tag.wild.fishing'),
+    t('tag.casting'),
+    t('tag.sea.fishing'),
+    t('tag.rock.fishing'),
+    t('tag.lure.fishing'),
+    t('tag.night.fishing'),
   ];
 
   return (
@@ -399,7 +408,7 @@ export default function CreateEquipmentScreen() {
                 type="bodySmall"
                 style={[styles.label, { color: theme.colors.textSecondary }]}
               >
-                钓竿 *
+                {t('equipment.form.rod')} *
               </ThemedText>
             </View>
             <TextInput
@@ -407,7 +416,7 @@ export default function CreateEquipmentScreen() {
                 styles.textInput,
                 { backgroundColor: theme.colors.surface },
               ]}
-              placeholder="例如：手竿 4.5米 或 海竿 3.6米"
+              placeholder={t('equipment.form.rod.placeholder')}
               value={formData.rod}
               onChangeText={text =>
                 setFormData(prev => ({ ...prev, rod: text }))
@@ -426,7 +435,7 @@ export default function CreateEquipmentScreen() {
                 type="bodySmall"
                 style={[styles.label, { color: theme.colors.textSecondary }]}
               >
-                渔轮 *
+                {t('equipment.form.reel')} *
               </ThemedText>
             </View>
             <TextInput
@@ -434,7 +443,7 @@ export default function CreateEquipmentScreen() {
                 styles.textInput,
                 { backgroundColor: theme.colors.surface },
               ]}
-              placeholder="例如：纺车轮 2000型 或 水滴轮"
+              placeholder={t('equipment.form.reel.placeholder')}
               value={formData.reel}
               onChangeText={text =>
                 setFormData(prev => ({ ...prev, reel: text }))
@@ -453,7 +462,7 @@ export default function CreateEquipmentScreen() {
                 type="bodySmall"
                 style={[styles.label, { color: theme.colors.textSecondary }]}
               >
-                钓线 *
+                {t('equipment.form.line')} *
               </ThemedText>
             </View>
             <TextInput
@@ -461,7 +470,7 @@ export default function CreateEquipmentScreen() {
                 styles.textInput,
                 { backgroundColor: theme.colors.surface },
               ]}
-              placeholder="例如：尼龙线 2.0号 或 PE线 1.5号"
+              placeholder={t('equipment.form.line.placeholder')}
               value={formData.line}
               onChangeText={text =>
                 setFormData(prev => ({ ...prev, line: text }))
@@ -480,7 +489,7 @@ export default function CreateEquipmentScreen() {
                 type="bodySmall"
                 style={[styles.label, { color: theme.colors.textSecondary }]}
               >
-                鱼钩 *
+                {t('equipment.form.hook')} *
               </ThemedText>
             </View>
             <TextInput
@@ -488,7 +497,7 @@ export default function CreateEquipmentScreen() {
                 styles.textInput,
                 { backgroundColor: theme.colors.surface },
               ]}
-              placeholder="例如：袖钩 5号 或 新关东 1号"
+              placeholder={t('equipment.form.hook.placeholder')}
               value={formData.hook}
               onChangeText={text =>
                 setFormData(prev => ({ ...prev, hook: text }))
@@ -507,7 +516,7 @@ export default function CreateEquipmentScreen() {
                 type="bodySmall"
                 style={[styles.label, { color: theme.colors.textSecondary }]}
               >
-                饵料 *
+                {t('equipment.form.bait')} *
               </ThemedText>
             </View>
             <TextInput
@@ -533,7 +542,7 @@ export default function CreateEquipmentScreen() {
               color={theme.colors.primary}
             />
             <ThemedText type="subtitle" style={styles.sectionTitle}>
-              配件附件
+              {t('equipment.form.accessories')}
             </ThemedText>
           </View>
 
@@ -544,7 +553,7 @@ export default function CreateEquipmentScreen() {
                   styles.addItemInput,
                   { backgroundColor: theme.colors.surface },
                 ]}
-                placeholder="添加配件（抄网、鱼护等）"
+                placeholder={t('equipment.form.accessories.placeholder')}
                 value={newAccessory}
                 onChangeText={setNewAccessory}
                 onSubmitEditing={handleAddAccessory}
@@ -592,7 +601,7 @@ export default function CreateEquipmentScreen() {
               color={theme.colors.primary}
             />
             <ThemedText type="subtitle" style={styles.sectionTitle}>
-              适用水域 *
+              {t('equipment.form.water.types.label')} *
             </ThemedText>
           </View>
 
@@ -623,7 +632,7 @@ export default function CreateEquipmentScreen() {
                       : theme.colors.text,
                   }}
                 >
-                  {name}
+                  {getWaterTypeName(type)}
                 </ThemedText>
               </Pressable>
             ))}
@@ -635,7 +644,7 @@ export default function CreateEquipmentScreen() {
           <View style={styles.sectionHeaderRow}>
             <IconSymbol name="fish" size={20} color={theme.colors.primary} />
             <ThemedText type="subtitle" style={styles.sectionTitle}>
-              目标鱼种
+              {t('equipment.form.target.fish')}
             </ThemedText>
           </View>
 
@@ -654,7 +663,7 @@ export default function CreateEquipmentScreen() {
                   type="body"
                   style={{ color: theme.colors.text, marginLeft: 8 }}
                 >
-                  添加目标鱼种
+                  {t('equipment.form.target.fish.add')}
                 </ThemedText>
               </View>
               <IconSymbol
@@ -699,7 +708,7 @@ export default function CreateEquipmentScreen() {
           <View style={styles.sectionHeaderRow}>
             <IconSymbol name="tag" size={20} color={theme.colors.primary} />
             <ThemedText type="subtitle" style={styles.sectionTitle}>
-              标签
+              {t('equipment.form.tags.label')}
             </ThemedText>
           </View>
 
@@ -710,7 +719,7 @@ export default function CreateEquipmentScreen() {
                   styles.addItemInput,
                   { backgroundColor: theme.colors.surface },
                 ]}
-                placeholder="添加标签"
+                placeholder={t('equipment.form.tags.add.placeholder')}
                 value={newTag}
                 onChangeText={setNewTag}
                 onSubmitEditing={handleAddTag}
@@ -736,7 +745,7 @@ export default function CreateEquipmentScreen() {
                 type="bodySmall"
                 style={{ color: theme.colors.textSecondary, marginBottom: 8 }}
               >
-                常用标签：
+                {t('equipment.form.tags.common')}
               </ThemedText>
             </View>
             <View style={styles.tagContainer}>
@@ -817,10 +826,12 @@ export default function CreateEquipmentScreen() {
           <View style={styles.modalHeader}>
             <Pressable onPress={() => setShowTargetFishPicker(false)}>
               <ThemedText type="body" style={{ color: theme.colors.primary }}>
-                取消
+                {t('common.cancel')}
               </ThemedText>
             </Pressable>
-            <ThemedText type="title">选择目标鱼种</ThemedText>
+            <ThemedText type="title">
+              {t('equipment.form.target.fish.select')}
+            </ThemedText>
             <View style={{ width: 40 }} />
           </View>
 
@@ -832,7 +843,7 @@ export default function CreateEquipmentScreen() {
                     styles.addItemInput,
                     { backgroundColor: theme.colors.surface },
                   ]}
-                  placeholder="输入鱼种名称"
+                  placeholder={t('equipment.form.target.fish.placeholder')}
                   value={newTargetFish}
                   onChangeText={setNewTargetFish}
                   onSubmitEditing={handleAddTargetFish}
@@ -855,7 +866,7 @@ export default function CreateEquipmentScreen() {
               type="bodySmall"
               style={{ color: theme.colors.textSecondary, marginBottom: 16 }}
             >
-              常见鱼种：
+              {t('equipment.form.target.fish.common')}
             </ThemedText>
 
             {commonTargetFish

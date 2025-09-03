@@ -19,6 +19,15 @@ export default function EquipmentScreen() {
   const equipmentSets = useEquipmentSets();
   const equipmentStats = useEquipmentStats();
 
+  // Helper function to get water type names with translations
+  const getWaterTypeName = (waterType: string) => {
+    return (
+      t(`water.${waterType}` as any) ||
+      WATER_TYPE_NAMES[waterType as keyof typeof WATER_TYPE_NAMES] ||
+      waterType
+    );
+  };
+
   const [selectedFilter, setSelectedFilter] = useState<
     'all' | 'favorites' | 'recent'
   >('all');
@@ -28,7 +37,9 @@ export default function EquipmentScreen() {
       case 'favorites':
         // 由于没有预设装备，这里可以显示用户标记为收藏的装备
         return equipmentSets.filter(
-          set => set.tags.includes('收藏') || set.tags.includes('常用')
+          set =>
+            set.tags.includes(t('equipment.tags.favorite')) ||
+            set.tags.includes(t('equipment.tags.common'))
         );
       case 'recent':
         const stats = equipmentStats.filter(s => s.lastUsedAt);
@@ -229,6 +240,7 @@ export default function EquipmentScreen() {
                     onDelete={() => handleDeleteSet(set)}
                     theme={theme}
                     t={t}
+                    getWaterTypeName={getWaterTypeName}
                   />
                 </SlideInView>
               );
@@ -247,6 +259,7 @@ interface EquipmentSetCardProps {
   onDelete: () => void;
   theme: any;
   t: (key: any) => string;
+  getWaterTypeName: (waterType: string) => string;
 }
 
 function EquipmentSetCard({
@@ -256,6 +269,7 @@ function EquipmentSetCard({
   onDelete,
   theme,
   t,
+  getWaterTypeName,
 }: EquipmentSetCardProps) {
   return (
     <ThemedView type="card" style={[styles.equipmentCard, theme.shadows.md]}>
@@ -337,7 +351,7 @@ function EquipmentSetCard({
                     type="caption"
                     style={{ color: theme.colors.text }}
                   >
-                    {WATER_TYPE_NAMES[waterType]}
+                    {getWaterTypeName(waterType)}
                   </ThemedText>
                 </View>
               ))}

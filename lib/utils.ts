@@ -50,6 +50,45 @@ export function getRarityColor(rarity: FishRarity): string {
   return colors[rarity];
 }
 
+// 根据星级数量获取颜色
+export function getStarRatingColor(starCount: number): string {
+  const colors = {
+    1: '#9AA0A6',        // 1星 - 灰色
+    2: '#1DB954',        // 2星 - 绿色
+    3: '#2F80ED',        // 3星 - 蓝色
+    4: '#8B5CF6',        // 4星 - 紫色
+    5: '#F59E0B',        // 5星 - 橙色
+  };
+  return colors[starCount as keyof typeof colors] || '#9AA0A6';
+}
+
+// 根据食用评级获取星星数量
+export function getStarCountByEdibility(edibilityRating: string | null | undefined): number {
+  if (!edibilityRating) {
+    return 1; // 默认1星
+  }
+  
+  switch (edibilityRating.toLowerCase()) {
+    case 'excellent':
+      return 5; // 优秀 - 5星
+    case 'good':
+      return 4; // 良好 - 4星
+    case 'fair':
+      return 3; // 一般 - 3星
+    case 'poor':
+      return 2; // 较差 - 2星
+    case 'variable':
+      return 3; // 可变 - 3星（中等）
+    case 'not_recommended':
+    case 'not_edible':
+    case 'no_take':
+    case 'protected':
+      return 1; // 不建议食用/不可食用/禁捕/保护 - 1星
+    default:
+      return 1; // 未知或其他情况 - 1星
+  }
+}
+
 // 检查鱼类是否已解锁
 export function isFishUnlocked(fishId: string, catches: CatchRecord[]): boolean {
   return catches.some(function(catchRecord) {

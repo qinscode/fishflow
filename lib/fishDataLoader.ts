@@ -52,6 +52,12 @@ function transformFishData(rawData: any[]): Fish[] {
         activeTime: rawFish.behavior?.activeTime || 'both',
         difficulty: rawFish.behavior?.difficulty || 3,
       },
+      edibility: rawFish.edibility ? {
+        rating: rawFish.edibility.rating,
+        taste: rawFish.edibility.taste,
+        cookingMethods: rawFish.edibility.cookingMethods,
+        notes: rawFish.edibility.notes,
+      } : undefined,
     };
 
     return fish;

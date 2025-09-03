@@ -14,9 +14,9 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
 import { useTranslation } from '@/lib/i18n';
-import { 
-  useFish, 
-  useCatches, 
+import {
+  useFish,
+  useCatches,
   useUserStats,
   useAchievements,
   useUserAchievements,
@@ -27,7 +27,7 @@ export default function HomeScreen() {
   const theme = useTheme();
   const { isTablet } = useResponsive();
   const { t } = useTranslation();
-  
+
   const fish = useFish();
   const catches = useCatches();
   const userStats = useUserStats();
@@ -49,7 +49,9 @@ export default function HomeScreen() {
   const recentAchievements = React.useMemo(() => {
     return achievements
       .map(a => {
-        const userProgress = userAchievements.find(ua => ua.achievementId === a.id);
+        const userProgress = userAchievements.find(
+          ua => ua.achievementId === a.id
+        );
         return { achievement: a, progress: userProgress };
       })
       .filter(a => a.progress?.tier !== null)
@@ -84,8 +86,10 @@ export default function HomeScreen() {
   ];
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <ScrollView 
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+    >
+      <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
@@ -96,21 +100,27 @@ export default function HomeScreen() {
               <ThemedText type="h2" style={styles.greeting}>
                 {t('home.welcome')}
               </ThemedText>
-              <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
+              <ThemedText
+                type="body"
+                style={{ color: theme.colors.textSecondary }}
+              >
                 {t('home.subtitle')}
               </ThemedText>
             </View>
-            
-            <Pressable 
-              style={[styles.profileButton, { backgroundColor: theme.colors.surface }]}
+
+            <Pressable
+              style={[
+                styles.profileButton,
+                { backgroundColor: theme.colors.surface },
+              ]}
               onPress={() => {
                 // TODO: Navigate to profile
               }}
             >
-              <IconSymbol 
-                name="person.fill" 
-                size={24} 
-                color={theme.colors.primary} 
+              <IconSymbol
+                name="person.fill"
+                size={24}
+                color={theme.colors.primary}
               />
             </Pressable>
           </ThemedView>
@@ -124,25 +134,34 @@ export default function HomeScreen() {
                 <ThemedText type="h3" style={{ color: theme.colors.primary }}>
                   {userStats.totalCatches}
                 </ThemedText>
-                <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
+                <ThemedText
+                  type="bodySmall"
+                  style={{ color: theme.colors.textSecondary }}
+                >
                   {t('home.stats.catches')}
                 </ThemedText>
               </View>
-              
+
               <View style={styles.statItem}>
                 <ThemedText type="h3" style={{ color: theme.colors.secondary }}>
                   {userStats.uniqueSpecies}
                 </ThemedText>
-                <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
+                <ThemedText
+                  type="bodySmall"
+                  style={{ color: theme.colors.textSecondary }}
+                >
                   {t('home.stats.species')}
                 </ThemedText>
               </View>
-              
+
               <View style={styles.statItem}>
                 <ThemedText type="h3" style={{ color: theme.colors.accent }}>
                   {userStats.currentStreak}
                 </ThemedText>
-                <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
+                <ThemedText
+                  type="bodySmall"
+                  style={{ color: theme.colors.textSecondary }}
+                >
                   {t('home.stats.days')}
                 </ThemedText>
               </View>
@@ -150,20 +169,19 @@ export default function HomeScreen() {
           </ThemedView>
         </SlideInView>
 
-
         {/* Recent Unlocks */}
         {recentUnlocks.length > 0 && (
           <View style={styles.section}>
             <ThemedText type="title" style={styles.sectionTitle}>
               {t('home.recent.unlocks')}
             </ThemedText>
-            
-            <ScrollView 
-              horizontal 
+
+            <ScrollView
+              horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.horizontalList}
             >
-              {recentUnlocks.map((fishItem) => (
+              {recentUnlocks.map(fishItem => (
                 <HomeFishCard
                   key={fishItem.id}
                   fish={fishItem}
@@ -179,11 +197,11 @@ export default function HomeScreen() {
         {recentAchievements.length > 0 && (
           <View style={styles.section}>
             <ThemedText type="title" style={styles.sectionTitle}>
-              最新成就
+              {t('home.recent.achievements')}
             </ThemedText>
-            
-            <ScrollView 
-              horizontal 
+
+            <ScrollView
+              horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.horizontalList}
             >
@@ -208,35 +226,43 @@ export default function HomeScreen() {
           <ThemedText type="title" style={styles.sectionTitle}>
             {t('home.quick.actions')}
           </ThemedText>
-          
+
           <View style={styles.quickActions}>
-            {quickActions.map((action) => (
+            {quickActions.map(action => (
               <SlideInView key={action.id} direction="up" delay={300}>
                 <Pressable
                   style={[
                     styles.actionCard,
                     { backgroundColor: theme.colors.surface },
-                    theme.shadows.sm
+                    theme.shadows.sm,
                   ]}
                   onPress={action.onPress}
                 >
-                  <View style={[styles.actionIcon, { backgroundColor: `${action.color}20` }]}>
+                  <View
+                    style={[
+                      styles.actionIcon,
+                      { backgroundColor: `${action.color}20` },
+                    ]}
+                  >
                     <IconSymbol
                       name={action.icon}
                       size={24}
                       color={action.color}
                     />
                   </View>
-                  
+
                   <View style={styles.actionContent}>
-                    <ThemedText type="bodyBold" style={styles.actionTitle}>
+                    <ThemedText type="body" style={styles.actionTitle}>
                       {action.title}
                     </ThemedText>
-                    <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
+                    <ThemedText
+                      type="bodySmall"
+                      style={{ color: theme.colors.textSecondary }}
+                    >
                       {action.description}
                     </ThemedText>
                   </View>
-                  
+
                   <IconSymbol
                     name="chevron.right"
                     size={16}
@@ -251,32 +277,42 @@ export default function HomeScreen() {
         {/* Progress Overview */}
         <View style={styles.section}>
           <ThemedText type="title" style={styles.sectionTitle}>
-            图鉴进度
+            {t('home.progress.fishdex')}
           </ThemedText>
-          
-          <ThemedView type="card" style={[styles.progressCard, theme.shadows.sm]}>
+
+          <ThemedView
+            type="card"
+            style={[styles.progressCard, theme.shadows.sm]}
+          >
             <View style={styles.progressHeader}>
               <ThemedText type="subtitle">
-                已解锁鱼类
+                {t('home.progress.unlocked.fish')}
               </ThemedText>
-              <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
+              <ThemedText
+                type="bodySmall"
+                style={{ color: theme.colors.textSecondary }}
+              >
                 {userStats.uniqueSpecies} / {fish.length}
               </ThemedText>
             </View>
-            
+
             <ProgressBar
-              progress={fish.length > 0 ? userStats.uniqueSpecies / fish.length : 0}
+              progress={
+                fish.length > 0 ? userStats.uniqueSpecies / fish.length : 0
+              }
               height={8}
               color={theme.colors.primary}
               animated={true}
               style={styles.progressBar}
             />
-            
-            <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
-              {fish.length > 0 
-                ? `完成度 ${Math.round((userStats.uniqueSpecies / fish.length) * 100)}%`
-                : '暂无数据'
-              }
+
+            <ThemedText
+              type="caption"
+              style={{ color: theme.colors.textSecondary }}
+            >
+              {fish.length > 0
+                ? `${t('home.progress.completion')} ${Math.round((userStats.uniqueSpecies / fish.length) * 100)}%`
+                : t('home.progress.no.data')}
             </ThemedText>
           </ThemedView>
         </View>
