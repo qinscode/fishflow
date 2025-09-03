@@ -1023,7 +1023,6 @@ export default function FishDetailScreen() {
           {renderBasicInfo()}
           {renderStats()}
           {renderHabitat()}
-          {renderRegulations()}
           {renderEdibility()}
           {renderBehavior()}
           {renderPersonalRecord()}
