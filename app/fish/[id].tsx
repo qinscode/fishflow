@@ -705,7 +705,7 @@ export default function FishDetailScreen() {
               <View style={styles.regulationHorizontalGrid}>
                 {regulation.dailyLimit && (
                   <View style={styles.regulationHorizontalInfoItem}>
-                    <IconSymbol name="clock.badge" size={10} color="#10B981" />
+                    <IconSymbol name="clock.badge" size={12} color="#10B981" />
                     <View style={styles.regulationHorizontalContent}>
                       <ThemedText style={styles.regulationHorizontalLabel}>
                         日限
@@ -719,7 +719,7 @@ export default function FishDetailScreen() {
 
                 {regulation.possessionLimit && (
                   <View style={styles.regulationHorizontalInfoItem}>
-                    <IconSymbol name="bag" size={10} color="#F59E0B" />
+                    <IconSymbol name="bag" size={12} color="#F59E0B" />
                     <View style={styles.regulationHorizontalContent}>
                       <ThemedText style={styles.regulationHorizontalLabel}>
                         持有
@@ -733,7 +733,7 @@ export default function FishDetailScreen() {
 
                 {regulation.minSizeCm && (
                   <View style={styles.regulationHorizontalInfoItem}>
-                    <IconSymbol name="ruler" size={10} color="#3B82F6" />
+                    <IconSymbol name="ruler" size={12} color="#3B82F6" />
                     <View style={styles.regulationHorizontalContent}>
                       <ThemedText style={styles.regulationHorizontalLabel}>
                         尺寸
@@ -748,7 +748,7 @@ export default function FishDetailScreen() {
                 {regulation.closedSeasons &&
                   regulation.closedSeasons.length > 0 && (
                     <View style={styles.regulationHorizontalInfoItem}>
-                      <IconSymbol name="calendar" size={10} color="#EF4444" />
+                      <IconSymbol name="calendar" size={12} color="#EF4444" />
                       <View style={styles.regulationHorizontalContent}>
                         <ThemedText style={styles.regulationHorizontalLabel}>
                           禁期
@@ -765,7 +765,7 @@ export default function FishDetailScreen() {
                     <View style={styles.regulationHorizontalInfoItem}>
                       <IconSymbol
                         name="exclamationmark.triangle"
-                        size={10}
+                        size={12}
                         color="#8B5CF6"
                       />
                       <View style={styles.regulationHorizontalContent}>
