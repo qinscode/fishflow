@@ -539,134 +539,131 @@ export default function FishDetailScreen() {
         </ThemedText>
       </View>
 
-      <View style={styles.habitatTwoColumnGrid}>
-        {/* 左列 */}
-        <View style={styles.habitatColumn}>
-          {/* 水域类型 */}
-          <View style={styles.habitatCleanSection}>
-            <View style={styles.habitatCleanHeader}>
-              <IconSymbol name="drop.fill" size={14} color="#3B82F6" />
-              <ThemedText style={styles.habitatCleanTitle}>
-                {t('fish.detail.water.types')}
-              </ThemedText>
-            </View>
-            <View style={styles.habitatCleanTags}>
-              {currentFish.habitat.waterTypes
-                ?.filter(type => type)
-                .map((type, index) => (
-                  <View
-                    key={index}
+      <View style={styles.habitatOptimizedGrid}>
+        {/* 水域类型 */}
+        <View style={styles.habitatOptimizedRow}>
+          <View style={styles.habitatOptimizedIconLabel}>
+            <IconSymbol name="drop.fill" size={12} color="#3B82F6" />
+            <ThemedText style={styles.habitatOptimizedLabel}>
+              {t('fish.detail.water.types')}
+            </ThemedText>
+          </View>
+          <View style={styles.habitatOptimizedTags}>
+            {currentFish.habitat.waterTypes
+              ?.filter(type => type)
+              .map((type, index) => (
+                <View
+                  key={index}
+                  style={[
+                    styles.habitatOptimizedTag,
+                    { backgroundColor: '#3B82F6' + '15' },
+                  ]}
+                >
+                  <ThemedText
                     style={[
-                      styles.habitatCleanTag,
-                      { backgroundColor: '#3B82F6' + '15' },
+                      styles.habitatOptimizedTagText,
+                      { color: '#3B82F6' },
                     ]}
                   >
-                    <ThemedText
-                      style={[styles.habitatCleanTagText, { color: '#3B82F6' }]}
-                    >
-                      {WATER_TYPE_NAMES[type] || type || t('common.unknown')}
-                    </ThemedText>
-                  </View>
-                ))}
-            </View>
-          </View>
-
-          {/* 活跃季节 */}
-          <View style={styles.habitatCleanSection}>
-            <View style={styles.habitatCleanHeader}>
-              <IconSymbol name="calendar" size={14} color="#F59E0B" />
-              <ThemedText style={styles.habitatCleanTitle}>
-                {t('fish.detail.seasons')}
-              </ThemedText>
-            </View>
-            <View style={styles.habitatCleanTags}>
-              {currentFish.habitat.seasons.slice(0, 3).map((season, index) => (
-                <View
-                  key={index}
-                  style={[
-                    styles.habitatCleanTag,
-                    { backgroundColor: '#F59E0B' + '15' },
-                  ]}
-                >
-                  <ThemedText
-                    style={[styles.habitatCleanTagText, { color: '#F59E0B' }]}
-                  >
-                    {season}
-                    {typeof season === 'number' ? t('fish.detail.month') : ''}
+                    {WATER_TYPE_NAMES[type] || type || t('common.unknown')}
                   </ThemedText>
                 </View>
               ))}
-              {currentFish.habitat.seasons.length > 3 && (
-                <View
-                  style={[
-                    styles.habitatCleanTag,
-                    { backgroundColor: '#F59E0B' + '10' },
-                  ]}
-                >
-                  <ThemedText
-                    style={[styles.habitatCleanTagText, { color: '#F59E0B' }]}
-                  >
-                    +{currentFish.habitat.seasons.length - 3}
-                  </ThemedText>
-                </View>
-              )}
-            </View>
           </View>
         </View>
 
-        {/* 右列 */}
-        <View style={styles.habitatColumn}>
-          {/* 分布地区 */}
-          <View style={styles.habitatCleanSection}>
-            <View style={styles.habitatCleanHeader}>
-              <IconSymbol name="location.fill" size={14} color="#10B981" />
-              <ThemedText style={styles.habitatCleanTitle}>
-                {t('fish.detail.regions')}
-              </ThemedText>
-            </View>
-            <View style={styles.habitatCleanTags}>
-              {currentFish.habitat.regions.map((region, index) => (
-                <View
-                  key={index}
-                  style={[
-                    styles.habitatCleanTag,
-                    { backgroundColor: '#10B981' + '15' },
-                  ]}
+        {/* 分布地区 */}
+        <View style={styles.habitatOptimizedRow}>
+          <View style={styles.habitatOptimizedIconLabel}>
+            <IconSymbol name="location.fill" size={12} color="#10B981" />
+            <ThemedText style={styles.habitatOptimizedLabel}>
+              {t('fish.detail.regions')}
+            </ThemedText>
+          </View>
+          <View style={styles.habitatOptimizedTags}>
+            {currentFish.habitat.regions.map((region, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.habitatOptimizedTag,
+                  { backgroundColor: '#10B981' + '15' },
+                ]}
+              >
+                <ThemedText
+                  style={[styles.habitatOptimizedTagText, { color: '#10B981' }]}
                 >
-                  <ThemedText
-                    style={[styles.habitatCleanTagText, { color: '#10B981' }]}
-                  >
-                    {region}
-                  </ThemedText>
-                </View>
-              ))}
+                  {region}
+                </ThemedText>
+              </View>
+            ))}
+          </View>
+        </View>
+
+        {/* 活跃季节 */}
+        <View style={styles.habitatOptimizedRow}>
+          <View style={styles.habitatOptimizedIconLabel}>
+            <IconSymbol name="calendar" size={12} color="#F59E0B" />
+            <ThemedText style={styles.habitatOptimizedLabel}>
+              {t('fish.detail.seasons')}
+            </ThemedText>
+          </View>
+          <View style={styles.habitatOptimizedTags}>
+            {currentFish.habitat.seasons.slice(0, 4).map((season, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.habitatOptimizedTag,
+                  { backgroundColor: '#F59E0B' + '15' },
+                ]}
+              >
+                <ThemedText
+                  style={[styles.habitatOptimizedTagText, { color: '#F59E0B' }]}
+                >
+                  {season}
+                  {typeof season === 'number' ? t('fish.detail.month') : ''}
+                </ThemedText>
+              </View>
+            ))}
+            {currentFish.habitat.seasons.length > 4 && (
+              <View
+                style={[
+                  styles.habitatOptimizedTag,
+                  { backgroundColor: '#F59E0B' + '10' },
+                ]}
+              >
+                <ThemedText
+                  style={[styles.habitatOptimizedTagText, { color: '#F59E0B' }]}
+                >
+                  +{currentFish.habitat.seasons.length - 4}
+                </ThemedText>
+              </View>
+            )}
+          </View>
+        </View>
+
+        {/* 水深信息（如果有的话） */}
+        {currentFish.habitat.depth && (
+          <View style={styles.habitatOptimizedRow}>
+            <View style={styles.habitatOptimizedIconLabel}>
+              <IconSymbol name="arrow.down" size={12} color="#6B7280" />
+              <ThemedText style={styles.habitatOptimizedLabel}>水深</ThemedText>
+            </View>
+            <View style={styles.habitatOptimizedTags}>
+              <View
+                style={[
+                  styles.habitatOptimizedTag,
+                  { backgroundColor: '#6B7280' + '15' },
+                ]}
+              >
+                <ThemedText
+                  style={[styles.habitatOptimizedTagText, { color: '#6B7280' }]}
+                >
+                  {currentFish.habitat.depth}
+                </ThemedText>
+              </View>
             </View>
           </View>
-
-          {/* 水深信息（如果有的话） */}
-          {currentFish.habitat.depth && (
-            <View style={styles.habitatCleanSection}>
-              <View style={styles.habitatCleanHeader}>
-                <IconSymbol name="arrow.down" size={14} color="#6B7280" />
-                <ThemedText style={styles.habitatCleanTitle}>水深</ThemedText>
-              </View>
-              <View style={styles.habitatCleanTags}>
-                <View
-                  style={[
-                    styles.habitatCleanTag,
-                    { backgroundColor: '#6B7280' + '15' },
-                  ]}
-                >
-                  <ThemedText
-                    style={[styles.habitatCleanTagText, { color: '#6B7280' }]}
-                  >
-                    {currentFish.habitat.depth}
-                  </ThemedText>
-                </View>
-              </View>
-            </View>
-          )}
-        </View>
+        )}
       </View>
     </ThemedView>
   );
@@ -684,11 +681,11 @@ export default function FishDetailScreen() {
           </ThemedText>
         </View>
 
-        <View style={styles.regulationsThreeColumnContainer}>
+        <View style={styles.regulationsOptimizedContainer}>
           {currentFish.regulations.map((regulation, index) => (
-            <View key={index} style={styles.regulationCleanItem}>
+            <View key={index} style={styles.regulationOptimizedItem}>
               {/* 地区徽章 */}
-              <View style={styles.regulationCleanHeader}>
+              <View style={styles.regulationOptimizedHeader}>
                 <IconSymbol
                   name="location"
                   size={12}
@@ -696,7 +693,7 @@ export default function FishDetailScreen() {
                 />
                 <ThemedText
                   style={[
-                    styles.regulationCleanRegion,
+                    styles.regulationOptimizedRegion,
                     { color: theme.colors.primary },
                   ]}
                 >
@@ -704,45 +701,45 @@ export default function FishDetailScreen() {
                 </ThemedText>
               </View>
 
-              {/* 规定信息网格 - 3栏布局 */}
-              <View style={styles.regulationThreeColumnGrid}>
+              {/* 规定信息 - 紧凑3栏网格 */}
+              <View style={styles.regulationOptimizedGrid}>
                 {regulation.dailyLimit && (
-                  <View style={styles.regulationCleanRow}>
-                    <IconSymbol name="clock.badge" size={12} color="#10B981" />
-                    <View style={styles.regulationCleanContent}>
-                      <ThemedText style={styles.regulationCleanLabel}>
+                  <View style={styles.regulationOptimizedItem}>
+                    <IconSymbol name="clock.badge" size={10} color="#10B981" />
+                    <View style={styles.regulationOptimizedContent}>
+                      <ThemedText style={styles.regulationOptimizedLabel}>
                         日限
                       </ThemedText>
-                      <ThemedText style={styles.regulationCleanValue}>
-                        {regulation.dailyLimit}尾
+                      <ThemedText style={styles.regulationOptimizedValue}>
+                        {regulation.dailyLimit}
                       </ThemedText>
                     </View>
                   </View>
                 )}
 
                 {regulation.possessionLimit && (
-                  <View style={styles.regulationCleanRow}>
-                    <IconSymbol name="bag" size={12} color="#F59E0B" />
-                    <View style={styles.regulationCleanContent}>
-                      <ThemedText style={styles.regulationCleanLabel}>
+                  <View style={styles.regulationOptimizedItem}>
+                    <IconSymbol name="bag" size={10} color="#F59E0B" />
+                    <View style={styles.regulationOptimizedContent}>
+                      <ThemedText style={styles.regulationOptimizedLabel}>
                         持有
                       </ThemedText>
-                      <ThemedText style={styles.regulationCleanValue}>
-                        {regulation.possessionLimit}尾
+                      <ThemedText style={styles.regulationOptimizedValue}>
+                        {regulation.possessionLimit}
                       </ThemedText>
                     </View>
                   </View>
                 )}
 
                 {regulation.minSizeCm && (
-                  <View style={styles.regulationCleanRow}>
-                    <IconSymbol name="ruler" size={12} color="#3B82F6" />
-                    <View style={styles.regulationCleanContent}>
-                      <ThemedText style={styles.regulationCleanLabel}>
+                  <View style={styles.regulationOptimizedItem}>
+                    <IconSymbol name="ruler" size={10} color="#3B82F6" />
+                    <View style={styles.regulationOptimizedContent}>
+                      <ThemedText style={styles.regulationOptimizedLabel}>
                         尺寸
                       </ThemedText>
-                      <ThemedText style={styles.regulationCleanValue}>
-                        {regulation.minSizeCm}cm+
+                      <ThemedText style={styles.regulationOptimizedValue}>
+                        {regulation.minSizeCm}cm
                       </ThemedText>
                     </View>
                   </View>
@@ -750,14 +747,14 @@ export default function FishDetailScreen() {
 
                 {regulation.closedSeasons &&
                   regulation.closedSeasons.length > 0 && (
-                    <View style={styles.regulationCleanRow}>
-                      <IconSymbol name="calendar" size={12} color="#EF4444" />
-                      <View style={styles.regulationCleanContent}>
-                        <ThemedText style={styles.regulationCleanLabel}>
+                    <View style={styles.regulationOptimizedItem}>
+                      <IconSymbol name="calendar" size={10} color="#EF4444" />
+                      <View style={styles.regulationOptimizedContent}>
+                        <ThemedText style={styles.regulationOptimizedLabel}>
                           禁期
                         </ThemedText>
-                        <ThemedText style={styles.regulationCleanValue}>
-                          {regulation.closedSeasons.length}个
+                        <ThemedText style={styles.regulationOptimizedValue}>
+                          {regulation.closedSeasons.length}
                         </ThemedText>
                       </View>
                     </View>
@@ -765,44 +762,22 @@ export default function FishDetailScreen() {
 
                 {regulation.specialRules &&
                   regulation.specialRules.length > 0 && (
-                    <View style={styles.regulationCleanRow}>
+                    <View style={styles.regulationOptimizedItem}>
                       <IconSymbol
                         name="exclamationmark.triangle"
-                        size={12}
+                        size={10}
                         color="#8B5CF6"
                       />
-                      <View style={styles.regulationCleanContent}>
-                        <ThemedText style={styles.regulationCleanLabel}>
+                      <View style={styles.regulationOptimizedContent}>
+                        <ThemedText style={styles.regulationOptimizedLabel}>
                           特殊
                         </ThemedText>
-                        <ThemedText style={styles.regulationCleanValue}>
-                          {regulation.specialRules.length}项
+                        <ThemedText style={styles.regulationOptimizedValue}>
+                          {regulation.specialRules.length}
                         </ThemedText>
                       </View>
                     </View>
                   )}
-
-                {/* 如果规定项目少于3个，添加占位符保持对齐 */}
-                {[
-                  ...Array(
-                    Math.max(
-                      0,
-                      3 -
-                        [
-                          regulation.dailyLimit,
-                          regulation.possessionLimit,
-                          regulation.minSizeCm,
-                          regulation.closedSeasons,
-                          regulation.specialRules,
-                        ].filter(Boolean).length
-                    )
-                  ),
-                ].map((_, i) => (
-                  <View
-                    key={`placeholder-${i}`}
-                    style={styles.regulationPlaceholder}
-                  />
-                ))}
               </View>
             </View>
           ))}
@@ -1798,19 +1773,48 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#1F2937',
   },
+  // Clean layout styles without gray backgrounds
+  habitatCleanSection: {
+    marginBottom: 16,
+  },
+  habitatCleanHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    gap: 6,
+  },
+  habitatCleanTitle: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#374151',
+  },
+  habitatCleanTags: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  habitatCleanTag: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  habitatCleanTagText: {
+    fontSize: 10,
+    fontWeight: '500',
+  },
   regulationsThreeColumnContainer: {
-    gap: 8,
+    gap: 12,
   },
   regulationCleanItem: {
-    backgroundColor: '#F9FAFB',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 8,
+    marginBottom: 16,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
   },
   regulationCleanHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 10,
     gap: 6,
   },
   regulationCleanRegion: {
@@ -1820,18 +1824,20 @@ const styles = StyleSheet.create({
   regulationThreeColumnGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 6,
+    gap: 8,
   },
   regulationCleanRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 6,
+    width: '30%', // 3列布局，每个占30%，留出间距
+    marginBottom: 8,
   },
   regulationCleanContent: {
     flex: 1,
   },
   regulationCleanLabel: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '400',
     color: '#6B7280',
   },
@@ -1841,6 +1847,94 @@ const styles = StyleSheet.create({
     color: '#1F2937',
   },
   regulationPlaceholder: {
-    width: '33%', // 3列布局，每个占33%
+    width: '30%', // 与regulationCleanRow保持一致
+  },
+  // New optimized styles for compact layout
+  habitatOptimizedGrid: {
+    gap: 12,
+  },
+  habitatOptimizedRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+  },
+  habitatOptimizedIconLabel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  habitatOptimizedLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#374151',
+  },
+  habitatOptimizedTags: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  habitatOptimizedTag: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  habitatOptimizedTagText: {
+    fontSize: 10,
+    fontWeight: '500',
+  },
+  regulationsOptimizedContainer: {
+    gap: 8,
+  },
+  regulationOptimizedItem: {
+    paddingVertical: 12,
+  },
+  regulationOptimizedHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 8,
+  },
+  regulationOptimizedRegion: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  regulationOptimizedGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  regulationOptimizedInfoGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  regulationOptimizedInfoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  regulationOptimizedContent: {
+    flex: 1,
+  },
+  regulationOptimizedLabel: {
+    fontSize: 10,
+    fontWeight: '400',
+    color: '#6B7280',
+  },
+  regulationOptimizedValue: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#1F2937',
+  },
+  regulationOptimizedInfoLabel: {
+    fontSize: 10,
+    fontWeight: '400',
+    color: '#6B7280',
+  },
+  regulationOptimizedInfoValue: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#1F2937',
   },
 });
