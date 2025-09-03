@@ -839,6 +839,7 @@ export class DatabaseService {
       id: row.id,
       name: row.name,
       description: row.description,
+      icon: row.icon || 'wrench.and.screwdriver.fill',
       rod: row.rod,
       reel: row.reel,
       line: row.line,

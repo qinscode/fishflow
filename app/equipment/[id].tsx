@@ -15,7 +15,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/hooks/useThemeColor';
-import { WATER_TYPE_NAMES } from '@/lib/constants';
+import { WATER_TYPE_NAMES, EQUIPMENT_TYPES } from '@/lib/constants';
 import { useAppStore, useEquipmentSets } from '@/lib/store';
 import { EquipmentSet, WaterType } from '@/lib/types';
 

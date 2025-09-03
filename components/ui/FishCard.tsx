@@ -124,7 +124,7 @@ export const FishCard = memo<FishCardProps>(
           <View style={styles.imageBackground}>
             <Image
               source={
-                FISH_IMAGES[fish.id] || require('@/assets/images/fish/2.png')
+                FISH_IMAGES[fish.id] || require('@/assets/images/fish/2.webp')
               }
               style={styles.fishImageNew}
               contentFit="contain"

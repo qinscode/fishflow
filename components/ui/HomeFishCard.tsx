@@ -99,7 +99,7 @@ export const HomeFishCard = memo<HomeFishCardProps>(
         <View style={styles.imageSection}>
           <Image
             source={
-              FISH_IMAGES[fish.id] || require('@/assets/images/fish/2.png')
+              FISH_IMAGES[fish.id] || require('@/assets/images/fish/2.webp')
             }
             style={styles.fishImage}
             contentFit="contain"

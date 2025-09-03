@@ -332,8 +332,8 @@ export const useUserStats = () => {
       catchesData: catches.map(c => ({ 
         fishId: c.fishId, 
         timestamp: c.timestamp,
-        weight: c.measurements?.weight || 0,
-        length: c.measurements?.length || 0
+        weight: c.measurements?.weightKg || 0,
+        length: c.measurements?.lengthCm || 0
       }))
     });
 
@@ -371,11 +371,11 @@ export const useUserStats = () => {
     let totalLength = 0;
     catches.forEach(catchRecord => {
       if (catchRecord.measurements) {
-        if (catchRecord.measurements.weight) {
-          totalWeight += catchRecord.measurements.weight;
+        if (catchRecord.measurements.weightKg) {
+          totalWeight += catchRecord.measurements.weightKg;
         }
-        if (catchRecord.measurements.length) {
-          totalLength += catchRecord.measurements.length;
+        if (catchRecord.measurements.lengthCm) {
+          totalLength += catchRecord.measurements.lengthCm;
         }
       }
     });
