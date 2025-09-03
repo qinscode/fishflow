@@ -772,6 +772,133 @@ export default function FishDetailScreen() {
     );
   };
 
+  const renderEdibility = () => {
+    if (!currentFish.edibility) {
+      return null;
+    }
+
+    return (
+      <ThemedView type="card" style={[styles.infoCard, theme.shadows.md]}>
+        <View style={styles.cardHeader}>
+          <ThemedText type="title" style={styles.cardTitle}>
+            {t('fish.detail.edibility')}
+          </ThemedText>
+          {currentFish.edibility.rating && (
+            <View
+              style={[
+                styles.rarityBadge,
+                { backgroundColor: edibilityColor + '20' },
+              ]}
+            >
+              <ThemedText
+                style={[styles.rarityText, { color: edibilityColor }]}
+              >
+                {currentFish.edibility.rating.toUpperCase()}
+              </ThemedText>
+            </View>
+          )}
+        </View>
+
+        <View style={styles.leftAlignedInfoList}>
+          {currentFish.edibility.taste && (
+            <View style={styles.leftAlignedInfoRow}>
+              <IconSymbol name="mouth" size={16} color="#F59E0B" />
+              <ThemedText style={styles.leftAlignedLabel}>
+                {t('fish.detail.taste')}：
+              </ThemedText>
+              <ThemedText style={styles.leftAlignedValue}>
+                {currentFish.edibility.taste}
+              </ThemedText>
+            </View>
+          )}
+
+          {currentFish.edibility.cookingMethods &&
+            currentFish.edibility.cookingMethods.length > 0 && (
+              <View style={styles.compactHabitatRow}>
+                <ThemedText style={styles.compactHabitatLabel}>
+                  {t('fish.detail.cooking.methods')}：
+                </ThemedText>
+                <View style={styles.compactTagContainer}>
+                  {currentFish.edibility.cookingMethods.map((method, index) => (
+                    <View
+                      key={index}
+                      style={[
+                        styles.compactTag,
+                        { backgroundColor: '#F59E0B' + '20' },
+                      ]}
+                    >
+                      <ThemedText
+                        style={[styles.compactTagText, { color: '#F59E0B' }]}
+                      >
+                        {method}
+                      </ThemedText>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            )}
+
+          {currentFish.edibility.notes && (
+            <View style={styles.leftAlignedInfoRow}>
+              <IconSymbol name="note.text" size={16} color="#6B7280" />
+              <ThemedText style={styles.leftAlignedLabel}>
+                {t('fish.detail.notes')}：
+              </ThemedText>
+              <ThemedText style={styles.leftAlignedValue}>
+                {currentFish.edibility.notes}
+              </ThemedText>
+            </View>
+          )}
+        </View>
+      </ThemedView>
+    );
+  };
+
+  const renderBehavior = () => (
+    <ThemedView type="card" style={[styles.infoCard, theme.shadows.md]}>
+      <View style={styles.cardHeader}>
+        <ThemedText type="title" style={styles.cardTitle}>
+          {t('fish.detail.behavior')}
+        </ThemedText>
+      </View>
+
+      <View style={styles.leftAlignedInfoList}>
+        <View style={styles.leftAlignedInfoRow}>
+          <IconSymbol name="clock" size={16} color="#3B82F6" />
+          <ThemedText style={styles.leftAlignedLabel}>
+            {t('fish.detail.active.time')}：
+          </ThemedText>
+          <ThemedText style={styles.leftAlignedValue}>
+            {t(`fish.detail.active.${currentFish.behavior.activeTime}`)}
+          </ThemedText>
+        </View>
+
+        <View style={styles.compactHabitatRow}>
+          <ThemedText style={styles.compactHabitatLabel}>
+            {t('fish.detail.feeding.habits')}：
+          </ThemedText>
+          <View style={styles.compactTagContainer}>
+            {currentFish.behavior.feedingHabits.map((habit, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.compactTag,
+                  { backgroundColor: '#10B981' + '20' },
+                ]}
+              >
+                <ThemedText
+                  style={[styles.compactTagText, { color: '#10B981' }]}
+                >
+                  {habit}
+                </ThemedText>
+              </View>
+            ))}
+          </View>
+        </View>
+      </View>
+    </ThemedView>
+  );
+
   const renderPersonalRecord = () => {
     if (shouldShowUnknown || userCatches.length === 0) {
       return null;
@@ -841,6 +968,8 @@ export default function FishDetailScreen() {
           {renderStats()}
           {renderHabitat()}
           {renderRegulations()}
+          {renderEdibility()}
+          {renderBehavior()}
           {renderPersonalRecord()}
         </View>
       </ScrollView>

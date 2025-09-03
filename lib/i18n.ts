@@ -351,6 +351,16 @@ export const translations = {
     'fish.detail.caught.times': '已钓获 {count} 次',
     'fish.detail.best.record': '最佳记录',
     'fish.detail.catch.time': '钓获时间',
+    'fish.detail.edibility': '食用信息',
+    'fish.detail.taste': '口感',
+    'fish.detail.cooking.methods': '烹饪方法',
+    'fish.detail.notes': '备注',
+    'fish.detail.behavior': '行为特征',
+    'fish.detail.active.time': '活跃时间',
+    'fish.detail.active.day': '白天',
+    'fish.detail.active.night': '夜间',
+    'fish.detail.active.both': '全天',
+    'fish.detail.feeding.habits': '食性',
 
     // Difficulty levels
     'difficulty.1': '简单',
@@ -822,6 +832,16 @@ export const translations = {
     'fish.detail.caught.times': 'Caught {count} times',
     'fish.detail.best.record': 'Best Record',
     'fish.detail.catch.time': 'Catch Time',
+    'fish.detail.edibility': 'Edibility',
+    'fish.detail.taste': 'Taste',
+    'fish.detail.cooking.methods': 'Cooking Methods',
+    'fish.detail.notes': 'Notes',
+    'fish.detail.behavior': 'Behavior',
+    'fish.detail.active.time': 'Active Time',
+    'fish.detail.active.day': 'Day',
+    'fish.detail.active.night': 'Night',
+    'fish.detail.active.both': 'Both',
+    'fish.detail.feeding.habits': 'Feeding Habits',
 
     // Difficulty levels
     'difficulty.1': 'Easy',
