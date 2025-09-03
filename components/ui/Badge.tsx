@@ -44,7 +44,7 @@ export function Badge({
   const theme = useTheme();
   const scale = useSharedValue(1);
   const shimmer = useSharedValue(0);
-  
+
   const badgeSize = size === 'large' ? 80 : size === 'small' ? 48 : 64;
   const iconSize = badgeSize * 0.4;
 
@@ -53,7 +53,7 @@ export function Badge({
       // 解锁时的光芒动画
       shimmer.value = withTiming(1, { duration: 1000 });
     }
-  }, [isLocked, tier]);
+  }, [isLocked, tier, shimmer]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
@@ -167,11 +167,7 @@ export function Badge({
         {/* 图标 */}
         <View style={styles.iconContainer}>
           {isLocked ? (
-            <IconSymbol
-              name="lock.fill"
-              size={iconSize}
-              color={iconColor}
-            />
+            <IconSymbol name="lock.fill" size={iconSize} color={iconColor} />
           ) : (
             <IconSymbol
               name={achievement.icon as keyof typeof MAPPING}
@@ -183,12 +179,14 @@ export function Badge({
 
         {/* 等级标识 */}
         {!isLocked && tier && (
-          <View style={[
-            styles.tierBadge,
-            {
-              backgroundColor: ACHIEVEMENT_TIER_COLORS[tier],
-            }
-          ]}>
+          <View
+            style={[
+              styles.tierBadge,
+              {
+                backgroundColor: ACHIEVEMENT_TIER_COLORS[tier],
+              },
+            ]}
+          >
             <ThemedText type="caption" style={styles.tierText}>
               {tier === 'bronze' ? '铜' : tier === 'silver' ? '银' : '金'}
             </ThemedText>
@@ -212,11 +210,14 @@ export function Badge({
           >
             {achievement.name}
           </ThemedText>
-          
+
           {isLocked && showProgress && (
             <ThemedText
               type="caption"
-              style={[styles.progressText, { color: theme.colors.textSecondary }]}
+              style={[
+                styles.progressText,
+                { color: theme.colors.textSecondary },
+              ]}
             >
               {Math.round(progress * 100)}%
             </ThemedText>
@@ -251,23 +252,18 @@ export function BadgeWall({
   showProgress = true,
   style,
 }: BadgeWallProps) {
-  const progressMap = new Map(
-    userProgress.map(p => [p.achievementId, p])
-  );
+  const progressMap = new Map(userProgress.map(p => [p.achievementId, p]));
 
   return (
     <View style={[styles.wall, { gap: 16 }, style]}>
       {achievements.map((achievement, index) => {
         const progress = progressMap.get(achievement.id);
         const isLocked = !progress || progress.tier === null;
-        
+
         return (
           <View
             key={achievement.id}
-            style={[
-              styles.badgeWrapper,
-              { width: `${100 / columns}%` },
-            ]}
+            style={[styles.badgeWrapper, { width: `${100 / columns}%` }]}
           >
             <Badge
               achievement={achievement}

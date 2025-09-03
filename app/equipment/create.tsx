@@ -1,10 +1,10 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState, useEffect } from 'react';
-import { 
-  View, 
-  StyleSheet, 
-  ScrollView, 
-  Pressable, 
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Pressable,
   Alert,
   TextInput,
   Modal,
@@ -15,10 +15,10 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/hooks/useThemeColor';
+import { WATER_TYPE_NAMES } from '@/lib/constants';
 import { useTranslation } from '@/lib/i18n';
 import { useAppStore, useEquipmentSets } from '@/lib/store';
 import { EquipmentSet, WaterType } from '@/lib/types';
-import { WATER_TYPE_NAMES } from '@/lib/constants';
 
 export default function CreateEquipmentScreen() {
   const theme = useTheme();
@@ -26,9 +26,11 @@ export default function CreateEquipmentScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const { addEquipmentSet, updateEquipmentSet } = useAppStore();
   const equipmentSets = useEquipmentSets();
-  
+
   const isEditing = !!id;
-  const existingSet = isEditing ? equipmentSets.find(set => set.id === id) : null;
+  const existingSet = isEditing
+    ? equipmentSets.find(set => set.id === id)
+    : null;
 
   // Form state
   const [formData, setFormData] = useState({
@@ -67,9 +69,9 @@ export default function CreateEquipmentScreen() {
         line: existingSet.line,
         hook: existingSet.hook,
         bait: existingSet.bait,
-        accessories: [...existingSet.accessories || []],
+        accessories: [...(existingSet.accessories || [])],
         waterTypes: [...existingSet.waterTypes],
-        targetFish: [...existingSet.targetFish || []],
+        targetFish: [...(existingSet.targetFish || [])],
         tags: [...existingSet.tags],
         isDefault: existingSet.isDefault,
       });
@@ -81,15 +83,18 @@ export default function CreateEquipmentScreen() {
       ...prev,
       waterTypes: prev.waterTypes.includes(waterType)
         ? prev.waterTypes.filter(wt => wt !== waterType)
-        : [...prev.waterTypes, waterType]
+        : [...prev.waterTypes, waterType],
     }));
   };
 
   const handleAddAccessory = () => {
-    if (newAccessory.trim() && !formData.accessories.includes(newAccessory.trim())) {
+    if (
+      newAccessory.trim() &&
+      !formData.accessories.includes(newAccessory.trim())
+    ) {
       setFormData(prev => ({
         ...prev,
-        accessories: [...prev.accessories, newAccessory.trim()]
+        accessories: [...prev.accessories, newAccessory.trim()],
       }));
       setNewAccessory('');
     }
@@ -98,15 +103,18 @@ export default function CreateEquipmentScreen() {
   const handleRemoveAccessory = (accessory: string) => {
     setFormData(prev => ({
       ...prev,
-      accessories: prev.accessories.filter(a => a !== accessory)
+      accessories: prev.accessories.filter(a => a !== accessory),
     }));
   };
 
   const handleAddTargetFish = () => {
-    if (newTargetFish.trim() && !formData.targetFish.includes(newTargetFish.trim())) {
+    if (
+      newTargetFish.trim() &&
+      !formData.targetFish.includes(newTargetFish.trim())
+    ) {
       setFormData(prev => ({
         ...prev,
-        targetFish: [...prev.targetFish, newTargetFish.trim()]
+        targetFish: [...prev.targetFish, newTargetFish.trim()],
       }));
       setNewTargetFish('');
       setShowTargetFishPicker(false);
@@ -116,7 +124,7 @@ export default function CreateEquipmentScreen() {
   const handleRemoveTargetFish = (fish: string) => {
     setFormData(prev => ({
       ...prev,
-      targetFish: prev.targetFish.filter(f => f !== fish)
+      targetFish: prev.targetFish.filter(f => f !== fish),
     }));
   };
 
@@ -124,7 +132,7 @@ export default function CreateEquipmentScreen() {
     if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
       setFormData(prev => ({
         ...prev,
-        tags: [...prev.tags, newTag.trim()]
+        tags: [...prev.tags, newTag.trim()],
       }));
       setNewTag('');
     }
@@ -133,7 +141,7 @@ export default function CreateEquipmentScreen() {
   const handleRemoveTag = (tag: string) => {
     setFormData(prev => ({
       ...prev,
-      tags: prev.tags.filter(t => t !== tag)
+      tags: prev.tags.filter(t => t !== tag),
     }));
   };
 
@@ -163,25 +171,30 @@ export default function CreateEquipmentScreen() {
       return false;
     }
     if (formData.waterTypes.length === 0) {
-      Alert.alert(t('common.notice'), t('equipment.validation.water.type.required'));
+      Alert.alert(
+        t('common.notice'),
+        t('equipment.validation.water.type.required')
+      );
       return false;
     }
     return true;
   };
 
   const handleSave = () => {
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      return;
+    }
 
     try {
       if (isEditing && id) {
         updateEquipmentSet(id, formData);
         Alert.alert(t('common.success'), t('equipment.update.success'), [
-          { text: t('common.ok'), onPress: () => router.back() }
+          { text: t('common.ok'), onPress: () => router.back() },
         ]);
       } else {
         addEquipmentSet(formData);
         Alert.alert(t('common.success'), t('equipment.create.success'), [
-          { text: t('common.ok'), onPress: () => router.back() }
+          { text: t('common.ok'), onPress: () => router.back() },
         ]);
       }
     } catch (error) {
@@ -190,14 +203,38 @@ export default function CreateEquipmentScreen() {
   };
 
   const commonTargetFish = [
-    '鲫鱼', '鲤鱼', '草鱼', '鳊鱼', '青鱼', '鲢鱼', '鳙鱼', '黑鱼', 
-    '鲈鱼', '鳜鱼', '黄颡鱼', '鲶鱼', '罗非鱼', '带鱼', '黄花鱼'
+    '鲫鱼',
+    '鲤鱼',
+    '草鱼',
+    '鳊鱼',
+    '青鱼',
+    '鲢鱼',
+    '鳙鱼',
+    '黑鱼',
+    '鲈鱼',
+    '鳜鱼',
+    '黄颡鱼',
+    '鲶鱼',
+    '罗非鱼',
+    '带鱼',
+    '黄花鱼',
   ];
 
-  const commonTags = ['新手友好', '经济实惠', '野钓', '抛投', '海钓', '矶钓', '路亚', '夜钓'];
+  const commonTags = [
+    '新手友好',
+    '经济实惠',
+    '野钓',
+    '抛投',
+    '海钓',
+    '矶钓',
+    '路亚',
+    '夜钓',
+  ];
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+    >
       {/* Header */}
       <ThemedView style={styles.header}>
         <Pressable onPress={() => router.back()}>
@@ -207,79 +244,132 @@ export default function CreateEquipmentScreen() {
           {isEditing ? t('equipment.edit.title') : t('equipment.create.title')}
         </ThemedText>
         <Pressable onPress={handleSave}>
-          <ThemedText type="bodySmall" style={{ color: theme.colors.primary, fontWeight: '600' }}>
+          <ThemedText
+            type="bodySmall"
+            style={{ color: theme.colors.primary, fontWeight: '600' }}
+          >
             {t('common.save')}
           </ThemedText>
         </Pressable>
       </ThemedView>
 
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Basic Info */}
         <ThemedView type="card" style={[styles.section, theme.shadows.sm]}>
           <View style={styles.sectionHeaderRow}>
-            <IconSymbol name="info.circle" size={20} color={theme.colors.primary} />
+            <IconSymbol
+              name="info.circle"
+              size={20}
+              color={theme.colors.primary}
+            />
             <ThemedText type="subtitle" style={styles.sectionTitle}>
               {t('equipment.basic.info')}
             </ThemedText>
           </View>
-          
+
           <View style={styles.inputGroup}>
             <View style={styles.labelRow}>
-              <IconSymbol name="textformat" size={16} color={theme.colors.textSecondary} />
-              <ThemedText type="bodySmall" style={[styles.label, { color: theme.colors.textSecondary }]}>
+              <IconSymbol
+                name="textformat"
+                size={16}
+                color={theme.colors.textSecondary}
+              />
+              <ThemedText
+                type="bodySmall"
+                style={[styles.label, { color: theme.colors.textSecondary }]}
+              >
                 {t('equipment.form.name')} *
               </ThemedText>
             </View>
             <TextInput
-              style={[styles.textInput, { backgroundColor: theme.colors.surface }]}
+              style={[
+                styles.textInput,
+                { backgroundColor: theme.colors.surface },
+              ]}
               placeholder={t('equipment.form.name.placeholder')}
               value={formData.name}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
+              onChangeText={text =>
+                setFormData(prev => ({ ...prev, name: text }))
+              }
             />
           </View>
 
           <View style={styles.inputGroup}>
             <View style={styles.labelRow}>
-              <IconSymbol name="doc.text" size={16} color={theme.colors.textSecondary} />
-              <ThemedText type="bodySmall" style={[styles.label, { color: theme.colors.textSecondary }]}>
+              <IconSymbol
+                name="doc.text"
+                size={16}
+                color={theme.colors.textSecondary}
+              />
+              <ThemedText
+                type="bodySmall"
+                style={[styles.label, { color: theme.colors.textSecondary }]}
+              >
                 {t('equipment.form.description')}
               </ThemedText>
             </View>
             <TextInput
-              style={[styles.textInput, { backgroundColor: theme.colors.surface }]}
+              style={[
+                styles.textInput,
+                { backgroundColor: theme.colors.surface },
+              ]}
               placeholder={t('equipment.form.description.placeholder')}
               multiline
               numberOfLines={3}
               value={formData.description}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, description: text }))}
+              onChangeText={text =>
+                setFormData(prev => ({ ...prev, description: text }))
+              }
             />
           </View>
 
           <View style={styles.inputGroup}>
-            <Pressable 
+            <Pressable
               style={styles.toggleRow}
-              onPress={() => setFormData(prev => ({ ...prev, isDefault: !prev.isDefault }))}
+              onPress={() =>
+                setFormData(prev => ({ ...prev, isDefault: !prev.isDefault }))
+              }
             >
               <View style={styles.toggleInfo}>
-                <IconSymbol name="star" size={16} color={theme.colors.textSecondary} />
+                <IconSymbol
+                  name="star"
+                  size={16}
+                  color={theme.colors.textSecondary}
+                />
                 <View style={styles.toggleText}>
-                  <ThemedText type="body">{t('equipment.form.set.default')}</ThemedText>
-                  <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary, marginTop: 2 }}>
+                  <ThemedText type="body">
+                    {t('equipment.form.set.default')}
+                  </ThemedText>
+                  <ThemedText
+                    type="bodySmall"
+                    style={{ color: theme.colors.textSecondary, marginTop: 2 }}
+                  >
                     {t('equipment.form.set.default.description')}
                   </ThemedText>
                 </View>
               </View>
-              <View style={[
-                styles.toggle,
-                { backgroundColor: formData.isDefault ? theme.colors.primary : theme.colors.surface }
-              ]}>
-                <View style={[
-                  styles.toggleThumb,
-                  { 
-                    backgroundColor: theme.colors.background,
-                    transform: [{ translateX: formData.isDefault ? 20 : 2 }]
-                  }
-                ]} />
+              <View
+                style={[
+                  styles.toggle,
+                  {
+                    backgroundColor: formData.isDefault
+                      ? theme.colors.primary
+                      : theme.colors.surface,
+                  },
+                ]}
+              >
+                <View
+                  style={[
+                    styles.toggleThumb,
+                    {
+                      backgroundColor: theme.colors.background,
+                      transform: [{ translateX: formData.isDefault ? 20 : 2 }],
+                    },
+                  ]}
+                />
               </View>
             </Pressable>
           </View>
@@ -288,84 +378,148 @@ export default function CreateEquipmentScreen() {
         {/* Equipment Selection */}
         <ThemedView type="card" style={[styles.section, theme.shadows.sm]}>
           <View style={styles.sectionHeaderRow}>
-            <IconSymbol name="wrench.and.screwdriver" size={20} color={theme.colors.primary} />
+            <IconSymbol
+              name="wrench.and.screwdriver"
+              size={20}
+              color={theme.colors.primary}
+            />
             <ThemedText type="subtitle" style={styles.sectionTitle}>
               {t('equipment.config')}
             </ThemedText>
           </View>
-          
+
           <View style={styles.inputGroup}>
             <View style={styles.labelRow}>
-              <IconSymbol name="line.3.horizontal" size={16} color={theme.colors.textSecondary} />
-              <ThemedText type="bodySmall" style={[styles.label, { color: theme.colors.textSecondary }]}>
+              <IconSymbol
+                name="line.3.horizontal"
+                size={16}
+                color={theme.colors.textSecondary}
+              />
+              <ThemedText
+                type="bodySmall"
+                style={[styles.label, { color: theme.colors.textSecondary }]}
+              >
                 钓竿 *
               </ThemedText>
             </View>
             <TextInput
-              style={[styles.textInput, { backgroundColor: theme.colors.surface }]}
+              style={[
+                styles.textInput,
+                { backgroundColor: theme.colors.surface },
+              ]}
               placeholder="例如：手竿 4.5米 或 海竿 3.6米"
               value={formData.rod}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, rod: text }))}
+              onChangeText={text =>
+                setFormData(prev => ({ ...prev, rod: text }))
+              }
             />
           </View>
 
           <View style={styles.inputGroup}>
             <View style={styles.labelRow}>
-              <IconSymbol name="circle" size={16} color={theme.colors.textSecondary} />
-              <ThemedText type="bodySmall" style={[styles.label, { color: theme.colors.textSecondary }]}>
+              <IconSymbol
+                name="circle"
+                size={16}
+                color={theme.colors.textSecondary}
+              />
+              <ThemedText
+                type="bodySmall"
+                style={[styles.label, { color: theme.colors.textSecondary }]}
+              >
                 渔轮 *
               </ThemedText>
             </View>
             <TextInput
-              style={[styles.textInput, { backgroundColor: theme.colors.surface }]}
+              style={[
+                styles.textInput,
+                { backgroundColor: theme.colors.surface },
+              ]}
               placeholder="例如：纺车轮 2000型 或 水滴轮"
               value={formData.reel}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, reel: text }))}
+              onChangeText={text =>
+                setFormData(prev => ({ ...prev, reel: text }))
+              }
             />
           </View>
 
           <View style={styles.inputGroup}>
             <View style={styles.labelRow}>
-              <IconSymbol name="link" size={16} color={theme.colors.textSecondary} />
-              <ThemedText type="bodySmall" style={[styles.label, { color: theme.colors.textSecondary }]}>
+              <IconSymbol
+                name="link"
+                size={16}
+                color={theme.colors.textSecondary}
+              />
+              <ThemedText
+                type="bodySmall"
+                style={[styles.label, { color: theme.colors.textSecondary }]}
+              >
                 钓线 *
               </ThemedText>
             </View>
             <TextInput
-              style={[styles.textInput, { backgroundColor: theme.colors.surface }]}
+              style={[
+                styles.textInput,
+                { backgroundColor: theme.colors.surface },
+              ]}
               placeholder="例如：尼龙线 2.0号 或 PE线 1.5号"
               value={formData.line}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, line: text }))}
+              onChangeText={text =>
+                setFormData(prev => ({ ...prev, line: text }))
+              }
             />
           </View>
 
           <View style={styles.inputGroup}>
             <View style={styles.labelRow}>
-              <IconSymbol name="staple" size={16} color={theme.colors.textSecondary} />
-              <ThemedText type="bodySmall" style={[styles.label, { color: theme.colors.textSecondary }]}>
+              <IconSymbol
+                name="staple"
+                size={16}
+                color={theme.colors.textSecondary}
+              />
+              <ThemedText
+                type="bodySmall"
+                style={[styles.label, { color: theme.colors.textSecondary }]}
+              >
                 鱼钩 *
               </ThemedText>
             </View>
             <TextInput
-              style={[styles.textInput, { backgroundColor: theme.colors.surface }]}
+              style={[
+                styles.textInput,
+                { backgroundColor: theme.colors.surface },
+              ]}
               placeholder="例如：袖钩 5号 或 新关东 1号"
               value={formData.hook}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, hook: text }))}
+              onChangeText={text =>
+                setFormData(prev => ({ ...prev, hook: text }))
+              }
             />
           </View>
 
           <View style={styles.inputGroup}>
             <View style={styles.labelRow}>
-              <IconSymbol name="leaf" size={16} color={theme.colors.textSecondary} />
-              <ThemedText type="bodySmall" style={[styles.label, { color: theme.colors.textSecondary }]}>
+              <IconSymbol
+                name="leaf"
+                size={16}
+                color={theme.colors.textSecondary}
+              />
+              <ThemedText
+                type="bodySmall"
+                style={[styles.label, { color: theme.colors.textSecondary }]}
+              >
                 饵料 *
               </ThemedText>
             </View>
             <TextInput
-              style={[styles.textInput, { backgroundColor: theme.colors.surface }]}
+              style={[
+                styles.textInput,
+                { backgroundColor: theme.colors.surface },
+              ]}
               placeholder={t('equipment.form.bait.placeholder')}
               value={formData.bait}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, bait: text }))}
+              onChangeText={text =>
+                setFormData(prev => ({ ...prev, bait: text }))
+              }
             />
           </View>
         </ThemedView>
@@ -373,23 +527,34 @@ export default function CreateEquipmentScreen() {
         {/* Accessories */}
         <ThemedView type="card" style={[styles.section, theme.shadows.sm]}>
           <View style={styles.sectionHeaderRow}>
-            <IconSymbol name="backpack" size={20} color={theme.colors.primary} />
+            <IconSymbol
+              name="backpack"
+              size={20}
+              color={theme.colors.primary}
+            />
             <ThemedText type="subtitle" style={styles.sectionTitle}>
               配件附件
             </ThemedText>
           </View>
-          
+
           <View style={styles.inputGroup}>
             <View style={styles.addItemRow}>
               <TextInput
-                style={[styles.addItemInput, { backgroundColor: theme.colors.surface }]}
+                style={[
+                  styles.addItemInput,
+                  { backgroundColor: theme.colors.surface },
+                ]}
                 placeholder="添加配件（抄网、鱼护等）"
                 value={newAccessory}
                 onChangeText={setNewAccessory}
                 onSubmitEditing={handleAddAccessory}
               />
               <Pressable style={styles.addButton} onPress={handleAddAccessory}>
-                <IconSymbol name="plus" size={20} color={theme.colors.primary} />
+                <IconSymbol
+                  name="plus"
+                  size={20}
+                  color={theme.colors.primary}
+                />
               </Pressable>
             </View>
           </View>
@@ -397,10 +562,20 @@ export default function CreateEquipmentScreen() {
           {formData.accessories.length > 0 && (
             <View style={styles.tagContainer}>
               {formData.accessories.map((accessory, index) => (
-                <View key={index} style={[styles.tag, { backgroundColor: theme.colors.surface }]}>
+                <View
+                  key={index}
+                  style={[
+                    styles.tag,
+                    { backgroundColor: theme.colors.surface },
+                  ]}
+                >
                   <ThemedText type="bodySmall">{accessory}</ThemedText>
                   <Pressable onPress={() => handleRemoveAccessory(accessory)}>
-                    <IconSymbol name="xmark" size={12} color={theme.colors.textSecondary} />
+                    <IconSymbol
+                      name="xmark"
+                      size={12}
+                      color={theme.colors.textSecondary}
+                    />
                   </Pressable>
                 </View>
               ))}
@@ -411,12 +586,16 @@ export default function CreateEquipmentScreen() {
         {/* Water Types */}
         <ThemedView type="card" style={[styles.section, theme.shadows.sm]}>
           <View style={styles.sectionHeaderRow}>
-            <IconSymbol name="water.waves" size={20} color={theme.colors.primary} />
+            <IconSymbol
+              name="water.waves"
+              size={20}
+              color={theme.colors.primary}
+            />
             <ThemedText type="subtitle" style={styles.sectionTitle}>
               适用水域 *
             </ThemedText>
           </View>
-          
+
           <View style={styles.waterTypeGrid}>
             {Object.entries(WATER_TYPE_NAMES).map(([type, name]) => (
               <Pressable
@@ -424,22 +603,24 @@ export default function CreateEquipmentScreen() {
                 style={[
                   styles.waterTypeItem,
                   {
-                    backgroundColor: formData.waterTypes.includes(type as WaterType) 
-                      ? theme.colors.primary 
+                    backgroundColor: formData.waterTypes.includes(
+                      type as WaterType
+                    )
+                      ? theme.colors.primary
                       : theme.colors.surface,
                     borderColor: formData.waterTypes.includes(type as WaterType)
                       ? theme.colors.primary
                       : theme.colors.border,
-                  }
+                  },
                 ]}
                 onPress={() => handleToggleWaterType(type as WaterType)}
               >
-                <ThemedText 
-                  type="bodySmall" 
-                  style={{ 
-                    color: formData.waterTypes.includes(type as WaterType) 
-                      ? 'white' 
-                      : theme.colors.text 
+                <ThemedText
+                  type="bodySmall"
+                  style={{
+                    color: formData.waterTypes.includes(type as WaterType)
+                      ? 'white'
+                      : theme.colors.text,
                   }}
                 >
                   {name}
@@ -457,29 +638,55 @@ export default function CreateEquipmentScreen() {
               目标鱼种
             </ThemedText>
           </View>
-          
+
           <View style={styles.inputGroup}>
-            <Pressable 
+            <Pressable
               style={[styles.picker, { backgroundColor: theme.colors.surface }]}
               onPress={() => setShowTargetFishPicker(true)}
             >
               <View style={styles.pickerContent}>
-                <IconSymbol name="plus" size={16} color={theme.colors.primary} />
-                <ThemedText type="body" style={{ color: theme.colors.text, marginLeft: 8 }}>
+                <IconSymbol
+                  name="plus"
+                  size={16}
+                  color={theme.colors.primary}
+                />
+                <ThemedText
+                  type="body"
+                  style={{ color: theme.colors.text, marginLeft: 8 }}
+                >
                   添加目标鱼种
                 </ThemedText>
               </View>
-              <IconSymbol name="chevron.right" size={16} color={theme.colors.textSecondary} />
+              <IconSymbol
+                name="chevron.right"
+                size={16}
+                color={theme.colors.textSecondary}
+              />
             </Pressable>
           </View>
 
           {formData.targetFish.length > 0 && (
             <View style={styles.tagContainer}>
               {formData.targetFish.map((fish, index) => (
-                <View key={index} style={[styles.tag, { backgroundColor: theme.colors.secondary, opacity: 0.1 }]}>
-                  <ThemedText type="bodySmall" style={{ color: theme.colors.secondary }}>{fish}</ThemedText>
+                <View
+                  key={index}
+                  style={[
+                    styles.tag,
+                    { backgroundColor: theme.colors.secondary, opacity: 0.1 },
+                  ]}
+                >
+                  <ThemedText
+                    type="bodySmall"
+                    style={{ color: theme.colors.secondary }}
+                  >
+                    {fish}
+                  </ThemedText>
                   <Pressable onPress={() => handleRemoveTargetFish(fish)}>
-                    <IconSymbol name="xmark" size={12} color={theme.colors.secondary} />
+                    <IconSymbol
+                      name="xmark"
+                      size={12}
+                      color={theme.colors.secondary}
+                    />
                   </Pressable>
                 </View>
               ))}
@@ -495,50 +702,102 @@ export default function CreateEquipmentScreen() {
               标签
             </ThemedText>
           </View>
-          
+
           <View style={styles.inputGroup}>
             <View style={styles.addItemRow}>
               <TextInput
-                style={[styles.addItemInput, { backgroundColor: theme.colors.surface }]}
+                style={[
+                  styles.addItemInput,
+                  { backgroundColor: theme.colors.surface },
+                ]}
                 placeholder="添加标签"
                 value={newTag}
                 onChangeText={setNewTag}
                 onSubmitEditing={handleAddTag}
               />
               <Pressable style={styles.addButton} onPress={handleAddTag}>
-                <IconSymbol name="plus" size={20} color={theme.colors.primary} />
+                <IconSymbol
+                  name="plus"
+                  size={20}
+                  color={theme.colors.primary}
+                />
               </Pressable>
             </View>
           </View>
 
           <View style={styles.commonTagsContainer}>
             <View style={styles.labelRow}>
-              <IconSymbol name="star" size={14} color={theme.colors.textSecondary} />
-              <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary, marginBottom: 8 }}>
+              <IconSymbol
+                name="star"
+                size={14}
+                color={theme.colors.textSecondary}
+              />
+              <ThemedText
+                type="bodySmall"
+                style={{ color: theme.colors.textSecondary, marginBottom: 8 }}
+              >
                 常用标签：
               </ThemedText>
             </View>
             <View style={styles.tagContainer}>
-              {commonTags.filter(tag => !formData.tags.includes(tag)).map((tag) => (
-                <Pressable
-                  key={tag}
-                  style={[styles.tag, { backgroundColor: theme.colors.surface, borderWidth: 1, borderColor: theme.colors.border }]}
-                  onPress={() => setFormData(prev => ({ ...prev, tags: [...prev.tags, tag] }))}
-                >
-                  <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>{tag}</ThemedText>
-                  <IconSymbol name="plus" size={12} color={theme.colors.textSecondary} />
-                </Pressable>
-              ))}
+              {commonTags
+                .filter(tag => !formData.tags.includes(tag))
+                .map(tag => (
+                  <Pressable
+                    key={tag}
+                    style={[
+                      styles.tag,
+                      {
+                        backgroundColor: theme.colors.surface,
+                        borderWidth: 1,
+                        borderColor: theme.colors.border,
+                      },
+                    ]}
+                    onPress={() =>
+                      setFormData(prev => ({
+                        ...prev,
+                        tags: [...prev.tags, tag],
+                      }))
+                    }
+                  >
+                    <ThemedText
+                      type="bodySmall"
+                      style={{ color: theme.colors.textSecondary }}
+                    >
+                      {tag}
+                    </ThemedText>
+                    <IconSymbol
+                      name="plus"
+                      size={12}
+                      color={theme.colors.textSecondary}
+                    />
+                  </Pressable>
+                ))}
             </View>
           </View>
 
           {formData.tags.length > 0 && (
             <View style={styles.tagContainer}>
               {formData.tags.map((tag, index) => (
-                <View key={index} style={[styles.tag, { backgroundColor: theme.colors.accent, opacity: 0.1 }]}>
-                  <ThemedText type="bodySmall" style={{ color: theme.colors.accent }}>{tag}</ThemedText>
+                <View
+                  key={index}
+                  style={[
+                    styles.tag,
+                    { backgroundColor: theme.colors.accent, opacity: 0.1 },
+                  ]}
+                >
+                  <ThemedText
+                    type="bodySmall"
+                    style={{ color: theme.colors.accent }}
+                  >
+                    {tag}
+                  </ThemedText>
                   <Pressable onPress={() => handleRemoveTag(tag)}>
-                    <IconSymbol name="xmark" size={12} color={theme.colors.accent} />
+                    <IconSymbol
+                      name="xmark"
+                      size={12}
+                      color={theme.colors.accent}
+                    />
                   </Pressable>
                 </View>
               ))}
@@ -549,51 +808,73 @@ export default function CreateEquipmentScreen() {
 
       {/* Target Fish Picker Modal */}
       <Modal visible={showTargetFishPicker} animationType="slide">
-        <SafeAreaView style={[styles.modalContainer, { backgroundColor: theme.colors.background }]}>
+        <SafeAreaView
+          style={[
+            styles.modalContainer,
+            { backgroundColor: theme.colors.background },
+          ]}
+        >
           <View style={styles.modalHeader}>
             <Pressable onPress={() => setShowTargetFishPicker(false)}>
-              <ThemedText type="body" style={{ color: theme.colors.primary }}>取消</ThemedText>
+              <ThemedText type="body" style={{ color: theme.colors.primary }}>
+                取消
+              </ThemedText>
             </Pressable>
             <ThemedText type="title">选择目标鱼种</ThemedText>
             <View style={{ width: 40 }} />
           </View>
-          
+
           <ScrollView style={styles.modalContent}>
             <View style={styles.inputGroup}>
               <View style={styles.addItemRow}>
                 <TextInput
-                  style={[styles.addItemInput, { backgroundColor: theme.colors.surface }]}
+                  style={[
+                    styles.addItemInput,
+                    { backgroundColor: theme.colors.surface },
+                  ]}
                   placeholder="输入鱼种名称"
                   value={newTargetFish}
                   onChangeText={setNewTargetFish}
                   onSubmitEditing={handleAddTargetFish}
                   autoFocus
                 />
-                <Pressable style={styles.addButton} onPress={handleAddTargetFish}>
-                  <IconSymbol name="plus" size={20} color={theme.colors.primary} />
+                <Pressable
+                  style={styles.addButton}
+                  onPress={handleAddTargetFish}
+                >
+                  <IconSymbol
+                    name="plus"
+                    size={20}
+                    color={theme.colors.primary}
+                  />
                 </Pressable>
               </View>
             </View>
 
-            <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary, marginBottom: 16 }}>
+            <ThemedText
+              type="bodySmall"
+              style={{ color: theme.colors.textSecondary, marginBottom: 16 }}
+            >
               常见鱼种：
             </ThemedText>
-            
-            {commonTargetFish.filter(fish => !formData.targetFish.includes(fish)).map((fish) => (
-              <Pressable
-                key={fish}
-                style={styles.modalOption}
-                onPress={() => {
-                  setFormData(prev => ({
-                    ...prev,
-                    targetFish: [...prev.targetFish, fish]
-                  }));
-                  setShowTargetFishPicker(false);
-                }}
-              >
-                <ThemedText type="body">{fish}</ThemedText>
-              </Pressable>
-            ))}
+
+            {commonTargetFish
+              .filter(fish => !formData.targetFish.includes(fish))
+              .map(fish => (
+                <Pressable
+                  key={fish}
+                  style={styles.modalOption}
+                  onPress={() => {
+                    setFormData(prev => ({
+                      ...prev,
+                      targetFish: [...prev.targetFish, fish],
+                    }));
+                    setShowTargetFishPicker(false);
+                  }}
+                >
+                  <ThemedText type="body">{fish}</ThemedText>
+                </Pressable>
+              ))}
           </ScrollView>
         </SafeAreaView>
       </Modal>

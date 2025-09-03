@@ -3,10 +3,10 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, router } from 'expo-router';
 import React, { useEffect } from 'react';
-import { 
-  View, 
-  StyleSheet, 
-  ScrollView, 
+import {
+  View,
+  StyleSheet,
+  ScrollView,
   Pressable,
   StatusBar,
   Dimensions,
@@ -28,11 +28,15 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
+import {
+  RARITY_COLORS,
+  WATER_TYPE_NAMES,
+  DIFFICULTY_NAMES,
+} from '@/lib/constants';
+import { getFishImage } from '@/lib/fishImages';
 import { useTranslation } from '@/lib/i18n';
-import { RARITY_COLORS, WATER_TYPE_NAMES, DIFFICULTY_NAMES } from '@/lib/constants';
 import { useFish, useCatches, useUserStats } from '@/lib/store';
 import { Fish, FishCardState } from '@/lib/types';
-import { getFishImage } from '@/lib/fishImages';
 import { getFishCardState } from '@/lib/utils';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -43,28 +47,120 @@ export default function FishDetailScreen() {
   const { isTablet } = useResponsive();
   const params = useLocalSearchParams<{ id: string }>();
   const fishId = params.id;
-  
+
   const fish = useFish();
   const catches = useCatches();
   const userStats = useUserStats();
-  
+
+  // 动画值 - 必须在早期返回之前声明
+  const bubble1Scale = useSharedValue(1);
+  const bubble2Scale = useSharedValue(1);
+  const bubble3Scale = useSharedValue(1);
+  const bubble1Opacity = useSharedValue(1);
+  const bubble2Opacity = useSharedValue(1);
+  const bubble3Opacity = useSharedValue(1);
+
+  // 动画样式 - 必须在早期返回之前声明
+  const animatedBubble1Style = useAnimatedStyle(() => ({
+    transform: [{ scale: bubble1Scale.value }],
+    opacity: bubble1Opacity.value,
+  }));
+
+  const animatedBubble2Style = useAnimatedStyle(() => ({
+    transform: [{ scale: bubble2Scale.value }],
+    opacity: bubble2Opacity.value,
+  }));
+
+  const animatedBubble3Style = useAnimatedStyle(() => ({
+    transform: [{ scale: bubble3Scale.value }],
+    opacity: bubble3Opacity.value,
+  }));
+
+  // 启动动画 - 必须在早期返回之前声明
+  useEffect(() => {
+    // 缩放动画
+    bubble1Scale.value = withRepeat(
+      withTiming(1.2, { duration: 2000, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true
+    );
+    bubble2Scale.value = withDelay(
+      500,
+      withRepeat(
+        withTiming(1.15, { duration: 1800, easing: Easing.inOut(Easing.ease) }),
+        -1,
+        true
+      )
+    );
+    bubble3Scale.value = withDelay(
+      1000,
+      withRepeat(
+        withTiming(1.1, { duration: 1600, easing: Easing.inOut(Easing.ease) }),
+        -1,
+        true
+      )
+    );
+
+    // 透明度动画
+    bubble1Opacity.value = withRepeat(
+      withTiming(0.3, { duration: 3000, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true
+    );
+    bubble2Opacity.value = withDelay(
+      800,
+      withRepeat(
+        withTiming(0.4, { duration: 2500, easing: Easing.inOut(Easing.ease) }),
+        -1,
+        true
+      )
+    );
+    bubble3Opacity.value = withDelay(
+      1200,
+      withRepeat(
+        withTiming(0.5, { duration: 2000, easing: Easing.inOut(Easing.ease) }),
+        -1,
+        true
+      )
+    );
+  }, [
+    bubble1Scale,
+    bubble2Scale,
+    bubble3Scale,
+    bubble1Opacity,
+    bubble2Opacity,
+    bubble3Opacity,
+  ]);
+
   const currentFish = fish.find(f => f.id === fishId);
   const currentIndex = fish.findIndex(f => f.id === fishId);
-  const fishState: FishCardState = currentFish ? getFishCardState(currentFish, catches) : 'locked';
+  const fishState: FishCardState = currentFish
+    ? getFishCardState(currentFish, catches)
+    : 'locked';
   const isUnlocked = fishState === 'unlocked' || fishState === 'new';
-  
 
   if (!currentFish) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.colors.background }]}
+      >
         <View style={styles.errorContainer}>
-          <IconSymbol name="exclamationmark.triangle" size={64} color={theme.colors.textSecondary} />
-          <ThemedText type="h3" style={styles.errorTitle}>{t('fish.detail.not.found.title')}</ThemedText>
+          <IconSymbol
+            name="exclamationmark.triangle"
+            size={64}
+            color={theme.colors.textSecondary}
+          />
+          <ThemedText type="h3" style={styles.errorTitle}>
+            {t('fish.detail.not.found.title')}
+          </ThemedText>
           <ThemedText style={styles.errorDescription}>
             {t('fish.detail.not.found.description')}
           </ThemedText>
-          <Pressable 
-            style={[styles.backButton, { backgroundColor: theme.colors.primary }]}
+          <Pressable
+            style={[
+              styles.backButton,
+              { backgroundColor: theme.colors.primary },
+            ]}
             onPress={() => router.back()}
           >
             <ThemedText style={[styles.backButtonText, { color: 'white' }]}>
@@ -86,68 +182,6 @@ export default function FishDetailScreen() {
     return currentWeight > bestWeight ? current : best;
   }, userCatches[0]);
 
-  // 动画值
-  const bubble1Scale = useSharedValue(1);
-  const bubble2Scale = useSharedValue(1);
-  const bubble3Scale = useSharedValue(1);
-  const bubble1Opacity = useSharedValue(1);
-  const bubble2Opacity = useSharedValue(1);
-  const bubble3Opacity = useSharedValue(1);
-  
-  // 启动动画
-  useEffect(() => {
-    // 缩放动画
-    bubble1Scale.value = withRepeat(
-      withTiming(1.2, { duration: 2000, easing: Easing.inOut(Easing.ease) }),
-      -1,
-      true
-    );
-    bubble2Scale.value = withDelay(500, withRepeat(
-      withTiming(1.15, { duration: 1800, easing: Easing.inOut(Easing.ease) }),
-      -1,
-      true
-    ));
-    bubble3Scale.value = withDelay(1000, withRepeat(
-      withTiming(1.1, { duration: 1600, easing: Easing.inOut(Easing.ease) }),
-      -1,
-      true
-    ));
-    
-    // 透明度动画
-    bubble1Opacity.value = withRepeat(
-      withTiming(0.3, { duration: 3000, easing: Easing.inOut(Easing.ease) }),
-      -1,
-      true
-    );
-    bubble2Opacity.value = withDelay(800, withRepeat(
-      withTiming(0.4, { duration: 2500, easing: Easing.inOut(Easing.ease) }),
-      -1,
-      true
-    ));
-    bubble3Opacity.value = withDelay(1200, withRepeat(
-      withTiming(0.5, { duration: 2000, easing: Easing.inOut(Easing.ease) }),
-      -1,
-      true
-    ));
-  }, []);
-
-  // 动画样式
-  const animatedBubble1Style = useAnimatedStyle(() => ({
-    transform: [{ scale: bubble1Scale.value }],
-    opacity: bubble1Opacity.value,
-  }));
-
-  const animatedBubble2Style = useAnimatedStyle(() => ({
-    transform: [{ scale: bubble2Scale.value }],
-    opacity: bubble2Opacity.value,
-  }));
-
-  const animatedBubble3Style = useAnimatedStyle(() => ({
-    transform: [{ scale: bubble3Scale.value }],
-    opacity: bubble3Opacity.value,
-  }));
-
-
   const renderHeader = () => (
     <View style={styles.header}>
       <LinearGradient
@@ -156,61 +190,180 @@ export default function FishDetailScreen() {
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
       />
-      
+
       <SafeAreaView edges={['top']} style={styles.headerSafeArea}>
         {/* 装饰性元素 - 丰富的泡泡效果 */}
         <View style={styles.decorativeLines}>
           {/* 几何图形 - 统一规整 */}
-          <Animated.View style={[styles.geometryCircle, { backgroundColor: rarityColor + '15' }, animatedBubble1Style]} />
-          <Animated.View style={[styles.geometryCircle2, { backgroundColor: rarityColor + '12' }, animatedBubble2Style]} />
-          
+          <Animated.View
+            style={[
+              styles.geometryCircle,
+              { backgroundColor: rarityColor + '15' },
+              animatedBubble1Style,
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.geometryCircle2,
+              { backgroundColor: rarityColor + '12' },
+              animatedBubble2Style,
+            ]}
+          />
+
           {/* 主要气泡组 - 右侧 */}
-          <Animated.View style={[styles.rhythmBubble1, { backgroundColor: rarityColor + '20' }, animatedBubble3Style]} />
-          <Animated.View style={[styles.rhythmBubble2, { backgroundColor: rarityColor + '15' }, animatedBubble1Style]} />
-          <Animated.View style={[styles.rhythmBubble3, { backgroundColor: rarityColor + '10' }, animatedBubble2Style]} />
-          
+          <Animated.View
+            style={[
+              styles.rhythmBubble1,
+              { backgroundColor: rarityColor + '20' },
+              animatedBubble3Style,
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.rhythmBubble2,
+              { backgroundColor: rarityColor + '15' },
+              animatedBubble1Style,
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.rhythmBubble3,
+              { backgroundColor: rarityColor + '10' },
+              animatedBubble2Style,
+            ]}
+          />
+
           {/* 左侧气泡组 */}
-          <Animated.View style={[styles.leftBubble1, { backgroundColor: rarityColor + '18' }, animatedBubble2Style]} />
-          <Animated.View style={[styles.leftBubble2, { backgroundColor: rarityColor + '12' }, animatedBubble3Style]} />
-          <Animated.View style={[styles.leftBubble3, { backgroundColor: rarityColor + '08' }, animatedBubble1Style]} />
-          
+          <Animated.View
+            style={[
+              styles.leftBubble1,
+              { backgroundColor: rarityColor + '18' },
+              animatedBubble2Style,
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.leftBubble2,
+              { backgroundColor: rarityColor + '12' },
+              animatedBubble3Style,
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.leftBubble3,
+              { backgroundColor: rarityColor + '08' },
+              animatedBubble1Style,
+            ]}
+          />
+
           {/* 散布的小气泡 */}
-          <Animated.View style={[styles.smallBubble1, { backgroundColor: rarityColor + '15' }, animatedBubble1Style]} />
-          <Animated.View style={[styles.smallBubble2, { backgroundColor: rarityColor + '12' }, animatedBubble3Style]} />
-          <Animated.View style={[styles.smallBubble3, { backgroundColor: rarityColor + '10' }, animatedBubble2Style]} />
-          <Animated.View style={[styles.smallBubble4, { backgroundColor: rarityColor + '14' }, animatedBubble1Style]} />
-          <Animated.View style={[styles.smallBubble5, { backgroundColor: rarityColor + '08' }, animatedBubble3Style]} />
-          
+          <Animated.View
+            style={[
+              styles.smallBubble1,
+              { backgroundColor: rarityColor + '15' },
+              animatedBubble1Style,
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.smallBubble2,
+              { backgroundColor: rarityColor + '12' },
+              animatedBubble3Style,
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.smallBubble3,
+              { backgroundColor: rarityColor + '10' },
+              animatedBubble2Style,
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.smallBubble4,
+              { backgroundColor: rarityColor + '14' },
+              animatedBubble1Style,
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.smallBubble5,
+              { backgroundColor: rarityColor + '08' },
+              animatedBubble3Style,
+            ]}
+          />
+
           {/* 微小气泡点缀 */}
-          <Animated.View style={[styles.tinyBubble1, { backgroundColor: rarityColor + '12' }, animatedBubble2Style]} />
-          <Animated.View style={[styles.tinyBubble2, { backgroundColor: rarityColor + '10' }, animatedBubble1Style]} />
-          <Animated.View style={[styles.tinyBubble3, { backgroundColor: rarityColor + '08' }, animatedBubble3Style]} />
-          <Animated.View style={[styles.tinyBubble4, { backgroundColor: rarityColor + '06' }, animatedBubble2Style]} />
+          <Animated.View
+            style={[
+              styles.tinyBubble1,
+              { backgroundColor: rarityColor + '12' },
+              animatedBubble2Style,
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.tinyBubble2,
+              { backgroundColor: rarityColor + '10' },
+              animatedBubble1Style,
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.tinyBubble3,
+              { backgroundColor: rarityColor + '08' },
+              animatedBubble3Style,
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.tinyBubble4,
+              { backgroundColor: rarityColor + '06' },
+              animatedBubble2Style,
+            ]}
+          />
         </View>
-        
+
         <View style={styles.headerContent}>
           <Pressable style={styles.backButton} onPress={() => router.back()}>
-            <IconSymbol name="chevron.left" size={24} color={theme.colors.text} />
+            <IconSymbol
+              name="chevron.left"
+              size={24}
+              color={theme.colors.text}
+            />
           </Pressable>
-          
+
           <View style={styles.headerTitleContainer}>
             <ThemedText type="h2" style={styles.fishName}>
               {currentFish.name}
             </ThemedText>
-            <ThemedText style={[styles.fishNumber, { color: theme.colors.textSecondary }]}>
-              #{(currentIndex + 1).toString().padStart(1, '0')} • {currentIndex + 1}/{fish.length}
+            <ThemedText
+              style={[styles.fishNumber, { color: theme.colors.textSecondary }]}
+            >
+              #{(currentIndex + 1).toString().padStart(1, '0')} •{' '}
+              {currentIndex + 1}/{fish.length}
             </ThemedText>
           </View>
-          
+
           {!isUnlocked && (
-            <View style={[styles.statusBadge, { backgroundColor: theme.colors.textSecondary + '20' }]}>
-              <ThemedText style={[styles.statusText, { color: theme.colors.textSecondary }]}>
+            <View
+              style={[
+                styles.statusBadge,
+                { backgroundColor: theme.colors.textSecondary + '20' },
+              ]}
+            >
+              <ThemedText
+                style={[
+                  styles.statusText,
+                  { color: theme.colors.textSecondary },
+                ]}
+              >
                 {t('fish.detail.unknown')}
               </ThemedText>
             </View>
           )}
         </View>
-        
+
         <View style={styles.fishImageContainer}>
           <View style={styles.fishImageWrapper}>
             <View style={styles.fishImagePlaceholder}>
@@ -223,7 +376,14 @@ export default function FishDetailScreen() {
               ) : (
                 <View>
                   <IconSymbol name="fish" size={120} color={rarityColor} />
-                  <ThemedText style={{ fontSize: 10, textAlign: 'center', marginTop: 4, color: theme.colors.textSecondary }}>
+                  <ThemedText
+                    style={{
+                      fontSize: 10,
+                      textAlign: 'center',
+                      marginTop: 4,
+                      color: theme.colors.textSecondary,
+                    }}
+                  >
                     {t('fish.detail.image.id')}: {currentFish.id}
                   </ThemedText>
                 </View>
@@ -238,39 +398,62 @@ export default function FishDetailScreen() {
   const renderBasicInfo = () => (
     <ThemedView type="card" style={[styles.infoCard, theme.shadows.md]}>
       <View style={styles.cardHeader}>
-        <ThemedText type="title" style={styles.cardTitle}>{t('fish.detail.basic.info')}</ThemedText>
-        <View style={[styles.rarityBadge, { backgroundColor: rarityColor + '20' }]}>
+        <ThemedText type="title" style={styles.cardTitle}>
+          {t('fish.detail.basic.info')}
+        </ThemedText>
+        <View
+          style={[styles.rarityBadge, { backgroundColor: rarityColor + '20' }]}
+        >
           <ThemedText style={[styles.rarityText, { color: rarityColor }]}>
             {currentFish.rarity.toUpperCase()}
           </ThemedText>
         </View>
       </View>
-      
+
       <View style={styles.leftAlignedInfoList}>
         <View style={styles.leftAlignedInfoRow}>
           <IconSymbol name="text.book.closed" size={16} color="#8B5CF6" />
-          <ThemedText style={styles.leftAlignedLabel}>{t('fish.detail.scientific.name')}：</ThemedText>
-          <ThemedText style={styles.leftAlignedValue}>{currentFish.scientificName}</ThemedText>
+          <ThemedText style={styles.leftAlignedLabel}>
+            {t('fish.detail.scientific.name')}：
+          </ThemedText>
+          <ThemedText style={styles.leftAlignedValue}>
+            {currentFish.scientificName}
+          </ThemedText>
         </View>
-        
+
         <View style={styles.leftAlignedInfoRow}>
           <IconSymbol name="tree" size={16} color="#059669" />
-          <ThemedText style={styles.leftAlignedLabel}>{t('fish.detail.family')}：</ThemedText>
-          <ThemedText style={styles.leftAlignedValue}>{currentFish.family}</ThemedText>
+          <ThemedText style={styles.leftAlignedLabel}>
+            {t('fish.detail.family')}：
+          </ThemedText>
+          <ThemedText style={styles.leftAlignedValue}>
+            {currentFish.family}
+          </ThemedText>
         </View>
-        
+
         <View style={styles.leftAlignedInfoRow}>
           <IconSymbol name="location" size={16} color="#DC2626" />
-          <ThemedText style={styles.leftAlignedLabel}>{t('fish.detail.local.names')}：</ThemedText>
+          <ThemedText style={styles.leftAlignedLabel}>
+            {t('fish.detail.local.names')}：
+          </ThemedText>
           <ThemedText style={styles.leftAlignedValue}>
             {currentFish.localNames?.join('、') || t('common.none')}
           </ThemedText>
         </View>
       </View>
-      
+
       {!isUnlocked && (
-        <View style={[styles.unlockStatus, { backgroundColor: '#FFF3CD', borderColor: '#FFE69C' }]}>
-          <IconSymbol name="exclamationmark.triangle" size={16} color="#856404" />
+        <View
+          style={[
+            styles.unlockStatus,
+            { backgroundColor: '#FFF3CD', borderColor: '#FFE69C' },
+          ]}
+        >
+          <IconSymbol
+            name="exclamationmark.triangle"
+            size={16}
+            color="#856404"
+          />
           <ThemedText style={[styles.unlockText, { color: '#856404' }]}>
             {t('fish.detail.unlock.message')}
           </ThemedText>
@@ -282,42 +465,55 @@ export default function FishDetailScreen() {
   const renderStats = () => (
     <ThemedView type="card" style={[styles.infoCard, theme.shadows.md]}>
       <View style={styles.cardHeader}>
-        <ThemedText type="title" style={styles.cardTitle}>{t('fish.detail.stats')}</ThemedText>
+        <ThemedText type="title" style={styles.cardTitle}>
+          {t('fish.detail.stats')}
+        </ThemedText>
       </View>
-      
+
       <View style={styles.twoColumnStatsList}>
         {/* 第一列 */}
         <View style={styles.statsColumn}>
           <View style={styles.leftAlignedStatRow}>
             <IconSymbol name="ruler" size={18} color="#3B82F6" />
-            <ThemedText style={styles.leftAlignedStatLabel}>{t('fish.detail.length')}</ThemedText>
+            <ThemedText style={styles.leftAlignedStatLabel}>
+              {t('fish.detail.length')}
+            </ThemedText>
             <ThemedText style={styles.leftAlignedStatValue}>
-              {currentFish.characteristics.minLengthCm}-{currentFish.characteristics.maxLengthCm}cm
+              {currentFish.characteristics.minLengthCm}-
+              {currentFish.characteristics.maxLengthCm}cm
             </ThemedText>
           </View>
-          
+
           <View style={styles.leftAlignedStatRow}>
             <IconSymbol name="clock" size={18} color="#F59E0B" />
-            <ThemedText style={styles.leftAlignedStatLabel}>{t('fish.detail.lifespan')}</ThemedText>
+            <ThemedText style={styles.leftAlignedStatLabel}>
+              {t('fish.detail.lifespan')}
+            </ThemedText>
             <ThemedText style={styles.leftAlignedStatValue}>
-              {currentFish.characteristics.lifespan}{t('fish.detail.years')}
+              {currentFish.characteristics.lifespan}
+              {t('fish.detail.years')}
             </ThemedText>
           </View>
         </View>
-        
+
         {/* 第二列 */}
         <View style={styles.statsColumn}>
           <View style={styles.leftAlignedStatRow}>
             <IconSymbol name="scalemass" size={18} color="#10B981" />
-            <ThemedText style={styles.leftAlignedStatLabel}>{t('fish.detail.weight')}</ThemedText>
+            <ThemedText style={styles.leftAlignedStatLabel}>
+              {t('fish.detail.weight')}
+            </ThemedText>
             <ThemedText style={styles.leftAlignedStatValue}>
-              {t('fish.detail.max.weight')} {currentFish.characteristics.maxWeightKg}kg
+              {t('fish.detail.max.weight')}{' '}
+              {currentFish.characteristics.maxWeightKg}kg
             </ThemedText>
           </View>
-          
+
           <View style={styles.leftAlignedStatRow}>
             <IconSymbol name="target" size={18} color="#EF4444" />
-            <ThemedText style={styles.leftAlignedStatLabel}>{t('fish.detail.difficulty')}</ThemedText>
+            <ThemedText style={styles.leftAlignedStatLabel}>
+              {t('fish.detail.difficulty')}
+            </ThemedText>
             <View style={styles.difficultyRow}>
               <ProgressBar
                 progress={currentFish.behavior.difficulty / 5}
@@ -327,7 +523,8 @@ export default function FishDetailScreen() {
                 style={styles.inlineDifficultyBar}
               />
               <ThemedText style={styles.inlineDifficultyText}>
-                {DIFFICULTY_NAMES[currentFish.behavior.difficulty] || currentFish.behavior.difficulty}
+                {DIFFICULTY_NAMES[currentFish.behavior.difficulty] ||
+                  currentFish.behavior.difficulty}
               </ThemedText>
             </View>
           </View>
@@ -339,40 +536,67 @@ export default function FishDetailScreen() {
   const renderHabitat = () => (
     <ThemedView type="card" style={[styles.infoCard, theme.shadows.md]}>
       <View style={styles.cardHeader}>
-        <ThemedText type="title" style={styles.cardTitle}>{t('fish.detail.habitat')}</ThemedText>
+        <ThemedText type="title" style={styles.cardTitle}>
+          {t('fish.detail.habitat')}
+        </ThemedText>
       </View>
-      
+
       <View style={styles.compactHabitatInfo}>
         <View style={styles.compactHabitatRow}>
-          <ThemedText style={styles.compactHabitatLabel}>{t('fish.detail.water.types')}：</ThemedText>
+          <ThemedText style={styles.compactHabitatLabel}>
+            {t('fish.detail.water.types')}：
+          </ThemedText>
           <View style={styles.compactTagContainer}>
-            {currentFish.habitat.waterTypes?.filter(type => type).map((type, index) => (
-              <View key={index} style={[styles.compactTag, { backgroundColor: theme.colors.primary + '20' }]}>
-                <ThemedText style={[styles.compactTagText, { color: theme.colors.primary }]}>
-                  {WATER_TYPE_NAMES[type] || type || t('common.unknown')}
-                </ThemedText>
-              </View>
-            ))}
+            {currentFish.habitat.waterTypes
+              ?.filter(type => type)
+              .map((type, index) => (
+                <View
+                  key={index}
+                  style={[
+                    styles.compactTag,
+                    { backgroundColor: theme.colors.primary + '20' },
+                  ]}
+                >
+                  <ThemedText
+                    style={[
+                      styles.compactTagText,
+                      { color: theme.colors.primary },
+                    ]}
+                  >
+                    {WATER_TYPE_NAMES[type] || type || t('common.unknown')}
+                  </ThemedText>
+                </View>
+              ))}
           </View>
         </View>
-        
+
         <View style={styles.compactHabitatRow}>
-          <ThemedText style={styles.compactHabitatLabel}>{t('fish.detail.regions')}：</ThemedText>
+          <ThemedText style={styles.compactHabitatLabel}>
+            {t('fish.detail.regions')}：
+          </ThemedText>
           <View style={styles.compactTagContainer}>
             {currentFish.habitat.regions.map((region, index) => {
               // 使用与法规信息相同的颜色系统
               const stateColors = [
                 theme.colors.primary,
                 '#10B981',
-                '#F59E0B', 
+                '#F59E0B',
                 '#EF4444',
                 '#8B5CF6',
               ];
               const stateColor = stateColors[index % stateColors.length];
-              
+
               return (
-                <View key={index} style={[styles.compactTag, { backgroundColor: stateColor + '20' }]}>
-                  <ThemedText style={[styles.compactTagText, { color: stateColor }]}>
+                <View
+                  key={index}
+                  style={[
+                    styles.compactTag,
+                    { backgroundColor: stateColor + '20' },
+                  ]}
+                >
+                  <ThemedText
+                    style={[styles.compactTagText, { color: stateColor }]}
+                  >
                     {region}
                   </ThemedText>
                 </View>
@@ -380,14 +604,28 @@ export default function FishDetailScreen() {
             })}
           </View>
         </View>
-        
+
         <View style={styles.compactHabitatRow}>
-          <ThemedText style={styles.compactHabitatLabel}>{t('fish.detail.seasons')}：</ThemedText>
+          <ThemedText style={styles.compactHabitatLabel}>
+            {t('fish.detail.seasons')}：
+          </ThemedText>
           <View style={styles.compactTagContainer}>
             {currentFish.habitat.seasons.map((month, index) => (
-              <View key={index} style={[styles.compactTag, { backgroundColor: theme.colors.accent + '20' }]}>
-                <ThemedText style={[styles.compactTagText, { color: theme.colors.accent }]}>
-                  {month}{t('fish.detail.month')}
+              <View
+                key={index}
+                style={[
+                  styles.compactTag,
+                  { backgroundColor: theme.colors.accent + '20' },
+                ]}
+              >
+                <ThemedText
+                  style={[
+                    styles.compactTagText,
+                    { color: theme.colors.accent },
+                  ]}
+                >
+                  {month}
+                  {t('fish.detail.month')}
                 </ThemedText>
               </View>
             ))}
@@ -398,8 +636,10 @@ export default function FishDetailScreen() {
   );
 
   const renderRegulations = () => {
-    if (!currentFish.regulations || currentFish.regulations.length === 0) {return null;}
-    
+    if (!currentFish.regulations || currentFish.regulations.length === 0) {
+      return null;
+    }
+
     // 为不同州分配不同颜色
     const stateColors = [
       { bg: theme.colors.primary + '15', text: theme.colors.primary },
@@ -408,26 +648,38 @@ export default function FishDetailScreen() {
       { bg: '#EF4444' + '15', text: '#EF4444' },
       { bg: '#8B5CF6' + '15', text: '#8B5CF6' },
     ];
-    
+
     return (
       <ThemedView type="card" style={[styles.infoCard, theme.shadows.md]}>
         <View style={styles.cardHeader}>
-          <ThemedText type="title" style={styles.cardTitle}>{t('fish.detail.regulations')}</ThemedText>
+          <ThemedText type="title" style={styles.cardTitle}>
+            {t('fish.detail.regulations')}
+          </ThemedText>
         </View>
-        
+
         <View style={styles.regulationsGrid}>
           {currentFish.regulations.map((regulation, index) => {
             const stateColor = stateColors[index % stateColors.length];
             return (
               <View key={index} style={styles.regulationColumn}>
                 <View style={styles.regulationHeader}>
-                  <View style={[styles.regionBadge, { backgroundColor: stateColor.bg }]}>
-                    <ThemedText style={[styles.regionBadgeText, { color: stateColor.text }]}>
+                  <View
+                    style={[
+                      styles.regionBadge,
+                      { backgroundColor: stateColor.bg },
+                    ]}
+                  >
+                    <ThemedText
+                      style={[
+                        styles.regionBadgeText,
+                        { color: stateColor.text },
+                      ]}
+                    >
                       {regulation.region}
                     </ThemedText>
                   </View>
                 </View>
-                
+
                 <View style={styles.regulationContent}>
                   <View style={styles.regulationItemsGrid}>
                     {regulation.minSizeCm && (
@@ -435,54 +687,83 @@ export default function FishDetailScreen() {
                         <View style={styles.regulationRow}>
                           <IconSymbol name="ruler" size={14} color="#3B82F6" />
                           <View style={styles.regulationTextContainer}>
-                            <ThemedText style={styles.regulationLabel}>{t('fish.detail.min.size')}</ThemedText>
-                            <ThemedText style={styles.regulationValue}>{regulation.minSizeCm}cm</ThemedText>
+                            <ThemedText style={styles.regulationLabel}>
+                              {t('fish.detail.min.size')}
+                            </ThemedText>
+                            <ThemedText style={styles.regulationValue}>
+                              {regulation.minSizeCm}cm
+                            </ThemedText>
                           </View>
                         </View>
                       </View>
                     )}
-                    
+
                     {regulation.dailyLimit && (
                       <View style={styles.regulationGridItem}>
                         <View style={styles.regulationRow}>
-                          <IconSymbol name="clock.badge" size={14} color="#10B981" />
+                          <IconSymbol
+                            name="clock.badge"
+                            size={14}
+                            color="#10B981"
+                          />
                           <View style={styles.regulationTextContainer}>
-                            <ThemedText style={styles.regulationLabel}>{t('fish.detail.daily.limit')}</ThemedText>
-                            <ThemedText style={styles.regulationValue}>{regulation.dailyLimit}{t('fish.detail.fish.count')}</ThemedText>
-                          </View>
-                        </View>
-                      </View>
-                    )}
-                    
-                    {regulation.closedSeasons && regulation.closedSeasons.length > 0 && (
-                      <View style={styles.regulationGridItem}>
-                        <View style={styles.regulationRow}>
-                          <IconSymbol name="calendar" size={14} color="#F59E0B" />
-                          <View style={styles.regulationTextContainer}>
-                            <ThemedText style={styles.regulationLabel}>{t('fish.detail.closed.seasons')}</ThemedText>
+                            <ThemedText style={styles.regulationLabel}>
+                              {t('fish.detail.daily.limit')}
+                            </ThemedText>
                             <ThemedText style={styles.regulationValue}>
-                              {regulation.closedSeasons.map(season => 
-                                `${season.start}-${season.end}`
-                              ).join(', ')}
+                              {regulation.dailyLimit}
+                              {t('fish.detail.fish.count')}
                             </ThemedText>
                           </View>
                         </View>
                       </View>
                     )}
-                    
-                    {regulation.specialRules && regulation.specialRules.length > 0 && (
-                      <View style={styles.regulationGridItem}>
-                        <View style={styles.regulationRow}>
-                          <IconSymbol name="exclamationmark.triangle" size={14} color="#EF4444" />
-                          <View style={styles.regulationTextContainer}>
-                            <ThemedText style={styles.regulationLabel}>{t('fish.detail.special.rules')}</ThemedText>
-                            <ThemedText style={styles.regulationValue}>
-                              {regulation.specialRules.join(', ')}
-                            </ThemedText>
+
+                    {regulation.closedSeasons &&
+                      regulation.closedSeasons.length > 0 && (
+                        <View style={styles.regulationGridItem}>
+                          <View style={styles.regulationRow}>
+                            <IconSymbol
+                              name="calendar"
+                              size={14}
+                              color="#F59E0B"
+                            />
+                            <View style={styles.regulationTextContainer}>
+                              <ThemedText style={styles.regulationLabel}>
+                                {t('fish.detail.closed.seasons')}
+                              </ThemedText>
+                              <ThemedText style={styles.regulationValue}>
+                                {regulation.closedSeasons
+                                  .map(
+                                    season => `${season.start}-${season.end}`
+                                  )
+                                  .join(', ')}
+                              </ThemedText>
+                            </View>
                           </View>
                         </View>
-                      </View>
-                    )}
+                      )}
+
+                    {regulation.specialRules &&
+                      regulation.specialRules.length > 0 && (
+                        <View style={styles.regulationGridItem}>
+                          <View style={styles.regulationRow}>
+                            <IconSymbol
+                              name="exclamationmark.triangle"
+                              size={14}
+                              color="#EF4444"
+                            />
+                            <View style={styles.regulationTextContainer}>
+                              <ThemedText style={styles.regulationLabel}>
+                                {t('fish.detail.special.rules')}
+                              </ThemedText>
+                              <ThemedText style={styles.regulationValue}>
+                                {regulation.specialRules.join(', ')}
+                              </ThemedText>
+                            </View>
+                          </View>
+                        </View>
+                      )}
                   </View>
                 </View>
               </View>
@@ -494,26 +775,42 @@ export default function FishDetailScreen() {
   };
 
   const renderPersonalRecord = () => {
-    if (!isUnlocked || userCatches.length === 0) {return null;}
-    
+    if (!isUnlocked || userCatches.length === 0) {
+      return null;
+    }
+
     return (
       <ThemedView type="card" style={[styles.infoCard, theme.shadows.md]}>
         <View style={styles.cardHeader}>
-          <ThemedText type="title" style={styles.cardTitle}>{t('fish.detail.personal.record')}</ThemedText>
-          <ThemedText style={styles.recordCount}>{t('fish.detail.caught.times', { count: userCatches.length.toString() })}</ThemedText>
+          <ThemedText type="title" style={styles.cardTitle}>
+            {t('fish.detail.personal.record')}
+          </ThemedText>
+          <ThemedText style={styles.recordCount}>
+            {t('fish.detail.caught.times', {
+              count: userCatches.length.toString(),
+            })}
+          </ThemedText>
         </View>
-        
+
         {bestCatch && (
           <View style={styles.recordInfo}>
             <View style={styles.recordRow}>
-              <ThemedText style={styles.recordLabel}>{t('fish.detail.best.record')}：</ThemedText>
+              <ThemedText style={styles.recordLabel}>
+                {t('fish.detail.best.record')}：
+              </ThemedText>
               <ThemedText style={styles.recordValue}>
-                {bestCatch.measurements.lengthCm ? `${bestCatch.measurements.lengthCm}cm` : ''} 
-                {bestCatch.measurements.weightKg ? ` ${bestCatch.measurements.weightKg}kg` : ''}
+                {bestCatch.measurements.lengthCm
+                  ? `${bestCatch.measurements.lengthCm}cm`
+                  : ''}
+                {bestCatch.measurements.weightKg
+                  ? ` ${bestCatch.measurements.weightKg}kg`
+                  : ''}
               </ThemedText>
             </View>
             <View style={styles.recordRow}>
-              <ThemedText style={styles.recordLabel}>{t('fish.detail.catch.time')}：</ThemedText>
+              <ThemedText style={styles.recordLabel}>
+                {t('fish.detail.catch.time')}：
+              </ThemedText>
               <ThemedText style={styles.recordValue}>
                 {new Date(bestCatch.timestamp).toLocaleDateString()}
               </ThemedText>
@@ -525,16 +822,22 @@ export default function FishDetailScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
-      
+    <View
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+    >
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
+
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
         {renderHeader()}
-        
+
         <View style={styles.content}>
           {renderBasicInfo()}
           {renderStats()}
@@ -543,15 +846,22 @@ export default function FishDetailScreen() {
           {renderPersonalRecord()}
         </View>
       </ScrollView>
-      
+
       {/* 右下角圆形记录按钮 */}
       <View style={styles.circularButtonContainer}>
-        <Pressable 
-          style={[styles.circularLogButton, { 
-            backgroundColor: theme.colors.primary,
-            shadowColor: theme.colors.primary,
-          }]}
-          onPress={() => router.push(`/log?fishId=${currentFish.id}&fishName=${encodeURIComponent(currentFish.name)}`)}
+        <Pressable
+          style={[
+            styles.circularLogButton,
+            {
+              backgroundColor: theme.colors.primary,
+              shadowColor: theme.colors.primary,
+            },
+          ]}
+          onPress={() =>
+            router.push(
+              `/log?fishId=${currentFish.id}&fishName=${encodeURIComponent(currentFish.name)}`
+            )
+          }
         >
           <IconSymbol name="pencil" size={20} color="white" />
         </Pressable>
@@ -1006,18 +1316,7 @@ const styles = StyleSheet.create({
     gap: 6,
     flex: 1,
   },
-  statLabel: {
-    fontSize: 14,
-    fontWeight: '400',
-    color: '#374151',
-  },
-  statValue: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#1F2937',
-    textAlign: 'right',
-    flex: 1,
-  },
+  // Removed duplicate statLabel and statValue - keeping the later more specific versions
   difficultyRight: {
     alignItems: 'flex-end',
     gap: 2,
@@ -1088,7 +1387,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 2,
   },
-  statLabel: {
+  statLabelContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
@@ -1098,9 +1397,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '400',
   },
-  statValue: {
-    alignItems: 'flex-end',
-  },
+  statValue: {},
   statNumber: {
     fontSize: 16,
     fontWeight: '600',
@@ -1177,11 +1474,7 @@ const styles = StyleSheet.create({
   regulationContent: {
     gap: 4,
   },
-  regulationRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
+  // Removed duplicate regulationRow - keeping the later more specific version
   regulationText: {
     fontSize: 13,
     lineHeight: 18,

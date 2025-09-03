@@ -1,15 +1,15 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { 
-  View, 
-  StyleSheet, 
-  ScrollView, 
-  Pressable, 
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Pressable,
   FlatList,
   useWindowDimensions,
 } from 'react-native';
-import Animated, { 
-  useAnimatedStyle, 
-  useSharedValue, 
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -24,9 +24,9 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
 import { useTranslation } from '@/lib/i18n';
-import { 
-  useAchievements, 
-  useUserAchievements, 
+import {
+  useAchievements,
+  useUserAchievements,
   useAchievementStats,
   useCatches,
 } from '@/lib/store';
@@ -40,13 +40,14 @@ export default function AchievementsScreen() {
   const { t } = useTranslation();
   const { gridColumns, isTablet } = useResponsive();
   const { width } = useWindowDimensions();
-  
+
   const achievements = useAchievements();
   const userAchievements = useUserAchievements();
   const stats = useAchievementStats();
   const catches = useCatches();
-  
-  const [selectedCategory, setSelectedCategory] = useState<FilterCategory>('all');
+
+  const [selectedCategory, setSelectedCategory] =
+    useState<FilterCategory>('all');
   const [selectedTier, setSelectedTier] = useState<FilterTier>('all');
   const [showOnlyUnlocked, setShowOnlyUnlocked] = useState(false);
 
@@ -62,7 +63,9 @@ export default function AchievementsScreen() {
     // Show only unlocked filter
     if (showOnlyUnlocked) {
       filtered = filtered.filter(a => {
-        const userAchievement = userAchievements.find(ua => ua.achievementId === a.id);
+        const userAchievement = userAchievements.find(
+          ua => ua.achievementId === a.id
+        );
         return userAchievement && userAchievement.tier !== null;
       });
     }
@@ -71,39 +74,71 @@ export default function AchievementsScreen() {
   }, [achievements, selectedCategory, showOnlyUnlocked, userAchievements]);
 
   // Category options
-  const categoryOptions = useMemo(() => [
-    { id: 'all', label: t('achievements.filter.all'), count: achievements.length },
-    { id: 'species', label: t('achievements.category.species'), count: achievements.filter(a => a.category === 'species').length },
-    { id: 'quantity', label: t('achievements.category.quantity'), count: achievements.filter(a => a.category === 'quantity').length },
-    { id: 'size', label: t('achievements.category.size'), count: achievements.filter(a => a.category === 'size').length },
-    { id: 'location', label: t('achievements.category.location'), count: achievements.filter(a => a.category === 'location').length },
-    { id: 'special', label: t('achievements.category.special'), count: achievements.filter(a => a.category === 'special').length },
-  ], [achievements]);
+  const categoryOptions = useMemo(
+    () => [
+      {
+        id: 'all',
+        label: t('achievements.filter.all'),
+        count: achievements.length,
+      },
+      {
+        id: 'species',
+        label: t('achievements.category.species'),
+        count: achievements.filter(a => a.category === 'species').length,
+      },
+      {
+        id: 'quantity',
+        label: t('achievements.category.quantity'),
+        count: achievements.filter(a => a.category === 'quantity').length,
+      },
+      {
+        id: 'size',
+        label: t('achievements.category.size'),
+        count: achievements.filter(a => a.category === 'size').length,
+      },
+      {
+        id: 'location',
+        label: t('achievements.category.location'),
+        count: achievements.filter(a => a.category === 'location').length,
+      },
+      {
+        id: 'special',
+        label: t('achievements.category.special'),
+        count: achievements.filter(a => a.category === 'special').length,
+      },
+    ],
+    [achievements, t]
+  );
 
-  const renderAchievement = useCallback(({ item: achievement }: { item: Achievement }) => {
-    const userAchievement = userAchievements.find(ua => ua.achievementId === achievement.id);
-    const isLocked = !userAchievement || userAchievement.tier === null;
-    const tier = userAchievement?.tier || null;
+  const renderAchievement = useCallback(
+    ({ item: achievement }: { item: Achievement }) => {
+      const userAchievement = userAchievements.find(
+        ua => ua.achievementId === achievement.id
+      );
+      const isLocked = !userAchievement || userAchievement.tier === null;
+      const tier = userAchievement?.tier || null;
 
-    const dynamicItemStyle = {
-      ...styles.achievementItem,
-      minWidth: isTablet ? 160 : 140,
-      maxWidth: isTablet ? 200 : 180,
-    };
+      const dynamicItemStyle = {
+        ...styles.achievementItem,
+        minWidth: isTablet ? 160 : 140,
+        maxWidth: isTablet ? 200 : 180,
+      };
 
-    return (
-      <View style={dynamicItemStyle}>
-        <Badge
-          achievement={achievement}
-          tier={tier}
-          size="large"
-          isLocked={isLocked}
-          showTitle={true}
-          style={styles.achievementBadge}
-        />
-      </View>
-    );
-  }, [userAchievements, isTablet]);
+      return (
+        <View style={dynamicItemStyle}>
+          <Badge
+            achievement={achievement}
+            tier={tier}
+            size="large"
+            isLocked={isLocked}
+            showTitle={true}
+            style={styles.achievementBadge}
+          />
+        </View>
+      );
+    },
+    [userAchievements, isTablet]
+  );
 
   const renderStats = () => (
     <ThemedView type="card" style={[styles.statsCard, theme.shadows.sm]}>
@@ -113,7 +148,7 @@ export default function AchievementsScreen() {
           {stats.unlockedCount}/{stats.totalCount}
         </ThemedText>
       </View>
-      
+
       <ProgressBar
         progress={stats.progressPercent / 100}
         height={8}
@@ -121,7 +156,7 @@ export default function AchievementsScreen() {
         animated={true}
         style={styles.progressBar}
       />
-      
+
       <View style={styles.statsDetails}>
         <View style={styles.statItem}>
           <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
@@ -131,12 +166,15 @@ export default function AchievementsScreen() {
             {Math.round(stats.progressPercent)}%
           </ThemedText>
         </View>
-        
+
         <View style={styles.statItem}>
           <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
             {t('achievements.remaining')}
           </ThemedText>
-          <ThemedText type="subtitle" style={{ color: theme.colors.textSecondary }}>
+          <ThemedText
+            type="subtitle"
+            style={{ color: theme.colors.textSecondary }}
+          >
             {stats.totalCount - stats.unlockedCount}
           </ThemedText>
         </View>
@@ -175,7 +213,9 @@ export default function AchievementsScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+    >
       {/* Header */}
       <ThemedView style={styles.header}>
         <ThemedText type="h2">{t('achievements.title')}</ThemedText>
@@ -184,7 +224,7 @@ export default function AchievementsScreen() {
         </ThemedText>
       </ThemedView>
 
-      <ScrollView 
+      <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
@@ -196,12 +236,18 @@ export default function AchievementsScreen() {
           <ThemedText type="subtitle" style={styles.filterTitle}>
             {t('achievements.category.filter')}
           </ThemedText>
-          
+
           <FilterChipGroup
-            chips={categoryOptions.map(opt => ({ id: opt.id, label: opt.label, count: opt.count }))}
+            chips={categoryOptions.map(opt => ({
+              id: opt.id,
+              label: opt.label,
+              count: opt.count,
+            }))}
             selectedIds={selectedCategory === 'all' ? [] : [selectedCategory]}
-            onSelectionChange={(selected) => {
-              setSelectedCategory(selected.length > 0 ? selected[0] as FilterCategory : 'all');
+            onSelectionChange={selected => {
+              setSelectedCategory(
+                selected.length > 0 ? (selected[0] as FilterCategory) : 'all'
+              );
             }}
             multiSelect={false}
             style={styles.categoryFilters}
@@ -223,19 +269,23 @@ export default function AchievementsScreen() {
           <ThemedText type="subtitle" style={styles.sectionTitle}>
             {t('achievements.list.title')} ({filteredAchievements.length})
           </ThemedText>
-          
+
           {filteredAchievements.length > 0 ? (
             <FlatList
               data={filteredAchievements}
               renderItem={renderAchievement}
-              keyExtractor={(item) => item.id}
+              keyExtractor={item => item.id}
               numColumns={gridColumns}
               key={gridColumns} // Force re-render when columns change
               contentContainerStyle={styles.achievementsList}
-              columnWrapperStyle={gridColumns > 1 ? styles.achievementRow : undefined}
+              columnWrapperStyle={
+                gridColumns > 1 ? styles.achievementRow : undefined
+              }
               showsVerticalScrollIndicator={false}
               scrollEnabled={false} // Let parent ScrollView handle scrolling
-              ItemSeparatorComponent={() => <View style={styles.achievementSeparator} />}
+              ItemSeparatorComponent={() => (
+                <View style={styles.achievementSeparator} />
+              )}
             />
           ) : (
             renderEmpty()

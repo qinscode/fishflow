@@ -382,7 +382,8 @@ export const translations = {
     'equipment.actions.edit': 'Edit',
     'equipment.actions.delete': 'Delete',
     'equipment.delete.title': 'Confirm Delete',
-    'equipment.delete.message': 'Are you sure you want to delete the equipment set "{name}"?',
+    'equipment.delete.message':
+      'Are you sure you want to delete the equipment set "{name}"?',
     'equipment.delete.cancel': 'Cancel',
     'equipment.delete.confirm': 'Delete',
 
@@ -392,7 +393,8 @@ export const translations = {
     'equipment.form.name': 'Name',
     'equipment.form.name.placeholder': 'Enter equipment set name',
     'equipment.form.description': 'Description',
-    'equipment.form.description.placeholder': 'Enter equipment description (optional)',
+    'equipment.form.description.placeholder':
+      'Enter equipment description (optional)',
     'equipment.form.rod': 'Rod',
     'equipment.form.rod.placeholder': 'Select or enter rod',
     'equipment.form.reel': 'Reel',
@@ -416,12 +418,14 @@ export const translations = {
     'equipment.validation.line.required': 'Please select a line',
     'equipment.validation.hook.required': 'Please select a hook',
     'equipment.validation.bait.required': 'Please select bait',
-    'equipment.validation.water.type.required': 'Please select at least one water type',
+    'equipment.validation.water.type.required':
+      'Please select at least one water type',
     'equipment.update.success': 'Equipment set updated successfully',
     'equipment.create.success': 'Equipment set created successfully',
     'equipment.save.failed': 'Save failed, please try again',
     'equipment.form.set.default': 'Set as default equipment',
-    'equipment.form.set.default.description': 'Priority display when logging catches',
+    'equipment.form.set.default.description':
+      'Priority display when logging catches',
 
     // Achievements Screen
     'achievements.title': 'Achievement System',
@@ -449,7 +453,8 @@ export const translations = {
     'achievements.no.data.title': 'No achievement data',
     'achievements.no.data.description': 'Achievement system is loading',
     'achievements.no.unlocked.title': 'No achievements unlocked yet',
-    'achievements.no.unlocked.description': 'Start fishing to earn your first achievement!',
+    'achievements.no.unlocked.description':
+      'Start fishing to earn your first achievement!',
     'achievements.category.filter': 'Category Filter',
     'achievements.show.unlocked.only': 'Show Unlocked Only',
     'achievements.list.title': 'Achievement List',
@@ -512,7 +517,8 @@ export const translations = {
     'fish.detail.no_catches': 'No catch records',
     'fish.detail.add_catch': 'Add Catch',
     'fish.detail.not.found.title': 'Fish Not Found',
-    'fish.detail.not.found.description': 'Unable to find the specified fish information',
+    'fish.detail.not.found.description':
+      'Unable to find the specified fish information',
     'fish.detail.unknown': 'UNKNOWN',
     'fish.detail.image.id': 'Image ID',
     'fish.detail.basic.info': 'Basic Information',
@@ -569,7 +575,8 @@ export const translations = {
     'settings.data.export': 'Export Data',
     'settings.data.import': 'Import Data',
     'settings.data.clear': 'Clear Data',
-    'settings.data.clear.warning': 'This action will delete all data and cannot be undone',
+    'settings.data.clear.warning':
+      'This action will delete all data and cannot be undone',
 
     // Common
     'common.search': 'Search',
@@ -629,7 +636,10 @@ let currentLanguage: Language = 'zh';
 export const initializeLanguage = async (): Promise<Language> => {
   try {
     const storedLanguage = await AsyncStorage.getItem(LANGUAGE_STORAGE_KEY);
-    if (storedLanguage && (storedLanguage === 'zh' || storedLanguage === 'en')) {
+    if (
+      storedLanguage &&
+      (storedLanguage === 'zh' || storedLanguage === 'en')
+    ) {
       currentLanguage = storedLanguage as Language;
     }
   } catch (error) {
@@ -651,15 +661,19 @@ export const getCurrentLanguage = (): Language => {
   return currentLanguage;
 };
 
-export const t = (key: TranslationKeys, params?: Record<string, string>): string => {
-  const translation = translations[currentLanguage][key] || translations.zh[key] || key;
-  
+export const t = (
+  key: TranslationKeys,
+  params?: Record<string, string>
+): string => {
+  const lang = currentLanguage === 'system' ? 'zh' : currentLanguage;
+  const translation = translations[lang][key] || translations.zh[key] || key;
+
   if (params) {
     return Object.entries(params).reduce((str, [param, value]) => {
       return str.replace(new RegExp(`\\{${param}\\}`, 'g'), value);
     }, translation);
   }
-  
+
   return translation;
 };
 

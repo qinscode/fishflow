@@ -1,9 +1,9 @@
 import * as Haptics from 'expo-haptics';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, Dimensions, Platform } from 'react-native';
-import Animated, { 
-  useAnimatedStyle, 
-  useSharedValue, 
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
   withTiming,
   withSequence,
   withDelay,
@@ -30,11 +30,11 @@ interface ToastProps {
   onHide: () => void;
 }
 
-export function Toast({ 
-  type, 
-  title, 
-  message, 
-  icon, 
+export function Toast({
+  type,
+  title,
+  message,
+  icon,
   duration = 4000,
   visible,
   onHide,
@@ -42,7 +42,7 @@ export function Toast({
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const [isShowing, setIsShowing] = useState(false);
-  
+
   const translateY = useSharedValue(-200);
   const opacity = useSharedValue(0);
   const scale = useSharedValue(0.8);
@@ -77,21 +77,37 @@ export function Toast({
     }
   };
 
+  const hideToast = useCallback(() => {
+    opacity.value = withTiming(0, { duration: 200 });
+    translateY.value = withTiming(-200, {
+      duration: 300,
+      easing: Easing.in(Easing.cubic),
+    });
+    scale.value = withTiming(0.8, { duration: 200 }, finished => {
+      if (finished) {
+        runOnJS(() => {
+          setIsShowing(false);
+          onHide();
+        })();
+      }
+    });
+  }, [opacity, translateY, scale, onHide]);
+
   useEffect(() => {
     if (visible && !isShowing) {
       setIsShowing(true);
-      
+
       // Haptic feedback
       if (Platform.OS === 'ios') {
         Haptics.notificationAsync(
-          type === 'success' 
+          type === 'success'
             ? Haptics.NotificationFeedbackType.Success
             : type === 'error'
-            ? Haptics.NotificationFeedbackType.Error
-            : Haptics.NotificationFeedbackType.Warning
+              ? Haptics.NotificationFeedbackType.Error
+              : Haptics.NotificationFeedbackType.Warning
         );
       }
-      
+
       // Show animation
       opacity.value = withTiming(1, { duration: 300 });
       translateY.value = withTiming(0, {
@@ -102,40 +118,30 @@ export function Toast({
         duration: 400,
         easing: Easing.out(Easing.back(1.1)),
       });
-      
+
       // Auto hide
       const timer = setTimeout(() => {
         hideToast();
       }, duration);
-      
+
       return () => clearTimeout(timer);
     }
-  }, [visible, isShowing, type, duration, opacity, translateY, scale]);
-
-  const hideToast = () => {
-    opacity.value = withTiming(0, { duration: 200 });
-    translateY.value = withTiming(-200, { 
-      duration: 300,
-      easing: Easing.in(Easing.cubic),
-    });
-    scale.value = withTiming(0.8, { duration: 200 }, (finished) => {
-      if (finished) {
-        runOnJS(() => {
-          setIsShowing(false);
-          onHide();
-        })();
-      }
-    });
-  };
+  }, [
+    visible,
+    isShowing,
+    type,
+    duration,
+    opacity,
+    translateY,
+    scale,
+    hideToast,
+  ]);
 
   const typeConfig = getTypeConfig();
-  
+
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
-    transform: [
-      { translateY: translateY.value },
-      { scale: scale.value },
-    ],
+    transform: [{ translateY: translateY.value }, { scale: scale.value }],
   }));
 
   if (!visible && !isShowing) {
@@ -143,8 +149,11 @@ export function Toast({
   }
 
   return (
-    <View style={[styles.container, { top: insets.top + 10 }]} pointerEvents="none">
-      <Animated.View 
+    <View
+      style={[styles.container, { top: insets.top + 10 }]}
+      pointerEvents="none"
+    >
+      <Animated.View
         style={[
           styles.toast,
           {
@@ -161,18 +170,18 @@ export function Toast({
             color="#FFFFFF"
             style={styles.icon}
           />
-          
+
           <View style={styles.textContent}>
-            <ThemedText 
-              type="subtitle" 
+            <ThemedText
+              type="subtitle"
               style={[styles.title, { color: '#FFFFFF' }]}
             >
               {title}
             </ThemedText>
-            
+
             {message && (
-              <ThemedText 
-                type="bodySmall" 
+              <ThemedText
+                type="bodySmall"
                 style={[styles.message, { color: '#FFFFFF' }]}
               >
                 {message}
@@ -207,7 +216,7 @@ export function useToast() {
   };
 
   const hideToast = () => {
-    setToast(prev => prev ? { ...prev, visible: false } : null);
+    setToast(prev => (prev ? { ...prev, visible: false } : null));
   };
 
   const ToastComponent = toast ? (

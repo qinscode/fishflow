@@ -16,12 +16,16 @@ export function ThemedView({
   ...otherProps
 }: ThemedViewProps) {
   const theme = useTheme();
-  
+  const themeColor = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    'background'
+  );
+
   const getBackgroundColor = () => {
     if (lightColor || darkColor) {
-      return useThemeColor({ light: lightColor, dark: darkColor }, 'background');
+      return themeColor;
     }
-    
+
     switch (type) {
       case 'surface':
         return theme.colors.surface;

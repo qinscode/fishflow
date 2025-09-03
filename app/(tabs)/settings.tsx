@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  StyleSheet, 
-  ScrollView, 
-  Pressable, 
-  Alert, 
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Pressable,
+  Alert,
   Modal,
   Switch,
-  TextInput
+  TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -16,16 +16,23 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/hooks/useThemeColor';
-import { useTranslation, setLanguage, getCurrentLanguage, Language } from '@/lib/i18n';
-import { useAppStore } from '@/lib/store';
 import { dataExportImportService } from '@/lib/dataExportImportService';
+import {
+  useTranslation,
+  setLanguage,
+  getCurrentLanguage,
+  Language,
+} from '@/lib/i18n';
+import { useAppStore } from '@/lib/store';
 
 export default function SettingsScreen() {
   const theme = useTheme();
   const { t } = useTranslation();
-  const updateUserPreferences = useAppStore(state => state.updateUserPreferences);
+  const updateUserPreferences = useAppStore(
+    state => state.updateUserPreferences
+  );
   const userPreferences = useAppStore(state => state.userPreferences);
-  
+
   const [showLanguagePicker, setShowLanguagePicker] = useState(false);
   const [showThemePicker, setShowThemePicker] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -33,15 +40,17 @@ export default function SettingsScreen() {
 
   const handleLanguageChange = async (language: Language) => {
     await setLanguage(language);
-    updateUserPreferences({ 
-      appearance: { ...userPreferences.appearance, language } 
-    });
+    if (language !== 'system') {
+      updateUserPreferences({
+        appearance: { ...userPreferences.appearance, language },
+      });
+    }
     setShowLanguagePicker(false);
   };
 
   const handleThemeChange = (themeValue: 'light' | 'dark' | 'system') => {
-    updateUserPreferences({ 
-      appearance: { ...userPreferences.appearance, theme: themeValue } 
+    updateUserPreferences({
+      appearance: { ...userPreferences.appearance, theme: themeValue },
     });
     setShowThemePicker(false);
   };
@@ -52,8 +61,8 @@ export default function SettingsScreen() {
     if (dateRegex.test(dateInput)) {
       const date = new Date(dateInput);
       if (!isNaN(date.getTime())) {
-        updateUserPreferences({ 
-          fishingStartDate: date.toISOString() 
+        updateUserPreferences({
+          fishingStartDate: date.toISOString(),
         });
         setShowDatePicker(false);
         setDateInput('');
@@ -63,12 +72,14 @@ export default function SettingsScreen() {
     Alert.alert('错误', '请输入有效的日期格式 (YYYY-MM-DD)');
   };
 
-  const handleNotificationToggle = (type: 'achievements' | 'reminders' | 'weather') => {
+  const handleNotificationToggle = (
+    type: 'achievements' | 'reminders' | 'weather'
+  ) => {
     updateUserPreferences({
       notifications: {
         ...userPreferences.notifications,
-        [type]: !userPreferences.notifications[type]
-      }
+        [type]: !userPreferences.notifications[type],
+      },
     });
   };
 
@@ -76,31 +87,30 @@ export default function SettingsScreen() {
     updateUserPreferences({
       privacy: {
         ...userPreferences.privacy,
-        [type]: !userPreferences.privacy[type]
-      }
+        [type]: !userPreferences.privacy[type],
+      },
     });
   };
 
   const handleClearData = () => {
-    Alert.alert(
-      t('settings.data.clear'),
-      t('settings.data.clear.warning'),
-      [
-        { text: t('common.cancel'), style: 'cancel' },
-        {
-          text: t('common.delete'),
-          style: 'destructive',
-          onPress: async () => {
-            const result = await dataExportImportService.clearAllData();
-            if (result.success) {
-              Alert.alert(t('common.success'), 'All data has been cleared');
-            } else {
-              Alert.alert(t('common.error'), result.error || 'Failed to clear data');
-            }
-          },
+    Alert.alert(t('settings.data.clear'), t('settings.data.clear.warning'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      {
+        text: t('common.delete'),
+        style: 'destructive',
+        onPress: async () => {
+          const result = await dataExportImportService.clearAllData();
+          if (result.success) {
+            Alert.alert(t('common.success'), 'All data has been cleared');
+          } else {
+            Alert.alert(
+              t('common.error'),
+              result.error || 'Failed to clear data'
+            );
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const handleExportData = async () => {
@@ -119,9 +129,9 @@ export default function SettingsScreen() {
               onPress: () => {
                 // In a real app, copy to clipboard
                 console.log('Export data:', result.data);
-              }
+              },
             },
-            { text: 'OK' }
+            { text: 'OK' },
           ]
         );
       } else {
@@ -136,14 +146,16 @@ export default function SettingsScreen() {
     Alert.prompt(
       'Import Data',
       'Paste your FishFlow backup data (JSON format):',
-      async (jsonData) => {
-        if (!jsonData?.trim()) return;
-        
+      async jsonData => {
+        if (!jsonData?.trim()) {
+          return;
+        }
+
         try {
           const result = await dataExportImportService.importData(jsonData);
           if (result.success) {
             Alert.alert(
-              t('common.success'), 
+              t('common.success'),
               `Successfully imported ${result.importedCount || 0} items`
             );
           } else {
@@ -162,21 +174,31 @@ export default function SettingsScreen() {
 
   const getThemeDisplayName = (themeValue: string) => {
     switch (themeValue) {
-      case 'light': return t('settings.theme.light');
-      case 'dark': return t('settings.theme.dark');
-      case 'system': return t('settings.theme.system');
-      default: return t('settings.theme.system');
+      case 'light':
+        return t('settings.theme.light');
+      case 'dark':
+        return t('settings.theme.dark');
+      case 'system':
+        return t('settings.theme.system');
+      default:
+        return t('settings.theme.system');
     }
   };
 
   const formatDate = (dateString?: string) => {
-    if (!dateString) return t('common.add');
+    if (!dateString) {
+      return t('common.add');
+    }
     const date = new Date(dateString);
-    return date.toLocaleDateString(getCurrentLanguage() === 'zh' ? 'zh-CN' : 'en-US');
+    return date.toLocaleDateString(
+      getCurrentLanguage() === 'zh' ? 'zh-CN' : 'en-US'
+    );
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+    >
       {/* Header */}
       <FadeInView delay={0}>
         <ThemedView style={styles.header}>
@@ -184,14 +206,17 @@ export default function SettingsScreen() {
             <ThemedText type="h2" style={styles.title}>
               {t('settings.title')}
             </ThemedText>
-            <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
+            <ThemedText
+              type="body"
+              style={{ color: theme.colors.textSecondary }}
+            >
               {t('settings.subtitle')}
             </ThemedText>
           </View>
         </ThemedView>
       </FadeInView>
 
-      <ScrollView 
+      <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -202,25 +227,39 @@ export default function SettingsScreen() {
             <ThemedText type="subtitle" style={styles.sectionTitle}>
               钓鱼设置
             </ThemedText>
-            
-            <Pressable 
+
+            <Pressable
               style={styles.settingItem}
               onPress={() => setShowDatePicker(true)}
             >
               <View style={styles.settingLeft}>
-                <IconSymbol name="calendar" size={20} color={theme.colors.primary} />
+                <IconSymbol
+                  name="calendar"
+                  size={20}
+                  color={theme.colors.primary}
+                />
                 <View style={styles.settingText}>
                   <ThemedText type="body">钓鱼开始时间</ThemedText>
-                  <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
+                  <ThemedText
+                    type="bodySmall"
+                    style={{ color: theme.colors.textSecondary }}
+                  >
                     设置你开始钓鱼的时间
                   </ThemedText>
                 </View>
               </View>
               <View style={styles.settingRight}>
-                <ThemedText type="bodySmall" style={{ color: theme.colors.primary }}>
+                <ThemedText
+                  type="bodySmall"
+                  style={{ color: theme.colors.primary }}
+                >
                   {formatDate(userPreferences.fishingStartDate)}
                 </ThemedText>
-                <IconSymbol name="chevron.right" size={16} color={theme.colors.textSecondary} />
+                <IconSymbol
+                  name="chevron.right"
+                  size={16}
+                  color={theme.colors.textSecondary}
+                />
               </View>
             </Pressable>
           </ThemedView>
@@ -232,46 +271,74 @@ export default function SettingsScreen() {
             <ThemedText type="subtitle" style={styles.sectionTitle}>
               {t('settings.language')}
             </ThemedText>
-            
-            <Pressable 
+
+            <Pressable
               style={styles.settingItem}
               onPress={() => setShowLanguagePicker(true)}
             >
               <View style={styles.settingLeft}>
-                <IconSymbol name="globe" size={20} color={theme.colors.primary} />
+                <IconSymbol
+                  name="globe"
+                  size={20}
+                  color={theme.colors.primary}
+                />
                 <View style={styles.settingText}>
                   <ThemedText type="body">{t('settings.language')}</ThemedText>
-                  <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
+                  <ThemedText
+                    type="bodySmall"
+                    style={{ color: theme.colors.textSecondary }}
+                  >
                     {t('settings.language.subtitle')}
                   </ThemedText>
                 </View>
               </View>
               <View style={styles.settingRight}>
-                <ThemedText type="bodySmall" style={{ color: theme.colors.primary }}>
+                <ThemedText
+                  type="bodySmall"
+                  style={{ color: theme.colors.primary }}
+                >
                   {getLanguageDisplayName(userPreferences.appearance.language)}
                 </ThemedText>
-                <IconSymbol name="chevron.right" size={16} color={theme.colors.textSecondary} />
+                <IconSymbol
+                  name="chevron.right"
+                  size={16}
+                  color={theme.colors.textSecondary}
+                />
               </View>
             </Pressable>
 
-            <Pressable 
+            <Pressable
               style={styles.settingItem}
               onPress={() => setShowThemePicker(true)}
             >
               <View style={styles.settingLeft}>
-                <IconSymbol name="paintbrush" size={20} color={theme.colors.primary} />
+                <IconSymbol
+                  name="paintbrush"
+                  size={20}
+                  color={theme.colors.primary}
+                />
                 <View style={styles.settingText}>
                   <ThemedText type="body">{t('settings.theme')}</ThemedText>
-                  <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
+                  <ThemedText
+                    type="bodySmall"
+                    style={{ color: theme.colors.textSecondary }}
+                  >
                     {t('settings.theme.subtitle')}
                   </ThemedText>
                 </View>
               </View>
               <View style={styles.settingRight}>
-                <ThemedText type="bodySmall" style={{ color: theme.colors.primary }}>
+                <ThemedText
+                  type="bodySmall"
+                  style={{ color: theme.colors.primary }}
+                >
                   {getThemeDisplayName(userPreferences.appearance.theme)}
                 </ThemedText>
-                <IconSymbol name="chevron.right" size={16} color={theme.colors.textSecondary} />
+                <IconSymbol
+                  name="chevron.right"
+                  size={16}
+                  color={theme.colors.textSecondary}
+                />
               </View>
             </Pressable>
           </ThemedView>
@@ -283,40 +350,70 @@ export default function SettingsScreen() {
             <ThemedText type="subtitle" style={styles.sectionTitle}>
               {t('settings.notifications')}
             </ThemedText>
-            
+
             <View style={styles.settingItem}>
               <View style={styles.settingLeft}>
-                <IconSymbol name="trophy" size={20} color={theme.colors.primary} />
+                <IconSymbol
+                  name="trophy"
+                  size={20}
+                  color={theme.colors.primary}
+                />
                 <View style={styles.settingText}>
-                  <ThemedText type="body">{t('settings.notifications.achievements')}</ThemedText>
+                  <ThemedText type="body">
+                    {t('settings.notifications.achievements')}
+                  </ThemedText>
                 </View>
               </View>
               <Switch
                 value={userPreferences.notifications.achievements}
                 onValueChange={() => handleNotificationToggle('achievements')}
-                trackColor={{ false: theme.colors.surface, true: theme.colors.primary + '40' }}
-                thumbColor={userPreferences.notifications.achievements ? theme.colors.primary : theme.colors.textSecondary}
+                trackColor={{
+                  false: theme.colors.surface,
+                  true: theme.colors.primary + '40',
+                }}
+                thumbColor={
+                  userPreferences.notifications.achievements
+                    ? theme.colors.primary
+                    : theme.colors.textSecondary
+                }
               />
             </View>
 
             <View style={styles.settingItem}>
               <View style={styles.settingLeft}>
-                <IconSymbol name="bell" size={20} color={theme.colors.primary} />
+                <IconSymbol
+                  name="bell"
+                  size={20}
+                  color={theme.colors.primary}
+                />
                 <View style={styles.settingText}>
-                  <ThemedText type="body">{t('settings.notifications.reminders')}</ThemedText>
+                  <ThemedText type="body">
+                    {t('settings.notifications.reminders')}
+                  </ThemedText>
                 </View>
               </View>
               <Switch
                 value={userPreferences.notifications.reminders}
                 onValueChange={() => handleNotificationToggle('reminders')}
-                trackColor={{ false: theme.colors.surface, true: theme.colors.primary + '40' }}
-                thumbColor={userPreferences.notifications.reminders ? theme.colors.primary : theme.colors.textSecondary}
+                trackColor={{
+                  false: theme.colors.surface,
+                  true: theme.colors.primary + '40',
+                }}
+                thumbColor={
+                  userPreferences.notifications.reminders
+                    ? theme.colors.primary
+                    : theme.colors.textSecondary
+                }
               />
             </View>
 
             <View style={styles.settingItem}>
               <View style={styles.settingLeft}>
-                <IconSymbol name="cloud.sun" size={20} color={theme.colors.primary} />
+                <IconSymbol
+                  name="cloud.sun"
+                  size={20}
+                  color={theme.colors.primary}
+                />
                 <View style={styles.settingText}>
                   <ThemedText type="body">天气通知</ThemedText>
                 </View>
@@ -324,8 +421,15 @@ export default function SettingsScreen() {
               <Switch
                 value={userPreferences.notifications.weather}
                 onValueChange={() => handleNotificationToggle('weather')}
-                trackColor={{ false: theme.colors.surface, true: theme.colors.primary + '40' }}
-                thumbColor={userPreferences.notifications.weather ? theme.colors.primary : theme.colors.textSecondary}
+                trackColor={{
+                  false: theme.colors.surface,
+                  true: theme.colors.primary + '40',
+                }}
+                thumbColor={
+                  userPreferences.notifications.weather
+                    ? theme.colors.primary
+                    : theme.colors.textSecondary
+                }
               />
             </View>
           </ThemedView>
@@ -337,10 +441,14 @@ export default function SettingsScreen() {
             <ThemedText type="subtitle" style={styles.sectionTitle}>
               {t('settings.privacy')}
             </ThemedText>
-            
+
             <View style={styles.settingItem}>
               <View style={styles.settingLeft}>
-                <IconSymbol name="trophy" size={20} color={theme.colors.primary} />
+                <IconSymbol
+                  name="trophy"
+                  size={20}
+                  color={theme.colors.primary}
+                />
                 <View style={styles.settingText}>
                   <ThemedText type="body">分享成就</ThemedText>
                 </View>
@@ -348,14 +456,25 @@ export default function SettingsScreen() {
               <Switch
                 value={userPreferences.privacy.shareAchievements}
                 onValueChange={() => handlePrivacyToggle('shareAchievements')}
-                trackColor={{ false: theme.colors.surface, true: theme.colors.primary + '40' }}
-                thumbColor={userPreferences.privacy.shareAchievements ? theme.colors.primary : theme.colors.textSecondary}
+                trackColor={{
+                  false: theme.colors.surface,
+                  true: theme.colors.primary + '40',
+                }}
+                thumbColor={
+                  userPreferences.privacy.shareAchievements
+                    ? theme.colors.primary
+                    : theme.colors.textSecondary
+                }
               />
             </View>
 
             <View style={styles.settingItem}>
               <View style={styles.settingLeft}>
-                <IconSymbol name="chart.bar" size={20} color={theme.colors.primary} />
+                <IconSymbol
+                  name="chart.bar"
+                  size={20}
+                  color={theme.colors.primary}
+                />
                 <View style={styles.settingText}>
                   <ThemedText type="body">分享统计</ThemedText>
                 </View>
@@ -363,8 +482,15 @@ export default function SettingsScreen() {
               <Switch
                 value={userPreferences.privacy.shareStats}
                 onValueChange={() => handlePrivacyToggle('shareStats')}
-                trackColor={{ false: theme.colors.surface, true: theme.colors.primary + '40' }}
-                thumbColor={userPreferences.privacy.shareStats ? theme.colors.primary : theme.colors.textSecondary}
+                trackColor={{
+                  false: theme.colors.surface,
+                  true: theme.colors.primary + '40',
+                }}
+                thumbColor={
+                  userPreferences.privacy.shareStats
+                    ? theme.colors.primary
+                    : theme.colors.textSecondary
+                }
               />
             </View>
           </ThemedView>
@@ -376,55 +502,79 @@ export default function SettingsScreen() {
             <ThemedText type="subtitle" style={styles.sectionTitle}>
               {t('settings.data')}
             </ThemedText>
-            
-            <Pressable 
-              style={styles.settingItem}
-              onPress={handleExportData}
-            >
+
+            <Pressable style={styles.settingItem} onPress={handleExportData}>
               <View style={styles.settingLeft}>
-                <IconSymbol name="square.and.arrow.up" size={20} color={theme.colors.primary} />
+                <IconSymbol
+                  name="square.and.arrow.up"
+                  size={20}
+                  color={theme.colors.primary}
+                />
                 <View style={styles.settingText}>
-                  <ThemedText type="body">{t('settings.data.export')}</ThemedText>
-                  <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
+                  <ThemedText type="body">
+                    {t('settings.data.export')}
+                  </ThemedText>
+                  <ThemedText
+                    type="bodySmall"
+                    style={{ color: theme.colors.textSecondary }}
+                  >
                     Export fishing records and equipment
                   </ThemedText>
                 </View>
               </View>
-              <IconSymbol name="chevron.right" size={16} color={theme.colors.textSecondary} />
+              <IconSymbol
+                name="chevron.right"
+                size={16}
+                color={theme.colors.textSecondary}
+              />
             </Pressable>
 
-            <Pressable 
-              style={styles.settingItem}
-              onPress={handleImportData}
-            >
+            <Pressable style={styles.settingItem} onPress={handleImportData}>
               <View style={styles.settingLeft}>
-                <IconSymbol name="square.and.arrow.down" size={20} color={theme.colors.secondary} />
+                <IconSymbol
+                  name="square.and.arrow.down"
+                  size={20}
+                  color={theme.colors.secondary}
+                />
                 <View style={styles.settingText}>
-                  <ThemedText type="body">{t('settings.data.import')}</ThemedText>
-                  <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
+                  <ThemedText type="body">
+                    {t('settings.data.import')}
+                  </ThemedText>
+                  <ThemedText
+                    type="bodySmall"
+                    style={{ color: theme.colors.textSecondary }}
+                  >
                     Import backup data
                   </ThemedText>
                 </View>
               </View>
-              <IconSymbol name="chevron.right" size={16} color={theme.colors.textSecondary} />
+              <IconSymbol
+                name="chevron.right"
+                size={16}
+                color={theme.colors.textSecondary}
+              />
             </Pressable>
-            
-            <Pressable 
-              style={styles.settingItem}
-              onPress={handleClearData}
-            >
+
+            <Pressable style={styles.settingItem} onPress={handleClearData}>
               <View style={styles.settingLeft}>
                 <IconSymbol name="trash" size={20} color={theme.colors.error} />
                 <View style={styles.settingText}>
                   <ThemedText type="body" style={{ color: theme.colors.error }}>
                     {t('settings.data.clear')}
                   </ThemedText>
-                  <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
+                  <ThemedText
+                    type="bodySmall"
+                    style={{ color: theme.colors.textSecondary }}
+                  >
                     Clear all fishing records and data
                   </ThemedText>
                 </View>
               </View>
-              <IconSymbol name="chevron.right" size={16} color={theme.colors.textSecondary} />
+              <IconSymbol
+                name="chevron.right"
+                size={16}
+                color={theme.colors.textSecondary}
+              />
             </Pressable>
           </ThemedView>
         </SlideInView>
@@ -435,15 +585,24 @@ export default function SettingsScreen() {
             <ThemedText type="subtitle" style={styles.sectionTitle}>
               {t('settings.about')}
             </ThemedText>
-            
+
             <View style={styles.settingItem}>
               <View style={styles.settingLeft}>
-                <IconSymbol name="info.circle" size={20} color={theme.colors.primary} />
+                <IconSymbol
+                  name="info.circle"
+                  size={20}
+                  color={theme.colors.primary}
+                />
                 <View style={styles.settingText}>
-                  <ThemedText type="body">{t('settings.about.version')}</ThemedText>
+                  <ThemedText type="body">
+                    {t('settings.about.version')}
+                  </ThemedText>
                 </View>
               </View>
-              <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
+              <ThemedText
+                type="bodySmall"
+                style={{ color: theme.colors.textSecondary }}
+              >
                 1.0.0
               </ThemedText>
             </View>
@@ -458,7 +617,7 @@ export default function SettingsScreen() {
         animationType="fade"
         onRequestClose={() => setShowLanguagePicker(false)}
       >
-        <Pressable 
+        <Pressable
           style={styles.modalOverlay}
           onPress={() => setShowLanguagePicker(false)}
         >
@@ -466,48 +625,60 @@ export default function SettingsScreen() {
             <ThemedText type="subtitle" style={styles.pickerTitle}>
               {t('settings.language')}
             </ThemedText>
-            
-            <Pressable 
+
+            <Pressable
               style={[
                 styles.pickerItem,
-                userPreferences.appearance.language === 'zh' && styles.pickerItemSelected
+                userPreferences.appearance.language === 'zh' &&
+                  styles.pickerItemSelected,
               ]}
               onPress={() => handleLanguageChange('zh')}
             >
-              <ThemedText 
-                type="body" 
+              <ThemedText
+                type="body"
                 style={{
-                  color: userPreferences.appearance.language === 'zh' 
-                    ? theme.colors.primary 
-                    : theme.colors.text
+                  color:
+                    userPreferences.appearance.language === 'zh'
+                      ? theme.colors.primary
+                      : theme.colors.text,
                 }}
               >
                 中文
               </ThemedText>
               {userPreferences.appearance.language === 'zh' && (
-                <IconSymbol name="checkmark" size={20} color={theme.colors.primary} />
+                <IconSymbol
+                  name="checkmark"
+                  size={20}
+                  color={theme.colors.primary}
+                />
               )}
             </Pressable>
 
-            <Pressable 
+            <Pressable
               style={[
                 styles.pickerItem,
-                userPreferences.appearance.language === 'en' && styles.pickerItemSelected
+                userPreferences.appearance.language === 'en' &&
+                  styles.pickerItemSelected,
               ]}
               onPress={() => handleLanguageChange('en')}
             >
-              <ThemedText 
-                type="body" 
+              <ThemedText
+                type="body"
                 style={{
-                  color: userPreferences.appearance.language === 'en' 
-                    ? theme.colors.primary 
-                    : theme.colors.text
+                  color:
+                    userPreferences.appearance.language === 'en'
+                      ? theme.colors.primary
+                      : theme.colors.text,
                 }}
               >
                 English
               </ThemedText>
               {userPreferences.appearance.language === 'en' && (
-                <IconSymbol name="checkmark" size={20} color={theme.colors.primary} />
+                <IconSymbol
+                  name="checkmark"
+                  size={20}
+                  color={theme.colors.primary}
+                />
               )}
             </Pressable>
           </ThemedView>
@@ -521,7 +692,7 @@ export default function SettingsScreen() {
         animationType="fade"
         onRequestClose={() => setShowThemePicker(false)}
       >
-        <Pressable 
+        <Pressable
           style={styles.modalOverlay}
           onPress={() => setShowThemePicker(false)}
         >
@@ -529,28 +700,34 @@ export default function SettingsScreen() {
             <ThemedText type="subtitle" style={styles.pickerTitle}>
               {t('settings.theme')}
             </ThemedText>
-            
-            {(['light', 'dark', 'system'] as const).map((themeOption) => (
-              <Pressable 
+
+            {(['light', 'dark', 'system'] as const).map(themeOption => (
+              <Pressable
                 key={themeOption}
                 style={[
                   styles.pickerItem,
-                  userPreferences.appearance.theme === themeOption && styles.pickerItemSelected
+                  userPreferences.appearance.theme === themeOption &&
+                    styles.pickerItemSelected,
                 ]}
                 onPress={() => handleThemeChange(themeOption)}
               >
-                <ThemedText 
-                  type="body" 
+                <ThemedText
+                  type="body"
                   style={{
-                    color: userPreferences.appearance.theme === themeOption 
-                      ? theme.colors.primary 
-                      : theme.colors.text
+                    color:
+                      userPreferences.appearance.theme === themeOption
+                        ? theme.colors.primary
+                        : theme.colors.text,
                   }}
                 >
                   {getThemeDisplayName(themeOption)}
                 </ThemedText>
                 {userPreferences.appearance.theme === themeOption && (
-                  <IconSymbol name="checkmark" size={20} color={theme.colors.primary} />
+                  <IconSymbol
+                    name="checkmark"
+                    size={20}
+                    color={theme.colors.primary}
+                  />
                 )}
               </Pressable>
             ))}
@@ -565,7 +742,7 @@ export default function SettingsScreen() {
         animationType="fade"
         onRequestClose={() => setShowDatePicker(false)}
       >
-        <Pressable 
+        <Pressable
           style={styles.modalOverlay}
           onPress={() => setShowDatePicker(false)}
         >
@@ -573,23 +750,26 @@ export default function SettingsScreen() {
             <ThemedText type="subtitle" style={styles.pickerTitle}>
               设置钓鱼开始时间
             </ThemedText>
-            
-            <ThemedText type="bodySmall" style={{ 
-              color: theme.colors.textSecondary, 
-              textAlign: 'center',
-              marginBottom: 16 
-            }}>
+
+            <ThemedText
+              type="bodySmall"
+              style={{
+                color: theme.colors.textSecondary,
+                textAlign: 'center',
+                marginBottom: 16,
+              }}
+            >
               请输入日期 (YYYY-MM-DD 格式)
             </ThemedText>
 
             <TextInput
               style={[
                 styles.dateInput,
-                { 
+                {
                   backgroundColor: theme.colors.surface,
                   color: theme.colors.text,
-                  borderColor: theme.colors.border
-                }
+                  borderColor: theme.colors.border,
+                },
               ]}
               value={dateInput}
               onChangeText={setDateInput}
@@ -599,17 +779,23 @@ export default function SettingsScreen() {
             />
 
             <View style={styles.datePickerButtons}>
-              <Pressable 
-                style={[styles.dateButton, { backgroundColor: theme.colors.surface }]}
+              <Pressable
+                style={[
+                  styles.dateButton,
+                  { backgroundColor: theme.colors.surface },
+                ]}
                 onPress={() => setShowDatePicker(false)}
               >
                 <ThemedText type="body" style={{ color: theme.colors.text }}>
                   {t('common.cancel')}
                 </ThemedText>
               </Pressable>
-              
-              <Pressable 
-                style={[styles.dateButton, { backgroundColor: theme.colors.primary }]}
+
+              <Pressable
+                style={[
+                  styles.dateButton,
+                  { backgroundColor: theme.colors.primary },
+                ]}
                 onPress={handleFishingStartDateChange}
               >
                 <ThemedText type="body" style={{ color: 'white' }}>

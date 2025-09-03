@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
-import Animated, { 
-  useAnimatedStyle, 
-  useSharedValue, 
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
   withTiming,
   withSpring,
 } from 'react-native-reanimated';
@@ -48,13 +48,14 @@ export function ProgressBar({
     } else {
       animatedProgress.value = targetProgress;
     }
-  }, [progress, animated, duration]);
+  }, [progress, animated, duration, animatedProgress]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     width: `${animatedProgress.value * 100}%`,
   }));
 
-  const borderRadius = variant === 'rounded' ? height / 2 : theme.borderRadius.sm;
+  const borderRadius =
+    variant === 'rounded' ? height / 2 : theme.borderRadius.sm;
   const displayLabel = label || `${Math.round(progress * 100)}%`;
 
   return (
@@ -66,7 +67,7 @@ export function ProgressBar({
           </ThemedText>
         </View>
       )}
-      
+
       <View
         style={[
           styles.track,
@@ -135,7 +136,7 @@ export function ProgressRing({
     } else {
       animatedProgress.value = targetProgress;
     }
-  }, [progress, animated]);
+  }, [progress, animated, animatedProgress]);
 
   const animatedStyle = useAnimatedStyle(() => {
     const strokeDashoffset = circumference * (1 - animatedProgress.value);
@@ -162,7 +163,7 @@ export function ProgressRing({
             },
           ]}
         />
-        
+
         {/* Progress arc */}
         <Animated.View
           style={[
@@ -185,13 +186,12 @@ export function ProgressRing({
 
       {/* Center content */}
       <View style={styles.ringCenter}>
-        {children || (
-          showLabel && (
+        {children ||
+          (showLabel && (
             <ThemedText type="caption" style={styles.ringLabel}>
               {displayLabel}
             </ThemedText>
-          )
-        )}
+          ))}
       </View>
     </View>
   );

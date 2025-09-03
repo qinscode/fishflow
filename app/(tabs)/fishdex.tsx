@@ -21,13 +21,13 @@ import { FishCard } from '@/components/ui/FishCard';
 import { IconSymbol, MAPPING } from '@/components/ui/IconSymbol';
 import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
-import { useTranslation } from '@/lib/i18n';
 import { RARITY_NAMES, WATER_TYPES } from '@/lib/constants';
-import { 
+import { useTranslation } from '@/lib/i18n';
+import {
   useAppStore,
-  useFish, 
-  useCatches, 
-  useFilters, 
+  useFish,
+  useCatches,
+  useFilters,
   useSearchQuery,
   useFilteredFish,
   useIsLoading,
@@ -39,7 +39,7 @@ export default function FishdexScreen() {
   const theme = useTheme();
   const { t } = useTranslation();
   const { gridColumns, isTablet } = useResponsive();
-  
+
   // Store hooks
   const fish = useFish();
   const catches = useCatches();
@@ -47,14 +47,9 @@ export default function FishdexScreen() {
   const searchQuery = useSearchQuery();
   const filteredFish = useFilteredFish();
   const isLoading = useIsLoading();
-  
-  const {
-    setFilters,
-    setSearchQuery,
-    clearFilters,
-    setFish,
-    setCatches,
-  } = useAppStore();
+
+  const { setFilters, setSearchQuery, clearFilters, setFish, setCatches } =
+    useAppStore();
 
   // Local state
   const [sortBy, setSortBy] = useState<'name' | 'rarity' | 'recent'>('name');
@@ -67,27 +62,31 @@ export default function FishdexScreen() {
   }, [filteredFish, sortBy, catches]);
 
   // Filter options
-  const rarityOptions = useMemo(() => 
-    Object.entries(RARITY_NAMES).map(([key, label]) => ({
-      id: key,
-      label,
-    }))
-  , []);
+  const rarityOptions = useMemo(
+    () =>
+      Object.entries(RARITY_NAMES).map(([key, label]) => ({
+        id: key,
+        label,
+      })),
+    []
+  );
 
-  const waterTypeOptions = useMemo(() => 
-    Object.entries(WATER_TYPES).map(([key, config]) => ({
-      id: key,
-      label: config.name,
-      icon: config.icon as keyof typeof MAPPING,
-    }))
-  , []);
+  const waterTypeOptions = useMemo(
+    () =>
+      Object.entries(WATER_TYPES).map(([key, config]) => ({
+        id: key,
+        label: config.name,
+        icon: config.icon as keyof typeof MAPPING,
+      })),
+    []
+  );
 
   // Statistics
   const stats = useMemo(() => {
     const total = fish.length;
     const unlocked = new Set(catches.map(c => c.fishId)).size;
     const filtered = filteredFish.length;
-    
+
     return { total, unlocked, filtered };
   }, [fish.length, catches, filteredFish.length]);
 
@@ -97,17 +96,26 @@ export default function FishdexScreen() {
     router.push(`/fish/${fishItem.id}` as any);
   }, []);
 
-  const handleSearchChange = useCallback((text: string) => {
-    setSearchQuery(text);
-  }, [setSearchQuery]);
+  const handleSearchChange = useCallback(
+    (text: string) => {
+      setSearchQuery(text);
+    },
+    [setSearchQuery]
+  );
 
-  const handleRarityFilterChange = useCallback((selectedIds: string[]) => {
-    setFilters({ rarity: selectedIds as FishRarity[] });
-  }, [setFilters]);
+  const handleRarityFilterChange = useCallback(
+    (selectedIds: string[]) => {
+      setFilters({ rarity: selectedIds as FishRarity[] });
+    },
+    [setFilters]
+  );
 
-  const handleWaterTypeFilterChange = useCallback((selectedIds: string[]) => {
-    setFilters({ waterTypes: selectedIds as WaterType[] });
-  }, [setFilters]);
+  const handleWaterTypeFilterChange = useCallback(
+    (selectedIds: string[]) => {
+      setFilters({ waterTypes: selectedIds as WaterType[] });
+    },
+    [setFilters]
+  );
 
   const handleUnlockedOnlyToggle = useCallback(() => {
     setFilters({ unlockedOnly: !filters.unlockedOnly });
@@ -135,31 +143,40 @@ export default function FishdexScreen() {
     setRefreshing(false);
   }, [setFish]);
 
-  const renderFishItem = useCallback(({ item }: { item: Fish }) => {
-    const state = getFishCardState(item, catches);
-    return (
-      <FishCard
-        fish={item}
-        state={state}
-        size="medium"
-        onPress={() => handleFishPress(item)}
-        showRarity={true}
-        showId={true}
-        style={styles.fishCardItem}
-      />
-    );
-  }, [catches, handleFishPress]);
+  const renderFishItem = useCallback(
+    ({ item }: { item: Fish }) => {
+      const state = getFishCardState(item, catches);
+      return (
+        <FishCard
+          fish={item}
+          state={state}
+          size="medium"
+          onPress={() => handleFishPress(item)}
+          showRarity={true}
+          showId={true}
+          style={styles.fishCardItem}
+        />
+      );
+    },
+    [catches, handleFishPress]
+  );
 
   const renderHeader = () => (
     <ThemedView style={styles.header}>
       {/* Search Bar */}
-      <View style={[styles.searchContainer, { backgroundColor: theme.colors.surface }]}>
-        <IconSymbol name="magnifyingglass" size={20} color={theme.colors.textSecondary} />
+      <View
+        style={[
+          styles.searchContainer,
+          { backgroundColor: theme.colors.surface },
+        ]}
+      >
+        <IconSymbol
+          name="magnifyingglass"
+          size={20}
+          color={theme.colors.textSecondary}
+        />
         <TextInput
-          style={[
-            styles.searchInput,
-            { color: theme.colors.text, flex: 1 }
-          ]}
+          style={[styles.searchInput, { color: theme.colors.text, flex: 1 }]}
           placeholder={t('fishdex.search')}
           placeholderTextColor={theme.colors.textSecondary}
           value={searchQuery}
@@ -167,15 +184,23 @@ export default function FishdexScreen() {
         />
         {searchQuery.length > 0 && (
           <Pressable onPress={() => handleSearchChange('')}>
-            <IconSymbol name="xmark.circle.fill" size={20} color={theme.colors.textSecondary} />
+            <IconSymbol
+              name="xmark.circle.fill"
+              size={20}
+              color={theme.colors.textSecondary}
+            />
           </Pressable>
         )}
       </View>
 
       {/* Stats */}
       <View style={styles.statsContainer}>
-        <ThemedText type="bodySmall" style={{ color: theme.colors.textSecondary }}>
-          {t('common.total')} {stats.total} • {t('fishdex.unlocked')} {stats.unlocked} • {t('common.showing')} {stats.filtered}
+        <ThemedText
+          type="bodySmall"
+          style={{ color: theme.colors.textSecondary }}
+        >
+          {t('common.total')} {stats.total} • {t('fishdex.unlocked')}{' '}
+          {stats.unlocked} • {t('common.showing')} {stats.filtered}
         </ThemedText>
       </View>
 
@@ -202,7 +227,13 @@ export default function FishdexScreen() {
 
         {/* Sort Options */}
         <FilterChip
-          label={sortBy === 'name' ? t('common.name') : sortBy === 'rarity' ? t('fishdex.rarity') : t('common.recent')}
+          label={
+            sortBy === 'name'
+              ? t('common.name')
+              : sortBy === 'rarity'
+                ? t('fishdex.rarity')
+                : t('common.recent')
+          }
           icon="arrow.up.arrow.down"
           selected={true}
           onPress={() => {
@@ -265,7 +296,9 @@ export default function FishdexScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.colors.background }]}
+      >
         <EmptyState
           type="loading"
           title={t('common.loading')}
@@ -277,7 +310,9 @@ export default function FishdexScreen() {
 
   if (fish.length === 0) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme.colors.background }]}
+      >
         <EmptyStates.NoFish
           action={{
             label: t('fishdex.initialize.data'),
@@ -289,7 +324,9 @@ export default function FishdexScreen() {
   }
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+    >
       {sortedFish.length === 0 ? (
         <ScrollView
           refreshControl={
