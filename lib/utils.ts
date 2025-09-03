@@ -165,7 +165,7 @@ export function getFishCardState(
 // 排序鱼类
 export function sortFish(
   fish: Fish[],
-  sortBy: 'name' | 'rarity' | 'recent',
+  sortBy: 'name' | 'edibility' | 'recent',
   catches: CatchRecord[] = []
 ): Fish[] {
   // If already empty or single item, no need to sort
@@ -182,17 +182,24 @@ export function sortFish(
         return a.name.localeCompare(b.name, 'zh-CN');
       });
 
-    case 'rarity':
-      const rarityOrder = {
-        legendary: 5,
-        epic: 4,
-        rare: 3,
-        unique: 2,
-        common: 1,
+    case 'edibility':
+      // Higher score means more edible
+      const edibilityOrder: Record<string, number> = {
+        excellent: 9,
+        good: 8,
+        fair: 7,
+        poor: 6,
+        variable: 5,
+        not_recommended: 4,
+        not_edible: 3,
+        no_take: 2,
+        protected: 1,
         unknown: 0,
       };
       return sorted.sort(function (a, b) {
-        return rarityOrder[b.rarity] - rarityOrder[a.rarity];
+        const aRating = a.edibility?.rating ?? 'unknown';
+        const bRating = b.edibility?.rating ?? 'unknown';
+        return (edibilityOrder[bRating] || 0) - (edibilityOrder[aRating] || 0);
       });
 
     case 'recent':

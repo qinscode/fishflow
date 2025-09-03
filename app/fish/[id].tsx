@@ -36,9 +36,15 @@ import {
 } from '@/lib/constants';
 import { getFishImage } from '@/lib/fishImages';
 import { useTranslation } from '@/lib/i18n';
-import { useFish, useCatches, useUserStats } from '@/lib/store';
+import {
+  useFish,
+  useCatches,
+  useUserStats,
+  useFilteredFish,
+} from '@/lib/store';
 import { Fish, FishCardState } from '@/lib/types';
-import { getFishCardState, getColorByEdibility } from '@/lib/utils';
+import { getFishCardState, getColorByEdibility, sortFish } from '@/lib/utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -52,6 +58,21 @@ export default function FishDetailScreen() {
   const fish = useFish();
   const catches = useCatches();
   const userStats = useUserStats();
+  const filteredFish = useFilteredFish();
+  const [sortBy, setSortBy] = React.useState<'name' | 'edibility' | 'recent'>(
+    'name'
+  );
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const saved = await AsyncStorage.getItem('fishdex.sortBy');
+        if (saved === 'name' || saved === 'edibility' || saved === 'recent') {
+          setSortBy(saved);
+        }
+      } catch {}
+    })();
+  }, []);
 
   // 动画值 - 必须在早期返回之前声明
   const bubble1Scale = useSharedValue(1);
@@ -134,7 +155,14 @@ export default function FishDetailScreen() {
   ]);
 
   const currentFish = fish.find(f => f.id === fishId);
-  const currentIndex = fish.findIndex(f => f.id === fishId);
+  const sortedList = React.useMemo(
+    () => sortFish(filteredFish, sortBy, catches),
+    [filteredFish, sortBy, catches]
+  );
+  const currentIndex =
+    sortedList.findIndex(f => f.id === fishId) !== -1
+      ? sortedList.findIndex(f => f.id === fishId)
+      : fish.findIndex(f => f.id === fishId);
   const fishState: FishCardState = currentFish
     ? getFishCardState(currentFish, catches)
     : 'locked';
@@ -354,8 +382,7 @@ export default function FishDetailScreen() {
             <ThemedText
               style={[styles.fishNumber, { color: theme.colors.textSecondary }]}
             >
-              #{(currentIndex + 1).toString().padStart(1, '0')} •{' '}
-              {currentIndex + 1}/{fish.length}
+              #{currentFish.id} • {currentIndex + 1}/{fish.length}
             </ThemedText>
           </View>
         </View>
@@ -411,7 +438,12 @@ export default function FishDetailScreen() {
 
       <View style={styles.leftAlignedInfoList}>
         <View style={styles.leftAlignedInfoRow}>
-          <IconSymbol name="text.book.closed" size={16} color="#8B5CF6" />
+          <IconSymbol
+            name="text.book.closed"
+            size={16}
+            color="#8B5CF6"
+            style={styles.leftAlignedIcon}
+          />
           <ThemedText style={styles.leftAlignedLabel}>
             {t('fish.detail.scientific.name')}：
           </ThemedText>
@@ -421,7 +453,12 @@ export default function FishDetailScreen() {
         </View>
 
         <View style={styles.leftAlignedInfoRow}>
-          <IconSymbol name="tree" size={16} color="#059669" />
+          <IconSymbol
+            name="tree"
+            size={16}
+            color="#059669"
+            style={styles.leftAlignedIcon}
+          />
           <ThemedText style={styles.leftAlignedLabel}>
             {t('fish.detail.family')}：
           </ThemedText>
@@ -431,7 +468,12 @@ export default function FishDetailScreen() {
         </View>
 
         <View style={styles.leftAlignedInfoRow}>
-          <IconSymbol name="location" size={16} color="#DC2626" />
+          <IconSymbol
+            name="location"
+            size={16}
+            color="#DC2626"
+            style={styles.leftAlignedIcon}
+          />
           <ThemedText style={styles.leftAlignedLabel}>
             {t('fish.detail.local.names')}：
           </ThemedText>
@@ -1193,8 +1235,9 @@ const styles = StyleSheet.create({
   },
   headerTitleContainer: {
     position: 'absolute',
-    left: 0,
-    right: 0,
+    left: 60,
+    right: 60,
+    top: 8,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1254,6 +1297,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 4,
+    lineHeight: 28,
+    flexWrap: 'wrap',
   },
   fishNumber: {
     fontSize: 14,
@@ -1419,7 +1464,7 @@ const styles = StyleSheet.create({
   },
   leftAlignedInfoRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     paddingVertical: 6,
     gap: 8,
   },
@@ -1434,6 +1479,9 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#1F2937',
     flex: 1,
+  },
+  leftAlignedIcon: {
+    marginTop: 2,
   },
   // 两列布局样式
   twoColumnStatsList: {

@@ -1,4 +1,5 @@
 import { FlashList } from '@shopify/flash-list';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
@@ -52,7 +53,19 @@ export default function FishdexScreen() {
     useAppStore();
 
   // Local state
-  const [sortBy, setSortBy] = useState<'name' | 'rarity' | 'recent'>('name');
+  const [sortBy, setSortBy] = useState<'name' | 'edibility' | 'recent'>('name');
+  const SORT_STORAGE_KEY = 'fishdex.sortBy';
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const saved = await AsyncStorage.getItem(SORT_STORAGE_KEY);
+        if (saved === 'name' || saved === 'edibility' || saved === 'recent') {
+          setSortBy(saved);
+        }
+      } catch {}
+    })();
+  }, []);
   const [showFilters, setShowFilters] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -123,6 +136,7 @@ export default function FishdexScreen() {
 
   const handleSortChange = useCallback((newSort: typeof sortBy) => {
     setSortBy(newSort);
+    AsyncStorage.setItem(SORT_STORAGE_KEY, newSort).catch(() => {});
   }, []);
 
   const handleClearFilters = useCallback(() => {
@@ -230,14 +244,14 @@ export default function FishdexScreen() {
           label={
             sortBy === 'name'
               ? t('common.name')
-              : sortBy === 'rarity'
-                ? t('fishdex.rarity')
+              : sortBy === 'edibility'
+                ? t('fishdex.edibility')
                 : t('common.recent')
           }
           icon="arrow.up.arrow.down"
           selected={true}
           onPress={() => {
-            const options = ['name', 'rarity', 'recent'] as const;
+            const options = ['name', 'edibility', 'recent'] as const;
             const currentIndex = options.indexOf(sortBy);
             const nextIndex = (currentIndex + 1) % options.length;
             handleSortChange(options[nextIndex]);
