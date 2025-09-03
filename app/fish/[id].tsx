@@ -539,95 +539,133 @@ export default function FishDetailScreen() {
         </ThemedText>
       </View>
 
-      <View style={styles.compactHabitatInfo}>
-        <View style={styles.compactHabitatRow}>
-          <ThemedText style={styles.compactHabitatLabel}>
-            {t('fish.detail.water.types')}：
-          </ThemedText>
-          <View style={styles.compactTagContainer}>
-            {currentFish.habitat.waterTypes
-              ?.filter(type => type)
-              .map((type, index) => (
+      <View style={styles.habitatTwoColumnGrid}>
+        {/* 左列 */}
+        <View style={styles.habitatColumn}>
+          {/* 水域类型 */}
+          <View style={styles.habitatCleanSection}>
+            <View style={styles.habitatCleanHeader}>
+              <IconSymbol name="drop.fill" size={14} color="#3B82F6" />
+              <ThemedText style={styles.habitatCleanTitle}>
+                {t('fish.detail.water.types')}
+              </ThemedText>
+            </View>
+            <View style={styles.habitatCleanTags}>
+              {currentFish.habitat.waterTypes
+                ?.filter(type => type)
+                .map((type, index) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.habitatCleanTag,
+                      { backgroundColor: '#3B82F6' + '15' },
+                    ]}
+                  >
+                    <ThemedText
+                      style={[styles.habitatCleanTagText, { color: '#3B82F6' }]}
+                    >
+                      {WATER_TYPE_NAMES[type] || type || t('common.unknown')}
+                    </ThemedText>
+                  </View>
+                ))}
+            </View>
+          </View>
+
+          {/* 活跃季节 */}
+          <View style={styles.habitatCleanSection}>
+            <View style={styles.habitatCleanHeader}>
+              <IconSymbol name="calendar" size={14} color="#F59E0B" />
+              <ThemedText style={styles.habitatCleanTitle}>
+                {t('fish.detail.seasons')}
+              </ThemedText>
+            </View>
+            <View style={styles.habitatCleanTags}>
+              {currentFish.habitat.seasons.slice(0, 3).map((season, index) => (
                 <View
                   key={index}
                   style={[
-                    styles.compactTag,
-                    { backgroundColor: theme.colors.primary + '20' },
+                    styles.habitatCleanTag,
+                    { backgroundColor: '#F59E0B' + '15' },
                   ]}
                 >
                   <ThemedText
-                    style={[
-                      styles.compactTagText,
-                      { color: theme.colors.primary },
-                    ]}
+                    style={[styles.habitatCleanTagText, { color: '#F59E0B' }]}
                   >
-                    {WATER_TYPE_NAMES[type] || type || t('common.unknown')}
+                    {season}
+                    {typeof season === 'number' ? t('fish.detail.month') : ''}
                   </ThemedText>
                 </View>
               ))}
-          </View>
-        </View>
-
-        <View style={styles.compactHabitatRow}>
-          <ThemedText style={styles.compactHabitatLabel}>
-            {t('fish.detail.regions')}：
-          </ThemedText>
-          <View style={styles.compactTagContainer}>
-            {currentFish.habitat.regions.map((region, index) => {
-              // 使用与法规信息相同的颜色系统
-              const stateColors = [
-                theme.colors.primary,
-                '#10B981',
-                '#F59E0B',
-                '#EF4444',
-                '#8B5CF6',
-              ];
-              const stateColor = stateColors[index % stateColors.length];
-
-              return (
+              {currentFish.habitat.seasons.length > 3 && (
                 <View
-                  key={index}
                   style={[
-                    styles.compactTag,
-                    { backgroundColor: stateColor + '20' },
+                    styles.habitatCleanTag,
+                    { backgroundColor: '#F59E0B' + '10' },
                   ]}
                 >
                   <ThemedText
-                    style={[styles.compactTagText, { color: stateColor }]}
+                    style={[styles.habitatCleanTagText, { color: '#F59E0B' }]}
+                  >
+                    +{currentFish.habitat.seasons.length - 3}
+                  </ThemedText>
+                </View>
+              )}
+            </View>
+          </View>
+        </View>
+
+        {/* 右列 */}
+        <View style={styles.habitatColumn}>
+          {/* 分布地区 */}
+          <View style={styles.habitatCleanSection}>
+            <View style={styles.habitatCleanHeader}>
+              <IconSymbol name="location.fill" size={14} color="#10B981" />
+              <ThemedText style={styles.habitatCleanTitle}>
+                {t('fish.detail.regions')}
+              </ThemedText>
+            </View>
+            <View style={styles.habitatCleanTags}>
+              {currentFish.habitat.regions.map((region, index) => (
+                <View
+                  key={index}
+                  style={[
+                    styles.habitatCleanTag,
+                    { backgroundColor: '#10B981' + '15' },
+                  ]}
+                >
+                  <ThemedText
+                    style={[styles.habitatCleanTagText, { color: '#10B981' }]}
                   >
                     {region}
                   </ThemedText>
                 </View>
-              );
-            })}
+              ))}
+            </View>
           </View>
-        </View>
 
-        <View style={styles.compactHabitatRow}>
-          <ThemedText style={styles.compactHabitatLabel}>
-            {t('fish.detail.seasons')}：
-          </ThemedText>
-          <View style={styles.compactTagContainer}>
-            {currentFish.habitat.seasons.map((month, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.compactTag,
-                  { backgroundColor: theme.colors.accent + '20' },
-                ]}
-              >
-                <ThemedText
+          {/* 水深信息（如果有的话） */}
+          {currentFish.habitat.depth && (
+            <View style={styles.habitatCleanSection}>
+              <View style={styles.habitatCleanHeader}>
+                <IconSymbol name="arrow.down" size={14} color="#6B7280" />
+                <ThemedText style={styles.habitatCleanTitle}>水深</ThemedText>
+              </View>
+              <View style={styles.habitatCleanTags}>
+                <View
                   style={[
-                    styles.compactTagText,
-                    { color: theme.colors.accent },
+                    styles.habitatCleanTag,
+                    { backgroundColor: '#6B7280' + '15' },
                   ]}
                 >
-                  {month}
-                  {t('fish.detail.month')}
-                </ThemedText>
+                  <ThemedText
+                    style={[styles.habitatCleanTagText, { color: '#6B7280' }]}
+                  >
+                    {currentFish.habitat.depth}
+                  </ThemedText>
+                </View>
               </View>
-            ))}
-          </View>
+            </View>
+          )}
         </View>
       </View>
     </ThemedView>
@@ -638,15 +676,6 @@ export default function FishDetailScreen() {
       return null;
     }
 
-    // 为不同州分配不同颜色
-    const stateColors = [
-      { bg: theme.colors.primary + '15', text: theme.colors.primary },
-      { bg: '#10B981' + '15', text: '#10B981' },
-      { bg: '#F59E0B' + '15', text: '#F59E0B' },
-      { bg: '#EF4444' + '15', text: '#EF4444' },
-      { bg: '#8B5CF6' + '15', text: '#8B5CF6' },
-    ];
-
     return (
       <ThemedView type="card" style={[styles.infoCard, theme.shadows.md]}>
         <View style={styles.cardHeader}>
@@ -655,118 +684,128 @@ export default function FishDetailScreen() {
           </ThemedText>
         </View>
 
-        <View style={styles.regulationsGrid}>
-          {currentFish.regulations.map((regulation, index) => {
-            const stateColor = stateColors[index % stateColors.length];
-            return (
-              <View key={index} style={styles.regulationColumn}>
-                <View style={styles.regulationHeader}>
-                  <View
-                    style={[
-                      styles.regionBadge,
-                      { backgroundColor: stateColor.bg },
-                    ]}
-                  >
-                    <ThemedText
-                      style={[
-                        styles.regionBadgeText,
-                        { color: stateColor.text },
-                      ]}
-                    >
-                      {regulation.region}
-                    </ThemedText>
-                  </View>
-                </View>
-
-                <View style={styles.regulationContent}>
-                  <View style={styles.regulationItemsGrid}>
-                    {regulation.minSizeCm && (
-                      <View style={styles.regulationGridItem}>
-                        <View style={styles.regulationRow}>
-                          <IconSymbol name="ruler" size={14} color="#3B82F6" />
-                          <View style={styles.regulationTextContainer}>
-                            <ThemedText style={styles.regulationLabel}>
-                              {t('fish.detail.min.size')}
-                            </ThemedText>
-                            <ThemedText style={styles.regulationValue}>
-                              {regulation.minSizeCm}cm
-                            </ThemedText>
-                          </View>
-                        </View>
-                      </View>
-                    )}
-
-                    {regulation.dailyLimit && (
-                      <View style={styles.regulationGridItem}>
-                        <View style={styles.regulationRow}>
-                          <IconSymbol
-                            name="clock.badge"
-                            size={14}
-                            color="#10B981"
-                          />
-                          <View style={styles.regulationTextContainer}>
-                            <ThemedText style={styles.regulationLabel}>
-                              {t('fish.detail.daily.limit')}
-                            </ThemedText>
-                            <ThemedText style={styles.regulationValue}>
-                              {regulation.dailyLimit}
-                              {t('fish.detail.fish.count')}
-                            </ThemedText>
-                          </View>
-                        </View>
-                      </View>
-                    )}
-
-                    {regulation.closedSeasons &&
-                      regulation.closedSeasons.length > 0 && (
-                        <View style={styles.regulationGridItem}>
-                          <View style={styles.regulationRow}>
-                            <IconSymbol
-                              name="calendar"
-                              size={14}
-                              color="#F59E0B"
-                            />
-                            <View style={styles.regulationTextContainer}>
-                              <ThemedText style={styles.regulationLabel}>
-                                {t('fish.detail.closed.seasons')}
-                              </ThemedText>
-                              <ThemedText style={styles.regulationValue}>
-                                {regulation.closedSeasons
-                                  .map(
-                                    season => `${season.start}-${season.end}`
-                                  )
-                                  .join(', ')}
-                              </ThemedText>
-                            </View>
-                          </View>
-                        </View>
-                      )}
-
-                    {regulation.specialRules &&
-                      regulation.specialRules.length > 0 && (
-                        <View style={styles.regulationGridItem}>
-                          <View style={styles.regulationRow}>
-                            <IconSymbol
-                              name="exclamationmark.triangle"
-                              size={14}
-                              color="#EF4444"
-                            />
-                            <View style={styles.regulationTextContainer}>
-                              <ThemedText style={styles.regulationLabel}>
-                                {t('fish.detail.special.rules')}
-                              </ThemedText>
-                              <ThemedText style={styles.regulationValue}>
-                                {regulation.specialRules.join(', ')}
-                              </ThemedText>
-                            </View>
-                          </View>
-                        </View>
-                      )}
-                  </View>
-                </View>
+        <View style={styles.regulationsThreeColumnContainer}>
+          {currentFish.regulations.map((regulation, index) => (
+            <View key={index} style={styles.regulationCleanItem}>
+              {/* 地区徽章 */}
+              <View style={styles.regulationCleanHeader}>
+                <IconSymbol
+                  name="location"
+                  size={12}
+                  color={theme.colors.primary}
+                />
+                <ThemedText
+                  style={[
+                    styles.regulationCleanRegion,
+                    { color: theme.colors.primary },
+                  ]}
+                >
+                  {regulation.region}
+                </ThemedText>
               </View>
-            );
-          })}
+
+              {/* 规定信息网格 - 3栏布局 */}
+              <View style={styles.regulationThreeColumnGrid}>
+                {regulation.dailyLimit && (
+                  <View style={styles.regulationCleanRow}>
+                    <IconSymbol name="clock.badge" size={12} color="#10B981" />
+                    <View style={styles.regulationCleanContent}>
+                      <ThemedText style={styles.regulationCleanLabel}>
+                        日限
+                      </ThemedText>
+                      <ThemedText style={styles.regulationCleanValue}>
+                        {regulation.dailyLimit}尾
+                      </ThemedText>
+                    </View>
+                  </View>
+                )}
+
+                {regulation.possessionLimit && (
+                  <View style={styles.regulationCleanRow}>
+                    <IconSymbol name="bag" size={12} color="#F59E0B" />
+                    <View style={styles.regulationCleanContent}>
+                      <ThemedText style={styles.regulationCleanLabel}>
+                        持有
+                      </ThemedText>
+                      <ThemedText style={styles.regulationCleanValue}>
+                        {regulation.possessionLimit}尾
+                      </ThemedText>
+                    </View>
+                  </View>
+                )}
+
+                {regulation.minSizeCm && (
+                  <View style={styles.regulationCleanRow}>
+                    <IconSymbol name="ruler" size={12} color="#3B82F6" />
+                    <View style={styles.regulationCleanContent}>
+                      <ThemedText style={styles.regulationCleanLabel}>
+                        尺寸
+                      </ThemedText>
+                      <ThemedText style={styles.regulationCleanValue}>
+                        {regulation.minSizeCm}cm+
+                      </ThemedText>
+                    </View>
+                  </View>
+                )}
+
+                {regulation.closedSeasons &&
+                  regulation.closedSeasons.length > 0 && (
+                    <View style={styles.regulationCleanRow}>
+                      <IconSymbol name="calendar" size={12} color="#EF4444" />
+                      <View style={styles.regulationCleanContent}>
+                        <ThemedText style={styles.regulationCleanLabel}>
+                          禁期
+                        </ThemedText>
+                        <ThemedText style={styles.regulationCleanValue}>
+                          {regulation.closedSeasons.length}个
+                        </ThemedText>
+                      </View>
+                    </View>
+                  )}
+
+                {regulation.specialRules &&
+                  regulation.specialRules.length > 0 && (
+                    <View style={styles.regulationCleanRow}>
+                      <IconSymbol
+                        name="exclamationmark.triangle"
+                        size={12}
+                        color="#8B5CF6"
+                      />
+                      <View style={styles.regulationCleanContent}>
+                        <ThemedText style={styles.regulationCleanLabel}>
+                          特殊
+                        </ThemedText>
+                        <ThemedText style={styles.regulationCleanValue}>
+                          {regulation.specialRules.length}项
+                        </ThemedText>
+                      </View>
+                    </View>
+                  )}
+
+                {/* 如果规定项目少于3个，添加占位符保持对齐 */}
+                {[
+                  ...Array(
+                    Math.max(
+                      0,
+                      3 -
+                        [
+                          regulation.dailyLimit,
+                          regulation.possessionLimit,
+                          regulation.minSizeCm,
+                          regulation.closedSeasons,
+                          regulation.specialRules,
+                        ].filter(Boolean).length
+                    )
+                  ),
+                ].map((_, i) => (
+                  <View
+                    key={`placeholder-${i}`}
+                    style={styles.regulationPlaceholder}
+                  />
+                ))}
+              </View>
+            </View>
+          ))}
         </View>
       </ThemedView>
     );
@@ -1679,5 +1718,129 @@ const styles = StyleSheet.create({
   errorDescription: {
     textAlign: 'center',
     opacity: 0.7,
+  },
+  // Two-column compact layout styles
+  habitatTwoColumnGrid: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  habitatColumn: {
+    flex: 1,
+  },
+  habitatCompactSection: {
+    backgroundColor: '#F9FAFB',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 8,
+  },
+  habitatCompactHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+    gap: 6,
+  },
+  habitatCompactTitle: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#374151',
+  },
+  habitatCompactTags: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  habitatCompactTag: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  habitatCompactTagText: {
+    fontSize: 10,
+    fontWeight: '500',
+  },
+  regulationsTwoColumnContainer: {
+    gap: 8,
+  },
+  regulationCompactItem: {
+    backgroundColor: '#F9FAFB',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 8,
+  },
+  regulationCompactHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+    gap: 6,
+  },
+  regulationCompactRegion: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  regulationCompactGrid: {
+    gap: 6,
+  },
+  regulationCompactRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  regulationCompactContent: {
+    flex: 1,
+  },
+  regulationCompactLabel: {
+    fontSize: 11,
+    fontWeight: '400',
+    color: '#6B7280',
+  },
+  regulationCompactValue: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#1F2937',
+  },
+  regulationsThreeColumnContainer: {
+    gap: 8,
+  },
+  regulationCleanItem: {
+    backgroundColor: '#F9FAFB',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 8,
+  },
+  regulationCleanHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+    gap: 6,
+  },
+  regulationCleanRegion: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  regulationThreeColumnGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  regulationCleanRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  regulationCleanContent: {
+    flex: 1,
+  },
+  regulationCleanLabel: {
+    fontSize: 11,
+    fontWeight: '400',
+    color: '#6B7280',
+  },
+  regulationCleanValue: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#1F2937',
+  },
+  regulationPlaceholder: {
+    width: '33%', // 3列布局，每个占33%
   },
 });

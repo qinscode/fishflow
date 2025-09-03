@@ -344,6 +344,7 @@ export const translations = {
     'fish.detail.month': '月',
     'fish.detail.min.size': '最小尺寸',
     'fish.detail.daily.limit': '日限制',
+    'fish.detail.possession.limit': '持有限制',
     'fish.detail.fish.count': '尾',
     'fish.detail.closed.seasons': '禁钓期',
     'fish.detail.special.rules': '特殊规定',
@@ -825,6 +826,7 @@ export const translations = {
 
     'fish.detail.min.size': 'Min Size',
     'fish.detail.daily.limit': 'Daily Limit',
+    'fish.detail.possession.limit': 'Possession Limit',
     'fish.detail.fish.count': '',
     'fish.detail.closed.seasons': 'Closed Seasons',
     'fish.detail.special.rules': 'Special Rules',
