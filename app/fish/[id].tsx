@@ -139,6 +139,9 @@ export default function FishDetailScreen() {
     : 'locked';
   const isUnlocked = fishState === 'unlocked' || fishState === 'new';
 
+  // 确保数据已加载完成再判断状态
+  const shouldShowUnknown = currentFish && catches.length >= 0 && !isUnlocked;
+
   if (!currentFish) {
     return (
       <SafeAreaView
@@ -349,24 +352,6 @@ export default function FishDetailScreen() {
               {currentIndex + 1}/{fish.length}
             </ThemedText>
           </View>
-
-          {!isUnlocked && (
-            <View
-              style={[
-                styles.statusBadge,
-                { backgroundColor: theme.colors.textSecondary + '20' },
-              ]}
-            >
-              <ThemedText
-                style={[
-                  styles.statusText,
-                  { color: theme.colors.textSecondary },
-                ]}
-              >
-                {t('fish.detail.unknown')}
-              </ThemedText>
-            </View>
-          )}
         </View>
 
         <View style={styles.fishImageContainer}>
@@ -447,7 +432,7 @@ export default function FishDetailScreen() {
         </View>
       </View>
 
-      {!isUnlocked && (
+      {shouldShowUnknown && (
         <View
           style={[
             styles.unlockStatus,
@@ -779,7 +764,7 @@ export default function FishDetailScreen() {
   };
 
   const renderPersonalRecord = () => {
-    if (!isUnlocked || userCatches.length === 0) {
+    if (shouldShowUnknown || userCatches.length === 0) {
       return null;
     }
 

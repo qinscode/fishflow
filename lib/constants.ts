@@ -30,6 +30,20 @@ export const RARITY_COLORS: Record<FishRarity, string> = {
   unknown: '#9CA3AF', // 更淡的灰色
 };
 
+// 食用评级配色方案
+export const EDIBILITY_COLORS: Record<string, string> = {
+  excellent: '#10B981', // 绿色 - 优秀
+  good: '#3B82F6', // 蓝色 - 良好  
+  fair: '#F59E0B', // 橙色 - 一般
+  poor: '#EF4444', // 红色 - 较差
+  variable: '#8B5CF6', // 紫色 - 可变
+  not_recommended: '#6B7280', // 灰色 - 不推荐
+  not_edible: '#6B7280', // 灰色 - 不可食用
+  no_take: '#6B7280', // 灰色 - 禁捕
+  protected: '#6B7280', // 灰色 - 保护物种
+  default: '#9CA3AF', // 默认颜色
+};
+
 // 稀有度中文名称
 export const RARITY_NAMES: Record<FishRarity, string> = {
   common: '常见',

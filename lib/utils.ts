@@ -89,6 +89,29 @@ export function getStarCountByEdibility(edibilityRating: string | null | undefin
   }
 }
 
+// 根据食用评级获取颜色
+export function getColorByEdibility(edibilityRating: string | null | undefined): string {
+  if (!edibilityRating) {
+    return '#9CA3AF'; // 默认颜色
+  }
+  
+  // 从constants导入edibility颜色映射
+  const EDIBILITY_COLORS: Record<string, string> = {
+    excellent: '#10B981', // 绿色 - 优秀
+    good: '#3B82F6', // 蓝色 - 良好  
+    fair: '#F59E0B', // 橙色 - 一般
+    poor: '#EF4444', // 红色 - 较差
+    variable: '#8B5CF6', // 紫色 - 可变
+    not_recommended: '#6B7280', // 灰色 - 不推荐
+    not_edible: '#6B7280', // 灰色 - 不可食用
+    no_take: '#6B7280', // 灰色 - 禁捕
+    protected: '#6B7280', // 灰色 - 保护物种
+    default: '#9CA3AF', // 默认颜色
+  };
+  
+  return EDIBILITY_COLORS[edibilityRating.toLowerCase()] || EDIBILITY_COLORS.default;
+}
+
 // 检查鱼类是否已解锁
 export function isFishUnlocked(fishId: string, catches: CatchRecord[]): boolean {
   return catches.some(function(catchRecord) {

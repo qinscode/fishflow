@@ -363,6 +363,7 @@ export default function FishdexScreen() {
           data={sortedFish}
           renderItem={renderFishItem}
           numColumns={gridColumns}
+          estimatedItemSize={176}
           ListHeaderComponent={renderHeader}
           ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
           contentContainerStyle={styles.listContent}
