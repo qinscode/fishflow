@@ -1,4 +1,9 @@
-import { WaterType, FishRarity, AchievementCategory } from './types';
+import {
+  WaterType,
+  FishRarity,
+  AchievementCategory,
+  EdibilityRating,
+} from './types';
 
 // 应用配置
 export const APP_CONFIG = {
@@ -31,9 +36,9 @@ export const RARITY_COLORS: Record<FishRarity, string> = {
 };
 
 // 食用评级配色方案
-export const EDIBILITY_COLORS: Record<string, string> = {
+export const EDIBILITY_COLORS: Record<EdibilityRating | 'default', string> = {
   excellent: '#10B981', // 绿色 - 优秀
-  good: '#3B82F6', // 蓝色 - 良好  
+  good: '#3B82F6', // 蓝色 - 良好
   fair: '#F59E0B', // 橙色 - 一般
   poor: '#EF4444', // 红色 - 较差
   variable: '#8B5CF6', // 紫色 - 可变

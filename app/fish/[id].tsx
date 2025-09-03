@@ -30,6 +30,7 @@ import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
 import {
   RARITY_COLORS,
+  EDIBILITY_COLORS,
   WATER_TYPE_NAMES,
   DIFFICULTY_NAMES,
 } from '@/lib/constants';
@@ -37,7 +38,7 @@ import { getFishImage } from '@/lib/fishImages';
 import { useTranslation } from '@/lib/i18n';
 import { useFish, useCatches, useUserStats } from '@/lib/store';
 import { Fish, FishCardState } from '@/lib/types';
-import { getFishCardState } from '@/lib/utils';
+import { getFishCardState, getColorByEdibility } from '@/lib/utils';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -175,8 +176,9 @@ export default function FishDetailScreen() {
     );
   }
 
-  const rarityColor = RARITY_COLORS[currentFish.rarity];
-  const rarityGradient = [rarityColor + '15', rarityColor + '05'];
+  // 使用edibility评级来决定主题色，而不是rarity
+  const edibilityColor = getColorByEdibility(currentFish.edibility?.rating);
+  const edibilityGradient = [edibilityColor + '15', edibilityColor + '05'];
 
   const userCatches = catches.filter(c => c.fishId === currentFish.id);
   const bestCatch = userCatches.reduce((best, current) => {
@@ -193,7 +195,11 @@ export default function FishDetailScreen() {
   const renderHeader = () => (
     <View style={styles.header}>
       <LinearGradient
-        colors={[rarityColor + '35', rarityColor + '25', rarityColor + '10']}
+        colors={[
+          edibilityColor + '35',
+          edibilityColor + '25',
+          edibilityColor + '10',
+        ]}
         style={styles.headerGradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
@@ -206,14 +212,14 @@ export default function FishDetailScreen() {
           <Animated.View
             style={[
               styles.geometryCircle,
-              { backgroundColor: rarityColor + '15' },
+              { backgroundColor: edibilityColor + '15' },
               animatedBubble1Style,
             ]}
           />
           <Animated.View
             style={[
               styles.geometryCircle2,
-              { backgroundColor: rarityColor + '12' },
+              { backgroundColor: edibilityColor + '12' },
               animatedBubble2Style,
             ]}
           />
@@ -222,21 +228,21 @@ export default function FishDetailScreen() {
           <Animated.View
             style={[
               styles.rhythmBubble1,
-              { backgroundColor: rarityColor + '20' },
+              { backgroundColor: edibilityColor + '20' },
               animatedBubble3Style,
             ]}
           />
           <Animated.View
             style={[
               styles.rhythmBubble2,
-              { backgroundColor: rarityColor + '15' },
+              { backgroundColor: edibilityColor + '15' },
               animatedBubble1Style,
             ]}
           />
           <Animated.View
             style={[
               styles.rhythmBubble3,
-              { backgroundColor: rarityColor + '10' },
+              { backgroundColor: edibilityColor + '10' },
               animatedBubble2Style,
             ]}
           />
@@ -245,21 +251,21 @@ export default function FishDetailScreen() {
           <Animated.View
             style={[
               styles.leftBubble1,
-              { backgroundColor: rarityColor + '18' },
+              { backgroundColor: edibilityColor + '18' },
               animatedBubble2Style,
             ]}
           />
           <Animated.View
             style={[
               styles.leftBubble2,
-              { backgroundColor: rarityColor + '12' },
+              { backgroundColor: edibilityColor + '12' },
               animatedBubble3Style,
             ]}
           />
           <Animated.View
             style={[
               styles.leftBubble3,
-              { backgroundColor: rarityColor + '08' },
+              { backgroundColor: edibilityColor + '08' },
               animatedBubble1Style,
             ]}
           />
@@ -268,35 +274,35 @@ export default function FishDetailScreen() {
           <Animated.View
             style={[
               styles.smallBubble1,
-              { backgroundColor: rarityColor + '15' },
+              { backgroundColor: edibilityColor + '15' },
               animatedBubble1Style,
             ]}
           />
           <Animated.View
             style={[
               styles.smallBubble2,
-              { backgroundColor: rarityColor + '12' },
+              { backgroundColor: edibilityColor + '12' },
               animatedBubble3Style,
             ]}
           />
           <Animated.View
             style={[
               styles.smallBubble3,
-              { backgroundColor: rarityColor + '10' },
+              { backgroundColor: edibilityColor + '10' },
               animatedBubble2Style,
             ]}
           />
           <Animated.View
             style={[
               styles.smallBubble4,
-              { backgroundColor: rarityColor + '14' },
+              { backgroundColor: edibilityColor + '14' },
               animatedBubble1Style,
             ]}
           />
           <Animated.View
             style={[
               styles.smallBubble5,
-              { backgroundColor: rarityColor + '08' },
+              { backgroundColor: edibilityColor + '08' },
               animatedBubble3Style,
             ]}
           />
@@ -305,28 +311,28 @@ export default function FishDetailScreen() {
           <Animated.View
             style={[
               styles.tinyBubble1,
-              { backgroundColor: rarityColor + '12' },
+              { backgroundColor: edibilityColor + '12' },
               animatedBubble2Style,
             ]}
           />
           <Animated.View
             style={[
               styles.tinyBubble2,
-              { backgroundColor: rarityColor + '10' },
+              { backgroundColor: edibilityColor + '10' },
               animatedBubble1Style,
             ]}
           />
           <Animated.View
             style={[
               styles.tinyBubble3,
-              { backgroundColor: rarityColor + '08' },
+              { backgroundColor: edibilityColor + '08' },
               animatedBubble3Style,
             ]}
           />
           <Animated.View
             style={[
               styles.tinyBubble4,
-              { backgroundColor: rarityColor + '06' },
+              { backgroundColor: edibilityColor + '06' },
               animatedBubble2Style,
             ]}
           />
@@ -365,7 +371,7 @@ export default function FishDetailScreen() {
                 />
               ) : (
                 <View>
-                  <IconSymbol name="fish" size={120} color={rarityColor} />
+                  <IconSymbol name="fish" size={120} color={edibilityColor} />
                   <ThemedText
                     style={{
                       fontSize: 10,
@@ -392,10 +398,13 @@ export default function FishDetailScreen() {
           {t('fish.detail.basic.info')}
         </ThemedText>
         <View
-          style={[styles.rarityBadge, { backgroundColor: rarityColor + '20' }]}
+          style={[
+            styles.rarityBadge,
+            { backgroundColor: edibilityColor + '20' },
+          ]}
         >
-          <ThemedText style={[styles.rarityText, { color: rarityColor }]}>
-            {currentFish.rarity.toUpperCase()}
+          <ThemedText style={[styles.rarityText, { color: edibilityColor }]}>
+            {currentFish.edibility?.rating?.toUpperCase() || 'UNKNOWN'}
           </ThemedText>
         </View>
       </View>

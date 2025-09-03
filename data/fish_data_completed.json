@@ -10076,15 +10076,14 @@
       "regions": ["Western Australia"],
       "seasons": []
     },
-    "regulations": [
-      {
-        "region": "West Coast"
-      }
-    ],
+    "regulations": [],
     "behavior": {
       "feedingHabits": [],
       "activeTime": "both",
       "difficulty": 3
+    },
+    "edibility": {
+      "rating": "excellent"
     }
   },
   {

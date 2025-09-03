@@ -1,87 +1,122 @@
 // FishFlow - 核心数据类型定义
 
 // 水域类型
-export type WaterType = 'river' | 'lake' | 'reservoir' | 'pond' | 'stream' | 'ocean' | 'estuary';
+export type WaterType =
+  | 'river'
+  | 'lake'
+  | 'reservoir'
+  | 'pond'
+  | 'stream'
+  | 'ocean'
+  | 'estuary';
 
 // 鱼类稀有度
-export type FishRarity = 'common' | 'unique' | 'rare' | 'epic' | 'legendary' | 'unknown';
+export type FishRarity =
+  | 'common'
+  | 'unique'
+  | 'rare'
+  | 'epic'
+  | 'legendary'
+  | 'unknown';
+
+// 食用评级
+export type EdibilityRating =
+  | 'excellent'
+  | 'good'
+  | 'fair'
+  | 'poor'
+  | 'variable'
+  | 'not_recommended'
+  | 'not_edible'
+  | 'no_take'
+  | 'protected';
 
 // 鱼类卡片状态
 export type FishCardState = 'locked' | 'hint' | 'unlocked' | 'new';
 
 // 澳洲各州类型
-export type AustralianState = 'NSW' | 'VIC' | 'QLD' | 'WA' | 'SA' | 'TAS' | 'NT' | 'ACT';
+export type AustralianState =
+  | 'NSW'
+  | 'VIC'
+  | 'QLD'
+  | 'WA'
+  | 'SA'
+  | 'TAS'
+  | 'NT'
+  | 'ACT';
 
 // 地区法规接口
 export interface RegionalRegulations {
-  region: string;                  // 地区名称 (如 'NSW', 'VIC' 等)
-  minSizeCm?: number;             // 最小尺寸
-  maxSizeCm?: number;             // 最大尺寸（某些州有上限）
-  closedSeasons?: {               // 禁钓季节
-    start: string;                // MM-DD 格式
+  region: string; // 地区名称 (如 'NSW', 'VIC' 等)
+  minSizeCm?: number; // 最小尺寸
+  maxSizeCm?: number; // 最大尺寸（某些州有上限）
+  closedSeasons?: {
+    // 禁钓季节
+    start: string; // MM-DD 格式
     end: string;
   }[];
-  dailyLimit?: number;            // 日钓获限制
-  possessionLimit?: number;       // 持有限制
-  slotLimit?: {                   // 尺寸槽限制
+  dailyLimit?: number; // 日钓获限制
+  possessionLimit?: number; // 持有限制
+  slotLimit?: {
+    // 尺寸槽限制
     minCm: number;
     maxCm: number;
   };
-  specialRules?: string[];        // 特殊规定
-  requiresLicense?: boolean;      // 是否需要许可证
-  notes?: string;                 // 备注
+  specialRules?: string[]; // 特殊规定
+  requiresLicense?: boolean; // 是否需要许可证
+  notes?: string; // 备注
 }
 
 // 鱼类物种数据
 export interface Fish {
-  id: string; // 唯一标识符
-  name: string;                  // 中文名称
-  scientificName?: string;       // 学名
-  localNames?: string[];         // 地方俗名
-  family: string;                // 科属
+  id: string;
+  name: string; // 中文名
+  scientificName?: string; // 学名
+  localNames?: string[]; // 地方俗名
+  family: string; // 科属
   rarity: FishRarity;
   images: {
-    card: string;                // 卡片图片
-    hero?: string;               // 详情页大图
-    silhouette?: string;         // 剪影图
+    card: string; // 卡片图片
+    hero?: string; // 详情页大图
+    silhouette?: string; // 剪影图
   };
   characteristics: {
-    minLengthCm: number;         // 最小长度
-    maxLengthCm: number;         // 最大长度
-    maxWeightKg: number;         // 最大重量
-    lifespan?: number;           // 寿命
+    minLengthCm: number; // 最小长度
+    maxLengthCm: number; // 最大长度
+    maxWeightKg: number; // 最大重量
+    lifespan?: number; // 寿命（年）
   };
   habitat: {
-    waterTypes: WaterType[];     // 栖息水域类型
-    regions: string[];           // 分布地区
-    seasons: number[];           // 活跃季节(月份)
-    depth?: string;              // 活动深度
+    waterTypes: WaterType[]; // 栖息水域类型
+    regions: string[]; // 分布地区
+    seasons: string[] | number[]; // 活跃季节 - 支持字符串数组(如["Year-round","Summer"])或数字数组(如[1,2,3])
+    depth?: string; // 活动深度
   };
   regulations?: RegionalRegulations[]; // 各地区法规数组
   behavior: {
-    feedingHabits: string[];     // 食性
+    feedingHabits: string[]; // 食性
     activeTime: 'day' | 'night' | 'both';
     difficulty: 1 | 2 | 3 | 4 | 5; // 钓获难度
   };
   edibility?: {
-    rating?: string;             // 食用评级 (excellent, good, fair, poor, etc.)
-    taste?: string;              // 口感描述
-    cookingMethods?: string[];   // 烹饪方法
-    notes?: string;              // 食用备注
+    rating?: EdibilityRating; // 食用评级
+    taste?: string; // 口感描述
+    cookingMethods?: string[]; // 烹饪方法
+    notes?: string; // 食用备注
   };
 }
 
 // 钓鱼记录
 export interface CatchRecord {
   id: string;
-  fishId: string;                // 关联的鱼类ID
-  userId: string;                // 用户ID
-  timestamp: string;             // ISO时间戳
-  photos: string[];              // 照片路径数组
+  fishId: string; // 关联的鱼类ID
+  userId: string; // 用户ID
+  timestamp: string; // ISO时间戳
+  photos: string[]; // 照片路径数组
   measurements: {
-    lengthCm?: number;           // 长度
-    weightKg?: number;           // 重量
-    girthCm?: number;            // 围长
+    lengthCm?: number; // 长度
+    weightKg?: number; // 重量
+    girthCm?: number; // 围长
   };
   location?: {
     latitude: number;
@@ -93,28 +128,34 @@ export interface CatchRecord {
     privacy: 'exact' | 'fuzzy' | 'hidden';
   };
   equipment: {
-    rod?: string;                // 钓竿
-    reel?: string;               // 渔轮
-    line?: string;               // 钓线
-    hook?: string;               // 鱼钩
-    bait?: string;               // 饵料
+    rod?: string; // 钓竿
+    reel?: string; // 渔轮
+    line?: string; // 钓线
+    hook?: string; // 鱼钩
+    bait?: string; // 饵料
   };
   conditions: {
-    weather?: string;            // 天气
-    temperature?: number;        // 温度
-    windSpeed?: number;          // 风速
-    pressure?: number;           // 气压
+    weather?: string; // 天气
+    temperature?: number; // 温度
+    windSpeed?: number; // 风速
+    pressure?: number; // 气压
   };
-  notes?: string;                // 备注
-  isReleased: boolean;           // 是否放生
-  isPersonalBest: boolean;       // 是否个人记录
-  tags: string[];                // 标签
+  notes?: string; // 备注
+  isReleased: boolean; // 是否放生
+  isPersonalBest: boolean; // 是否个人记录
+  tags: string[]; // 标签
   createdAt: string;
   updatedAt: string;
 }
 
 // 成就类别
-export type AchievementCategory = 'species' | 'quantity' | 'size' | 'streak' | 'location' | 'special';
+export type AchievementCategory =
+  | 'species'
+  | 'quantity'
+  | 'size'
+  | 'streak'
+  | 'location'
+  | 'special';
 
 // 成就等级
 export type AchievementTier = 'bronze' | 'silver' | 'gold';
@@ -131,7 +172,7 @@ export interface Achievement {
     silver: { requirement: number; reward?: string };
     gold: { requirement: number; reward?: string };
   };
-  isHidden: boolean;             // 隐藏成就
+  isHidden: boolean; // 隐藏成就
 }
 
 // 用户成就进度
@@ -157,8 +198,8 @@ export interface UserProfile {
 // 用户偏好设置
 export interface UserPreferences {
   // Fishing settings
-  fishingStartDate?: string;         // ISO date string when user started fishing
-  
+  fishingStartDate?: string; // ISO date string when user started fishing
+
   units: {
     length: 'cm' | 'inch';
     weight: 'kg' | 'lb';
@@ -234,7 +275,7 @@ export interface CatchFormData {
   photos: string[];
   fishId?: string;
   customFishName?: string;
-  isSkunked?: boolean;              // 空军 - 没有钓到鱼
+  isSkunked?: boolean; // 空军 - 没有钓到鱼
   measurements: {
     lengthCm?: number;
     weightKg?: number;
@@ -287,19 +328,19 @@ export interface PaginatedResponse<T> {
 // 装备组合
 export interface EquipmentSet {
   id: string;
-  name: string;                   // 装备组合名称
-  description?: string;           // 描述
-  icon: string;                   // 图标名称
-  rod: string;                    // 钓竿
-  reel: string;                   // 渔轮
-  line: string;                   // 钓线
-  hook: string;                   // 鱼钩
-  bait: string;                   // 饵料
-  accessories?: string[];         // 附件（抄网、鱼护等）
-  waterTypes: WaterType[];        // 适用水域类型
-  targetFish?: string[];          // 目标鱼种
-  tags: string[];                 // 标签
-  isDefault: boolean;             // 是否为默认装备
+  name: string; // 装备组合名称
+  description?: string; // 描述
+  icon: string; // 图标名称
+  rod: string; // 钓竿
+  reel: string; // 渔轮
+  line: string; // 钓线
+  hook: string; // 鱼钩
+  bait: string; // 饵料
+  accessories?: string[]; // 附件（抄网、鱼护等）
+  waterTypes: WaterType[]; // 适用水域类型
+  targetFish?: string[]; // 目标鱼种
+  tags: string[]; // 标签
+  isDefault: boolean; // 是否为默认装备
   createdAt: string;
   updatedAt: string;
 }
@@ -309,17 +350,18 @@ export interface EquipmentItem {
   id: string;
   type: 'rod' | 'reel' | 'line' | 'hook' | 'bait' | 'accessory';
   name: string;
-  brand?: string;                 // 品牌
-  model?: string;                 // 型号
-  specifications?: {              // 规格参数
-    length?: string;              // 长度（钓竿）
-    weight?: string;              // 重量
-    capacity?: string;            // 容量（线轮）
-    strength?: string;            // 强度（钓线）
-    size?: string;                // 尺寸（鱼钩）
+  brand?: string; // 品牌
+  model?: string; // 型号
+  specifications?: {
+    // 规格参数
+    length?: string; // 长度（钓竿）
+    weight?: string; // 重量
+    capacity?: string; // 容量（线轮）
+    strength?: string; // 强度（钓线）
+    size?: string; // 尺寸（鱼钩）
   };
-  notes?: string;                 // 备注
-  isCustom: boolean;              // 是否为用户自定义
+  notes?: string; // 备注
+  isCustom: boolean; // 是否为用户自定义
   createdAt: string;
   updatedAt: string;
 }
@@ -327,12 +369,12 @@ export interface EquipmentItem {
 // 装备使用统计
 export interface EquipmentStats {
   equipmentSetId: string;
-  usageCount: number;             // 使用次数
-  successRate: number;            // 成功率
-  catchCount: number;             // 钓获数量
-  averageWeight: number;          // 平均重量
-  averageLength: number;          // 平均长度
-  favoriteWaterType: WaterType;   // 最常使用的水域类型
+  usageCount: number; // 使用次数
+  successRate: number; // 成功率
+  catchCount: number; // 钓获数量
+  averageWeight: number; // 平均重量
+  averageLength: number; // 平均长度
+  favoriteWaterType: WaterType; // 最常使用的水域类型
   lastUsedAt: string;
 }
 
@@ -371,6 +413,10 @@ export type DeepPartial<T> = {
 
 export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> & {
-  [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
-}[Keys];
+export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
+  T,
+  Exclude<keyof T, Keys>
+> &
+  {
+    [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
+  }[Keys];
