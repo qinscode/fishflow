@@ -19,7 +19,6 @@ import { ThemedView } from '@/components/ThemedView';
 import { Badge } from '@/components/ui/Badge';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { FilterChip, FilterChipGroup } from '@/components/ui/FilterChip';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
@@ -31,6 +30,7 @@ import {
   useCatches,
 } from '@/lib/store';
 import { Achievement, AchievementCategory, AchievementTier } from '@/lib/types';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 type FilterCategory = AchievementCategory | 'all';
 type FilterTier = AchievementTier | 'all';
@@ -258,7 +258,7 @@ export default function AchievementsScreen() {
               label={t('achievements.show.unlocked.only')}
               selected={showOnlyUnlocked}
               onPress={() => setShowOnlyUnlocked(!showOnlyUnlocked)}
-              icon="lock.open.fill"
+              icon="lock-open-outline"
               variant="outlined"
             />
           </View>

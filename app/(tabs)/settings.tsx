@@ -14,7 +14,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { FadeInView, SlideInView } from '@/components/animations';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/hooks/useThemeColor';
 import { dataExportImportService } from '@/lib/dataExportImportService';
 import {
@@ -24,6 +23,7 @@ import {
   Language,
 } from '@/lib/i18n';
 import { useAppStore } from '@/lib/store';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function SettingsScreen() {
   const theme = useTheme();
@@ -233,7 +233,7 @@ export default function SettingsScreen() {
               onPress={() => setShowDatePicker(true)}
             >
               <View style={styles.settingLeft}>
-                <IconSymbol
+                <MaterialCommunityIcons
                   name="calendar"
                   size={20}
                   color={theme.colors.primary}
@@ -257,8 +257,8 @@ export default function SettingsScreen() {
                 >
                   {formatDate(userPreferences.fishingStartDate)}
                 </ThemedText>
-                <IconSymbol
-                  name="chevron.right"
+                <MaterialCommunityIcons
+                  name="chevron-right"
                   size={16}
                   color={theme.colors.textSecondary}
                 />
@@ -279,8 +279,8 @@ export default function SettingsScreen() {
               onPress={() => setShowLanguagePicker(true)}
             >
               <View style={styles.settingLeft}>
-                <IconSymbol
-                  name="globe"
+                <MaterialCommunityIcons
+                  name="earth"
                   size={20}
                   color={theme.colors.primary}
                 />
@@ -301,8 +301,8 @@ export default function SettingsScreen() {
                 >
                   {getLanguageDisplayName(userPreferences.appearance.language)}
                 </ThemedText>
-                <IconSymbol
-                  name="chevron.right"
+                <MaterialCommunityIcons
+                  name="chevron-right"
                   size={16}
                   color={theme.colors.textSecondary}
                 />
@@ -314,8 +314,8 @@ export default function SettingsScreen() {
               onPress={() => setShowThemePicker(true)}
             >
               <View style={styles.settingLeft}>
-                <IconSymbol
-                  name="paintbrush"
+                <MaterialCommunityIcons
+                  name="palette"
                   size={20}
                   color={theme.colors.primary}
                 />
@@ -336,8 +336,8 @@ export default function SettingsScreen() {
                 >
                   {getThemeDisplayName(userPreferences.appearance.theme)}
                 </ThemedText>
-                <IconSymbol
-                  name="chevron.right"
+                <MaterialCommunityIcons
+                  name="chevron-right"
                   size={16}
                   color={theme.colors.textSecondary}
                 />
@@ -355,7 +355,7 @@ export default function SettingsScreen() {
 
             <View style={styles.settingItem}>
               <View style={styles.settingLeft}>
-                <IconSymbol
+                <MaterialCommunityIcons
                   name="trophy"
                   size={20}
                   color={theme.colors.primary}
@@ -383,8 +383,8 @@ export default function SettingsScreen() {
 
             <View style={styles.settingItem}>
               <View style={styles.settingLeft}>
-                <IconSymbol
-                  name="bell"
+                <MaterialCommunityIcons
+                  name="bell-outline"
                   size={20}
                   color={theme.colors.primary}
                 />
@@ -411,8 +411,8 @@ export default function SettingsScreen() {
 
             <View style={styles.settingItem}>
               <View style={styles.settingLeft}>
-                <IconSymbol
-                  name="cloud.sun"
+                <MaterialCommunityIcons
+                  name="weather-partly-cloudy"
                   size={20}
                   color={theme.colors.primary}
                 />
@@ -448,7 +448,7 @@ export default function SettingsScreen() {
 
             <View style={styles.settingItem}>
               <View style={styles.settingLeft}>
-                <IconSymbol
+                <MaterialCommunityIcons
                   name="trophy"
                   size={20}
                   color={theme.colors.primary}
@@ -476,8 +476,8 @@ export default function SettingsScreen() {
 
             <View style={styles.settingItem}>
               <View style={styles.settingLeft}>
-                <IconSymbol
-                  name="chart.bar"
+                <MaterialCommunityIcons
+                  name="chart-bar"
                   size={20}
                   color={theme.colors.primary}
                 />
@@ -513,8 +513,8 @@ export default function SettingsScreen() {
 
             <Pressable style={styles.settingItem} onPress={handleExportData}>
               <View style={styles.settingLeft}>
-                <IconSymbol
-                  name="square.and.arrow.up"
+                <MaterialCommunityIcons
+                  name="export-variant"
                   size={20}
                   color={theme.colors.primary}
                 />
@@ -530,8 +530,8 @@ export default function SettingsScreen() {
                   </ThemedText>
                 </View>
               </View>
-              <IconSymbol
-                name="chevron.right"
+              <MaterialCommunityIcons
+                name="chevron-right"
                 size={16}
                 color={theme.colors.textSecondary}
               />
@@ -539,8 +539,8 @@ export default function SettingsScreen() {
 
             <Pressable style={styles.settingItem} onPress={handleImportData}>
               <View style={styles.settingLeft}>
-                <IconSymbol
-                  name="square.and.arrow.down"
+                <MaterialCommunityIcons
+                  name="import"
                   size={20}
                   color={theme.colors.secondary}
                 />
@@ -556,8 +556,8 @@ export default function SettingsScreen() {
                   </ThemedText>
                 </View>
               </View>
-              <IconSymbol
-                name="chevron.right"
+              <MaterialCommunityIcons
+                name="chevron-right"
                 size={16}
                 color={theme.colors.textSecondary}
               />
@@ -565,7 +565,11 @@ export default function SettingsScreen() {
 
             <Pressable style={styles.settingItem} onPress={handleClearData}>
               <View style={styles.settingLeft}>
-                <IconSymbol name="trash" size={20} color={theme.colors.error} />
+                <MaterialCommunityIcons
+                  name="trash-can-outline"
+                  size={20}
+                  color={theme.colors.error}
+                />
                 <View style={styles.settingText}>
                   <ThemedText type="body" style={{ color: theme.colors.error }}>
                     {t('settings.data.clear')}
@@ -578,8 +582,8 @@ export default function SettingsScreen() {
                   </ThemedText>
                 </View>
               </View>
-              <IconSymbol
-                name="chevron.right"
+              <MaterialCommunityIcons
+                name="chevron-right"
                 size={16}
                 color={theme.colors.textSecondary}
               />
@@ -596,8 +600,8 @@ export default function SettingsScreen() {
 
             <View style={styles.settingItem}>
               <View style={styles.settingLeft}>
-                <IconSymbol
-                  name="info.circle"
+                <MaterialCommunityIcons
+                  name="information-outline"
                   size={20}
                   color={theme.colors.primary}
                 />
@@ -654,8 +658,8 @@ export default function SettingsScreen() {
                 中文
               </ThemedText>
               {userPreferences.appearance.language === 'zh' && (
-                <IconSymbol
-                  name="checkmark"
+                <MaterialCommunityIcons
+                  name="check"
                   size={20}
                   color={theme.colors.primary}
                 />
@@ -682,8 +686,8 @@ export default function SettingsScreen() {
                 English
               </ThemedText>
               {userPreferences.appearance.language === 'en' && (
-                <IconSymbol
-                  name="checkmark"
+                <MaterialCommunityIcons
+                  name="check"
                   size={20}
                   color={theme.colors.primary}
                 />
@@ -731,8 +735,8 @@ export default function SettingsScreen() {
                   {getThemeDisplayName(themeOption)}
                 </ThemedText>
                 {userPreferences.appearance.theme === themeOption && (
-                  <IconSymbol
-                    name="checkmark"
+                  <MaterialCommunityIcons
+                    name="check"
                     size={20}
                     color={theme.colors.primary}
                   />

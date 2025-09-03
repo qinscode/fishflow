@@ -9,7 +9,6 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Badge } from '@/components/ui/Badge';
 import { HomeFishCard } from '@/components/ui/HomeFishCard';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
@@ -22,6 +21,7 @@ import {
   useUserAchievements,
 } from '@/lib/store';
 import { getFishCardState } from '@/lib/utils';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function HomeScreen() {
   const theme = useTheme();
@@ -63,7 +63,7 @@ export default function HomeScreen() {
       id: 'log-catch',
       title: t('home.quick.log'),
       description: t('log.subtitle'),
-      icon: 'plus.circle.fill' as const,
+      icon: 'plus-circle' as const,
       color: theme.colors.primary,
       onPress: () => router.push('/log'),
     },
@@ -71,7 +71,7 @@ export default function HomeScreen() {
       id: 'equipment',
       title: t('home.quick.equipment'),
       description: t('equipment.subtitle'),
-      icon: 'wrench.and.screwdriver.fill' as const,
+      icon: 'tools' as const,
       color: theme.colors.secondary,
       onPress: () => router.push('/equipment'),
     },
@@ -79,7 +79,7 @@ export default function HomeScreen() {
       id: 'fishdex',
       title: t('home.quick.fishdex'),
       description: t('fishdex.subtitle'),
-      icon: 'book.fill' as const,
+      icon: 'book-open-page-variant' as const,
       color: theme.colors.accent,
       onPress: () => router.push('/fishdex'),
     },
@@ -117,8 +117,8 @@ export default function HomeScreen() {
                 // TODO: Navigate to profile
               }}
             >
-              <IconSymbol
-                name="person.fill"
+              <MaterialCommunityIcons
+                name="account-circle"
                 size={24}
                 color={theme.colors.primary}
               />
@@ -244,8 +244,8 @@ export default function HomeScreen() {
                       { backgroundColor: `${action.color}20` },
                     ]}
                   >
-                    <IconSymbol
-                      name={action.icon}
+                    <MaterialCommunityIcons
+                      name={action.icon as any}
                       size={24}
                       color={action.color}
                     />
@@ -263,8 +263,8 @@ export default function HomeScreen() {
                     </ThemedText>
                   </View>
 
-                  <IconSymbol
-                    name="chevron.right"
+                  <MaterialCommunityIcons
+                    name="chevron-right"
                     size={16}
                     color={theme.colors.textSecondary}
                   />

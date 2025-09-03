@@ -5,13 +5,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { ProgressBar, ProgressRing } from '@/components/ui/ProgressBar';
 import { useTheme } from '@/hooks/useThemeColor';
 import { useTranslation } from '@/lib/i18n';
 import { RARITY_NAMES } from '@/lib/constants';
 import { useFish, useCatches, useUserStats } from '@/lib/store';
 import { formatDate, getRarityColor } from '@/lib/utils';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
@@ -178,8 +178,8 @@ export default function StatsScreen() {
 
           <View style={styles.statsGrid}>
             <View style={styles.statBox}>
-              <IconSymbol
-                name="fish.fill"
+              <MaterialCommunityIcons
+                name="fish"
                 size={24}
                 color={theme.colors.primary}
               />
@@ -195,8 +195,8 @@ export default function StatsScreen() {
             </View>
 
             <View style={styles.statBox}>
-              <IconSymbol
-                name="sparkles"
+              <MaterialCommunityIcons
+                name="star-four-points-outline"
                 size={24}
                 color={theme.colors.secondary}
               />
@@ -212,8 +212,8 @@ export default function StatsScreen() {
             </View>
 
             <View style={styles.statBox}>
-              <IconSymbol
-                name="scalemass.fill"
+              <MaterialCommunityIcons
+                name="weight"
                 size={24}
                 color={theme.colors.accent}
               />
@@ -229,7 +229,11 @@ export default function StatsScreen() {
             </View>
 
             <View style={styles.statBox}>
-              <IconSymbol name="ruler" size={24} color={theme.colors.warning} />
+              <MaterialCommunityIcons
+                name="ruler"
+                size={24}
+                color={theme.colors.warning}
+              />
               <ThemedText type="h3" style={{ color: theme.colors.warning }}>
                 {stats.totalLength}cm
               </ThemedText>
@@ -353,8 +357,8 @@ export default function StatsScreen() {
             <View style={styles.personalBests}>
               {stats.personalBests.heaviest && (
                 <View style={styles.bestRecord}>
-                  <IconSymbol
-                    name="scalemass.fill"
+                  <MaterialCommunityIcons
+                    name="weight"
                     size={20}
                     color={theme.colors.accent}
                   />
@@ -384,7 +388,7 @@ export default function StatsScreen() {
 
               {stats.personalBests.longest && (
                 <View style={styles.bestRecord}>
-                  <IconSymbol
+                  <MaterialCommunityIcons
                     name="ruler"
                     size={20}
                     color={theme.colors.warning}
@@ -424,7 +428,7 @@ export default function StatsScreen() {
 
           <View style={styles.activityStats}>
             <View style={styles.activityItem}>
-              <IconSymbol
+              <MaterialCommunityIcons
                 name="calendar"
                 size={20}
                 color={theme.colors.primary}
@@ -444,8 +448,8 @@ export default function StatsScreen() {
             </View>
 
             <View style={styles.activityItem}>
-              <IconSymbol
-                name="timer"
+              <MaterialCommunityIcons
+                name="timer-outline"
                 size={20}
                 color={theme.colors.secondary}
               />
