@@ -19,7 +19,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { EmptyState, EmptyStates } from '@/components/ui/EmptyState';
 import { FilterChip, FilterChipGroup } from '@/components/ui/FilterChip';
 import { FishCard } from '@/components/ui/FishCard';
-import { IconSymbol, MAPPING } from '@/components/ui/IconSymbol';
+import { MAPPING } from '@/components/ui/IconSymbol';
 import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
 import { RARITY_NAMES, WATER_TYPES } from '@/lib/constants';
@@ -35,6 +35,7 @@ import {
 } from '@/lib/store';
 import { Fish, FishRarity, WaterType } from '@/lib/types';
 import { getFishCardState, sortFish } from '@/lib/utils';
+import { XMarkIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline';
 
 export default function FishdexScreen() {
   const theme = useTheme();
@@ -184,10 +185,9 @@ export default function FishdexScreen() {
           { backgroundColor: theme.colors.surface },
         ]}
       >
-        <IconSymbol
-          name="magnifyingglass"
+        <MagnifyingGlassIcon
           size={20}
-          color={theme.colors.textSecondary}
+          color={theme.colors.textSecondary as string}
         />
         <TextInput
           style={[styles.searchInput, { color: theme.colors.text, flex: 1 }]}
@@ -198,11 +198,7 @@ export default function FishdexScreen() {
         />
         {searchQuery.length > 0 && (
           <Pressable onPress={() => handleSearchChange('')}>
-            <IconSymbol
-              name="xmark.circle.fill"
-              size={20}
-              color={theme.colors.textSecondary}
-            />
+            <XMarkIcon size={20} color={theme.colors.textSecondary as string} />
           </Pressable>
         )}
       </View>

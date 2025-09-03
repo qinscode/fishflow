@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
@@ -7,23 +7,31 @@ import {
   Alert,
   Switch,
   Pressable,
+  Modal,
+  TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/hooks/useThemeColor';
 import { useTranslation } from '@/lib/i18n';
-import { LocationData } from '@/lib/types';
+import { EquipmentSet, LocationData } from '@/lib/types';
 import {
   australianWeatherService,
   AustralianEnvironmentData,
 } from '@/lib/weatherService';
+import * as ExpoLocation from 'expo-location';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useAppStore, useEquipmentSets, useUserProfile } from '@/lib/store';
 
 export default function LogScreen() {
   const theme = useTheme();
   const { t } = useTranslation();
+  const params = useLocalSearchParams<{ fishId?: string; fishName?: string }>();
+  const addCatch = useAppStore(s => s.addCatch);
+  const equipmentSets = useEquipmentSets();
+  const userProfile = useUserProfile();
 
   // Form state
   const [isSkunked, setIsSkunked] = useState(false);
@@ -31,22 +39,55 @@ export default function LogScreen() {
     useState<AustralianEnvironmentData | null>(null);
   const [isLoadingWeather, setIsLoadingWeather] = useState(false);
   const [location, setLocation] = useState<LocationData | null>(null);
+  const [lengthCm, setLengthCm] = useState<string>('');
+  const [weightKg, setWeightKg] = useState<string>('');
+  const [selectedEquipmentId, setSelectedEquipmentId] = useState<string | null>(
+    null
+  );
+  const [showEquipPicker, setShowEquipPicker] = useState(false);
+
+  const getCurrentLocation =
+    useCallback(async (): Promise<LocationData | null> => {
+      try {
+        const { status } =
+          await ExpoLocation.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          return null;
+        }
+        const pos = await ExpoLocation.getCurrentPositionAsync({});
+        const geos = await ExpoLocation.reverseGeocodeAsync({
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+        });
+        const address = geos[0]
+          ? `${geos[0].name || ''} ${geos[0].city || ''} ${geos[0].region || ''}`.trim()
+          : undefined;
+        return {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+          accuracy: pos.coords.accuracy || 0,
+          timestamp: Date.now(),
+          address,
+        };
+      } catch (e) {
+        return null;
+      }
+    }, []);
 
   const loadWeatherData = useCallback(async () => {
     setIsLoadingWeather(true);
     try {
-      // Mock location data for demo (in production, get from GPS)
-      const mockLocation: LocationData = {
-        latitude: -33.8688,
-        longitude: 151.2093,
-        accuracy: 10,
-        timestamp: Date.now(),
-        address: 'Sydney Harbour, NSW, Australia',
-      };
-
-      setLocation(mockLocation);
-      const envData =
-        await australianWeatherService.getEnvironmentalData(mockLocation);
+      const loc = (await getCurrentLocation()) || null;
+      if (loc) setLocation(loc);
+      const envData = await australianWeatherService.getEnvironmentalData(
+        loc || {
+          latitude: -33.8688,
+          longitude: 151.2093,
+          accuracy: 10,
+          timestamp: Date.now(),
+          address: 'Unknown',
+        }
+      );
       setWeatherData(envData);
     } catch (error) {
       console.error('Failed to load weather data:', error);
@@ -57,18 +98,68 @@ export default function LogScreen() {
     } finally {
       setIsLoadingWeather(false);
     }
-  }, [t]);
+  }, [getCurrentLocation, t]);
 
   // Load weather data when component mounts
   useEffect(() => {
     loadWeatherData();
   }, [loadWeatherData]);
 
-  const handleFeatureNotReady = () => {
-    Alert.alert(
-      'Feature in Development',
-      'Logging functionality is under development!'
-    );
+  const handleSave = async () => {
+    if (!params.fishId) {
+      Alert.alert(t('common.error'), 'Missing fish id');
+      return;
+    }
+    try {
+      const chosen: EquipmentSet | undefined = equipmentSets.find(
+        e => e.id === selectedEquipmentId!
+      );
+      await addCatch({
+        fishId: params.fishId,
+        userId: userProfile?.id || 'guest',
+        timestamp: new Date().toISOString(),
+        photos: [],
+        measurements: {
+          lengthCm: lengthCm ? Number(lengthCm) : undefined,
+          weightKg: weightKg ? Number(weightKg) : undefined,
+        },
+        location: location
+          ? {
+              latitude: location.latitude,
+              longitude: location.longitude,
+              accuracy: location.accuracy,
+              address: location.address,
+              waterType: 'ocean',
+              privacy: 'exact',
+            }
+          : undefined,
+        equipment: chosen
+          ? {
+              rod: chosen.rod,
+              reel: chosen.reel,
+              line: chosen.line,
+              hook: chosen.hook,
+              bait: chosen.bait,
+            }
+          : {},
+        conditions: weatherData
+          ? {
+              weather: weatherData.weather.conditions,
+              temperature: weatherData.weather.temperature,
+              windSpeed: weatherData.weather.windSpeed,
+              pressure: weatherData.weather.pressure,
+            }
+          : {},
+        notes: undefined,
+        isReleased: false,
+        isPersonalBest: false,
+        tags: [],
+      });
+      Alert.alert(t('common.success'), t('log.saved'));
+      router.back();
+    } catch (e) {
+      Alert.alert(t('common.error'), 'Failed to save catch');
+    }
   };
 
   return (
@@ -76,11 +167,26 @@ export default function LogScreen() {
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
       <View style={styles.header}>
+        <Pressable onPress={() => router.back()} style={{ padding: 8 }}>
+          <MaterialCommunityIcons
+            name="chevron-left"
+            size={24}
+            color={theme.colors.text}
+          />
+        </Pressable>
         <View style={styles.headerLeft}>
           <ThemedText type="h2">{t('log.title')}</ThemedText>
           <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
             {t('log.subtitle')}
           </ThemedText>
+          {params.fishName && (
+            <ThemedText
+              type="bodySmall"
+              style={{ color: theme.colors.primary, marginTop: 4 }}
+            >
+              {params.fishName}
+            </ThemedText>
+          )}
         </View>
       </View>
 
@@ -88,7 +194,11 @@ export default function LogScreen() {
         {/* Skunked Toggle */}
         <ThemedView type="card" style={[styles.card, theme.shadows.sm]}>
           <View style={styles.sectionHeader}>
-            <IconSymbol name="fish" size={24} color={theme.colors.primary} />
+            <MaterialCommunityIcons
+              name="fish"
+              size={24}
+              color={theme.colors.primary}
+            />
             <ThemedText type="subtitle">{t('log.fish.select')}</ThemedText>
           </View>
 
@@ -118,13 +228,13 @@ export default function LogScreen() {
           {!isSkunked && (
             <Pressable
               style={styles.fishSelectButton}
-              onPress={handleFeatureNotReady}
+              onPress={() => router.push('/fishdex')}
             >
               <ThemedText type="body" style={{ color: theme.colors.primary }}>
                 {t('log.fish.search')}
               </ThemedText>
-              <IconSymbol
-                name="chevron.right"
+              <MaterialCommunityIcons
+                name="chevron-right"
                 size={20}
                 color={theme.colors.primary}
               />
@@ -132,11 +242,70 @@ export default function LogScreen() {
           )}
         </ThemedView>
 
+        {/* Measurements */}
+        {!isSkunked && (
+          <ThemedView type="card" style={[styles.card, theme.shadows.sm]}>
+            <ThemedText type="subtitle" style={styles.sectionTitle}>
+              {t('fish.detail.stats')}
+            </ThemedText>
+            <View style={{ flexDirection: 'row', gap: 12 }}>
+              <View style={{ flex: 1 }}>
+                <ThemedText
+                  type="bodySmall"
+                  style={{ color: theme.colors.textSecondary }}
+                >
+                  {t('fish.detail.length')} (cm)
+                </ThemedText>
+                <TextInput
+                  value={lengthCm}
+                  onChangeText={setLengthCm}
+                  keyboardType="numeric"
+                  style={{
+                    paddingVertical: 10,
+                    paddingHorizontal: 12,
+                    borderRadius: 8,
+                    backgroundColor: theme.colors.surface,
+                    color: theme.colors.text,
+                    borderColor: theme.colors.border,
+                    borderWidth: 1,
+                  }}
+                  placeholder="e.g. 45"
+                  placeholderTextColor={theme.colors.textSecondary}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <ThemedText
+                  type="bodySmall"
+                  style={{ color: theme.colors.textSecondary }}
+                >
+                  {t('fish.detail.weight')} (kg)
+                </ThemedText>
+                <TextInput
+                  value={weightKg}
+                  onChangeText={setWeightKg}
+                  keyboardType="numeric"
+                  style={{
+                    paddingVertical: 10,
+                    paddingHorizontal: 12,
+                    borderRadius: 8,
+                    backgroundColor: theme.colors.surface,
+                    color: theme.colors.text,
+                    borderColor: theme.colors.border,
+                    borderWidth: 1,
+                  }}
+                  placeholder="e.g. 1.2"
+                  placeholderTextColor={theme.colors.textSecondary}
+                />
+              </View>
+            </View>
+          </ThemedView>
+        )}
+
         {/* Weather Information */}
         <ThemedView type="card" style={[styles.card, theme.shadows.sm]}>
           <View style={styles.sectionHeader}>
-            <IconSymbol
-              name="cloud.sun"
+            <MaterialCommunityIcons
+              name="weather-partly-cloudy"
               size={24}
               color={theme.colors.primary}
             />
@@ -158,7 +327,7 @@ export default function LogScreen() {
             <View style={styles.weatherInfo}>
               <View style={styles.weatherRow}>
                 <View style={styles.weatherItem}>
-                  <IconSymbol
+                  <MaterialCommunityIcons
                     name="thermometer"
                     size={20}
                     color={theme.colors.secondary}
@@ -172,8 +341,8 @@ export default function LogScreen() {
                 </View>
 
                 <View style={styles.weatherItem}>
-                  <IconSymbol
-                    name="wind"
+                  <MaterialCommunityIcons
+                    name="weather-windy"
                     size={20}
                     color={theme.colors.accent}
                   />
@@ -188,8 +357,8 @@ export default function LogScreen() {
 
               <View style={styles.weatherRow}>
                 <View style={styles.weatherItem}>
-                  <IconSymbol
-                    name="water.waves"
+                  <MaterialCommunityIcons
+                    name="waves"
                     size={20}
                     color={theme.colors.primary}
                   />
@@ -202,7 +371,7 @@ export default function LogScreen() {
                 </View>
 
                 <View style={styles.weatherItem}>
-                  <IconSymbol
+                  <MaterialCommunityIcons
                     name="gauge"
                     size={20}
                     color={theme.colors.textSecondary}
@@ -215,11 +384,23 @@ export default function LogScreen() {
                   </ThemedText>
                 </View>
               </View>
+
+              {location && (
+                <View style={{ marginTop: 8, alignItems: 'center' }}>
+                  <ThemedText
+                    type="bodySmall"
+                    style={{ color: theme.colors.textSecondary }}
+                  >
+                    {location.address ||
+                      `${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`}
+                  </ThemedText>
+                </View>
+              )}
             </View>
           ) : (
             <Pressable style={styles.retryButton} onPress={loadWeatherData}>
-              <IconSymbol
-                name="arrow.clockwise"
+              <MaterialCommunityIcons
+                name="refresh"
                 size={20}
                 color={theme.colors.primary}
               />
@@ -229,6 +410,74 @@ export default function LogScreen() {
             </Pressable>
           )}
         </ThemedView>
+
+        {/* Equipment Set */}
+        <ThemedView type="card" style={[styles.card, theme.shadows.sm]}>
+          <ThemedText type="subtitle" style={styles.sectionTitle}>
+            {t('equipment.title')}
+          </ThemedText>
+          <Pressable
+            style={styles.fishSelectButton}
+            onPress={() => setShowEquipPicker(true)}
+          >
+            <ThemedText type="body" style={{ color: theme.colors.primary }}>
+              {selectedEquipmentId
+                ? equipmentSets.find(e => e.id === selectedEquipmentId)?.name
+                : t('common.select')}
+            </ThemedText>
+            <MaterialCommunityIcons
+              name="chevron-right"
+              size={20}
+              color={theme.colors.primary}
+            />
+          </Pressable>
+        </ThemedView>
+
+        {/* Equipment Picker Modal */}
+        <Modal visible={showEquipPicker} transparent animationType="fade">
+          <Pressable
+            style={styles.modalOverlay}
+            onPress={() => setShowEquipPicker(false)}
+          >
+            <ThemedView type="card" style={[styles.picker, theme.shadows.lg]}>
+              <ThemedText type="subtitle" style={styles.sectionTitle}>
+                {t('equipment.title')}
+              </ThemedText>
+              {equipmentSets.map(set => (
+                <Pressable
+                  key={set.id}
+                  style={[
+                    styles.pickerItem,
+                    selectedEquipmentId === set.id && styles.pickerItemSelected,
+                  ]}
+                  onPress={() => {
+                    setSelectedEquipmentId(set.id);
+                    setShowEquipPicker(false);
+                  }}
+                >
+                  <ThemedText
+                    type="body"
+                    style={{
+                      color:
+                        selectedEquipmentId === set.id
+                          ? theme.colors.primary
+                          : theme.colors.text,
+                    }}
+                  >
+                    {set.name}
+                  </ThemedText>
+                  {selectedEquipmentId === set.id && (
+                    <MaterialCommunityIcons
+                      name="check"
+                      size={20}
+                      color={theme.colors.primary}
+                    />
+                  )}
+                </Pressable>
+              ))}
+            </ThemedView>
+          </Pressable>
+        </Modal>
 
         <View style={styles.actionButtons}>
           <Pressable
@@ -248,7 +497,7 @@ export default function LogScreen() {
               styles.saveButton,
               { backgroundColor: theme.colors.primary },
             ]}
-            onPress={handleFeatureNotReady}
+            onPress={handleSave}
           >
             <ThemedText
               type="body"
@@ -269,10 +518,11 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 16,
+    gap: 8,
   },
   headerLeft: {
     flex: 1,
@@ -310,6 +560,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 122, 255, 0.1)',
     borderRadius: 8,
     marginTop: 12,
+  },
+  sectionTitle: {
+    marginBottom: 12,
   },
   loadingContainer: {
     alignItems: 'center',
@@ -353,5 +606,28 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
     borderRadius: 12,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    padding: 20,
+  },
+  picker: {
+    width: '100%',
+    borderRadius: 16,
+    padding: 16,
+  },
+  pickerItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  pickerItemSelected: {
+    backgroundColor: 'rgba(0,0,0,0.04)',
+    borderRadius: 8,
+    paddingHorizontal: 8,
   },
 });

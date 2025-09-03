@@ -399,15 +399,11 @@
   },
   {
     "id": "15",
-    "name": "Mackerel, Spanish",
+    "name": "西班牙鲭",
     "scientificName": "Scomberomorus commerson",
-    "localNames": [
-      "Narrow-barred Spanish mackerel",
-      "Spaniard",
-      "Commerson's mackerel"
-    ],
+    "localNames": ["窄带西班牙鲭", "西鲭", "科默森鲭"],
     "family": "Scombridae",
-    "rarity": "common",
+    "rarity": "常见",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/15?thumbnailSize=large",
       "hero": "https://rules.fish.wa.gov.au/species/image/15?thumbnailSize=large"
@@ -418,9 +414,9 @@
       "maxWeightKg": 40
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -428,38 +424,24 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Small fish",
-        "Pilchards",
-        "Flying fish",
-        "Squid",
-        "Prawns"
-      ],
-      "activeTime": "day",
+      "feedingHabits": ["小型鱼类", "沙丁鱼", "飞鱼", "鱿鱼", "虾"],
+      "activeTime": "白天",
       "difficulty": 4
     },
     "edibility": {
-      "rating": "excellent",
-      "taste": "Firm white flesh with strong, distinct fishy flavor. Medium to high oil content",
-      "cookingMethods": [
-        "Grill",
-        "Barbecue",
-        "Pan-fry",
-        "Bake",
-        "Smoke",
-        "Shallow-fry",
-        "Raw"
-      ],
-      "notes": "Among Australia's most popular commercial fishes. The high oiliness often requires addition of acid to balance richness. Excellent barbecue fish. Care should be taken not to overcook. Best eating fish are in the 8-12kg range."
+      "rating": "极佳",
+      "taste": "白肉结实，风味浓郁；含油量中至高",
+      "cookingMethods": ["烤", "烧烤", "煎", "焙烤", "熏制", "浅炸", "生食"],
+      "notes": "澳洲最受欢迎的经济鱼之一。含油量较高，宜配以酸味平衡；非常适合烧烤，注意勿过火。最佳食用品质约 8–12 千克。"
     }
   },
   {
     "id": "16",
-    "name": "Mahi Mahi",
+    "name": "鬼头刀（海豚鱼）",
     "scientificName": "Coryphaena hippurus",
-    "localNames": ["Dorado", "Dolphinfish", "Golden maverick"],
+    "localNames": ["多拉多", "海豚鱼", "金色快艇"],
     "family": "Coryphaenidae",
-    "rarity": "common",
+    "rarity": "常见",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/16?thumbnailSize=large",
       "hero": "https://rules.fish.wa.gov.au/species/image/16?thumbnailSize=large"
@@ -470,9 +452,9 @@
       "maxWeightKg": 50
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -481,38 +463,30 @@
     ],
     "behavior": {
       "feedingHabits": [
-        "Flying fish",
-        "Small ocean fish",
-        "Juvenile tuna",
-        "Cephalopods",
-        "Crabs",
-        "Pelagic larvae"
+        "飞鱼",
+        "小型远洋鱼类",
+        "幼年金枪鱼",
+        "头足类",
+        "螃蟹",
+        "远洋幼体"
       ],
-      "activeTime": "day",
+      "activeTime": "白天",
       "difficulty": 4
     },
     "edibility": {
-      "rating": "excellent",
-      "taste": "Mild, sweet flavor with firm texture and large, moist flakes. Light pink to white flesh",
-      "cookingMethods": [
-        "Grill",
-        "Bake",
-        "Pan-fry",
-        "Steam",
-        "Saute",
-        "Poach",
-        "Raw"
-      ],
-      "notes": "Thin-skinned with firm, light pink flesh. Delicate flavor that is almost sweet. Best eaten when fresh. Care should be taken not to overcook. Ideal for a variety of preparations including sashimi when very fresh."
+      "rating": "极佳",
+      "taste": "味道清爽微甜，质地紧实、片层粗大；肉色浅粉至白",
+      "cookingMethods": ["烤", "焙烤", "煎", "清蒸", "煸炒", "水煮", "生食"],
+      "notes": "皮薄肉实，肉色浅粉且口味细腻微甜。宜鲜食，避免过度加热。非常适合多种做法，新鲜时亦可作刺身。"
     }
   },
   {
     "id": "17",
-    "name": "Swordfish",
+    "name": "剑鱼",
     "scientificName": "Xiphias gladius",
-    "localNames": ["Broadbill swordfish", "Broadbill"],
+    "localNames": ["阔嘴剑鱼", "阔嘴"],
     "family": "Xiphiidae",
-    "rarity": "common",
+    "rarity": "常见",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/17?thumbnailSize=large",
       "hero": "https://rules.fish.wa.gov.au/species/image/17?thumbnailSize=large"
@@ -523,9 +497,9 @@
       "maxWeightKg": 650
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -538,35 +512,30 @@
     ],
     "behavior": {
       "feedingHabits": [
-        "Cephalopods",
-        "Pelagic fish",
-        "Squid",
-        "Flying fish",
-        "Juvenile tuna",
-        "Crustaceans"
+        "头足类",
+        "远洋鱼类",
+        "鱿鱼",
+        "飞鱼",
+        "幼年金枪鱼",
+        "甲壳类"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 5
     },
     "edibility": {
-      "rating": "excellent",
-      "taste": "Mild, meaty flavor with firm, dense texture. Similar to tuna with subtle briny essence",
-      "cookingMethods": ["Grill", "Bake", "Pan-sear", "Broil", "Raw"],
-      "notes": "Swordfish boasts a mild, meaty flavor often compared to tuna. Firm, dense texture makes it ideal for grilling. Important to choose sustainably sourced fish. Consume in moderation due to mercury content. Pairs well with citrus fruits and herbs."
+      "rating": "极佳",
+      "taste": "口味温和、肉感厚实，质地紧密；风味近似金枪鱼，略带海咸气息",
+      "cookingMethods": ["烤", "焙烤", "煎封", "上火烤", "生食"],
+      "notes": "剑鱼以温和而富有肉感的风味著称，常被比作金枪鱼。肉质结实紧密，极适宜烧烤。选购可持续来源，因汞含量原因宜适量食用。与柑橘和香草搭配更佳。"
     }
   },
   {
     "id": "18",
-    "name": "Barramundi",
+    "name": "金目鲈",
     "scientificName": "Lates calcarifer",
-    "localNames": [
-      "Giant seaperch",
-      "Asian seabass",
-      "Australian seabass",
-      "White snook"
-    ],
+    "localNames": ["大海鲈", "亚洲海鲈", "澳洲海鲈", "白斯努克"],
     "family": "Latidae",
-    "rarity": "common",
+    "rarity": "常见",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/18?thumbnailSize=large",
       "hero": "https://rules.fish.wa.gov.au/species/image/18?thumbnailSize=large"
@@ -577,9 +546,9 @@
       "maxWeightKg": 60
     },
     "habitat": {
-      "waterTypes": ["Marine", "Freshwater", "Brackish"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水", "淡水", "半咸水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -593,37 +562,29 @@
     ],
     "behavior": {
       "feedingHabits": [
-        "Fish",
-        "Crustaceans",
-        "Small aquatic and terrestrial insects",
-        "Molluscs",
-        "Cephalopods"
+        "鱼类",
+        "甲壳类",
+        "小型水生与陆生昆虫",
+        "软体动物",
+        "头足类"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
-      "rating": "excellent",
-      "taste": "Mild, sweet flavor with firm white flesh. Delicate texture with large, moist flakes",
-      "cookingMethods": [
-        "Grill",
-        "Bake",
-        "Pan-fry",
-        "Steam",
-        "Curry",
-        "Poach",
-        "Raw"
-      ],
-      "notes": "Highly regarded table fish with excellent eating quality. The flesh is white, flaky and has a mild flavor. Very versatile cooking fish suitable for a wide range of preparations including Asian curries and European dishes. Best eaten fresh and not overcooked."
+      "rating": "极佳",
+      "taste": "味道清淡微甜，白肉紧实；片层大且多汁细嫩",
+      "cookingMethods": ["烤", "焙烤", "煎", "清蒸", "咖喱", "水煮", "生食"],
+      "notes": "备受推崇的食用鱼，肉色洁白、片层分明、味道清淡。用途广泛，适合亚洲咖喱与西式料理。以新鲜烹食最佳，避免过度加热。"
     }
   },
   {
     "id": "19",
-    "name": "Flathead (group)",
+    "name": "扁头鱼（类群）",
     "scientificName": "Platycephalidae",
-    "localNames": ["Flatties", "Frogs", "Lizards"],
+    "localNames": ["平头", "蛙鱼", "蜥蜴鱼"],
     "family": "Platycephalidae",
-    "rarity": "common",
+    "rarity": "常见",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/19?thumbnailSize=large",
       "hero": "https://rules.fish.wa.gov.au/species/image/19?thumbnailSize=large"
@@ -634,9 +595,9 @@
       "maxWeightKg": 18
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -648,37 +609,24 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Small fish",
-        "Prawns",
-        "Crabs",
-        "Worms",
-        "Cephalopods"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["小型鱼类", "虾", "螃蟹", "蠕虫", "头足类"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
-      "rating": "excellent",
-      "taste": "Mild, sweet flavor with excellent white flesh. Firm texture that flakes well when cooked",
-      "cookingMethods": [
-        "Pan-fry",
-        "Grill",
-        "Bake",
-        "Steam",
-        "Batter and deep-fry",
-        "Whole roasted"
-      ],
-      "notes": "One of Australia's most popular table fish. The flesh is firm, white, and has an excellent flavor with minimal 'fishiness'. Easy to cook and very forgiving. Excellent for fish and chips when battered. The skin is edible when cooked properly."
+      "rating": "极佳",
+      "taste": "味道清淡微甜，优质白肉；口感紧实，熟后易成片",
+      "cookingMethods": ["煎", "烤", "焙烤", "清蒸", "裹浆油炸", "整条烘烤"],
+      "notes": "澳大利亚最受欢迎的食用鱼之一。肉质紧实、洁白，腥味极轻，烹饪友好，裹浆油炸做鱼和薯条尤佳。处理得当时鱼皮也可食用。"
     }
   },
   {
     "id": "20",
-    "name": "Tailor",
+    "name": "蓝鱼",
     "scientificName": "Pomatomus saltatrix",
-    "localNames": ["Bluefish", "Chopper", "Elf", "Marine Piranha", "Skipjack"],
+    "localNames": ["蓝鱼", "切刀鱼", "精灵鱼", "海食人鱼", "跳鲣"],
     "family": "Pomatomidae",
-    "rarity": "common",
+    "rarity": "常见",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/20?thumbnailSize=large",
       "hero": "https://rules.fish.wa.gov.au/species/image/20?thumbnailSize=large"
@@ -689,9 +637,9 @@
       "maxWeightKg": 14
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["Autumn", "Winter", "Spring"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["秋季", "冬季", "春季"]
     },
     "regulations": [
       {
@@ -703,30 +651,24 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Small fish",
-        "Mullet",
-        "Herring",
-        "Pilchards",
-        "Sardines"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["小型鱼类", "鲻鱼", "鲱鱼", "皮尔查德", "沙丁鱼"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
-      "rating": "good",
-      "taste": "Moderately strong, oily fish flavor. Firm texture with darker flesh. Can have a slightly metallic taste if not handled properly",
-      "cookingMethods": ["Grill", "Barbecue", "Smoke", "Bake", "Pan-fry"],
-      "notes": "Best when very fresh and properly bled. The oily flesh benefits from acidic marinades or citrus. Smaller fish tend to have better flavor. Can be excellent when smoked. Some find the flavor too strong, while others appreciate the robust taste."
+      "rating": "良好",
+      "taste": "风味较重，含油；肉质紧实且肉色较深，处理不当会略带金属味",
+      "cookingMethods": ["烤", "烧烤", "熏制", "焙烤", "煎"],
+      "notes": "需尽快放血并新鲜食用。含油的肉质适合配以酸味或柑橘平衡。体型较小者风味更佳；熏制也很出色。风味见仁见智，有人嫌其过重，也有人偏爱其浓郁口感。"
     }
   },
   {
     "id": "21",
-    "name": "Trout, rainbow",
+    "name": "虹鳟",
     "scientificName": "Oncorhynchus mykiss",
-    "localNames": ["Steelhead", "Kamloops trout", "Finger trout"],
+    "localNames": ["钢头鳟", "坎卢普斯鳟", "指鳟"],
     "family": "Salmonidae",
-    "rarity": "common",
+    "rarity": "常见",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/21?thumbnailSize=large",
       "hero": "https://rules.fish.wa.gov.au/species/image/21?thumbnailSize=large"
@@ -737,9 +679,9 @@
       "maxWeightKg": 7
     },
     "habitat": {
-      "waterTypes": ["Freshwater"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["淡水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -748,29 +690,29 @@
     ],
     "behavior": {
       "feedingHabits": [
-        "Aquatic insects",
-        "Terrestrial insects",
-        "Small fish",
-        "Crustaceans",
-        "Molluscs"
+        "水生昆虫",
+        "陆生昆虫",
+        "小型鱼类",
+        "甲壳类",
+        "软体动物"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
-      "rating": "excellent",
-      "taste": "Mild, delicate flavor with a slightly nutty taste. Light pink flesh that is tender and flakes easily",
-      "cookingMethods": ["Pan-fry", "Grill", "Bake", "Smoke", "Poach", "Steam"],
-      "notes": "One of the best eating freshwater fish. The flesh is moist, tender and has excellent flavor when caught from clean, cold water. Wild fish generally taste better than stocked fish. Best cooked simply to preserve the delicate flavor."
+      "rating": "极佳",
+      "taste": "味道清淡细腻，略带坚果香；肉色浅粉，细嫩易成片",
+      "cookingMethods": ["煎", "烤", "焙烤", "熏制", "水煮", "清蒸"],
+      "notes": "顶级淡水食用鱼之一。清洁寒冷水域所获者，肉质更为细嫩鲜美；野生个体普遍优于放流个体。宜以简单做法保留其细腻风味。"
     }
   },
   {
     "id": "22",
-    "name": "Cobbler, freshwater (group)",
+    "name": "淡水鲶（类群）",
     "scientificName": "Tandanus bostocki",
-    "localNames": ["Cobbler"],
+    "localNames": ["鲶鱼"],
     "family": "Plotosidae",
-    "rarity": "common",
+    "rarity": "常见",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/22?thumbnailSize=large",
       "hero": "https://rules.fish.wa.gov.au/species/image/22?thumbnailSize=large"
@@ -781,9 +723,9 @@
       "maxWeightKg": 1.5
     },
     "habitat": {
-      "waterTypes": ["Freshwater", "Brackish"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["淡水", "半咸水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -791,29 +733,24 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Benthic invertebrates",
-        "Worms",
-        "Small crustaceans",
-        "Organic debris"
-      ],
-      "activeTime": "night",
+      "feedingHabits": ["底栖无脊椎动物", "蠕虫", "小型甲壳类", "有机碎屑"],
+      "activeTime": "夜间",
       "difficulty": 3
     },
     "edibility": {
-      "rating": "fair",
-      "taste": "Mild flavor but can have a muddy taste depending on water quality. Soft flesh texture",
-      "cookingMethods": ["Pan-fry", "Grill", "Bake", "Stew"],
-      "notes": "Eating quality varies significantly depending on water quality where caught. Fish from clean, flowing water taste much better than those from stagnant pools. Has a venomous spine so handle carefully. Best skinned before cooking."
+      "rating": "一般",
+      "taste": "味道清淡，但水质差时可能有泥腥味；肉质较软",
+      "cookingMethods": ["煎", "烤", "焙烤", "炖"],
+      "notes": "食用品质受水质影响较大；清洁流动水域的个体风味更佳，停滞水域则较差。胸鳍有毒刺，处理需小心；烹饪前建议去皮。"
     }
   },
   {
     "id": "23",
-    "name": "Striped perch, freshwater (group)",
+    "name": "条纹鲈（淡水，类群）",
     "scientificName": "Therapon jarbua",
-    "localNames": ["Sand bass", "Waigeu sea perch", "Crescent perch"],
+    "localNames": ["沙鲈", "瓦伊格海鲈", "新月鲈"],
     "family": "Terapontidae",
-    "rarity": "common",
+    "rarity": "常见",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/23?thumbnailSize=large",
       "hero": "https://rules.fish.wa.gov.au/species/image/23?thumbnailSize=large"
@@ -824,40 +761,30 @@
       "maxWeightKg": 1.2
     },
     "habitat": {
-      "waterTypes": ["Freshwater", "Brackish"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["淡水", "半咸水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [],
     "behavior": {
-      "feedingHabits": [
-        "Small fish",
-        "Crustaceans",
-        "Worms",
-        "Aquatic insects"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["小型鱼类", "甲壳类", "蠕虫", "水生昆虫"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
-      "rating": "good",
-      "taste": "Worthwhile panfish with mild flavor. Quality varies with water source - cleaner water produces better tasting fish",
-      "cookingMethods": ["Pan-fry", "Grill", "Bake", "Whole fish"],
-      "notes": "Closely related to barramundi but smaller in size. A good eating fish when caught from clean waters, though it lacks the immense popular appeal of barramundi. Best when fish reach at least 40cm for worthwhile fillets. Handle carefully due to sharp spines."
+      "rating": "良好",
+      "taste": "清淡可口的平底锅鱼；风味随水源而异，清洁水域更佳",
+      "cookingMethods": ["煎", "烤", "焙烤", "整鱼"],
+      "notes": "与金目鲈亲缘相近但体型更小。水质清洁处的个体味道更好，但大众知名度不及金目鲈。建议体长≥40cm再取片。背鳍与棘刺锋利，处理需小心。"
     }
   },
   {
     "id": "24",
-    "name": "Whiting (group)",
+    "name": "银鲷（类群）",
     "scientificName": "Sillaginidae",
-    "localNames": [
-      "Sand whiting",
-      "King George whiting",
-      "School whiting",
-      "Trumpeter whiting"
-    ],
+    "localNames": ["沙银鲷", "乔治王银鲷", "学校银鲷", "喇叭银鲷"],
     "family": "Sillaginidae",
-    "rarity": "common",
+    "rarity": "常见",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/24?thumbnailSize=large",
       "hero": "https://rules.fish.wa.gov.au/species/image/24?thumbnailSize=large"
@@ -868,9 +795,9 @@
       "maxWeightKg": 4.8
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -883,42 +810,37 @@
     ],
     "behavior": {
       "feedingHabits": [
-        "Marine worms",
-        "Small crustaceans",
-        "Molluscs",
-        "Small fish",
-        "Benthic invertebrates"
+        "海洋蠕虫",
+        "小型甲壳类",
+        "软体动物",
+        "小型鱼类",
+        "底栖无脊椎动物"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
-      "rating": "excellent",
-      "taste": "Delicate, sweet flavor with white, fine-textured flesh. Low oiliness and excellent flaking texture",
+      "rating": "极佳",
+      "taste": "风味清甜细致，白色细纹理肉质；含油低，片层极佳",
       "cookingMethods": [
-        "Pan-fry",
-        "Deep-fry",
-        "Grill",
-        "Bake",
-        "Steam",
-        "Poach",
-        "Raw (sashimi)"
+        "煎",
+        "炸",
+        "烤",
+        "焙烤",
+        "清蒸",
+        "水煮",
+        "生食（刺身）"
       ],
-      "notes": "One of Australia's most prized table fish. The flesh is firm, white, and has an exceptional delicate flavor. King George whiting is considered the premium species. Excellent for fish and chips or fine dining preparations. Small bones are easily removed."
+      "notes": "澳大利亚最受推崇的桌上鱼之一。肉质紧实洁白、风味细致；其中乔治王银鲷最为名贵。无论鱼和薯条还是精致料理都很出色，小刺易去除。"
     }
   },
   {
     "id": "25",
-    "name": "Garfish (group)",
+    "name": "颌针鱼（类群）",
     "scientificName": "Hyporhamphus melanochir",
-    "localNames": [
-      "Needlefish",
-      "Southern Sea Garfish",
-      "Eastern Sea Garfish",
-      "Three-by-two garfish"
-    ],
+    "localNames": ["针鱼", "南方海颌针鱼", "东方海颌针鱼", "三二颌针鱼"],
     "family": "Hemiramphidae",
-    "rarity": "common",
+    "rarity": "常见",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/25?thumbnailSize=large",
       "hero": "https://rules.fish.wa.gov.au/species/image/25?thumbnailSize=large"
@@ -929,9 +851,9 @@
       "maxWeightKg": 0.4
     },
     "habitat": {
-      "waterTypes": ["Marine", "Estuarine"],
-      "regions": ["Western Australia"],
-      "seasons": ["Spring", "Summer", "Autumn"]
+      "waterTypes": ["海水", "河口"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["春季", "夏季", "秋季"]
     },
     "regulations": [
       {
@@ -943,36 +865,24 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Small fish",
-        "Marine worms",
-        "Crustaceans",
-        "Plant matter"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["小型鱼类", "海洋蠕虫", "甲壳类", "植物碎屑"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
-      "rating": "excellent",
-      "taste": "Delicate, sweet flavor with fine-textured flesh. Medium oiliness with firm texture that can be butterflied easily",
-      "cookingMethods": [
-        "Pan-fry",
-        "Deep-fry",
-        "Grill",
-        "Barbecue",
-        "Tempura",
-        "Steam"
-      ],
-      "notes": "Criminally underappreciated on Australian tables. Can be filleted to produce attractive boned-out butterfly fillets. Excellent for fish and chips when crumbed whole. Fine pin bones are edible once backbone and rib cage are removed. Deteriorates quickly so use fresh."
+      "rating": "极佳",
+      "taste": "风味细腻清甜，肉质细密；含油适中，质地紧实，易开蝶刀",
+      "cookingMethods": ["煎", "炸", "烤", "烧烤", "天妇罗", "清蒸"],
+      "notes": "在澳洲餐桌上被严重低估。可去骨制成漂亮的蝶形鱼片；整鱼挂糠油炸做鱼和薯条极佳。细小刺在去除主骨与肋骨后可直接食用。易变质，宜新鲜烹食。"
     }
   },
   {
     "id": "26",
-    "name": "Carp and goldfish (group)",
+    "name": "鲤与金鱼（类群）",
     "scientificName": "Cyprinus carpio",
-    "localNames": ["European carp", "Common carp", "Goldfish"],
+    "localNames": ["欧洲鲤", "普通鲤", "金鱼"],
     "family": "Cyprinidae",
-    "rarity": "common",
+    "rarity": "常见",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/26?thumbnailSize=large",
       "hero": "https://rules.fish.wa.gov.au/species/image/26?thumbnailSize=large"
@@ -983,45 +893,37 @@
       "maxWeightKg": 10
     },
     "habitat": {
-      "waterTypes": ["Freshwater"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["淡水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [],
     "behavior": {
       "feedingHabits": [
-        "Aquatic plants",
-        "Insects",
-        "Worms",
-        "Molluscs",
-        "Crustaceans",
-        "Fish eggs"
+        "水生植物",
+        "昆虫",
+        "蠕虫",
+        "软体动物",
+        "甲壳类",
+        "鱼卵"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
-      "rating": "poor",
-      "taste": "Often muddy taste due to habitat. Can be bony and have strong fishy flavor. Quality varies greatly depending on water conditions",
-      "cookingMethods": ["Braise", "Slow-cook", "Smoke"],
-      "notes": "Generally not considered good eating in Australia due to muddy flavor from living in bottom sediments. Introduced species that is often considered a pest. In some cultures, carp is prepared traditionally but requires specific preparation to remove muddy taste."
+      "rating": "较差",
+      "taste": "常带泥腥味；多刺且鱼味重；品质受水域条件影响很大",
+      "cookingMethods": ["红烧", "慢煮", "熏制"],
+      "notes": "在澳洲通常被视为口感较差的食用鱼，因其底栖习性易带泥腥。属外来入侵物种，常被视为有害鱼类。部分文化中有传统做法，但需特别处理以去泥腥。"
     }
   },
   {
     "id": "27",
-    "name": "Crab, blue swimmer",
+    "name": "蓝泳蟹",
     "scientificName": "Portunus armatus",
-    "localNames": [
-      "Blue manna crab",
-      "Sand crab",
-      "Blue crab",
-      "Swimming crab",
-      "Flower crab",
-      "Sandy crab",
-      "Blueys"
-    ],
+    "localNames": ["蓝曼纳蟹", "沙蟹", "蓝蟹", "游泳蟹", "花蟹", "沙地蟹", "蓝仔"],
     "family": "Portunidae",
-    "rarity": "common",
+    "rarity": "常见",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/27?thumbnailSize=large",
       "hero": "https://rules.fish.wa.gov.au/species/image/27?thumbnailSize=large"
@@ -1032,9 +934,9 @@
       "maxWeightKg": 1
     },
     "habitat": {
-      "waterTypes": ["Marine", "Estuarine"],
-      "regions": ["Western Australia"],
-      "seasons": ["Summer", "Autumn"]
+      "waterTypes": ["海水", "河口"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["夏季", "秋季"]
     },
     "regulations": [
       {
@@ -1052,44 +954,24 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Small fish",
-        "Molluscs",
-        "Crustaceans",
-        "Marine worms",
-        "Algae",
-        "Detritus"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["小型鱼类", "软体动物", "甲壳类", "海洋蠕虫", "藻类", "碎屑"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
-      "rating": "excellent",
-      "taste": "Sweet, delicate flavor with firm white meat. Particularly sweet claw meat. Low oiliness with moist, tender texture",
-      "cookingMethods": [
-        "Steam",
-        "Boil",
-        "Grill",
-        "Pan-fry",
-        "Stir-fry",
-        "Raw (in salads)"
-      ],
-      "notes": "Highly regarded for excellent taste and texture. Popular in restaurants and home cooking. Males are larger and more colorful (electric blue) than females (mottled brown). Best cooked fresh and not overcooked to maintain tenderness."
+      "rating": "极佳",
+      "taste": "肉质洁白紧实，风味清甜细腻；螯肉尤为甘甜；含油低，口感湿润嫩滑",
+      "cookingMethods": ["清蒸", "水煮", "烤", "煎", "快炒", "生食（沙拉）"],
+      "notes": "以其优异的味道与口感而著称，餐厅与家常皆受欢迎。雄蟹体型更大、色泽更鲜艳（电光蓝），雌蟹则呈杂褐色。宜鲜烹且避免过熟以保持嫩度。"
     }
-  },
+  }
   {
     "id": "28",
-    "name": "Squid (group)",
+    "name": "鱿鱼（类群）",
     "scientificName": "Teuthida",
-    "localNames": [
-      "Calamari",
-      "Southern calamari",
-      "Northern calamari",
-      "Gould's squid",
-      "Loligo squid"
-    ],
+    "localNames": ["卡拉马里", "南方鱿鱼", "北方鱿鱼", "古尔德鱿", "枪乌贼"],
     "family": "Loliginidae",
-    "rarity": "common",
+    "rarity": "常见",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/28?thumbnailSize=large",
       "hero": "https://rules.fish.wa.gov.au/species/image/28?thumbnailSize=large"
@@ -1100,9 +982,9 @@
       "maxWeightKg": 2
     },
     "habitat": {
-      "waterTypes": ["Marine", "Estuarine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水", "河口"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -1114,30 +996,17 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Small fish",
-        "Crustaceans",
-        "Other squid",
-        "Marine worms"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["小型鱼类", "甲壳类", "同类鱿鱼", "海洋蠕虫"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
-      "rating": "excellent",
-      "taste": "Mild, subtle flavor with firm texture. Low to medium oiliness. Translucent when raw, white when cooked",
-      "cookingMethods": [
-        "Deep-fry",
-        "Pan-fry",
-        "Grill",
-        "Barbecue",
-        "Stir-fry",
-        "Raw (sashimi)",
-        "Tempura"
-      ],
-      "notes": "Excellent for salt and pepper squid, calamari rings, and Mediterranean preparations. Must be cooked very quickly over high heat or very slowly over low heat to avoid toughness. Sustainable fishing method using jigging. Body, tentacles, and fins all edible."
+      "rating": "极佳",
+      "taste": "味道清淡细致、口感紧实；含油量低到中等；生时半透明，熟后雪白",
+      "cookingMethods": ["油炸", "煎", "烤", "烧烤", "快炒", "生食（刺身）", "天妇罗"],
+      "notes": "适合椒盐鱿鱼、鱿圈与地中海做法。为避免变韧，需高温快炒或低温慢煮。常用可持续的木虾钓法捕捞。躯干、触腕与鳍均可食用。"
     }
-  },
+  }
   {
     "id": "29",
     "name": "Marron (group)",

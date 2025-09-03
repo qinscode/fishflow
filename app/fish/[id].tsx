@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
@@ -45,7 +46,6 @@ import {
 } from '@/lib/store';
 import { Fish, FishCardState } from '@/lib/types';
 import { getFishCardState, getColorByEdibility, sortFish } from '@/lib/utils';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -172,24 +172,24 @@ export default function FishDetailScreen() {
   // Helpers: map strings to MaterialCommunityIcons names
   const getCookingMethodIcon = (method: string): string => {
     const m = method.toLowerCase();
-    if (m.includes('sashimi') || m.includes('生食')) return 'fish';
-    if (m.includes('grill') || m.includes('烤')) return 'fire';
-    if (m.includes('barbecue') || m.includes('烧烤')) return 'grill';
-    if (m.includes('bake') || m.includes('烘')) return 'bread-slice-outline';
-    if (m.includes('smoke') || m.includes('熏')) return 'smoke';
-    if (m.includes('poach') || m.includes('水煮')) return 'pot-steam';
-    if (m.includes('pan') || m.includes('煎')) return 'frying-pan';
-    if (m.includes('stir') || m.includes('翻炒')) return 'pot-mix';
+    if (m.includes('sashimi') || m.includes('生食')) {return 'fish';}
+    if (m.includes('grill') || m.includes('烤')) {return 'fire';}
+    if (m.includes('barbecue') || m.includes('烧烤')) {return 'grill';}
+    if (m.includes('bake') || m.includes('烘')) {return 'bread-slice-outline';}
+    if (m.includes('smoke') || m.includes('熏')) {return 'smoke';}
+    if (m.includes('poach') || m.includes('水煮')) {return 'pot-steam';}
+    if (m.includes('pan') || m.includes('煎')) {return 'frying-pan';}
+    if (m.includes('stir') || m.includes('翻炒')) {return 'pot-mix';}
     return 'silverware-fork-knife';
   };
 
   const getFeedingHabitIcon = (habit: string): string => {
     const h = habit.toLowerCase();
-    if (h.includes('fish') || h.includes('鱼')) return 'fish';
+    if (h.includes('fish') || h.includes('鱼')) {return 'fish';}
     if (h.includes('squid') || h.includes('乌贼') || h.includes('鱿'))
-      return 'octopus';
-    if (h.includes('crustacean') || h.includes('甲壳')) return 'crab';
-    if (h.includes('cephalopod') || h.includes('头足')) return 'octopus';
+      {return 'octopus';}
+    if (h.includes('crustacean') || h.includes('甲壳')) {return 'crab';}
+    if (h.includes('cephalopod') || h.includes('头足')) {return 'octopus';}
     return 'food';
   };
 
