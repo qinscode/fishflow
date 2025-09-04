@@ -42,13 +42,13 @@ export function AchievementNotification({
   const theme = useTheme();
   const { t } = useTranslation();
   
-  const translateY = useSharedValue(-200);
+  const translateY = useSharedValue(-300);
   const opacity = useSharedValue(0);
   const scale = useSharedValue(0.8);
   const shimmer = useSharedValue(0);
   const confetti = useSharedValue(0);
   
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout>(null);
 
   useEffect(() => {
     if (isVisible) {
@@ -78,7 +78,7 @@ export function AchievementNotification({
       }, 4000) as any;
     } else {
       // 隐藏动画
-      translateY.value = withTiming(-200, { duration: 300 });
+      translateY.value = withTiming(-300, { duration: 300 });
       opacity.value = withTiming(0, { duration: 300 });
       scale.value = withTiming(0.8, { duration: 300 });
     }
@@ -95,7 +95,7 @@ export function AchievementNotification({
       clearTimeout(timeoutRef.current);
     }
     
-    translateY.value = withTiming(-200, { duration: 300 });
+    translateY.value = withTiming(-300, { duration: 300 });
     opacity.value = withTiming(0, { duration: 300 }, () => {
       runOnJS(onDismiss)();
     });
@@ -155,99 +155,101 @@ export function AchievementNotification({
   if (!isVisible) return null;
 
   return (
-    <SafeAreaView style={styles.container} pointerEvents="box-none">
-      <Animated.View style={[styles.notificationWrapper, containerStyle]}>
-        <Pressable onPress={handlePress} style={styles.pressable}>
-          <ThemedView 
-            type="card" 
-            style={[
-              styles.notification,
-              { borderColor: getTierColor(tier) },
-              theme.shadows.lg
-            ]}
-          >
-            {/* 背景光芒效果 */}
-            <Animated.View 
+    <View style={styles.container} pointerEvents="box-none">
+      <SafeAreaView style={styles.safeArea} pointerEvents="box-none">
+        <Animated.View style={[styles.notificationWrapper, containerStyle]}>
+          <Pressable onPress={handlePress} style={styles.pressable}>
+            <ThemedView 
+              type="card" 
               style={[
-                styles.shimmerEffect,
-                { backgroundColor: getTierColor(tier) + '20' },
-                shimmerStyle
-              ]} 
-            />
-            
-            {/* 庆祝粒子效果 */}
-            <Animated.View style={[styles.confettiContainer, confettiStyle]}>
-              <MaterialCommunityIcons
-                name="party-popper"
-                size={24}
-                color={getTierColor(tier)}
-                style={styles.confettiIcon}
+                styles.notification,
+                { borderColor: getTierColor(tier) },
+                theme.shadows.lg
+              ]}
+            >
+              {/* 背景光芒效果 */}
+              <Animated.View 
+                style={[
+                  styles.shimmerEffect,
+                  { backgroundColor: getTierColor(tier) + '20' },
+                  shimmerStyle
+                ]} 
               />
-            </Animated.View>
-
-            <View style={styles.content}>
-              {/* 成就图标 */}
-              <View style={styles.badgeContainer}>
-                <Badge
-                  achievement={achievement}
-                  tier={tier}
-                  size="large"
-                  isLocked={false}
-                  showProgress={false}
-                  showTitle={false}
-                />
-              </View>
-
-              {/* 文本内容 */}
-              <View style={styles.textContainer}>
-                <ThemedText type="title" style={[styles.title, { color: getTierColor(tier) }]}>
-                  {getTitle()}
-                </ThemedText>
-                
-                <ThemedText type="subtitle" style={styles.achievementName} numberOfLines={1}>
-                  {achievement.name}
-                </ThemedText>
-                
-                <ThemedText 
-                  type="body" 
-                  style={[styles.tierText, { color: theme.colors.textSecondary }]}
-                >
-                  {getMessage()}
-                </ThemedText>
-
-                {achievement.tiers[tier].reward && (
-                  <ThemedText 
-                    type="bodySmall" 
-                    style={[styles.reward, { color: theme.colors.primary }]}
-                  >
-                    🎁 {achievement.tiers[tier].reward}
-                  </ThemedText>
-                )}
-              </View>
-
-              {/* 关闭按钮 */}
-              <Pressable onPress={handleDismiss} style={styles.closeButton}>
+              
+              {/* 庆祝粒子效果 */}
+              <Animated.View style={[styles.confettiContainer, confettiStyle]}>
                 <MaterialCommunityIcons
-                  name="close"
-                  size={20}
-                  color={theme.colors.textSecondary}
+                  name="party-popper"
+                  size={24}
+                  color={getTierColor(tier)}
+                  style={styles.confettiIcon}
                 />
-              </Pressable>
-            </View>
+              </Animated.View>
 
-            {/* 底部提示 */}
-            <View style={[styles.footer, { borderTopColor: theme.colors.border }]}>
-              <ThemedText 
-                type="bodySmall" 
-                style={{ color: theme.colors.textSecondary, textAlign: 'center' }}
-              >
-                🎯 {t('common.press')} {t('achievements.title')}
-              </ThemedText>
-            </View>
-          </ThemedView>
-        </Pressable>
-      </Animated.View>
-    </SafeAreaView>
+              <View style={styles.content}>
+                {/* 成就图标 */}
+                <View style={styles.badgeContainer}>
+                  <Badge
+                    achievement={achievement}
+                    tier={tier}
+                    size="large"
+                    isLocked={false}
+                    showProgress={false}
+                    showTitle={false}
+                  />
+                </View>
+
+                {/* 文本内容 */}
+                <View style={styles.textContainer}>
+                  <ThemedText type="title" style={[styles.title, { color: getTierColor(tier) }]}>
+                    {getTitle()}
+                  </ThemedText>
+                  
+                  <ThemedText type="subtitle" style={styles.achievementName} numberOfLines={1}>
+                    {achievement.name}
+                  </ThemedText>
+                  
+                  <ThemedText 
+                    type="body" 
+                    style={[styles.tierText, { color: theme.colors.textSecondary }]}
+                  >
+                    {getMessage()}
+                  </ThemedText>
+
+                  {achievement.tiers[tier].reward && (
+                    <ThemedText 
+                      type="bodySmall" 
+                      style={[styles.reward, { color: theme.colors.primary }]}
+                    >
+                      🎁 {achievement.tiers[tier].reward}
+                    </ThemedText>
+                  )}
+                </View>
+
+                {/* 关闭按钮 */}
+                <Pressable onPress={handleDismiss} style={styles.closeButton}>
+                  <MaterialCommunityIcons
+                    name="close"
+                    size={20}
+                    color={theme.colors.textSecondary}
+                  />
+                </Pressable>
+              </View>
+
+              {/* 底部提示 */}
+              <View style={[styles.footer, { borderTopColor: theme.colors.border }]}>
+                <ThemedText 
+                  type="bodySmall" 
+                  style={{ color: theme.colors.textSecondary, textAlign: 'center' }}
+                >
+                  🎯 {t('common.press')} {t('achievements.title')}
+                </ThemedText>
+              </View>
+            </ThemedView>
+          </Pressable>
+        </Animated.View>
+      </SafeAreaView>
+    </View>
   );
 }
 
@@ -260,9 +262,13 @@ const styles = StyleSheet.create({
     zIndex: 1000,
     pointerEvents: 'box-none',
   },
+  safeArea: {
+    flex: 1,
+    pointerEvents: 'box-none',
+  },
   notificationWrapper: {
     paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingTop: 8,
   },
   pressable: {
     width: '100%',

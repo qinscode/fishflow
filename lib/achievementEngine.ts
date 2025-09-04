@@ -63,7 +63,7 @@ export class AchievementEngine {
           tier: newTier,
           isNew: !currentTier,
           isUpgrade: !!currentTier,
-          previousTier: currentTier,
+          previousTier: currentTier ?? undefined,
         };
         unlocks.push(unlock);
 
