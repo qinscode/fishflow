@@ -171,21 +171,6 @@ export default function CreateEquipmentScreen() {
       Alert.alert(t('common.notice'), t('equipment.validation.line.required'));
       return false;
     }
-    if (!formData.hook.trim()) {
-      Alert.alert(t('common.notice'), t('equipment.validation.hook.required'));
-      return false;
-    }
-    if (!formData.bait.trim()) {
-      Alert.alert(t('common.notice'), t('equipment.validation.bait.required'));
-      return false;
-    }
-    if (formData.waterTypes.length === 0) {
-      Alert.alert(
-        t('common.notice'),
-        t('equipment.validation.water.type.required')
-      );
-      return false;
-    }
     return true;
   };
 
@@ -283,7 +268,7 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="textformat"
-                size={16}
+                size={14}
                 color={theme.colors.textSecondary}
               />
               <ThemedText
@@ -310,7 +295,7 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="doc.text"
-                size={16}
+                size={14}
                 color={theme.colors.textSecondary}
               />
               <ThemedText
@@ -401,7 +386,7 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="line.3.horizontal"
-                size={16}
+                size={14}
                 color={theme.colors.textSecondary}
               />
               <ThemedText
@@ -428,7 +413,7 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="circle"
-                size={16}
+                size={14}
                 color={theme.colors.textSecondary}
               />
               <ThemedText
@@ -455,7 +440,7 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="link"
-                size={16}
+                size={14}
                 color={theme.colors.textSecondary}
               />
               <ThemedText
@@ -482,14 +467,14 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="staple"
-                size={16}
+                size={14}
                 color={theme.colors.textSecondary}
               />
               <ThemedText
                 type="bodySmall"
                 style={[styles.label, { color: theme.colors.textSecondary }]}
               >
-                {t('equipment.form.hook')} *
+                {t('equipment.form.hook')}
               </ThemedText>
             </View>
             <TextInput
@@ -509,14 +494,14 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="leaf"
-                size={16}
+                size={14}
                 color={theme.colors.textSecondary}
               />
               <ThemedText
                 type="bodySmall"
                 style={[styles.label, { color: theme.colors.textSecondary }]}
               >
-                {t('equipment.form.bait')} *
+                {t('equipment.form.bait')}
               </ThemedText>
             </View>
             <TextInput
@@ -601,7 +586,7 @@ export default function CreateEquipmentScreen() {
               color={theme.colors.primary}
             />
             <ThemedText type="subtitle" style={styles.sectionTitle}>
-              {t('equipment.form.water.types.label')} *
+              {t('equipment.form.water.types.label')}
             </ThemedText>
           </View>
 
@@ -929,6 +914,7 @@ const styles = StyleSheet.create({
   label: {
     marginBottom: 8,
     fontSize: 14,
+    lineHeight: 16,
     fontWeight: '500',
   },
   labelRow: {

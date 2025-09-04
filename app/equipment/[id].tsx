@@ -173,18 +173,6 @@ export default function EditEquipmentScreen() {
       Alert.alert('提示', '请选择钓线');
       return false;
     }
-    if (!formData.hook.trim()) {
-      Alert.alert('提示', '请选择鱼钩');
-      return false;
-    }
-    if (!formData.bait.trim()) {
-      Alert.alert('提示', '请选择饵料');
-      return false;
-    }
-    if (formData.waterTypes.length === 0) {
-      Alert.alert('提示', '请至少选择一种适用水域类型');
-      return false;
-    }
     return true;
   };
 
@@ -411,18 +399,22 @@ export default function EditEquipmentScreen() {
                 type="bodySmall"
                 style={[styles.label, { color: theme.colors.textSecondary }]}
               >
-                {type === 'rods'
-                  ? '钓竿'
-                  : type === 'reels'
-                    ? '渔轮'
-                    : type === 'lines'
-                      ? '钓线'
-                      : type === 'hooks'
-                        ? '鱼钩'
-                        : type === 'baits'
-                          ? '饵料'
-                          : type}{' '}
-                *
+                {(() => {
+                  const label =
+                    type === 'rods'
+                      ? '钓竿'
+                      : type === 'reels'
+                        ? '渔轮'
+                        : type === 'lines'
+                          ? '钓线'
+                          : type === 'hooks'
+                            ? '鱼钩'
+                            : type === 'baits'
+                              ? '饵料'
+                              : type;
+                  const required = type === 'rods' || type === 'reels' || type === 'lines';
+                  return required ? `${label} *` : label;
+                })()}
               </ThemedText>
 
               <Pressable
@@ -526,7 +518,7 @@ export default function EditEquipmentScreen() {
               color={theme.colors.primary}
             />
             <ThemedText type="subtitle" style={styles.sectionTitle}>
-              适用水域 *
+              适用水域
             </ThemedText>
           </View>
 

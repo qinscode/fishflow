@@ -1,13 +1,13 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-  Alert,
-  Modal,
+import { 
+  View, 
+  StyleSheet, 
+  ScrollView, 
+  Pressable, 
+  Alert, 
   Switch,
+  Modal,
   TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -35,8 +35,9 @@ export default function SettingsScreen() {
 
   const [showLanguagePicker, setShowLanguagePicker] = useState(false);
   const [showThemePicker, setShowThemePicker] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [dateInput, setDateInput] = useState('');
+  // Removed fishing start date state
+  const [versionTapCount, setVersionTapCount] = useState(0);
+  const [showRpgFramesOption, setShowRpgFramesOption] = useState(false);
 
   const handleLanguageChange = async (language: Language) => {
     await setLanguage(language);
@@ -55,22 +56,7 @@ export default function SettingsScreen() {
     setShowThemePicker(false);
   };
 
-  const handleFishingStartDateChange = () => {
-    // Simple date validation (YYYY-MM-DD format)
-    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-    if (dateRegex.test(dateInput)) {
-      const date = new Date(dateInput);
-      if (!isNaN(date.getTime())) {
-        updateUserPreferences({
-          fishingStartDate: date.toISOString(),
-        });
-        setShowDatePicker(false);
-        setDateInput('');
-        return;
-      }
-    }
-    Alert.alert(t('common.error'), t('settings.error.invalid.date'));
-  };
+  // Removed fishing start date handler
 
   const handleNotificationToggle = (
     type: 'achievements' | 'reminders' | 'weather'
@@ -99,6 +85,23 @@ export default function SettingsScreen() {
         rpgFrames: !userPreferences.appearance.rpgFrames,
       },
     });
+  };
+
+  const handleVersionTap = () => {
+    const newCount = versionTapCount + 1;
+    setVersionTapCount(newCount);
+    
+    if (newCount >= 5 && !showRpgFramesOption) {
+      setShowRpgFramesOption(true);
+      Alert.alert('🎨', 'Developer options unlocked!');
+    }
+    
+    // Reset counter after 3 seconds of inactivity
+    setTimeout(() => {
+      if (versionTapCount === newCount) {
+        setVersionTapCount(0);
+      }
+    }, 3000);
   };
 
   const handleClearData = () => {
@@ -230,51 +233,7 @@ export default function SettingsScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Fishing Settings */}
-        <SlideInView direction="up" delay={200}>
-          <ThemedView type="card" style={[styles.section, theme.shadows.sm]}>
-            <ThemedText type="subtitle" style={styles.sectionTitle}>
-              {t('settings.fishing')}
-            </ThemedText>
-
-            <Pressable
-              style={styles.settingItem}
-              onPress={() => setShowDatePicker(true)}
-            >
-              <View style={styles.settingLeft}>
-                <MaterialCommunityIcons
-                  name="calendar"
-                  size={20}
-                  color={theme.colors.primary}
-                />
-                <View style={styles.settingText}>
-                  <ThemedText type="body">
-                    {t('settings.fishing.start.date')}
-                  </ThemedText>
-                  <ThemedText
-                    type="bodySmall"
-                    style={{ color: theme.colors.textSecondary }}
-                  >
-                    {t('settings.fishing.start.date.subtitle')}
-                  </ThemedText>
-                </View>
-              </View>
-              <View style={styles.settingRight}>
-                <ThemedText
-                  type="bodySmall"
-                  style={{ color: theme.colors.primary }}
-                >
-                  {formatDate(userPreferences.fishingStartDate)}
-                </ThemedText>
-                <MaterialCommunityIcons
-                  name="chevron-right"
-                  size={16}
-                  color={theme.colors.textSecondary}
-                />
-              </View>
-            </Pressable>
-          </ThemedView>
-        </SlideInView>
+        {/* Fishing Settings removed */}
 
         {/* Appearance Settings */}
         <SlideInView direction="up" delay={300}>
@@ -353,37 +312,39 @@ export default function SettingsScreen() {
               </View>
             </Pressable>
 
-            <View style={styles.settingItem}>
-              <View style={styles.settingLeft}>
-                <MaterialCommunityIcons
-                  name="image-frame"
-                  size={20}
-                  color={theme.colors.primary}
-                />
-                <View style={styles.settingText}>
-                  <ThemedText type="body">RPG边框</ThemedText>
-                  <ThemedText
-                    type="bodySmall"
-                    style={{ color: theme.colors.textSecondary }}
-                  >
-                    启用装饰性金色边框
-                  </ThemedText>
+            {showRpgFramesOption && (
+              <View style={styles.settingItem}>
+                <View style={styles.settingLeft}>
+                  <MaterialCommunityIcons
+                    name="image-frame"
+                    size={20}
+                    color={theme.colors.primary}
+                  />
+                  <View style={styles.settingText}>
+                    <ThemedText type="body">{t('settings.rpg.frames')}</ThemedText>
+                    <ThemedText
+                      type="bodySmall"
+                      style={{ color: theme.colors.textSecondary }}
+                    >
+                      {t('settings.rpg.frames.subtitle')}
+                    </ThemedText>
+                  </View>
                 </View>
+                <Switch
+                  value={userPreferences.appearance.rpgFrames}
+                  onValueChange={handleRpgFramesToggle}
+                  trackColor={{
+                    false: theme.colors.surface,
+                    true: theme.colors.primary + '40',
+                  }}
+                  thumbColor={
+                    userPreferences.appearance.rpgFrames
+                      ? theme.colors.primary
+                      : theme.colors.textSecondary
+                  }
+                />
               </View>
-              <Switch
-                value={userPreferences.appearance.rpgFrames}
-                onValueChange={handleRpgFramesToggle}
-                trackColor={{
-                  false: theme.colors.surface,
-                  true: theme.colors.primary + '40',
-                }}
-                thumbColor={
-                  userPreferences.appearance.rpgFrames
-                    ? theme.colors.primary
-                    : theme.colors.textSecondary
-                }
-              />
-            </View>
+            )}
           </ThemedView>
         </SlideInView>
 
@@ -639,7 +600,7 @@ export default function SettingsScreen() {
               {t('settings.about')}
             </ThemedText>
 
-            <View style={styles.settingItem}>
+            <Pressable style={styles.settingItem} onPress={handleVersionTap}>
               <View style={styles.settingLeft}>
                 <MaterialCommunityIcons
                   name="information-outline"
@@ -658,7 +619,7 @@ export default function SettingsScreen() {
               >
                 1.0.0
               </ThemedText>
-            </View>
+            </Pressable>
           </ThemedView>
         </SlideInView>
       </ScrollView>

@@ -94,3 +94,4 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - No specific test framework is currently configured
 - Manual testing should cover all platforms (iOS, Android, Web)
 - Test database operations and state management thoroughly
+- Do not start the server by yourself; let user start it and ask feeback questions if needed

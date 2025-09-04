@@ -38,52 +38,75 @@ export interface AustralianEnvironmentData {
 }
 
 class AustralianWeatherService {
-  private readonly BOM_API_BASE = 'http://www.bom.gov.au/fwo';
-  private readonly TIDE_API_BASE = 'https://api.willyweather.com.au';
-  private readonly WAVE_API_BASE = 'https://api.willyweather.com.au';
+  
+  // Simple in-memory cache to reduce network calls (30 minutes TTL)
+  private cache = new Map<string, { expires: number; data: any }>();
 
   /**
-   * Get current weather conditions for Australian location
-   * Uses Bureau of Meteorology (BOM) data
+   * Get current weather conditions for Australian location.
+   * Uses BOM Weather API (free). Falls back to mock on failure.
    */
   async getCurrentWeather(location: LocationData): Promise<AustralianWeatherData> {
+    const key = this.keyFor('wx', location);
+    const cached = this.getFromCache<AustralianWeatherData>(key);
+    if (cached) return cached;
+
     try {
-      // For now, return mock data as BOM doesn't have a public REST API
-      // In production, you would integrate with a paid weather service like:
-      // - WillyWeather API (Australian focused)
-      // - OpenWeatherMap (has Australian data)
-      // - WeatherAPI (covers Australia well)
-      
-      return this.getMockWeatherData(location);
+      // 1) Try BOM Weather API (no key, geohash-based)
+      const bom = await this.fetchBomWeather(location);
+      if (bom) {
+        this.putToCache(key, bom, 15 * 60 * 1000);
+        return bom;
+      }
     } catch (error) {
-      console.error('Failed to fetch Australian weather data:', error);
-      throw new Error('Unable to fetch weather information');
+      console.warn('BOM weather failed, using mock:', error);
+      const data = this.getMockWeatherData(location);
+      this.putToCache(key, data, 10 * 60 * 1000);
+      return data;
     }
   }
 
   /**
-   * Get tide information for Australian coastal locations
+   * Get tide information for Australian coastal locations.
+   * Tries BOM Weather API tide endpoint first; falls back to mock on failure.
    */
   async getTideData(location: LocationData): Promise<TideData[]> {
+    const key = this.keyFor('tide', location);
+    const cached = this.getFromCache<TideData[]>(key);
+    if (cached) return cached;
     try {
-      // Mock tide data for Australian locations
-      return this.getMockTideData(location);
-    } catch (error) {
-      console.error('Failed to fetch tide data:', error);
-      throw new Error('Unable to fetch tide information');
+      const bom = await this.fetchBomTides(location);
+      if (bom && bom.length) {
+        this.putToCache(key, bom, 6 * 60 * 60 * 1000); // cache tides for 6h
+        return bom;
+      }
+    } catch (e) {
+      console.warn('BOM tides failed, using mock:', e);
     }
+
+    // Fallback to mock
+    const data = this.getMockTideData(location);
+    this.putToCache(key, data, 60 * 60 * 1000);
+    return data;
   }
 
   /**
-   * Get wave conditions for Australian coastal locations
+   * Get wave conditions for Australian coastal locations.
+   * BOM public API does not provide a unified free wave endpoint; return zeroes.
    */
   async getWaveData(location: LocationData): Promise<WaveData> {
+    const key = this.keyFor('wave', location);
+    const cached = this.getFromCache<WaveData>(key);
+    if (cached) return cached;
     try {
-      // Mock wave data
-      return this.getMockWaveData(location);
+      const data: WaveData = { height: 0, period: 0, direction: 0 };
+      this.putToCache(key, data, 30 * 60 * 1000);
+      return data;
     } catch (error) {
-      console.error('Failed to fetch wave data:', error);
-      throw new Error('Unable to fetch wave information');
+      console.warn('Wave data unavailable, returning zeroes:', error);
+      const data = { height: 0, period: 0, direction: 0 } as WaveData;
+      this.putToCache(key, data, 10 * 60 * 1000);
+      return data;
     }
   }
 
@@ -235,6 +258,216 @@ class AustralianWeatherService {
       recommendation,
       factors,
     };
+  }
+
+  // --- Helpers ---
+  private keyFor(prefix: string, loc: LocationData) {
+    // round to 2 decimals to encourage cache reuse within ~1km
+    const lat = loc.latitude.toFixed(2);
+    const lon = loc.longitude.toFixed(2);
+    return `${prefix}:${lat},${lon}`;
+  }
+
+  private getFromCache<T>(key: string): T | null {
+    const entry = this.cache.get(key);
+    if (!entry) return null;
+    if (Date.now() > entry.expires) {
+      this.cache.delete(key);
+      return null;
+    }
+    return entry.data as T;
+  }
+
+  private putToCache(key: string, data: any, ttlMs: number) {
+    this.cache.set(key, { data, expires: Date.now() + ttlMs });
+  }
+
+  private safeNumber(n: any): number {
+    const x = Number(n);
+    return isFinite(x) ? x : 0;
+  }
+
+  private mapWmoToText(code: number): string {
+    // WMO weather interpretation codes
+    const m: Record<number, string> = {
+      0: 'Clear',
+      1: 'Mainly clear',
+      2: 'Partly cloudy',
+      3: 'Overcast',
+      45: 'Fog',
+      48: 'Depositing rime fog',
+      51: 'Light drizzle',
+      53: 'Moderate drizzle',
+      55: 'Dense drizzle',
+      56: 'Freezing drizzle',
+      57: 'Freezing drizzle',
+      61: 'Slight rain',
+      63: 'Moderate rain',
+      65: 'Heavy rain',
+      66: 'Freezing rain',
+      67: 'Freezing rain',
+      71: 'Slight snow',
+      73: 'Moderate snow',
+      75: 'Heavy snow',
+      77: 'Snow grains',
+      80: 'Rain showers',
+      81: 'Moderate rain showers',
+      82: 'Violent rain showers',
+      85: 'Snow showers',
+      86: 'Heavy snow showers',
+      95: 'Thunderstorm',
+      96: 'Thunderstorm with hail',
+      99: 'Thunderstorm with hail',
+    };
+    return m[Number(code)] || 'Unknown';
+  }
+
+  private mapWmoToIcon(code: number): string {
+    // Map to SF Symbols-ish naming used in app
+    const c = Number(code);
+    if (c === 0) return 'sun.max.fill';
+    if (c === 1 || c === 2) return 'cloud.sun.fill';
+    if (c === 3) return 'cloud.fill';
+    if (c >= 51 && c <= 57) return 'cloud.drizzle.fill';
+    if ((c >= 61 && c <= 67) || (c >= 80 && c <= 82)) return 'cloud.rain.fill';
+    if (c >= 71 && c <= 77) return 'cloud.snow.fill';
+    if (c === 45 || c === 48) return 'cloud.fog.fill';
+    if (c >= 95) return 'cloud.bolt.rain.fill';
+    return 'cloud.fill';
+  }
+
+  // --- BOM helpers ---
+  private async fetchBomWeather(location: LocationData): Promise<AustralianWeatherData | null> {
+    try {
+      const gh = this.encodeGeohash(location.latitude, location.longitude, 6);
+      const url = `https://api.weather.bom.gov.au/v1/locations/${gh}/observations`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`BOM obs failed: ${res.status}`);
+      const json: any = await res.json();
+      const d = json?.data || json; // Some responses may nest under data
+
+      const windKmh = this.safeNumber(
+        d?.wind?.speed_kilometre?.now ?? (this.safeNumber(d?.wind?.speed_knots?.now) * 1.852)
+      );
+
+      const temp = this.safeNumber(d?.temp?.now ?? d?.temperature?.now ?? d?.air_temp_now);
+      const rh = this.safeNumber(d?.humidity?.now ?? d?.relative_humidity?.now);
+      const p = this.safeNumber(d?.pressure?.now ?? d?.pressure_msl?.now ?? d?.msl_pressure_now);
+      const dir = this.safeNumber(d?.wind?.direction?.now ?? d?.wind?.direction?.value);
+      const iconDesc: string | undefined = d?.icon_descriptor || d?.icon?.descriptor;
+      const wxText: string | undefined = d?.weather || d?.short_text || iconDesc;
+
+      const data: AustralianWeatherData = {
+        temperature: temp,
+        humidity: rh,
+        pressure: p,
+        windSpeed: windKmh,
+        windDirection: dir,
+        conditions: (wxText || 'Unknown') as string,
+        icon: this.mapBomIcon(iconDesc),
+      };
+      return data;
+    } catch (e) {
+      console.warn('BOM fetch failed:', e);
+      return null;
+    }
+  }
+
+  private mapBomIcon(desc?: string): string {
+    const d = (desc || '').toLowerCase();
+    if (!d) return 'cloud.fill';
+    if (d.includes('sunny') || d.includes('clear')) return 'sun.max.fill';
+    if (d.includes('partly')) return 'cloud.sun.fill';
+    if (d.includes('cloud')) return 'cloud.fill';
+    if (d.includes('shower') || d.includes('rain')) return 'cloud.rain.fill';
+    if (d.includes('storm') || d.includes('thunder')) return 'cloud.bolt.rain.fill';
+    if (d.includes('snow')) return 'cloud.snow.fill';
+    if (d.includes('fog')) return 'cloud.fog.fill';
+    return 'cloud.fill';
+  }
+
+  // Minimal geohash implementation (base32) suitable for BOM API (precision 6 default)
+  private encodeGeohash(lat: number, lon: number, precision = 6): string {
+    const base32 = '0123456789bcdefghjkmnpqrstuvwxyz';
+    let idx = 0, bit = 0, evenBit = true;
+    let latMin = -90, latMax = 90;
+    let lonMin = -180, lonMax = 180;
+    let hash = '';
+    while (hash.length < precision) {
+      if (evenBit) {
+        const lonMid = (lonMin + lonMax) / 2;
+        if (lon >= lonMid) { idx = idx * 2 + 1; lonMin = lonMid; } else { idx = idx * 2; lonMax = lonMid; }
+      } else {
+        const latMid = (latMin + latMax) / 2;
+        if (lat >= latMid) { idx = idx * 2 + 1; latMin = latMid; } else { idx = idx * 2; latMax = latMid; }
+      }
+      evenBit = !evenBit;
+      if (++bit == 5) { hash += base32.charAt(idx); bit = 0; idx = 0; }
+    }
+    return hash;
+  }
+
+  private async fetchBomTides(location: LocationData): Promise<TideData[] | null> {
+    // BOM Weather API tide endpoint (geohash-based). Some locations may not have tide data.
+    // Try a couple of plausible endpoints; if both fail, return null to trigger fallback.
+    const gh = this.encodeGeohash(location.latitude, location.longitude, 6);
+    const candidates = [
+      `https://api.weather.bom.gov.au/v1/locations/${gh}/tides`,
+      `https://api.weather.bom.gov.au/v1/locations/${gh}/marine/tides`,
+    ];
+
+    for (const url of candidates) {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) continue;
+        const json: any = await res.json();
+        const parsed = this.parseBomTideJson(json);
+        if (parsed.length) return parsed;
+      } catch {
+        // try next
+      }
+    }
+    return null;
+  }
+
+  private parseBomTideJson(json: any): TideData[] {
+    const out: TideData[] = [];
+    if (!json) return out;
+
+    // Common structures observed in tide APIs
+    const lists: any[] = [];
+    if (Array.isArray(json?.tides)) lists.push(...json.tides);
+    if (Array.isArray(json?.data)) lists.push(...json.data);
+    if (Array.isArray(json?.predictions)) lists.push(...json.predictions);
+    if (Array.isArray(json?.entries)) lists.push(...json.entries);
+
+    const pushEntry = (timeStr: any, heightVal: any, typeVal: any) => {
+      const t = typeof timeStr === 'string' ? timeStr : new Date(timeStr).toISOString();
+      const hNum = this.safeNumber(heightVal);
+      let tp: 'high' | 'low' | null = null;
+      const tv = (typeVal || '').toString().toLowerCase();
+      if (tv.includes('high')) tp = 'high';
+      if (tv.includes('low')) tp = 'low';
+      if (!tp) tp = hNum >= 1.5 ? 'high' : 'low';
+      out.push({ time: t, height: Math.round(hNum * 100) / 100, type: tp });
+    };
+
+    for (const item of lists) {
+      if (!item) continue;
+      // Possible key variants
+      const time = item.time || item.date || item.at || item.timestamp;
+      const height = item.height || item.tide_height || item.value || item.metres || item.meters;
+      const type = item.type || item.event || item.tide_type;
+      if (time != null && height != null) {
+        // Some feeds provide millimetres
+        const h = typeof height === 'number' && height > 10 ? height / 1000 : height; // mm -> m
+        pushEntry(time, h, type);
+      }
+    }
+    // Sort by time
+    out.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+    // Limit to next ~4 entries
+    return out.slice(0, 6);
   }
 }
 

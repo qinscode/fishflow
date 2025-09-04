@@ -19,7 +19,8 @@ import { ThemedView } from '@/components/ThemedView';
 import { useTheme } from '@/hooks/useThemeColor';
 import { useTranslation } from '@/lib/i18n';
 import { useAppStore, useEquipmentSets, useUserProfile, useFish } from '@/lib/store';
-import { EquipmentSet, LocationData, Fish } from '@/lib/types';
+import { EquipmentSet, LocationData, Fish, WaterType } from '@/lib/types';
+import { WATER_TYPE_NAMES } from '@/lib/constants';
 import {
   australianWeatherService,
   AustralianEnvironmentData,
@@ -29,6 +30,10 @@ import {
 export default function LogScreen() {
   const theme = useTheme();
   const { t } = useTranslation();
+  const tRef = React.useRef(t);
+  useEffect(() => {
+    tRef.current = t;
+  }, [t]);
   const params = useLocalSearchParams<{ fishId?: string; fishName?: string }>();
   const addCatch = useAppStore(s => s.addCatch);
   const equipmentSets = useEquipmentSets();
@@ -40,6 +45,7 @@ export default function LogScreen() {
   const [weatherData, setWeatherData] =
     useState<AustralianEnvironmentData | null>(null);
   const [isLoadingWeather, setIsLoadingWeather] = useState(false);
+  const [isLocating, setIsLocating] = useState(false);
   const [location, setLocation] = useState<LocationData | null>(null);
   const [lengthCm, setLengthCm] = useState<string>('');
   const [weightKg, setWeightKg] = useState<string>('');
@@ -50,12 +56,16 @@ export default function LogScreen() {
   const [showFishPicker, setShowFishPicker] = useState(false);
   const [fishSearch, setFishSearch] = useState('');
   const [selectedFish, setSelectedFish] = useState<Fish | null>(null);
+  // Optional per-catch rig and water type
+  const [hook, setHook] = useState<string>('');
+  const [bait, setBait] = useState<string>('');
+  const [waterType, setWaterType] = useState<WaterType | null>(null);
 
   // Initialize selected fish from route params if provided
   useEffect(() => {
     if (params.fishId && !selectedFish) {
       const found = fishList.find(f => f.id === params.fishId);
-      if (found) setSelectedFish(found);
+      if (found) {setSelectedFish(found);}
       else if (params.fishName) {
         // Fallback when fish list not ready yet
         setSelectedFish({
@@ -104,10 +114,11 @@ export default function LogScreen() {
     }, []);
 
   const loadWeatherData = useCallback(async () => {
+    if (isLoadingWeather) return;
     setIsLoadingWeather(true);
     try {
       const loc = (await getCurrentLocation()) || null;
-      if (loc) {setLocation(loc);}
+      if (loc) setLocation(loc);
       const envData = await australianWeatherService.getEnvironmentalData(
         loc || {
           latitude: -33.8688,
@@ -121,22 +132,42 @@ export default function LogScreen() {
     } catch (error) {
       console.error('Failed to load weather data:', error);
       Alert.alert(
-        t('log.weather.error'),
+        tRef.current('log.weather.error'),
         'Please check your internet connection'
       );
     } finally {
       setIsLoadingWeather(false);
     }
-  }, [getCurrentLocation, t]);
+  }, [getCurrentLocation, isLoadingWeather]);
+
+  const refreshLocation = useCallback(async () => {
+    if (isLocating) return;
+    setIsLocating(true);
+    try {
+      const loc = await getCurrentLocation();
+      if (loc) {
+        setLocation(loc);
+        // Also refresh environment data for new location
+        const env = await australianWeatherService.getEnvironmentalData(loc);
+        setWeatherData(env);
+      }
+    } catch (e) {
+      // Swallow; main loadWeatherData has its own alert
+    } finally {
+      setIsLocating(false);
+    }
+  }, [getCurrentLocation, isLocating]);
 
   // Load weather data when component mounts
   useEffect(() => {
+    // Run once on mount to avoid re-fetch loops due to changing deps
     loadWeatherData();
-  }, [loadWeatherData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSave = async () => {
-    if (!selectedFish?.id) {
-      Alert.alert(t('common.error'), 'Missing fish id');
+    if (!selectedFish?.id && !isSkunked) {
+      Alert.alert(t('common.notice'), t('log.validation.fish.required'));
       return;
     }
     try {
@@ -144,7 +175,8 @@ export default function LogScreen() {
         e => e.id === selectedEquipmentId!
       );
       await addCatch({
-        fishId: selectedFish.id,
+        fishId: selectedFish?.id || '',
+        isSkunked: isSkunked && !selectedFish?.id ? true : false,
         userId: userProfile?.id || 'guest',
         timestamp: new Date().toISOString(),
         photos: [],
@@ -158,19 +190,17 @@ export default function LogScreen() {
               longitude: location.longitude,
               accuracy: location.accuracy,
               address: location.address,
-              waterType: 'ocean',
+              waterType: (waterType || 'ocean') as WaterType,
               privacy: 'exact',
             }
           : undefined,
-        equipment: chosen
-          ? {
-              rod: chosen.rod,
-              reel: chosen.reel,
-              line: chosen.line,
-              hook: chosen.hook,
-              bait: chosen.bait,
-            }
-          : {},
+        equipment: {
+          ...(chosen
+            ? { rod: chosen.rod, reel: chosen.reel, line: chosen.line }
+            : {}),
+          ...(hook ? { hook } : chosen?.hook ? { hook: chosen.hook } : {}),
+          ...(bait ? { bait } : chosen?.bait ? { bait: chosen.bait } : {}),
+        },
         conditions: weatherData
           ? {
               weather: weatherData.weather.conditions,
@@ -260,7 +290,7 @@ export default function LogScreen() {
               onPress={() => setShowFishPicker(true)}
             >
               <ThemedText type="body" style={{ color: theme.colors.primary }}>
-                {t('log.fish.search')}
+                {selectedFish?.name ? selectedFish.name : t('log.fish.search')}
               </ThemedText>
               <MaterialCommunityIcons
                 name="chevron-right"
@@ -385,19 +415,21 @@ export default function LogScreen() {
               </View>
 
               <View style={styles.weatherRow}>
-                <View style={styles.weatherItem}>
-                  <MaterialCommunityIcons
-                    name="waves"
-                    size={20}
-                    color={theme.colors.primary}
-                  />
-                  <ThemedText type="bodySmall">
-                    {t('log.weather.waves')}
-                  </ThemedText>
-                  <ThemedText type="body" style={{ fontWeight: '600' }}>
-                    {weatherData.waves.height}m
-                  </ThemedText>
-                </View>
+                {weatherData.waves.height > 0 && (
+                  <View style={styles.weatherItem}>
+                    <MaterialCommunityIcons
+                      name="waves"
+                      size={20}
+                      color={theme.colors.primary}
+                    />
+                    <ThemedText type="bodySmall">
+                      {t('log.weather.waves')}
+                    </ThemedText>
+                    <ThemedText type="body" style={{ fontWeight: '600' }}>
+                      {weatherData.waves.height}m
+                    </ThemedText>
+                  </View>
+                )}
 
                 <View style={styles.weatherItem}>
                   <MaterialCommunityIcons
@@ -425,6 +457,16 @@ export default function LogScreen() {
                   </ThemedText>
                 </View>
               )}
+
+              {/* Data Source */}
+              <View style={{ marginTop: 4, alignItems: 'center' }}>
+                <ThemedText
+                  type="caption"
+                  style={{ color: theme.colors.textSecondary }}
+                >
+                  {t('weather.source')}: {t('weather.source.bom')}
+                </ThemedText>
+              </View>
             </View>
           ) : (
             <Pressable style={styles.retryButton} onPress={loadWeatherData}>
@@ -434,7 +476,45 @@ export default function LogScreen() {
                 color={theme.colors.primary}
               />
               <ThemedText type="body" style={{ color: theme.colors.primary }}>
-                Retry Weather Data
+                {t('common.retry')}
+              </ThemedText>
+            </Pressable>
+          )}
+        </ThemedView>
+
+        {/* Current Location */}
+        <ThemedView type="card" style={[styles.card, theme.shadows.sm]}>
+          <View style={styles.sectionHeader}>
+            <MaterialCommunityIcons
+              name="map-marker"
+              size={24}
+              color={theme.colors.primary}
+            />
+            <ThemedText type="subtitle">{t('log.location.current')}</ThemedText>
+          </View>
+
+          {location ? (
+            <View style={styles.locationRow}>
+              <View style={{ flex: 1 }}>
+                <ThemedText type="body">
+                  {location.address || `${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`}
+                </ThemedText>
+                <ThemedText type="caption" style={{ color: theme.colors.textSecondary, marginTop: 4 }}>
+                  {`${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`}
+                </ThemedText>
+              </View>
+              <Pressable onPress={refreshLocation} style={styles.refreshBtn}>
+                <MaterialCommunityIcons name="refresh" size={18} color={theme.colors.primary} />
+                <ThemedText type="bodySmall" style={{ color: theme.colors.primary }}>
+                  {isLocating ? t('log.weather.loading') : t('common.retry')}
+                </ThemedText>
+              </Pressable>
+            </View>
+          ) : (
+            <Pressable onPress={refreshLocation} style={styles.retryButton}>
+              <MaterialCommunityIcons name="crosshairs-gps" size={20} color={theme.colors.primary} />
+              <ThemedText type="body" style={{ color: theme.colors.primary }}>
+                {t('log.location.current')}
               </ThemedText>
             </Pressable>
           )}
@@ -460,6 +540,107 @@ export default function LogScreen() {
               color={theme.colors.primary}
             />
           </Pressable>
+        </ThemedView>
+
+        {/* Optional Hook & Bait */}
+        {!isSkunked && (
+          <ThemedView type="card" style={[styles.card, theme.shadows.sm]}>
+            <ThemedText type="subtitle" style={styles.sectionTitle}>
+              {t('equipment.form.hook')} / {t('equipment.form.bait')}
+            </ThemedText>
+            <View style={{ flexDirection: 'row', gap: 12 }}>
+              <View style={{ flex: 1 }}>
+                <ThemedText
+                  type="bodySmall"
+                  style={{ color: theme.colors.textSecondary }}
+                >
+                  {t('equipment.form.hook')}
+                </ThemedText>
+                <TextInput
+                  value={hook}
+                  onChangeText={setHook}
+                  style={{
+                    paddingVertical: 10,
+                    paddingHorizontal: 12,
+                    borderRadius: 8,
+                    backgroundColor: theme.colors.surface,
+                    color: theme.colors.text,
+                    borderColor: theme.colors.border,
+                    borderWidth: 1,
+                  }}
+                  placeholder={t('equipment.form.hook.placeholder')}
+                  placeholderTextColor={theme.colors.textSecondary}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <ThemedText
+                  type="bodySmall"
+                  style={{ color: theme.colors.textSecondary }}
+                >
+                  {t('equipment.form.bait')}
+                </ThemedText>
+                <TextInput
+                  value={bait}
+                  onChangeText={setBait}
+                  style={{
+                    paddingVertical: 10,
+                    paddingHorizontal: 12,
+                    borderRadius: 8,
+                    backgroundColor: theme.colors.surface,
+                    color: theme.colors.text,
+                    borderColor: theme.colors.border,
+                    borderWidth: 1,
+                  }}
+                  placeholder={t('equipment.form.bait.placeholder')}
+                  placeholderTextColor={theme.colors.textSecondary}
+                />
+              </View>
+            </View>
+          </ThemedView>
+        )}
+
+        {/* Optional Water Type */}
+        <ThemedView type="card" style={[styles.card, theme.shadows.sm]}>
+          <ThemedText type="subtitle" style={styles.sectionTitle}>
+            {t('equipment.form.water.types.label')}
+          </ThemedText>
+          <View style={styles.waterTypeGrid}>
+            {(Object.keys(WATER_TYPE_NAMES) as Array<keyof typeof WATER_TYPE_NAMES>).map(type => (
+              <Pressable
+                key={type as string}
+                style={[
+                  styles.waterTypeItem,
+                  {
+                    backgroundColor:
+                      waterType === (type as WaterType)
+                        ? theme.colors.primary
+                        : theme.colors.surface,
+                    borderColor:
+                      waterType === (type as WaterType)
+                        ? theme.colors.primary
+                        : theme.colors.border,
+                  },
+                ]}
+                onPress={() =>
+                  setWaterType(prev =>
+                    prev === (type as WaterType) ? null : (type as WaterType)
+                  )
+                }
+              >
+                <ThemedText
+                  type="bodySmall"
+                  style={{
+                    color:
+                      waterType === (type as WaterType)
+                        ? 'white'
+                        : theme.colors.text,
+                  }}
+                >
+                  {t(`water.${type}` as any)}
+                </ThemedText>
+              </Pressable>
+            ))}
+          </View>
         </ThemedView>
 
         {/* Equipment Picker Modal */}
@@ -538,7 +719,7 @@ export default function LogScreen() {
                 {fishList
                   .filter(f => {
                     const q = fishSearch.trim().toLowerCase();
-                    if (q.length === 0) return true;
+                    if (q.length === 0) {return true;}
                     const nameMatch = f.name.toLowerCase().includes(q);
                     const sciMatch = (f.scientificName || '')
                       .toLowerCase()
@@ -549,38 +730,50 @@ export default function LogScreen() {
                     return nameMatch || sciMatch || idMatch || aliasMatch;
                   })
                   .slice(0, 200)
-                  .map(f => (
-                    <Pressable
-                      key={f.id}
-                      style={[
-                        styles.pickerItem,
-                        selectedFish?.id === f.id && styles.pickerItemSelected,
-                      ]}
-                      onPress={() => {
-                        setSelectedFish(f);
-                        setShowFishPicker(false);
-                      }}
-                    >
-                      <ThemedText
-                        type="body"
-                        style={{
-                          color:
-                            selectedFish?.id === f.id
-                              ? theme.colors.primary
-                              : theme.colors.text,
+                  .map(f => {
+                    const q = fishSearch.trim().toLowerCase();
+                    const aliasToShow =
+                      q.length > 0
+                        ? (f.localNames || []).find(
+                            alias => (alias || '').toLowerCase().includes(q)
+                          )
+                        : undefined;
+                    const label = aliasToShow
+                      ? `${f.name} (${aliasToShow})`
+                      : f.name;
+                    return (
+                      <Pressable
+                        key={f.id}
+                        style={[
+                          styles.pickerItem,
+                          selectedFish?.id === f.id && styles.pickerItemSelected,
+                        ]}
+                        onPress={() => {
+                          setSelectedFish(f);
+                          setShowFishPicker(false);
                         }}
                       >
-                        {f.name}
-                      </ThemedText>
-                      {selectedFish?.id === f.id && (
-                        <MaterialCommunityIcons
-                          name="check"
-                          size={20}
-                          color={theme.colors.primary}
-                        />
-                      )}
-                    </Pressable>
-                  ))}
+                        <ThemedText
+                          type="body"
+                          style={{
+                            color:
+                              selectedFish?.id === f.id
+                                ? theme.colors.primary
+                                : theme.colors.text,
+                          }}
+                        >
+                          {label}
+                        </ThemedText>
+                        {selectedFish?.id === f.id && (
+                          <MaterialCommunityIcons
+                            name="check"
+                            size={20}
+                            color={theme.colors.primary}
+                          />
+                        )}
+                      </Pressable>
+                    );
+                  })}
               </ScrollView>
             </ThemedView>
           </Pressable>
@@ -697,6 +890,21 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     gap: 8,
   },
+  locationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  refreshBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    backgroundColor: 'rgba(0,0,0,0.02)'
+  },
   actionButtons: {
     flexDirection: 'row',
     gap: 12,
@@ -736,5 +944,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.04)',
     borderRadius: 8,
     paddingHorizontal: 8,
+  },
+  waterTypeGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  waterTypeItem: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
   },
 });

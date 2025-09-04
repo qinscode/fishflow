@@ -122,8 +122,11 @@ class DataExportImportService {
       }
 
       if (importData.data.userPreferences) {
+        // Strip deprecated fields
+        const { fishingStartDate: _deprecated, ...prefs } = importData.data
+          .userPreferences as any;
         // Update preferences (merge with existing)
-        store.updateUserPreferences(importData.data.userPreferences);
+        store.updateUserPreferences(prefs);
         importedCount += 1;
       }
 

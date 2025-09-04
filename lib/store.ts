@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { databaseService } from './database';
 
 import {
   Fish,
@@ -94,8 +95,8 @@ const defaultUserPreferences: UserPreferences = {
   },
   appearance: {
     theme: 'system',
-    language: 'zh',
-    rpgFrames: true,
+    language: 'en',
+    rpgFrames: false,
   },
 };
 
@@ -178,7 +179,11 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
 
     set(state => {
       const updatedCatches = [...state.catches, newCatch];
-      const unlockedIds = new Set(updatedCatches.map(c => c.fishId));
+      const unlockedIds = new Set(
+        updatedCatches
+          .filter(c => !c.isSkunked && c.fishId)
+          .map(c => c.fishId)
+      );
       return {
         catches: updatedCatches,
         unlockedFishIds: unlockedIds,
@@ -193,7 +198,9 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     cachedUserStats = defaultUserStats;
     lastUserStatsState = '';
     set(state => {
-      const unlockedIds = new Set(catches.map(c => c.fishId));
+      const unlockedIds = new Set(
+        catches.filter(c => !c.isSkunked && c.fishId).map(c => c.fishId)
+      );
       return {
         catches,
         unlockedFishIds: unlockedIds,
@@ -246,8 +253,10 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
 
   // 用户偏好操作
   updateUserPreferences: updates => {
+    // Omit deprecated keys like fishingStartDate
+    const { fishingStartDate, ...rest } = updates as any;
     set(state => ({
-      userPreferences: { ...state.userPreferences, ...updates },
+      userPreferences: { ...state.userPreferences, ...rest },
     }));
   },
 
@@ -298,6 +307,18 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     try {
       // 这里可以从数据库或API加载数据
       console.log('Initializing data...');
+
+      // One-time cleanup: remove deprecated fishingStartDate from preferences
+      const prefs: any = get().userPreferences;
+      if (prefs && Object.prototype.hasOwnProperty.call(prefs, 'fishingStartDate')) {
+        const { fishingStartDate: _deprecated, ...cleaned } = prefs;
+        set({ userPreferences: cleaned });
+        try {
+          await databaseService.updateUserPreferences(cleaned);
+        } catch (e) {
+          console.warn('Failed to persist cleaned preferences:', e);
+        }
+      }
     } catch (error) {
       console.error('Failed to initialize data:', error);
     } finally {
@@ -335,7 +356,7 @@ export const useUserStats = () => {
         timestamp: c.timestamp,
         weight: c.measurements?.weightKg || 0,
         length: c.measurements?.lengthCm || 0
-      }))
+      })),
     });
 
     // Return cached result if state hasn't changed
@@ -346,25 +367,36 @@ export const useUserStats = () => {
     // Update cache state
     lastUserStatsState = currentStatsState;
     
-    if (catches.length === 0) {
+    // Compute start date: earliest catch date if any
+    let startDate: Date | null = null;
+    if (catches.length > 0) {
+      const earliest = catches.reduce((min, c) =>
+        new Date(c.timestamp) < min ? new Date(c.timestamp) : min,
+      new Date(catches[0].timestamp));
+      startDate = earliest;
+    }
+
+    // If still no start date and no catches, keep defaults
+    if (!startDate) {
       cachedUserStats = defaultUserStats;
       return cachedUserStats;
     }
 
-    // 计算总钓获数
+    // 计算总钓获数（包含空军）
     const totalCatches = catches.length;
     
     // 计算独特鱼种数
-    const uniqueSpeciesIds = new Set(catches.map(c => c.fishId));
+    const uniqueSpeciesIds = new Set(
+      catches.filter(c => !c.isSkunked && c.fishId).map(c => c.fishId)
+    );
     const uniqueSpecies = uniqueSpeciesIds.size;
     
-    // 计算开始钓鱼的天数（从第一条记录到现在）
-    const sortedCatches = [...catches].sort((a, b) => 
-      new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-    );
-    const firstCatchDate = new Date(sortedCatches[0].timestamp);
-    const daysSinceFirstCatch = Math.floor(
-      (Date.now() - firstCatchDate.getTime()) / (1000 * 60 * 60 * 24)
+    // 计算开始钓鱼的天数：优先使用用户设置的开始日期
+    const startOfFirstDay = new Date(startDate.toDateString()).getTime();
+    const startOfToday = new Date(new Date().toDateString()).getTime();
+    const daysSinceFirstCatch = Math.max(
+      1,
+      Math.floor((startOfToday - startOfFirstDay) / (1000 * 60 * 60 * 24)) + 1
     );
     
     // 计算总重量和总长度
@@ -482,7 +514,9 @@ export const useFilteredFish = () => {
 
     // 仅已解锁
     if (filters.unlockedOnly) {
-      const unlockedIds = new Set(catches.map(c => c.fishId));
+      const unlockedIds = new Set(
+        catches.filter(c => !c.isSkunked && c.fishId).map(c => c.fishId)
+      );
       filtered = filtered.filter(f => unlockedIds.has(f.id));
     }
 

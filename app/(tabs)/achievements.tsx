@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import React, { useState, useMemo, useCallback } from 'react';
 import {
   View,
@@ -12,6 +13,9 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  interpolate,
+  FadeIn,
+  SlideInRight,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -111,12 +115,13 @@ export default function AchievementsScreen() {
   );
 
   const renderAchievement = useCallback(
-    ({ item: achievement }: { item: Achievement }) => {
+    ({ item: achievement, index }: { item: Achievement; index: number }) => {
       const userAchievement = userAchievements.find(
         ua => ua.achievementId === achievement.id
       );
       const isLocked = !userAchievement || userAchievement.tier === null;
       const tier = userAchievement?.tier || null;
+      const progress = (userAchievement?.progress || 0) / (achievement.tiers[tier || 'bronze'].requirement || 1);
 
       const dynamicItemStyle = {
         ...styles.achievementItem,
@@ -125,19 +130,96 @@ export default function AchievementsScreen() {
       };
 
       return (
-        <View style={dynamicItemStyle}>
-          <Badge
-            achievement={achievement}
-            tier={tier}
-            size="large"
-            isLocked={isLocked}
-            showTitle={true}
-            style={styles.achievementBadge}
-          />
-        </View>
+        <Animated.View
+          entering={FadeIn.delay(index * 100).springify()}
+          style={dynamicItemStyle}
+        >
+          <Pressable
+            style={styles.achievementCard}
+            onPress={() =>
+              router.push({
+                pathname: '/achievement/[id]',
+                params: { id: achievement.id },
+              })
+            }
+          >
+            <ThemedView 
+              type="card" 
+              style={[
+                styles.cardContent,
+                isLocked ? styles.lockedCard : styles.unlockedCard,
+                tier && styles[`${tier}Card`],
+                theme.shadows.sm
+              ]}
+            >
+              {/* Achievement Badge */}
+              <View style={styles.badgeContainer}>
+                <Badge
+                  achievement={achievement}
+                  tier={tier}
+                  size="large"
+                  isLocked={isLocked}
+                  progress={progress}
+                  showProgress={isLocked}
+                  showTitle={false}
+                />
+                
+                {/* New indicator */}
+                {userAchievement && !userAchievement.isViewed && (
+                  <Animated.View
+                    entering={SlideInRight.springify()}
+                    style={[styles.newBadge, { backgroundColor: theme.colors.secondary }]}
+                  >
+                    <ThemedText type="bodySmall" style={styles.newText}>
+                      {t('fishdex.new')}
+                    </ThemedText>
+                  </Animated.View>
+                )}
+              </View>
+
+              {/* Achievement Info */}
+              <View style={styles.achievementInfo}>
+                <ThemedText
+                  type="body"
+                  numberOfLines={2}
+                  style={[
+                    styles.achievementTitle,
+                    isLocked && { color: theme.colors.textSecondary }
+                  ]}
+                >
+                  {t(`achievement.${achievement.name.toLowerCase().replace(/\s+/g, '.')}.name` as any) || achievement.name}
+                </ThemedText>
+                
+                {/* Progress or status */}
+                {isLocked ? (
+                  <View style={styles.progressContainer}>
+                    <ThemedText
+                      type="bodySmall"
+                      style={[styles.progressText, { color: theme.colors.textSecondary }]}
+                    >
+                      {userAchievement?.progress || 0}/{achievement.tiers.bronze.requirement}
+                    </ThemedText>
+                  </View>
+                ) : (
+                  <View style={[styles.tierBadge, { backgroundColor: theme.colors[tier === 'gold' ? 'warning' : tier === 'silver' ? 'textSecondary' : 'secondary'] + '20' }]}>
+                    <ThemedText
+                      type="bodySmall"
+                      style={[
+                        styles.tierText,
+                        { color: theme.colors[tier === 'gold' ? 'warning' : tier === 'silver' ? 'textSecondary' : 'secondary'] }
+                      ]}
+                    >
+                      {tier ? t(`achievements.tier.${tier}` as any) : ''}
+                    </ThemedText>
+                  </View>
+                )}
+              </View>
+            </ThemedView>
+          </Pressable>
+        </Animated.View>
       );
     },
-    [userAchievements, isTablet]
+    [userAchievements, isTablet, theme, t]
   );
 
   const renderStats = () => (
@@ -273,7 +355,7 @@ export default function AchievementsScreen() {
           {filteredAchievements.length > 0 ? (
             <FlatList
               data={filteredAchievements}
-              renderItem={renderAchievement}
+              renderItem={({ item, index }) => renderAchievement({ item, index })}
               keyExtractor={item => item.id}
               numColumns={gridColumns}
               key={gridColumns} // Force re-render when columns change
@@ -365,12 +447,79 @@ const styles = StyleSheet.create({
     marginVertical: 6,
     minWidth: 140,
     maxWidth: 180,
-    alignItems: 'center',
   },
   achievementSeparator: {
     height: 8,
   },
-  achievementBadge: {
+  achievementCard: {
     width: '100%',
+  },
+  cardContent: {
+    padding: 16,
+    borderRadius: 12,
+    minHeight: 140,
+  },
+  lockedCard: {
+    opacity: 0.6,
+  },
+  unlockedCard: {
+    opacity: 1,
+  },
+  bronzeCard: {
+    borderLeftWidth: 3,
+    borderLeftColor: '#CD7F32',
+  },
+  silverCard: {
+    borderLeftWidth: 3,
+    borderLeftColor: '#C0C0C0',
+  },
+  goldCard: {
+    borderLeftWidth: 3,
+    borderLeftColor: '#FFD700',
+  },
+  badgeContainer: {
+    alignItems: 'center',
+    marginBottom: 12,
+    position: 'relative',
+  },
+  newBadge: {
+    position: 'absolute',
+    top: -4,
+    right: -4,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
+    zIndex: 10,
+  },
+  newText: {
+    color: 'white',
+    fontSize: 10,
+    fontWeight: '600',
+  },
+  achievementInfo: {
+    alignItems: 'center',
+  },
+  achievementTitle: {
+    textAlign: 'center',
+    marginBottom: 8,
+    fontWeight: '500',
+  },
+  progressContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  progressText: {
+    fontSize: 12,
+  },
+  tierBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  tierText: {
+    fontSize: 12,
+    fontWeight: '600',
   },
 });

@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, useEffect } from 'react';
 
 export type Language = 'zh' | 'en' | 'system';
 export type TranslationKeys = keyof typeof translations.zh;
@@ -235,6 +236,19 @@ export const translations = {
     'achievement.season.master.description': '在一年四季都有钓鱼记录',
     'achievement.persistent.angler.name': '坚持不懈',
     'achievement.persistent.angler.description': '单次钓鱼时长超过指定小时',
+    
+    // Achievement Detail Screen
+    'achievement.detail.title': '成就详情',
+    'achievement.detail.requirement': '要求',
+    'achievement.detail.progress': '进度',
+    'achievement.detail.reward': '奖励',
+    'achievement.detail.category': '类别',
+    'achievement.detail.unlocked.on': '解锁于',
+    'achievement.detail.locked': '未解锁',
+    'achievement.detail.unlocked': '已解锁',
+    'achievement.detail.hidden': '这是一个隐藏成就',
+    'achievement.detail.tiers.title': '成就等级',
+    'achievement.detail.not.found': '成就未找到',
 
     // Stats Screen
     'stats.title': '钓鱼统计',
@@ -280,6 +294,26 @@ export const translations = {
     'stats.month.10': '10月',
     'stats.month.11': '11月',
     'stats.month.12': '12月',
+    'stats.best.fishing.hour': '最佳钓鱼时段',
+    'stats.streak.consistency': '连击与持续性',
+    'stats.current.streak': '当前连击',
+    'stats.longest.streak': '最长连击',
+    'stats.consecutive.days': '连续天数',
+    'stats.best.record': '最佳记录',
+    'stats.location.analytics': '地点分析',
+    'stats.favorite.spot': '最爱钓点',
+    'stats.no.location': '无位置信息',
+    'stats.total.locations': '钓点总数',
+    'stats.different.spots': '个不同钓点',
+    'stats.average.catches.per.trip': '平均每次 {average} 条',
+    'stats.seasonal.analysis': '季节分析',
+    'stats.season.spring': '春季',
+    'stats.season.summer': '夏季',
+    'stats.season.autumn': '秋季',
+    'stats.season.winter': '冬季',
+    'stats.skunked.title': '空军统计',
+    'stats.skunked.count': '空军次数',
+    'stats.skunked.rate': '空军比例',
 
     // Log Screen
     'log.title': '记录钓获',
@@ -308,9 +342,12 @@ export const translations = {
     'log.weather.loading': '正在获取天气数据...',
     'log.saved': '记录已保存',
     'log.weather.error': '无法获取天气信息',
+    'weather.source': '数据来源',
+    'weather.source.bom': 'BOM',
     'log.skunked': '空军',
     'log.skunked.description': '没有钓到鱼',
     'log.start.fishing': '开始钓鱼',
+    'log.validation.fish.required': '请先选择鱼类',
 
     // Fish Detail Screen
     'fish.detail.overview': '概览',
@@ -400,14 +437,14 @@ export const translations = {
     'settings.data.clear': '清除数据',
     'settings.data.clear.warning': '此操作将删除所有数据，无法撤销',
     'settings.fishing': '钓鱼设置',
-    'settings.fishing.start.date': '钓鱼开始时间',
-    'settings.fishing.start.date.subtitle': '设置你开始钓鱼的时间',
+    // Removed fishing start date strings
     'settings.notifications.weather': '天气通知',
     'settings.privacy.share.achievements': '分享成就',
     'settings.privacy.share.stats': '分享统计',
-    'settings.date.picker.title': '设置钓鱼开始时间',
-    'settings.date.picker.subtitle': '请输入日期 (YYYY-MM-DD 格式)',
+    // Removed fishing start date strings
     'settings.error.invalid.date': '请输入有效的日期格式 (YYYY-MM-DD)',
+    'settings.rpg.frames': 'RPG边框',
+    'settings.rpg.frames.subtitle': '启用装饰性金色边框',
 
     // Common
     'common.search': '搜索',
@@ -714,6 +751,19 @@ export const translations = {
     'achievement.persistent.angler.name': 'Persistent Angler',
     'achievement.persistent.angler.description':
       'Single fishing session over specified hours',
+      
+    // Achievement Detail Screen  
+    'achievement.detail.title': 'Achievement Details',
+    'achievement.detail.requirement': 'Requirement',
+    'achievement.detail.progress': 'Progress',
+    'achievement.detail.reward': 'Reward',
+    'achievement.detail.category': 'Category',
+    'achievement.detail.unlocked.on': 'Unlocked on',
+    'achievement.detail.locked': 'Locked',
+    'achievement.detail.unlocked': 'Unlocked',
+    'achievement.detail.hidden': 'This is a hidden achievement',
+    'achievement.detail.tiers.title': 'Achievement Tiers',
+    'achievement.detail.not.found': 'Achievement not found',
 
     // Stats Screen
     'stats.title': 'Fishing Statistics',
@@ -760,6 +810,26 @@ export const translations = {
     'stats.month.10': 'Oct',
     'stats.month.11': 'Nov',
     'stats.month.12': 'Dec',
+    'stats.best.fishing.hour': 'Best Fishing Hour',
+    'stats.streak.consistency': 'Streak & Consistency',
+    'stats.current.streak': 'Current Streak',
+    'stats.longest.streak': 'Longest Streak',
+    'stats.consecutive.days': 'Consecutive Days',
+    'stats.best.record': 'Best Record',
+    'stats.location.analytics': 'Location Analytics',
+    'stats.favorite.spot': 'Favorite Spot',
+    'stats.no.location': 'No Location Data',
+    'stats.total.locations': 'Total Locations',
+    'stats.different.spots': 'Different Spots',
+    'stats.average.catches.per.trip': 'Avg {average} per trip',
+    'stats.seasonal.analysis': 'Seasonal Analysis',
+    'stats.season.spring': 'Spring',
+    'stats.season.summer': 'Summer',
+    'stats.season.autumn': 'Autumn',
+    'stats.season.winter': 'Winter',
+    'stats.skunked.title': 'Skunked Stats',
+    'stats.skunked.count': 'Skunked Count',
+    'stats.skunked.rate': 'Skunk Rate',
 
     // Log Screen
     'log.title': 'Log Catch',
@@ -788,9 +858,12 @@ export const translations = {
     'log.weather.loading': 'Fetching weather data...',
     'log.saved': 'Saved',
     'log.weather.error': 'Unable to get weather information',
+    'weather.source': 'Source',
+    'weather.source.bom': 'BOM',
     'log.skunked': 'Skunked',
     'log.skunked.description': 'No fish caught',
     'log.start.fishing': 'Start Fishing',
+    'log.validation.fish.required': 'Please select a fish first',
 
     // Fish Detail Screen
     'fish.detail.overview': 'Overview',
@@ -886,15 +959,15 @@ export const translations = {
     'settings.data.clear.warning':
       'This action will delete all data and cannot be undone',
     'settings.fishing': 'Fishing Settings',
-    'settings.fishing.start.date': 'Fishing Start Date',
-    'settings.fishing.start.date.subtitle': 'Set when you started fishing',
+    // Removed fishing start date strings
     'settings.notifications.weather': 'Weather Notifications',
     'settings.privacy.share.achievements': 'Share Achievements',
     'settings.privacy.share.stats': 'Share Statistics',
-    'settings.date.picker.title': 'Set Fishing Start Date',
-    'settings.date.picker.subtitle': 'Please enter date (YYYY-MM-DD format)',
+    // Removed fishing start date strings
     'settings.error.invalid.date':
       'Please enter a valid date format (YYYY-MM-DD)',
+    'settings.rpg.frames': 'RPG Frames',
+    'settings.rpg.frames.subtitle': 'Enable decorative golden frames',
 
     // Common
     'common.search': 'Search',
@@ -1004,5 +1077,39 @@ export const t = (
 };
 
 export const useTranslation = () => {
-  return { t, currentLanguage, setLanguage };
+  const [language, setCurrentLanguage] = useState<Language>(currentLanguage);
+
+  useEffect(() => {
+    // 初始化语言设置
+    initializeLanguage().then(lang => {
+      currentLanguage = lang; // 确保全局变量同步
+      setCurrentLanguage(lang);
+    });
+  }, []);
+
+  const changeLanguage = async (newLanguage: Language) => {
+    currentLanguage = newLanguage; // 更新全局变量
+    await setLanguage(newLanguage);
+    setCurrentLanguage(newLanguage);
+  };
+
+  const translate = (key: TranslationKeys, params?: Record<string, string>): string => {
+    const lang = language === 'system' ? 'zh' : language;
+    const translation = translations[lang][key] || translations.zh[key] || key;
+
+    // 调试信息 - 在开发环境中显示
+    if (__DEV__ && !translations[lang][key] && !translations.zh[key]) {
+      console.warn(`Translation missing for key: ${key} in language: ${lang}`);
+    }
+
+    if (params) {
+      return Object.entries(params).reduce((str, [param, value]) => {
+        return str.replace(new RegExp(`\\{${param}\\}`, 'g'), value);
+      }, translation);
+    }
+
+    return translation;
+  };
+
+  return { t: translate, currentLanguage: language, setLanguage: changeLanguage };
 };

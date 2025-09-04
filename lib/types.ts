@@ -109,7 +109,8 @@ export interface Fish {
 // 钓鱼记录
 export interface CatchRecord {
   id: string;
-  fishId: string; // 关联的鱼类ID
+  fishId: string; // 关联的鱼类ID（空军记录可为空字符串）
+  isSkunked?: boolean; // 是否空军记录（未钓到鱼）
   userId: string; // 用户ID
   timestamp: string; // ISO时间戳
   photos: string[]; // 照片路径数组
@@ -197,9 +198,6 @@ export interface UserProfile {
 
 // 用户偏好设置
 export interface UserPreferences {
-  // Fishing settings
-  fishingStartDate?: string; // ISO date string when user started fishing
-
   units: {
     length: 'cm' | 'inch';
     weight: 'kg' | 'lb';

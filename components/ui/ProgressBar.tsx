@@ -5,10 +5,14 @@ import Animated, {
   useSharedValue,
   withTiming,
   withSpring,
+  useAnimatedProps,
 } from 'react-native-reanimated';
+import Svg, { Circle } from 'react-native-svg';
 
 import { ThemedText } from '@/components/ThemedText';
 import { useTheme } from '@/hooks/useThemeColor';
+
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 export interface ProgressBarProps {
   progress: number; // 0-1
@@ -96,7 +100,7 @@ export function ProgressBar({
   );
 }
 
-// 环形进度条组件
+// 改进的环形进度条组件 - 使用SVG实现精确圆弧
 export interface ProgressRingProps {
   progress: number; // 0-1
   size?: number;
@@ -111,11 +115,11 @@ export interface ProgressRingProps {
 
 export function ProgressRing({
   progress,
-  size = 60,
-  strokeWidth = 6,
+  size = 120,
+  strokeWidth = 8,
   color,
   backgroundColor,
-  showLabel = false,
+  showLabel = true,
   label,
   animated = true,
   children,
@@ -124,7 +128,7 @@ export function ProgressRing({
   const animatedProgress = useSharedValue(0);
 
   const progressColor = color || theme.colors.primary;
-  const bgColor = backgroundColor || theme.colors.borderLight;
+  const bgColor = backgroundColor || `${theme.colors.border}40`;
 
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -132,63 +136,57 @@ export function ProgressRing({
   useEffect(() => {
     const targetProgress = Math.max(0, Math.min(1, progress));
     if (animated) {
-      animatedProgress.value = withSpring(targetProgress);
+      animatedProgress.value = withSpring(targetProgress, {
+        damping: 15,
+        stiffness: 100,
+        overshootClamping: true,
+      });
     } else {
       animatedProgress.value = targetProgress;
     }
   }, [progress, animated, animatedProgress]);
 
-  const animatedStyle = useAnimatedStyle(() => {
-    const strokeDashoffset = circumference * (1 - animatedProgress.value);
-    return {
-      strokeDashoffset: strokeDashoffset,
-    } as any;
-  });
+  const animatedProps = useAnimatedProps(() => ({
+    strokeDashoffset: circumference * (1 - animatedProgress.value),
+  }));
 
   const displayLabel = label || `${Math.round(progress * 100)}%`;
 
   return (
     <View style={[styles.ringContainer, { width: size, height: size }]}>
-      <Animated.View style={{ width: size, height: size }}>
-        {/* Background circle */}
-        <View
-          style={[
-            styles.ringBackground,
-            {
-              width: size,
-              height: size,
-              borderRadius: size / 2,
-              borderWidth: strokeWidth,
-              borderColor: bgColor,
-            },
-          ]}
+      {/* SVG圆形进度条 */}
+      <Svg width={size} height={size} style={styles.svg}>
+        {/* 背景圆 */}
+        <Circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={bgColor}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          strokeLinecap="round"
         />
-
-        {/* Progress arc */}
-        <Animated.View
-          style={[
-            styles.ringProgress,
-            {
-              width: size,
-              height: size,
-              borderRadius: size / 2,
-              borderWidth: strokeWidth,
-              borderColor: progressColor,
-              borderTopColor: 'transparent',
-              borderRightColor: 'transparent',
-              borderBottomColor: 'transparent',
-              transform: [{ rotate: '-90deg' }],
-            },
-            animatedStyle,
-          ]}
+        {/* 进度圆弧 */}
+        <AnimatedCircle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={progressColor}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          strokeDasharray={circumference}
+          strokeDashoffset={circumference}
+          strokeLinecap="round"
+          animatedProps={animatedProps}
+          transform={`rotate(-90 ${size / 2} ${size / 2})`}
         />
-      </Animated.View>
+      </Svg>
 
-      {/* Center content */}
+      {/* 中心内容 */}
       <View style={styles.ringCenter}>
         {children ||
           (showLabel && (
-            <ThemedText type="caption" style={styles.ringLabel}>
+            <ThemedText type="h3" style={[styles.ringLabel, { color: progressColor }]}>
               {displayLabel}
             </ThemedText>
           ))}
@@ -222,20 +220,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'relative',
   },
-  ringBackground: {
-    position: 'absolute',
-  },
-  ringProgress: {
+  svg: {
     position: 'absolute',
   },
   ringCenter: {
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
+    height: '100%',
   },
   ringLabel: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: '700',
     textAlign: 'center',
   },
 });
