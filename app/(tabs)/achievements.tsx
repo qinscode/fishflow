@@ -28,6 +28,7 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
 import { useTranslation } from '@/lib/i18n';
+import { getAchievementName } from '@/lib/achievementHelpers';
 import {
   useAchievements,
   useUserAchievements,
@@ -187,7 +188,7 @@ export default function AchievementsScreen() {
                     isLocked && { color: theme.colors.textSecondary }
                   ]}
                 >
-                  {t(`achievement.${achievement.name.toLowerCase().replace(/\s+/g, '.')}.name` as any) || achievement.name}
+                  {getAchievementName(achievement)}
                 </ThemedText>
                 
                 {/* Progress or status */}

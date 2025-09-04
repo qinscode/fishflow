@@ -749,77 +749,7 @@ export default function SettingsScreen() {
         </Pressable>
       </Modal>
 
-      {/* Date Picker Modal */}
-      <Modal
-        visible={showDatePicker}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={() => setShowDatePicker(false)}
-      >
-        <Pressable
-          style={styles.modalOverlay}
-          onPress={() => setShowDatePicker(false)}
-        >
-          <ThemedView type="card" style={[styles.picker, theme.shadows.lg]}>
-            <ThemedText type="subtitle" style={styles.pickerTitle}>
-              {t('settings.date.picker.title')}
-            </ThemedText>
-
-            <ThemedText
-              type="bodySmall"
-              style={{
-                color: theme.colors.textSecondary,
-                textAlign: 'center',
-                marginBottom: 16,
-              }}
-            >
-              {t('settings.date.picker.subtitle')}
-            </ThemedText>
-
-            <TextInput
-              style={[
-                styles.dateInput,
-                {
-                  backgroundColor: theme.colors.surface,
-                  color: theme.colors.text,
-                  borderColor: theme.colors.border,
-                },
-              ]}
-              value={dateInput}
-              onChangeText={setDateInput}
-              placeholder="2024-01-01"
-              placeholderTextColor={theme.colors.textSecondary}
-              keyboardType="numbers-and-punctuation"
-            />
-
-            <View style={styles.datePickerButtons}>
-              <Pressable
-                style={[
-                  styles.dateButton,
-                  { backgroundColor: theme.colors.surface },
-                ]}
-                onPress={() => setShowDatePicker(false)}
-              >
-                <ThemedText type="body" style={{ color: theme.colors.text }}>
-                  {t('common.cancel')}
-                </ThemedText>
-              </Pressable>
-
-              <Pressable
-                style={[
-                  styles.dateButton,
-                  { backgroundColor: theme.colors.primary },
-                ]}
-                onPress={handleFishingStartDateChange}
-              >
-                <ThemedText type="body" style={{ color: 'white' }}>
-                  {t('common.save')}
-                </ThemedText>
-              </Pressable>
-            </View>
-          </ThemedView>
-        </Pressable>
-      </Modal>
+      {/* Date Picker Modal removed */}
     </SafeAreaView>
   );
 }
@@ -902,22 +832,5 @@ const styles = StyleSheet.create({
   pickerItemSelected: {
     backgroundColor: 'rgba(0, 122, 255, 0.1)',
   },
-  dateInput: {
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  datePickerButtons: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  dateButton: {
-    flex: 1,
-    padding: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
+  // Removed date picker styles
 });
