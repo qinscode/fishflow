@@ -58,6 +58,12 @@ export default function HomeScreen() {
       .slice(0, 3);
   }, [achievements, userAchievements]);
 
+  // Non-skunked catch count for display
+  const nonSkunkedCount = React.useMemo(
+    () => catches.filter(c => !c.isSkunked).length,
+    [catches]
+  );
+
   const quickActions = [
     {
       id: 'log-catch',
@@ -66,6 +72,14 @@ export default function HomeScreen() {
       icon: 'plus-circle' as const,
       color: theme.colors.primary,
       onPress: () => router.push('/log'),
+    },
+    {
+      id: 'view-logs',
+      title: t('home.quick.logs'),
+      description: t('logs.subtitle'),
+      icon: 'notebook-outline' as const,
+      color: theme.colors.secondary,
+      onPress: () => router.push('/logs'),
     },
     {
       id: 'equipment',
@@ -132,7 +146,7 @@ export default function HomeScreen() {
             <View style={styles.statsGrid}>
               <View style={styles.statItem}>
                 <ThemedText type="h3" style={{ color: theme.colors.primary }}>
-                  {userStats.totalCatches}
+                  {nonSkunkedCount}
                 </ThemedText>
                 <ThemedText
                   type="bodySmall"

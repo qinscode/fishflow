@@ -41,6 +41,50 @@ class AustralianWeatherService {
   
   // Simple in-memory cache to reduce network calls (30 minutes TTL)
   private cache = new Map<string, { expires: number; data: any }>();
+  // Enable verbose logging for debugging BOM fetch/parse
+  private debug = true;
+
+  private dbg(label: string, payload?: any) {
+    if (!this.debug) return;
+    try {
+      // Avoid dumping huge objects
+      if (payload && typeof payload === 'object') {
+        const safe = JSON.stringify(payload, (k, v) => v, 2);
+        console.log(`[Weather] ${label}:`, safe.length > 1000 ? safe.slice(0, 1000) + '…' : safe);
+      } else {
+        console.log(`[Weather] ${label}:`, payload);
+      }
+    } catch {
+      console.log(`[Weather] ${label}`);
+    }
+  }
+
+  private previewJson(json: any) {
+    const keys = json && typeof json === 'object' ? Object.keys(json).slice(0, 20) : [];
+    const dataKeys = json?.data && typeof json.data === 'object' ? Object.keys(json.data).slice(0, 20) : [];
+    const obsLen = Array.isArray(json?.observations?.data) ? json.observations.data.length : undefined;
+    const obs0Keys = obsLen ? Object.keys(json.observations.data[0] || {}).slice(0, 20) : [];
+    return { keys, dataType: typeof json?.data, dataKeys, obsLen, obs0Keys };
+  }
+
+  private previewNode(node: any) {
+    if (!node || typeof node !== 'object') return node;
+    const out: Record<string, any> = {};
+    for (const k of Object.keys(node).slice(0, 12)) {
+      const v = (node as any)[k];
+      if (v && typeof v === 'object') {
+        const sub: Record<string, any> = {};
+        for (const kk of Object.keys(v).slice(0, 6)) {
+          const vv = (v as any)[kk];
+          sub[kk] = typeof vv;
+        }
+        out[k] = { type: 'object', keys: Object.keys(v).slice(0, 6), shape: sub };
+      } else {
+        out[k] = typeof v;
+      }
+    }
+    return out;
+  }
 
   /**
    * Get current weather conditions for Australian location.
@@ -53,6 +97,7 @@ class AustralianWeatherService {
 
     try {
       // 1) Try BOM Weather API (no key, geohash-based)
+      this.dbg('getCurrentWeather.loc', { lat: location.latitude, lon: location.longitude });
       const bom = await this.fetchBomWeather(location);
       if (bom) {
         this.putToCache(key, bom, 15 * 60 * 1000);
@@ -348,69 +393,115 @@ class AustralianWeatherService {
 
   // --- BOM helpers ---
   private async fetchBomWeather(location: LocationData): Promise<AustralianWeatherData | null> {
-    try {
-      const gh = this.encodeGeohash(location.latitude, location.longitude, 6);
-      const url = `https://api.weather.bom.gov.au/v1/locations/${gh}/observations`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`BOM obs failed: ${res.status}`);
-      const json: any = await res.json();
+    const precisions = [6, 5, 4];
+    for (const prec of precisions) {
+      try {
+        const gh = this.encodeGeohash(location.latitude, location.longitude, prec);
+        const url = `https://api.weather.bom.gov.au/v1/locations/${gh}/observations`;
+        this.dbg('fetchBomWeather.try', { url, geohash: gh, precision: prec });
+        const res = await fetch(url);
+        this.dbg('fetchBomWeather.res', { ok: res.ok, status: res.status, precision: prec });
+        if (!res.ok) {
+          continue; // try next precision
+        }
+        const json: any = await res.json();
+        this.dbg('fetchBomWeather.jsonPreview', this.previewJson(json));
 
-      // Try to find the observation node across known BOM shapes
-      const d = this.pickBomObservation(json);
+        // Try to find the observation node across known BOM shapes
+        const d = this.pickBomObservation(json);
+        this.dbg('fetchBomWeather.pick.keys', d && typeof d === 'object' ? Object.keys(d).slice(0, 20) : []);
 
-      // Extract with multiple fallbacks for field names used across BOM responses
-      const windKmh = this.safeNumber(
-        d?.wind?.speed_kilometre?.now ??
-          d?.wind?.speed_kmh?.now ??
-          d?.wind_spd_kmh ??
-          (this.safeNumber(d?.wind?.speed_knots?.now ?? d?.wind_spd_kn) * 1.852)
-      );
+        // Extract with multiple fallbacks for field names used across BOM responses
+        this.dbg('fetchBomWeather.windRaw', {
+          wind: this.previewNode(d?.wind),
+          gust: this.previewNode(d?.gust),
+          max_gust: this.previewNode(d?.max_gust),
+        });
+        // Temperature
+        const temp = this.safeNumber(
+          d?.temp?.now ??
+            d?.temperature?.now ??
+            d?.air_temp_now ??
+            d?.air_temp ??
+            d?.temperature ??
+            d?.temp // some responses expose number directly
+        );
 
-      const temp = this.safeNumber(
-        d?.temp?.now ??
-          d?.temperature?.now ??
-          d?.air_temp_now ??
-          d?.air_temp ??
-          d?.temperature
-      );
+        // Humidity
+        const rh = this.safeNumber(
+          d?.humidity?.now ??
+            d?.relative_humidity?.now ??
+            d?.rel_hum ??
+            d?.humidity
+        );
 
-      const rh = this.safeNumber(
-        d?.humidity?.now ??
-          d?.relative_humidity?.now ??
-          d?.rel_hum ??
-          d?.humidity
-      );
+        // Pressure (may be missing on some feeds)
+        const p = this.safeNumber(
+          d?.pressure?.now ??
+            d?.pressure_msl?.now ??
+            d?.msl_pressure_now ??
+            d?.msl_pres ??
+            d?.press_msl ??
+            d?.pressure
+        );
 
-      const p = this.safeNumber(
-        d?.pressure?.now ??
-          d?.pressure_msl?.now ??
-          d?.msl_pressure_now ??
-          d?.msl_pres ??
-          d?.press_msl
-      );
+        // Wind speed
+        const extractKmh = (src: any): number => {
+          if (src == null) return 0;
+          if (typeof src === 'number') return this.safeNumber(src);
+          // Common nested shapes
+          const kmhNow = this.safeNumber(src?.speed_kilometre?.now ?? src?.speed_kmh?.now ?? src?.kmh?.now ?? src?.kph?.now);
+          if (kmhNow) return kmhNow;
+          const kmh = this.safeNumber(src?.speed_kilometre ?? src?.speed_kmh ?? src?.kmh ?? src?.kph ?? src?.speed);
+          if (kmh) return kmh;
+          const knotsNow = this.safeNumber(src?.speed_knots?.now ?? src?.knots?.now);
+          if (knotsNow) return Math.round(knotsNow * 1.852);
+          const knots = this.safeNumber(src?.speed_knots ?? src?.knots);
+          if (knots) return Math.round(knots * 1.852);
+          return 0;
+        };
+        let windKmh = extractKmh(d?.wind);
+        if (!windKmh) windKmh = extractKmh(d?.gust);
+        if (!windKmh) windKmh = extractKmh(d?.max_gust);
 
-      const dir = this.safeNumber(
-        d?.wind?.direction?.now ?? d?.wind?.direction?.value ?? d?.wind_dir_deg
-      );
+        // Wind direction; map cardinal to degrees if needed
+        const toDeg = (v: any): number => {
+          if (typeof v === 'number') return v;
+          const s = (v || '').toString().trim().toUpperCase();
+          const map: Record<string, number> = {
+            N: 0, NNE: 22.5, NE: 45, ENE: 67.5,
+            E: 90, ESE: 112.5, SE: 135, SSE: 157.5,
+            S: 180, SSW: 202.5, SW: 225, WSW: 247.5,
+            W: 270, WNW: 292.5, NW: 315, NNW: 337.5,
+          };
+          return map[s] ?? 0;
+        };
+        const dir = toDeg(
+          d?.wind?.direction?.now ?? d?.wind?.direction?.value ?? d?.wind?.direction ?? d?.wind_dir_deg
+        );
 
-      const iconDesc: string | undefined = d?.icon_descriptor || d?.icon?.descriptor;
-      const wxText: string | undefined = d?.weather || d?.short_text || iconDesc;
+        const iconDesc: string | undefined = d?.icon_descriptor || d?.icon?.descriptor;
+        const wxText: string | undefined = d?.weather || d?.short_text || iconDesc;
 
-      const data: AustralianWeatherData = {
-        temperature: temp,
-        humidity: rh,
-        pressure: p,
-        windSpeed: windKmh,
-        windDirection: dir,
-        conditions: (wxText || 'Unknown') as string,
-        icon: this.mapBomIcon(iconDesc),
-      };
+        const data: AustralianWeatherData = {
+          temperature: temp,
+          humidity: rh,
+          pressure: p,
+          windSpeed: windKmh,
+          windDirection: dir,
+          conditions: (wxText || 'Unknown') as string,
+          icon: this.mapBomIcon(iconDesc),
+        };
+        this.dbg('fetchBomWeather.parsed', { ...data, precision: prec });
 
-      return data;
-    } catch (e) {
-      console.warn('BOM fetch failed:', e);
-      return null;
+        return data;
+      } catch (e) {
+        // try next precision
+        this.dbg('fetchBomWeather.error', { message: (e as Error)?.message, precision: prec });
+      }
     }
+    console.warn('BOM fetch failed at all precisions');
+    return null;
   }
 
   // Attempt to locate the latest observation node in BOM responses
@@ -472,21 +563,28 @@ class AustralianWeatherService {
   private async fetchBomTides(location: LocationData): Promise<TideData[] | null> {
     // BOM Weather API tide endpoint (geohash-based). Some locations may not have tide data.
     // Try a couple of plausible endpoints; if both fail, return null to trigger fallback.
-    const gh = this.encodeGeohash(location.latitude, location.longitude, 6);
-    const candidates = [
-      `https://api.weather.bom.gov.au/v1/locations/${gh}/tides`,
-      `https://api.weather.bom.gov.au/v1/locations/${gh}/marine/tides`,
-    ];
-
-    for (const url of candidates) {
-      try {
-        const res = await fetch(url);
-        if (!res.ok) continue;
-        const json: any = await res.json();
-        const parsed = this.parseBomTideJson(json);
-        if (parsed.length) return parsed;
-      } catch {
-        // try next
+    const precisions = [6, 5, 4];
+    for (const prec of precisions) {
+      const gh = this.encodeGeohash(location.latitude, location.longitude, prec);
+      const candidates = [
+        `https://api.weather.bom.gov.au/v1/locations/${gh}/tides`,
+        `https://api.weather.bom.gov.au/v1/locations/${gh}/marine/tides`,
+      ];
+      for (const url of candidates) {
+        try {
+          this.dbg('fetchBomTides.try', { url, geohash: gh, precision: prec });
+          const res = await fetch(url);
+          this.dbg('fetchBomTides.res', { ok: res.ok, status: res.status, precision: prec });
+          if (!res.ok) continue;
+          const json: any = await res.json();
+          this.dbg('fetchBomTides.jsonPreview', this.previewJson(json));
+          const parsed = this.parseBomTideJson(json);
+          this.dbg('fetchBomTides.parsedCount', { count: parsed.length, precision: prec });
+          if (parsed.length) return parsed;
+        } catch (e) {
+          this.dbg('fetchBomTides.error', { message: (e as Error)?.message, precision: prec });
+          // try next
+        }
       }
     }
     return null;

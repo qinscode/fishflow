@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import React, { useMemo } from 'react';
 import { View, StyleSheet, ScrollView, Dimensions, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -291,6 +292,29 @@ export default function StatsScreen() {
         <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
           {t('stats.subtitle')}
         </ThemedText>
+        <Pressable
+          onPress={() => router.push('/logs')}
+          style={{
+            alignSelf: 'flex-start',
+            marginTop: 8,
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            borderRadius: 999,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 6,
+            backgroundColor: theme.colors.surface,
+          }}
+        >
+          <MaterialCommunityIcons
+            name="notebook-outline"
+            size={16}
+            color={theme.colors.primary}
+          />
+          <ThemedText type="bodySmall" style={{ color: theme.colors.primary }}>
+            {t('logs.view.button', '查看钓鱼日志')}
+          </ThemedText>
+        </Pressable>
       </ThemedView>
 
       <ScrollView
