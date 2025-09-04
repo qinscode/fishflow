@@ -59,11 +59,21 @@ class AustralianWeatherService {
         return bom;
       }
     } catch (error) {
-      console.warn('BOM weather failed, using mock:', error);
-      const data = this.getMockWeatherData(location);
-      this.putToCache(key, data, 10 * 60 * 1000);
-      return data;
+      console.warn('BOM weather failed, returning zeros:', error);
     }
+
+    // Fallback to zeros if BOM response unavailable or unparsable
+    const zero: AustralianWeatherData = {
+      temperature: 0,
+      humidity: 0,
+      pressure: 0,
+      windSpeed: 0,
+      windDirection: 0,
+      conditions: 'Unknown',
+      icon: 'cloud.fill',
+    };
+    this.putToCache(key, zero, 5 * 60 * 1000);
+    return zero;
   }
 
   /**
@@ -81,13 +91,13 @@ class AustralianWeatherService {
         return bom;
       }
     } catch (e) {
-      console.warn('BOM tides failed, using mock:', e);
+      console.warn('BOM tides failed, returning empty list:', e);
     }
 
-    // Fallback to mock
-    const data = this.getMockTideData(location);
-    this.putToCache(key, data, 60 * 60 * 1000);
-    return data;
+    // Fallback to empty list
+    const empty: TideData[] = [];
+    this.putToCache(key, empty, 60 * 60 * 1000);
+    return empty;
   }
 
   /**
@@ -344,16 +354,45 @@ class AustralianWeatherService {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`BOM obs failed: ${res.status}`);
       const json: any = await res.json();
-      const d = json?.data || json; // Some responses may nest under data
 
+      // Try to find the observation node across known BOM shapes
+      const d = this.pickBomObservation(json);
+
+      // Extract with multiple fallbacks for field names used across BOM responses
       const windKmh = this.safeNumber(
-        d?.wind?.speed_kilometre?.now ?? (this.safeNumber(d?.wind?.speed_knots?.now) * 1.852)
+        d?.wind?.speed_kilometre?.now ??
+          d?.wind?.speed_kmh?.now ??
+          d?.wind_spd_kmh ??
+          (this.safeNumber(d?.wind?.speed_knots?.now ?? d?.wind_spd_kn) * 1.852)
       );
 
-      const temp = this.safeNumber(d?.temp?.now ?? d?.temperature?.now ?? d?.air_temp_now);
-      const rh = this.safeNumber(d?.humidity?.now ?? d?.relative_humidity?.now);
-      const p = this.safeNumber(d?.pressure?.now ?? d?.pressure_msl?.now ?? d?.msl_pressure_now);
-      const dir = this.safeNumber(d?.wind?.direction?.now ?? d?.wind?.direction?.value);
+      const temp = this.safeNumber(
+        d?.temp?.now ??
+          d?.temperature?.now ??
+          d?.air_temp_now ??
+          d?.air_temp ??
+          d?.temperature
+      );
+
+      const rh = this.safeNumber(
+        d?.humidity?.now ??
+          d?.relative_humidity?.now ??
+          d?.rel_hum ??
+          d?.humidity
+      );
+
+      const p = this.safeNumber(
+        d?.pressure?.now ??
+          d?.pressure_msl?.now ??
+          d?.msl_pressure_now ??
+          d?.msl_pres ??
+          d?.press_msl
+      );
+
+      const dir = this.safeNumber(
+        d?.wind?.direction?.now ?? d?.wind?.direction?.value ?? d?.wind_dir_deg
+      );
+
       const iconDesc: string | undefined = d?.icon_descriptor || d?.icon?.descriptor;
       const wxText: string | undefined = d?.weather || d?.short_text || iconDesc;
 
@@ -366,11 +405,34 @@ class AustralianWeatherService {
         conditions: (wxText || 'Unknown') as string,
         icon: this.mapBomIcon(iconDesc),
       };
+
       return data;
     } catch (e) {
       console.warn('BOM fetch failed:', e);
       return null;
     }
+  }
+
+  // Attempt to locate the latest observation node in BOM responses
+  private pickBomObservation(json: any): any {
+    if (!json) return json;
+    // Common shapes observed:
+    // - { data: { temp: { now: ... }, ... } }
+    // - { observations: { data: [ { air_temp: ..., rel_hum: ..., wind_spd_kmh: ... } ] } }
+    // - { data: [ { ... } ] }
+    const last = (arr: any[]) => (Array.isArray(arr) && arr.length ? arr[arr.length - 1] : null);
+    const candidates: any[] = [
+      json?.data,
+      last(json?.observations?.data),
+      json?.observations?.data?.[0],
+      last(json?.data),
+      Array.isArray(json?.data) ? json.data[0] : null,
+      json,
+    ];
+    for (const c of candidates) {
+      if (c && typeof c === 'object') return c;
+    }
+    return json;
   }
 
   private mapBomIcon(desc?: string): string {
