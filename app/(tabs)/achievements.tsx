@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState, useMemo, useCallback } from 'react';
 import {
   View,
@@ -30,7 +31,6 @@ import {
   useCatches,
 } from '@/lib/store';
 import { Achievement, AchievementCategory, AchievementTier } from '@/lib/types';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 type FilterCategory = AchievementCategory | 'all';
 type FilterTier = AchievementTier | 'all';
