@@ -16,14 +16,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import TideChart from '@/components/TideChart';
 import { useTheme } from '@/hooks/useThemeColor';
+import { WATER_TYPE_NAMES } from '@/lib/constants';
 import { useTranslation } from '@/lib/i18n';
 import { useAppStore, useEquipmentSets, useUserProfile, useFish } from '@/lib/store';
 import { EquipmentSet, LocationData, Fish, WaterType } from '@/lib/types';
-import { WATER_TYPE_NAMES } from '@/lib/constants';
 import {
   australianWeatherService,
   AustralianEnvironmentData,
+  mciIconForWeather,
 } from '@/lib/weatherService';
 
 
@@ -114,12 +116,12 @@ export default function LogScreen() {
     }, []);
 
   const loadWeatherData = useCallback(async () => {
-    if (isLoadingWeather) return;
+    if (isLoadingWeather) {return;}
     setIsLoadingWeather(true);
     try {
       const loc = (await getCurrentLocation()) || null;
       console.log('[Log] getCurrentLocation result:', loc);
-      if (loc) setLocation(loc);
+      if (loc) {setLocation(loc);}
       const envData = await australianWeatherService.getEnvironmentalData(
         loc || {
           latitude: -33.8688,
@@ -147,7 +149,7 @@ export default function LogScreen() {
   }, [getCurrentLocation, isLoadingWeather]);
 
   const refreshLocation = useCallback(async () => {
-    if (isLocating) return;
+    if (isLocating) {return;}
     setIsLocating(true);
     try {
       const loc = await getCurrentLocation();
@@ -376,7 +378,7 @@ export default function LogScreen() {
         <ThemedView type="card" style={[styles.card, theme.shadows.sm]}>
           <View style={styles.sectionHeader}>
             <MaterialCommunityIcons
-              name="weather-partly-cloudy"
+              name={(weatherData ? mciIconForWeather(weatherData.weather) : 'weather-partly-cloudy') as any}
               size={24}
               color={theme.colors.primary}
             />
@@ -396,65 +398,61 @@ export default function LogScreen() {
             </View>
           ) : weatherData ? (
             <View style={styles.weatherInfo}>
-              <View style={styles.weatherRow}>
-                <View style={styles.weatherItem}>
+              <View style={styles.weatherGrid}>
+                <View style={[styles.weatherItem, styles.weatherItemHalf]}>
                   <MaterialCommunityIcons
-                    name="thermometer"
+                    name={mciIconForWeather(weatherData.weather) as any}
                     size={20}
-                    color={theme.colors.secondary}
+                    color={theme.colors.primary}
                   />
-                  <ThemedText type="bodySmall">
-                    {t('log.weather.temperature')}
+                  <ThemedText type="bodySmall">{t('log.weather.conditions')}</ThemedText>
+                  <ThemedText type="body" style={{ fontWeight: '600' }}>
+                    {weatherData.weather.conditions}
                   </ThemedText>
+                </View>
+
+                <View style={[styles.weatherItem, styles.weatherItemHalf]}>
+                  <MaterialCommunityIcons name="thermometer" size={20} color={theme.colors.secondary} />
+                  <ThemedText type="bodySmall">{t('log.weather.temperature')}</ThemedText>
                   <ThemedText type="body" style={{ fontWeight: '600' }}>
                     {weatherData.weather.temperature}°C
                   </ThemedText>
                 </View>
 
-                <View style={styles.weatherItem}>
-                  <MaterialCommunityIcons
-                    name="weather-windy"
-                    size={20}
-                    color={theme.colors.accent}
-                  />
-                  <ThemedText type="bodySmall">
-                    {t('log.weather.wind')}
-                  </ThemedText>
+                <View style={[styles.weatherItem, styles.weatherItemHalf]}>
+                  <MaterialCommunityIcons name="weather-windy" size={20} color={theme.colors.accent} />
+                  <ThemedText type="bodySmall">{t('log.weather.wind')}</ThemedText>
                   <ThemedText type="body" style={{ fontWeight: '600' }}>
                     {weatherData.weather.windSpeed} km/h
                   </ThemedText>
                 </View>
-              </View>
 
-              <View style={styles.weatherRow}>
+                <View style={[styles.weatherItem, styles.weatherItemHalf]}>
+                  <MaterialCommunityIcons name="gauge" size={20} color={theme.colors.textSecondary} />
+                  <ThemedText type="bodySmall">{t('log.weather.pressure')}</ThemedText>
+                  <ThemedText type="body" style={{ fontWeight: '600' }}>
+                    {weatherData.weather.pressure} hPa
+                  </ThemedText>
+                </View>
+
                 {weatherData.waves.height > 0 && (
-                  <View style={styles.weatherItem}>
-                    <MaterialCommunityIcons
-                      name="waves"
-                      size={20}
-                      color={theme.colors.primary}
-                    />
-                    <ThemedText type="bodySmall">
-                      {t('log.weather.waves')}
-                    </ThemedText>
+                  <View style={[styles.weatherItem, styles.weatherItemHalf]}>
+                    <MaterialCommunityIcons name="waves" size={20} color={theme.colors.primary} />
+                    <ThemedText type="bodySmall">{t('log.weather.waves')}</ThemedText>
                     <ThemedText type="body" style={{ fontWeight: '600' }}>
                       {weatherData.waves.height}m
                     </ThemedText>
                   </View>
                 )}
 
-                <View style={styles.weatherItem}>
-                  <MaterialCommunityIcons
-                    name="gauge"
-                    size={20}
-                    color={theme.colors.textSecondary}
-                  />
-                  <ThemedText type="bodySmall">
-                    {t('log.weather.pressure')}
-                  </ThemedText>
-                  <ThemedText type="body" style={{ fontWeight: '600' }}>
-                    {weatherData.weather.pressure} hPa
-                  </ThemedText>
+                <View style={[styles.weatherItem, styles.weatherItemFull]}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
+                    <MaterialCommunityIcons name={"chart-line" as any} size={20} color={theme.colors.primary} />
+                    <ThemedText type="bodySmall" style={{ marginLeft: 6 }}>
+                      {t('log.weather.tide')}
+                    </ThemedText>
+                  </View>
+                  <TideChart tides={weatherData.tides || []} />
                 </View>
               </View>
 
@@ -472,11 +470,12 @@ export default function LogScreen() {
 
               {/* Data Source */}
               <View style={{ marginTop: 4, alignItems: 'center' }}>
-                <ThemedText
-                  type="caption"
-                  style={{ color: theme.colors.textSecondary }}
-                >
-                  {t('weather.source')}: {t('weather.source.bom')}
+                <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
+                  {t('weather.source')}: {
+                    weatherData?.weather.source === 'open-meteo'
+                      ? t('weather.source.open_meteo')
+                      : t('weather.source.unavailable')
+                  }
                 </ThemedText>
               </View>
             </View>
@@ -617,7 +616,7 @@ export default function LogScreen() {
             {t('equipment.form.water.types.label')}
           </ThemedText>
           <View style={styles.waterTypeGrid}>
-            {(Object.keys(WATER_TYPE_NAMES) as Array<keyof typeof WATER_TYPE_NAMES>).map(type => (
+            {(Object.keys(WATER_TYPE_NAMES) as (keyof typeof WATER_TYPE_NAMES)[]).map(type => (
               <Pressable
                 key={type as string}
                 style={[
@@ -657,10 +656,11 @@ export default function LogScreen() {
 
         {/* Equipment Picker Modal */}
         <Modal visible={showEquipPicker} transparent animationType="fade">
-          <Pressable
-            style={styles.modalOverlay}
-            onPress={() => setShowEquipPicker(false)}
-          >
+          <View style={styles.modalOverlay}>
+            <Pressable
+              style={StyleSheet.absoluteFill}
+              onPress={() => setShowEquipPicker(false)}
+            />
             <ThemedView type="card" style={[styles.picker, theme.shadows.lg]}>
               <ThemedText type="subtitle" style={styles.sectionTitle}>
                 {t('equipment.title')}
@@ -698,15 +698,16 @@ export default function LogScreen() {
                 </Pressable>
               ))}
             </ThemedView>
-          </Pressable>
+          </View>
         </Modal>
 
         {/* Fish Picker Modal */}
         <Modal visible={showFishPicker} transparent animationType="fade">
-          <Pressable
-            style={styles.modalOverlay}
-            onPress={() => setShowFishPicker(false)}
-          >
+          <View style={styles.modalOverlay}>
+            <Pressable
+              style={StyleSheet.absoluteFill}
+              onPress={() => setShowFishPicker(false)}
+            />
             <ThemedView type="card" style={[styles.picker, theme.shadows.lg]}>
               <ThemedText type="subtitle" style={styles.sectionTitle}>
                 {t('fishdex.title')}
@@ -788,7 +789,7 @@ export default function LogScreen() {
                   })}
               </ScrollView>
             </ThemedView>
-          </Pressable>
+          </View>
         </Modal>
 
         <View style={styles.actionButtons}>
@@ -883,6 +884,12 @@ const styles = StyleSheet.create({
   weatherInfo: {
     gap: 16,
   },
+  weatherGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
   weatherRow: {
     flexDirection: 'row',
     gap: 16,
@@ -894,6 +901,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.02)',
     borderRadius: 8,
     gap: 4,
+  },
+  weatherItemHalf: {
+    flexBasis: '48%',
+  },
+  weatherItemFull: {
+    flexBasis: '100%',
+    alignItems: 'stretch',
   },
   retryButton: {
     flexDirection: 'row',

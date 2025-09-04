@@ -9,6 +9,8 @@ export interface AustralianWeatherData {
   windDirection: number;
   conditions: string;
   icon: string;
+  wmoCode?: number;
+  source: 'open-meteo' | 'bom' | 'none';
   // Additional Australian-specific data
   uvIndex?: number;
   rainfall?: number;
@@ -45,7 +47,7 @@ class AustralianWeatherService {
   private debug = true;
 
   private dbg(label: string, payload?: any) {
-    if (!this.debug) return;
+    if (!this.debug) {return;}
     try {
       // Avoid dumping huge objects
       if (payload && typeof payload === 'object') {
@@ -68,7 +70,7 @@ class AustralianWeatherService {
   }
 
   private previewNode(node: any) {
-    if (!node || typeof node !== 'object') return node;
+    if (!node || typeof node !== 'object') {return node;}
     const out: Record<string, any> = {};
     for (const k of Object.keys(node).slice(0, 12)) {
       const v = (node as any)[k];
@@ -87,24 +89,24 @@ class AustralianWeatherService {
   }
 
   /**
-   * Get current weather conditions for Australian location.
-   * Uses BOM Weather API (free). Falls back to mock on failure.
+   * Get current weather conditions for location.
+   * Priority: Open‑Meteo -> zeros
    */
   async getCurrentWeather(location: LocationData): Promise<AustralianWeatherData> {
     const key = this.keyFor('wx', location);
     const cached = this.getFromCache<AustralianWeatherData>(key);
-    if (cached) return cached;
+    if (cached) {return cached;}
 
     try {
-      // 1) Try BOM Weather API (no key, geohash-based)
+      // Try Open‑Meteo first (global, no key)
       this.dbg('getCurrentWeather.loc', { lat: location.latitude, lon: location.longitude });
-      const bom = await this.fetchBomWeather(location);
-      if (bom) {
-        this.putToCache(key, bom, 15 * 60 * 1000);
-        return bom;
+      const om = await this.fetchOpenMeteoWeather(location);
+      if (om) {
+        this.putToCache(key, om, 10 * 60 * 1000);
+        return om;
       }
     } catch (error) {
-      console.warn('BOM weather failed, returning zeros:', error);
+      console.warn('Open‑Meteo weather failed, returning zeros:', error);
     }
 
     // Fallback to zeros if BOM response unavailable or unparsable
@@ -116,27 +118,29 @@ class AustralianWeatherService {
       windDirection: 0,
       conditions: 'Unknown',
       icon: 'cloud.fill',
+      source: 'none',
     };
     this.putToCache(key, zero, 5 * 60 * 1000);
     return zero;
   }
 
   /**
-   * Get tide information for Australian coastal locations.
-   * Tries BOM Weather API tide endpoint first; falls back to mock on failure.
+   * Get tide information for coastal locations.
+   * Priority: Open‑Meteo Tide -> empty list
    */
   async getTideData(location: LocationData): Promise<TideData[]> {
     const key = this.keyFor('tide', location);
     const cached = this.getFromCache<TideData[]>(key);
-    if (cached) return cached;
+    if (cached) {return cached;}
     try {
-      const bom = await this.fetchBomTides(location);
-      if (bom && bom.length) {
-        this.putToCache(key, bom, 6 * 60 * 60 * 1000); // cache tides for 6h
-        return bom;
+      // Try Open‑Meteo Tide for today
+      const omt = await this.fetchOpenMeteoTides(location);
+      if (omt && omt.length) {
+        this.putToCache(key, omt, 3 * 60 * 60 * 1000);
+        return omt;
       }
     } catch (e) {
-      console.warn('BOM tides failed, returning empty list:', e);
+      console.warn('Open‑Meteo tides failed, returning empty list:', e);
     }
 
     // Fallback to empty list
@@ -146,14 +150,19 @@ class AustralianWeatherService {
   }
 
   /**
-   * Get wave conditions for Australian coastal locations.
-   * BOM public API does not provide a unified free wave endpoint; return zeroes.
+   * Get wave conditions for coastal locations.
+   * Priority: Open‑Meteo Marine -> zeros
    */
   async getWaveData(location: LocationData): Promise<WaveData> {
     const key = this.keyFor('wave', location);
     const cached = this.getFromCache<WaveData>(key);
-    if (cached) return cached;
+    if (cached) {return cached;}
     try {
+      const om = await this.fetchOpenMeteoWaves(location);
+      if (om) {
+        this.putToCache(key, om, 60 * 60 * 1000);
+        return om;
+      }
       const data: WaveData = { height: 0, period: 0, direction: 0 };
       this.putToCache(key, data, 30 * 60 * 1000);
       return data;
@@ -203,6 +212,7 @@ class AustralianWeatherService {
       windDirection: Math.round(Math.random() * 360),
       conditions: conditions[Math.floor(Math.random() * conditions.length)],
       icon: 'sun.max', // Default icon
+      source: 'none',
       uvIndex: Math.round(Math.random() * 11), // 0-11 UV index
       rainfall: Math.random() * 10, // 0-10mm
     };
@@ -325,7 +335,7 @@ class AustralianWeatherService {
 
   private getFromCache<T>(key: string): T | null {
     const entry = this.cache.get(key);
-    if (!entry) return null;
+    if (!entry) {return null;}
     if (Date.now() > entry.expires) {
       this.cache.delete(key);
       return null;
@@ -380,15 +390,106 @@ class AustralianWeatherService {
   private mapWmoToIcon(code: number): string {
     // Map to SF Symbols-ish naming used in app
     const c = Number(code);
-    if (c === 0) return 'sun.max.fill';
-    if (c === 1 || c === 2) return 'cloud.sun.fill';
-    if (c === 3) return 'cloud.fill';
-    if (c >= 51 && c <= 57) return 'cloud.drizzle.fill';
-    if ((c >= 61 && c <= 67) || (c >= 80 && c <= 82)) return 'cloud.rain.fill';
-    if (c >= 71 && c <= 77) return 'cloud.snow.fill';
-    if (c === 45 || c === 48) return 'cloud.fog.fill';
-    if (c >= 95) return 'cloud.bolt.rain.fill';
+    if (c === 0) {return 'sun.max.fill';}
+    if (c === 1 || c === 2) {return 'cloud.sun.fill';}
+    if (c === 3) {return 'cloud.fill';}
+    if (c >= 51 && c <= 57) {return 'cloud.drizzle.fill';}
+    if ((c >= 61 && c <= 67) || (c >= 80 && c <= 82)) {return 'cloud.rain.fill';}
+    if (c >= 71 && c <= 77) {return 'cloud.snow.fill';}
+    if (c === 45 || c === 48) {return 'cloud.fog.fill';}
+    if (c >= 95) {return 'cloud.bolt.rain.fill';}
     return 'cloud.fill';
+  }
+
+  // --- Open‑Meteo helpers ---
+  private async fetchOpenMeteoWeather(location: LocationData): Promise<AustralianWeatherData | null> {
+    try {
+      const { latitude: lat, longitude: lon } = location;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
+        `&current=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m,weather_code` +
+        `&hourly=relative_humidity_2m,surface_pressure` +
+        `&timezone=auto`;
+      this.dbg('openMeteo.weather.url', url);
+      const res = await fetch(url);
+      this.dbg('openMeteo.weather.res', { ok: res.ok, status: res.status });
+      if (!res.ok) {return null;}
+      const json: any = await res.json();
+      this.dbg('openMeteo.weather.keys', Object.keys(json || {}));
+
+      const current = json?.current || json?.current_weather || {};
+      const nowIso: string | undefined = current?.time || json?.current?.time || json?.current_weather?.time;
+
+      const temp = this.safeNumber(current?.temperature_2m ?? current?.temperature);
+      const windSpd = this.safeNumber(current?.wind_speed_10m ?? current?.windspeed);
+      const windDir = this.safeNumber(current?.wind_direction_10m ?? current?.winddirection);
+      const wmo = this.safeNumber(current?.weather_code ?? current?.weathercode);
+
+      // Humidity / Pressure may be only in hourly
+      const hourlyTimes: string[] | undefined = json?.hourly?.time;
+      const rhArr = json?.hourly?.relative_humidity_2m ?? json?.hourly?.relativehumidity_2m;
+      const spArr = json?.hourly?.surface_pressure;
+      const idx = this.findNearestTimeIndex(hourlyTimes, nowIso);
+      const rh = this.safeNumber(current?.relative_humidity_2m ?? (idx != null ? rhArr?.[idx] : undefined));
+      const pres = this.safeNumber(current?.surface_pressure ?? (idx != null ? spArr?.[idx] : undefined));
+
+      const data: AustralianWeatherData = {
+        temperature: temp,
+        humidity: rh,
+        pressure: pres,
+        windSpeed: windSpd,
+        windDirection: windDir,
+        conditions: this.mapWmoToText(wmo),
+        icon: this.mapWmoToIcon(wmo),
+        wmoCode: wmo,
+        source: 'open-meteo',
+      };
+      this.dbg('openMeteo.weather.parsed', data);
+
+      const core = [data.temperature, data.windSpeed];
+      if (core.filter(v => v && isFinite(v)).length === 0) {return null;}
+      return data;
+    } catch (e) {
+      this.dbg('openMeteo.weather.error', (e as Error)?.message || e);
+      return null;
+    }
+  }
+
+  private async fetchOpenMeteoWaves(location: LocationData): Promise<WaveData | null> {
+    try {
+      const { latitude: lat, longitude: lon } = location;
+      const url = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}` +
+        `&hourly=wave_height,wave_direction,wave_period&timezone=auto&cell_selection=sea`;
+      this.dbg('openMeteo.waves.url', url);
+      const res = await fetch(url);
+      this.dbg('openMeteo.waves.res', { ok: res.ok, status: res.status });
+      if (!res.ok) {return null;}
+      const json: any = await res.json();
+      const times: string[] | undefined = json?.hourly?.time;
+      const idx = this.findNearestTimeIndex(times, undefined);
+      if (idx == null) {return null;}
+      const h = this.safeNumber(json?.hourly?.wave_height?.[idx]);
+      const p = this.safeNumber(json?.hourly?.wave_period?.[idx]);
+      const d = this.safeNumber(json?.hourly?.wave_direction?.[idx]);
+      const out: WaveData = { height: h, period: p, direction: d };
+      this.dbg('openMeteo.waves.parsed', out);
+      return out;
+    } catch (e) {
+      this.dbg('openMeteo.waves.error', (e as Error)?.message || e);
+      return null;
+    }
+  }
+
+  private findNearestTimeIndex(times?: string[], targetIso?: string): number | null {
+    if (!Array.isArray(times) || times.length === 0) {return null;}
+    const nowMs = targetIso ? Date.parse(targetIso) : Date.now();
+    let bestIdx = 0;
+    let bestDiff = Number.POSITIVE_INFINITY;
+    for (let i = 0; i < times.length; i++) {
+      const t = Date.parse(times[i]);
+      const diff = Math.abs(t - nowMs);
+      if (diff < bestDiff) { bestDiff = diff; bestIdx = i; }
+    }
+    return bestIdx;
   }
 
   // --- BOM helpers ---
@@ -447,26 +548,26 @@ class AustralianWeatherService {
 
         // Wind speed
         const extractKmh = (src: any): number => {
-          if (src == null) return 0;
-          if (typeof src === 'number') return this.safeNumber(src);
+          if (src === null || src === undefined) {return 0;}
+          if (typeof src === 'number') {return this.safeNumber(src);}
           // Common nested shapes
           const kmhNow = this.safeNumber(src?.speed_kilometre?.now ?? src?.speed_kmh?.now ?? src?.kmh?.now ?? src?.kph?.now);
-          if (kmhNow) return kmhNow;
+          if (kmhNow) {return kmhNow;}
           const kmh = this.safeNumber(src?.speed_kilometre ?? src?.speed_kmh ?? src?.kmh ?? src?.kph ?? src?.speed);
-          if (kmh) return kmh;
+          if (kmh) {return kmh;}
           const knotsNow = this.safeNumber(src?.speed_knots?.now ?? src?.knots?.now);
-          if (knotsNow) return Math.round(knotsNow * 1.852);
+          if (knotsNow) {return Math.round(knotsNow * 1.852);}
           const knots = this.safeNumber(src?.speed_knots ?? src?.knots);
-          if (knots) return Math.round(knots * 1.852);
+          if (knots) {return Math.round(knots * 1.852);}
           return 0;
         };
         let windKmh = extractKmh(d?.wind);
-        if (!windKmh) windKmh = extractKmh(d?.gust);
-        if (!windKmh) windKmh = extractKmh(d?.max_gust);
+        if (!windKmh) {windKmh = extractKmh(d?.gust);}
+        if (!windKmh) {windKmh = extractKmh(d?.max_gust);}
 
         // Wind direction; map cardinal to degrees if needed
         const toDeg = (v: any): number => {
-          if (typeof v === 'number') return v;
+          if (typeof v === 'number') {return v;}
           const s = (v || '').toString().trim().toUpperCase();
           const map: Record<string, number> = {
             N: 0, NNE: 22.5, NE: 45, ENE: 67.5,
@@ -483,15 +584,17 @@ class AustralianWeatherService {
         const iconDesc: string | undefined = d?.icon_descriptor || d?.icon?.descriptor;
         const wxText: string | undefined = d?.weather || d?.short_text || iconDesc;
 
-        const data: AustralianWeatherData = {
-          temperature: temp,
-          humidity: rh,
-          pressure: p,
-          windSpeed: windKmh,
-          windDirection: dir,
-          conditions: (wxText || 'Unknown') as string,
-          icon: this.mapBomIcon(iconDesc),
-        };
+      const data: AustralianWeatherData = {
+        temperature: temp,
+        humidity: rh,
+        pressure: p,
+        windSpeed: windKmh,
+        windDirection: dir,
+        conditions: (wxText || 'Unknown') as string,
+        icon: this.mapBomIcon(iconDesc),
+        wmoCode: undefined,
+        source: 'bom',
+      };
         this.dbg('fetchBomWeather.parsed', { ...data, precision: prec });
 
         return data;
@@ -506,7 +609,7 @@ class AustralianWeatherService {
 
   // Attempt to locate the latest observation node in BOM responses
   private pickBomObservation(json: any): any {
-    if (!json) return json;
+    if (!json) {return json;}
     // Common shapes observed:
     // - { data: { temp: { now: ... }, ... } }
     // - { observations: { data: [ { air_temp: ..., rel_hum: ..., wind_spd_kmh: ... } ] } }
@@ -521,21 +624,21 @@ class AustralianWeatherService {
       json,
     ];
     for (const c of candidates) {
-      if (c && typeof c === 'object') return c;
+      if (c && typeof c === 'object') {return c;}
     }
     return json;
   }
 
   private mapBomIcon(desc?: string): string {
     const d = (desc || '').toLowerCase();
-    if (!d) return 'cloud.fill';
-    if (d.includes('sunny') || d.includes('clear')) return 'sun.max.fill';
-    if (d.includes('partly')) return 'cloud.sun.fill';
-    if (d.includes('cloud')) return 'cloud.fill';
-    if (d.includes('shower') || d.includes('rain')) return 'cloud.rain.fill';
-    if (d.includes('storm') || d.includes('thunder')) return 'cloud.bolt.rain.fill';
-    if (d.includes('snow')) return 'cloud.snow.fill';
-    if (d.includes('fog')) return 'cloud.fog.fill';
+    if (!d) {return 'cloud.fill';}
+    if (d.includes('sunny') || d.includes('clear')) {return 'sun.max.fill';}
+    if (d.includes('partly')) {return 'cloud.sun.fill';}
+    if (d.includes('cloud')) {return 'cloud.fill';}
+    if (d.includes('shower') || d.includes('rain')) {return 'cloud.rain.fill';}
+    if (d.includes('storm') || d.includes('thunder')) {return 'cloud.bolt.rain.fill';}
+    if (d.includes('snow')) {return 'cloud.snow.fill';}
+    if (d.includes('fog')) {return 'cloud.fog.fill';}
     return 'cloud.fill';
   }
 
@@ -555,7 +658,7 @@ class AustralianWeatherService {
         if (lat >= latMid) { idx = idx * 2 + 1; latMin = latMid; } else { idx = idx * 2; latMax = latMid; }
       }
       evenBit = !evenBit;
-      if (++bit == 5) { hash += base32.charAt(idx); bit = 0; idx = 0; }
+      if (++bit === 5) { hash += base32.charAt(idx); bit = 0; idx = 0; }
     }
     return hash;
   }
@@ -575,12 +678,12 @@ class AustralianWeatherService {
           this.dbg('fetchBomTides.try', { url, geohash: gh, precision: prec });
           const res = await fetch(url);
           this.dbg('fetchBomTides.res', { ok: res.ok, status: res.status, precision: prec });
-          if (!res.ok) continue;
+          if (!res.ok) {continue;}
           const json: any = await res.json();
           this.dbg('fetchBomTides.jsonPreview', this.previewJson(json));
           const parsed = this.parseBomTideJson(json);
           this.dbg('fetchBomTides.parsedCount', { count: parsed.length, precision: prec });
-          if (parsed.length) return parsed;
+          if (parsed.length) {return parsed;}
         } catch (e) {
           this.dbg('fetchBomTides.error', { message: (e as Error)?.message, precision: prec });
           // try next
@@ -592,33 +695,33 @@ class AustralianWeatherService {
 
   private parseBomTideJson(json: any): TideData[] {
     const out: TideData[] = [];
-    if (!json) return out;
+    if (!json) {return out;}
 
     // Common structures observed in tide APIs
     const lists: any[] = [];
-    if (Array.isArray(json?.tides)) lists.push(...json.tides);
-    if (Array.isArray(json?.data)) lists.push(...json.data);
-    if (Array.isArray(json?.predictions)) lists.push(...json.predictions);
-    if (Array.isArray(json?.entries)) lists.push(...json.entries);
+    if (Array.isArray(json?.tides)) {lists.push(...json.tides);}
+    if (Array.isArray(json?.data)) {lists.push(...json.data);}
+    if (Array.isArray(json?.predictions)) {lists.push(...json.predictions);}
+    if (Array.isArray(json?.entries)) {lists.push(...json.entries);}
 
     const pushEntry = (timeStr: any, heightVal: any, typeVal: any) => {
       const t = typeof timeStr === 'string' ? timeStr : new Date(timeStr).toISOString();
       const hNum = this.safeNumber(heightVal);
       let tp: 'high' | 'low' | null = null;
       const tv = (typeVal || '').toString().toLowerCase();
-      if (tv.includes('high')) tp = 'high';
-      if (tv.includes('low')) tp = 'low';
-      if (!tp) tp = hNum >= 1.5 ? 'high' : 'low';
+      if (tv.includes('high')) {tp = 'high';}
+      if (tv.includes('low')) {tp = 'low';}
+      if (!tp) {tp = hNum >= 1.5 ? 'high' : 'low';}
       out.push({ time: t, height: Math.round(hNum * 100) / 100, type: tp });
     };
 
     for (const item of lists) {
-      if (!item) continue;
+      if (!item) {continue;}
       // Possible key variants
       const time = item.time || item.date || item.at || item.timestamp;
       const height = item.height || item.tide_height || item.value || item.metres || item.meters;
       const type = item.type || item.event || item.tide_type;
-      if (time != null && height != null) {
+      if (time !== null && time !== undefined && height !== null && height !== undefined) {
         // Some feeds provide millimetres
         const h = typeof height === 'number' && height > 10 ? height / 1000 : height; // mm -> m
         pushEntry(time, h, type);
@@ -629,6 +732,157 @@ class AustralianWeatherService {
     // Limit to next ~4 entries
     return out.slice(0, 6);
   }
+
+  // --- Open‑Meteo Tide ---
+  private async fetchOpenMeteoTides(location: LocationData): Promise<TideData[] | null> {
+    try {
+      const { latitude: lat, longitude: lon } = location;
+      const today = new Date();
+      const y = today.getFullYear();
+      const m = String(today.getMonth() + 1).padStart(2, '0');
+      const d = String(today.getDate()).padStart(2, '0');
+      const dateStr = `${y}-${m}-${d}`;
+      const urls = [
+        // Correct Tide API base per Open‑Meteo docs: tide-api subdomain
+        `https://tide-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
+          `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
+          `&hourly=tide_height&start_date=${dateStr}&end_date=${dateStr}&timezone=auto&cell_selection=sea`,
+        `https://tide-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
+          `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
+          `&hourly=tide_height&length=1&timezone=auto&cell_selection=sea`,
+        // Extra fallbacks in case of routing quirks
+        `https://marine-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
+          `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
+          `&hourly=tide_height&start_date=${dateStr}&end_date=${dateStr}&timezone=auto&cell_selection=sea`,
+        `https://marine-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
+          `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
+          `&hourly=tide_height&length=1&timezone=auto&cell_selection=sea`,
+      ];
+      for (const url of urls) {
+        this.dbg('openMeteo.tide.url', url);
+        const res = await fetch(url);
+        this.dbg('openMeteo.tide.res', { ok: res.ok, status: res.status });
+        if (!res.ok) { continue; }
+        const json: any = await res.json();
+        this.dbg('openMeteo.tide.keys', json ? Object.keys(json) : []);
+        // First try daily fields
+        let out = this.parseOpenMeteoTideJson(json);
+        this.dbg('openMeteo.tide.dailyParsedCount', out.length);
+        if (!out.length) {
+          // Fallback: derive extremes from hourly tide_height within the requested day
+          const derived = this.deriveTideExtremesFromHourly(json);
+          this.dbg('openMeteo.tide.derivedCount', derived.length);
+          out = derived;
+        }
+        if (out.length) { return out; }
+      }
+      return null;
+    } catch (e) {
+      this.dbg('openMeteo.tide.error', (e as Error)?.message || e);
+      return null;
+    }
+  }
+
+  private parseOpenMeteoTideJson(json: any): TideData[] {
+    const out: TideData[] = [];
+    if (!json) {return out;}
+    const daily = json.daily || json?.data || {};
+    if (!daily) {return out;}
+
+    // Helper to normalize to flat arrays
+    const toArray = (v: any): any[] => {
+      if (v == null) {return [];} 
+      if (Array.isArray(v)) {return v.flat ? v.flat() : ([] as any[]).concat(...v);}
+      return [v];
+    };
+
+    const highsTime = toArray(daily.high_tide_time);
+    const highsHeight = toArray(daily.high_tide_height);
+    const lowsTime = toArray(daily.low_tide_time);
+    const lowsHeight = toArray(daily.low_tide_height);
+
+    const pushPair = (timeArr: any[], heightArr: any[], type: 'high' | 'low') => {
+      const n = Math.min(timeArr.length, heightArr.length);
+      for (let i = 0; i < n; i++) {
+        const t = timeArr[i];
+        const h = this.safeNumber(heightArr[i]);
+        if (t) { out.push({ time: typeof t === 'string' ? t : new Date(t).toISOString(), height: Math.round(h * 100) / 100, type }); }
+      }
+    };
+    pushPair(highsTime, highsHeight, 'high');
+    pushPair(lowsTime, lowsHeight, 'low');
+
+    out.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+    return out.filter(x => x.time.startsWith((new Date(x.time)).toISOString().slice(0, 10)) || true); // keep for today; len already 1
+  }
+
+  private deriveTideExtremesFromHourly(json: any): TideData[] {
+    const out: TideData[] = [];
+    try {
+      const hourly = json?.hourly || {};
+      const times: string[] | undefined = hourly?.time;
+      const hArr: number[] | undefined = hourly?.tide_height || hourly?.tide || hourly?.tideheight;
+      if (!Array.isArray(times) || !Array.isArray(hArr) || times.length !== hArr.length || !times.length) {
+        return out;
+      }
+      // Constrain to today's indices
+      const todayStr = new Date(times[0]).toISOString().slice(0, 10); // assume API only returned requested day
+      const idxs: number[] = [];
+      for (let i = 0; i < times.length; i++) {
+        if ((times[i] || '').slice(0, 10) === todayStr) idxs.push(i);
+      }
+      if (idxs.length < 3) return out;
+      // Find local extrema via sign change of first difference
+      let prevDiff = 0;
+      for (let k = 1; k < idxs.length; k++) {
+        const i0 = idxs[k - 1];
+        const i1 = idxs[k];
+        const diff = (hArr[i1] as number) - (hArr[i0] as number);
+        if (k > 1) {
+          if (prevDiff > 0 && diff < 0) {
+            // local maximum at i0
+            out.push({ time: times[i0], height: Math.round(hArr[i0] * 100) / 100, type: 'high' });
+          } else if (prevDiff < 0 && diff > 0) {
+            // local minimum at i0
+            out.push({ time: times[i0], height: Math.round(hArr[i0] * 100) / 100, type: 'low' });
+          }
+        }
+        prevDiff = diff;
+      }
+      // Sort and keep a reasonable count (up to 6)
+      out.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+      return out.slice(0, 6);
+    } catch {
+      return out;
+    }
+  }
 }
 
 export const australianWeatherService = new AustralianWeatherService();
+
+// Map our weather data to MaterialCommunityIcons icon name
+export function mciIconForWeather(w: AustralianWeatherData): string {
+  // Prefer WMO code when available (Open‑Meteo)
+  const code = w.wmoCode;
+  if (typeof code === 'number') {
+    const c = Number(code);
+    if (c === 0) return 'weather-sunny';
+    if (c === 1 || c === 2) return 'weather-partly-cloudy';
+    if (c === 3) return 'weather-cloudy';
+    if (c === 45 || c === 48) return 'weather-fog';
+    if ((c >= 51 && c <= 57) || (c >= 61 && c <= 67)) return 'weather-rainy';
+    if (c >= 71 && c <= 77) return 'weather-snowy';
+    if (c >= 80 && c <= 82) return 'weather-pouring';
+    if (c >= 95) return 'weather-lightning-rainy';
+  }
+  // Fallback: use condition text heuristics (BOM)
+  const t = (w.conditions || '').toLowerCase();
+  if (t.includes('thunder') || t.includes('storm')) return 'weather-lightning-rainy';
+  if (t.includes('snow')) return 'weather-snowy';
+  if (t.includes('rain') || t.includes('shower') || t.includes('drizzle')) return 'weather-rainy';
+  if (t.includes('fog')) return 'weather-fog';
+  if (t.includes('partly') || t.includes('mostly')) return 'weather-partly-cloudy';
+  if (t.includes('cloud')) return 'weather-cloudy';
+  if (t.includes('clear') || t.includes('sunny')) return 'weather-sunny';
+  return 'weather-cloudy';
+}

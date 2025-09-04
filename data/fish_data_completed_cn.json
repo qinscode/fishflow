@@ -7502,10 +7502,17 @@
   },
   {
     "id": "156",
-    "name": "Sea perch, crimson",
-    "scientificName": "Lutjanus erythropterus",
-    "localNames": ["Crimson snapper", "Crimson seaperch", "Red snapper"],
-    "family": "Lutjanidae",
+    "name": "赤红笛鲷",
+    "scientificName": "Lutjanus erythropterus（赤红笛鲷）",
+    "localNames": [
+      "Crimson snapper",
+      "Crimson seaperch",
+      "Red snapper",
+      "赤红笛鲷",
+      "绯红海鲈",
+      "红笛鲷"
+    ],
+    "family": "Lutjanidae（笛鲷科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/156?thumbnailSize=large",
@@ -7535,43 +7542,47 @@
     ],
     "behavior": {
       "feedingHabits": [
-        "Fish",
-        "Crustaceans",
-        "Cephalopods",
-        "Small fish",
-        "Prawns",
-        "Squid",
-        "Benthic invertebrates"
+        "鱼类",
+        "甲壳类",
+        "头足类",
+        "小型鱼类",
+        "对虾",
+        "鱿鱼",
+        "底栖无脊椎动物"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "High-quality eating fish with white, firm flesh and excellent flavour. One of the premium snappers with clean, sweet taste and perfect texture",
+      "taste": "食用品质极佳，肉质洁白紧实、风味优良。属于上乘笛鲷，口感清甜、质地出色",
       "cookingMethods": [
-        "Whole cooking",
-        "Fillet",
-        "Sashimi",
-        "Pan-fry",
-        "Grill",
-        "Bake",
-        "Steam"
+        "整条烹调",
+        "鱼柳/片鱼",
+        "刺身",
+        "煎",
+        "烧烤",
+        "烘烤",
+        "清蒸"
       ],
-      "notes": "Highly prized eating fish with excellent commercial and recreational value. Similar quality to other premium snappers. Best prepared fresh with minimal seasoning to highlight natural flavour. Forage mostly at night. Important commercial species in Indo-Pacific region."
+      "notes": "高价值食用鱼，兼具商业与休闲渔业重要性。品质与其他优质笛鲷相近。以夜间摄食为主。印太区域重要的商业物种，鲜制少佐料更能体现本味"
     }
   },
   {
     "id": "157",
-    "name": "Sea perch, scarlet",
-    "scientificName": "Lutjanus malabaricus",
+    "name": "绯红笛鲷",
+    "scientificName": "Lutjanus malabaricus（绯红笛鲷/马拉巴红笛鲷）",
     "localNames": [
       "Saddletail snapper",
+      "鞍斑红笛鲷",
       "Scarlet seaperch",
+      "绯红海鲈",
       "Malabar red snapper",
-      "Large-mouth nannygai"
+      "马拉巴红笛鲷",
+      "Large-mouth nannygai",
+      "大口南尼盖"
     ],
-    "family": "Lutjanidae",
+    "family": "Lutjanidae（笛鲷科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/157?thumbnailSize=large",
@@ -7601,37 +7612,44 @@
     ],
     "behavior": {
       "feedingHabits": [
-        "Fish",
-        "Crustaceans",
-        "Cephalopods",
-        "Small fish",
-        "Prawns",
-        "Invertebrates"
+        "鱼类",
+        "甲壳类",
+        "头足类",
+        "小型鱼类",
+        "对虾",
+        "无脊椎动物"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Outstanding eating quality with firm, white flesh and excellent flavour. One of Australia's premier table fish. Sweet, clean taste with perfect texture",
+      "taste": "食用品质卓越，肉质洁白紧实、风味上乘。被誉为澳洲顶级餐桌鱼之一，口感清甜细致，质地完美",
       "cookingMethods": [
-        "Whole cooking",
-        "Fillet",
-        "Sashimi",
-        "Pan-fry",
-        "Grill",
-        "Bake",
-        "Steam"
+        "整条烹调",
+        "鱼柳/片鱼",
+        "刺身",
+        "煎",
+        "烧烤",
+        "烘烤",
+        "清蒸"
       ],
-      "notes": "Considered one of the finest eating fish in Australian waters. Highly prized by both recreational and commercial fishers. Slow growing and long-lived, requiring careful management. Best prepared fresh with minimal seasoning to highlight natural flavour. Commands premium prices in restaurants."
+      "notes": "澳大利亚名列前茅的上品食用鱼，深受游钓与商业渔民青睐。生长缓慢、寿命较长，亟需审慎管理。鲜制少佐料以凸显本味；餐饮市场价格常居高位"
     }
   },
   {
     "id": "158",
-    "name": "Snapper, ruby",
-    "scientificName": "Etelis carbunculus",
-    "localNames": ["Ruby snapper", "Deep-water red snapper", "Ruby jobfish"],
-    "family": "Lutjanidae",
+    "name": "红宝石笛鲷",
+    "scientificName": "Etelis carbunculus（红宝石笛鲷）",
+    "localNames": [
+      "Ruby snapper",
+      "红宝石笛鲷",
+      "Deep-water red snapper",
+      "深水红鲷",
+      "Ruby jobfish",
+      "红宝石笛鲷"
+    ],
+    "family": "Lutjanidae（笛鲷科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/158?thumbnailSize=large",
@@ -7643,9 +7661,9 @@
       "maxWeightKg": 15
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -7660,41 +7678,38 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Fish",
-        "Squid",
-        "Crustaceans",
-        "Small pelagic fish",
-        "Deep-water fish"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["鱼类", "鱿鱼", "甲壳类", "小型远洋鱼类", "深水鱼类"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Outstanding eating quality with firm, white to pale pink flesh. Premium deep-water snapper with excellent texture and delicate flavour",
+      "taste": "食用品质卓越，肉质白至浅粉色，紧实细腻；深水优质笛鲷，口感与风味上乘",
       "cookingMethods": [
-        "Whole cooking",
-        "Fillet",
-        "Sashimi",
-        "Pan-fry",
-        "Grill",
-        "Bake",
-        "Steam"
+        "整条烹调",
+        "鱼柳/片鱼",
+        "刺身",
+        "煎",
+        "烧烤",
+        "烘烤",
+        "清蒸"
       ],
-      "notes": "One of the most prized deep-water snappers. Caught at depths typically between 100-400m. Commands high prices in fish markets due to excellent eating quality. Best prepared fresh to highlight natural flavour. Important commercial species in tropical and subtropical waters."
+      "notes": "最受推崇的深水笛鲷之一，常见捕捞深度约 100–400 米。因食用品质极佳而在市场上价格高企。鲜制少佐料以凸显本味；热带与亚热带海域重要的商业物种"
     }
   },
   {
     "id": "159",
-    "name": "Snapper, goldband",
-    "scientificName": "Pristipomoides multidens",
+    "name": "金带笛鲷",
+    "scientificName": "Pristipomoides multidens（多齿乔氏笛鲷）",
     "localNames": [
       "Goldband snapper",
+      "金带笛鲷",
       "Gold-band fusilier",
-      "Goldband jobfish"
+      "金带兵鲷",
+      "Goldband jobfish",
+      "金带乔氏笛鲷"
     ],
-    "family": "Lutjanidae",
+    "family": "Lutjanidae（笛鲷科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/159?thumbnailSize=large",
@@ -7706,9 +7721,9 @@
       "maxWeightKg": 5
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -7724,41 +7739,44 @@
     ],
     "behavior": {
       "feedingHabits": [
-        "Small fish",
-        "Zooplankton",
-        "Crustaceans",
-        "Small invertebrates",
-        "Pelagic prey"
+        "小型鱼类",
+        "浮游动物",
+        "甲壳类",
+        "小型无脊椎动物",
+        "远洋性猎物"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Excellent eating quality with white, firm flesh and delicate flavour. Premium commercial and recreational species with clean, sweet taste",
+      "taste": "食用品质优异，肉质洁白紧实、风味细致纯净；兼具商业与休闲渔业价值",
       "cookingMethods": [
-        "Whole cooking",
-        "Fillet",
-        "Sashimi",
-        "Pan-fry",
-        "Grill",
-        "Bake",
-        "Steam"
+        "整条烹调",
+        "鱼柳/片鱼",
+        "刺身",
+        "煎",
+        "烧烤",
+        "烘烤",
+        "清蒸"
       ],
-      "notes": "Important commercial species in northern Australian waters. Caught primarily by commercial trawl and line fisheries. Forms schools over continental shelf and slope areas. Best prepared fresh with simple cooking methods to highlight natural flavour."
+      "notes": "澳大利亚北部重要的商业物种，主要以拖网与延绳钓捕捞；常在陆架与陆坡海域成群活动。鲜制、简洁烹调可更好呈现本味"
     }
   },
   {
     "id": "160",
-    "name": "Barracuda",
-    "scientificName": "Sphyraena barracuda",
+    "name": "大梭鱼",
+    "scientificName": "Sphyraena barracuda（大梭鱼）",
     "localNames": [
       "Great barracuda",
+      "大梭鱼",
       "Giant barracuda",
+      "巨梭鱼",
       "Barracouta",
-      "Sea pike"
+      "Sea pike",
+      "海梭鱼"
     ],
-    "family": "Sphyraenidae",
+    "family": "Sphyraenidae（梭鱼科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/160?thumbnailSize=large",
@@ -7780,43 +7798,36 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Fish",
-        "Small fish",
-        "Jacks",
-        "Mackerels",
-        "Flying fish",
-        "Squid"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["鱼类", "小型鱼类", "鲹类", "鲭类", "飞鱼", "鱿鱼"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "good",
-      "taste": "Good eating quality when properly prepared. Firm, white flesh with mild to moderate flavour. Some risk of ciguatera in tropical reef areas",
-      "cookingMethods": [
-        "Grill",
-        "Bake",
-        "Pan-fry",
-        "Smoke",
-        "Steaks",
-        "Fillet"
-      ],
-      "notes": "CAUTION: Large barracuda from tropical reef areas may carry ciguatera toxin. Australian barracuda are generally safe but should be sourced carefully. Excellent when grilled or barbecued. Remove dark meat from centerline before cooking. Best prepared with strong flavours like garlic, lemon, and herbs."
+      "taste": "适当处理后食用品质良好；肉质洁白紧实、风味中等。热带礁区大型个体存在雪卡毒素风险",
+      "cookingMethods": ["烧烤", "烘烤", "煎", "烟熏", "切排", "鱼柳/片鱼"],
+      "notes": "注意：热带礁区大型大梭鱼可能携带雪卡毒素。澳洲海域一般较安全，但仍应谨慎来源。适合烧烤或炭烤；烹前去除中央的深色肉。搭配蒜、柠檬与香草等浓郁风味更佳"
     }
   },
   {
     "id": "161",
-    "name": "Barracouta",
-    "scientificName": "Thyrsites atun",
+    "name": "巴拉库塔",
+    "scientificName": "Thyrsites atun（巴拉库塔）",
     "localNames": [
+      "Barracouta",
+      "巴拉库塔",
       "Snoek",
+      "斯努克",
       "Couta",
+      "库塔鱼",
       "Pick-handle",
+      "镐柄鱼",
       "Axe-handle",
-      "Hammer-handle"
+      "斧柄鱼",
+      "Hammer-handle",
+      "锤柄鱼"
     ],
-    "family": "Gempylidae",
+    "family": "Gempylidae（蛇鲭科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/161?thumbnailSize=large",
@@ -7828,47 +7839,52 @@
       "maxWeightKg": 5
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
       "feedingHabits": [
-        "Small baitfish",
-        "Anchovies",
-        "Pilchards",
-        "Jack mackerel",
-        "Krill",
-        "Small fish"
+        "小型饵鱼",
+        "鳀鱼",
+        "小沙丁鱼",
+        "竹荚鱼/杰克鲭",
+        "磷虾",
+        "小型鱼类"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "good",
-      "taste": "Good eating quality with pinkish-coloured flesh that is firm and white when cooked. Tasty and well-suited to smoking",
-      "cookingMethods": ["Smoke", "Grill", "Fry", "Bake", "Steaks", "Barbecue"],
-      "notes": "PARASITES WARNING: Flesh can occasionally contain parasitic worms - cooking destroys them completely. NEVER eat raw. Despite this, barracouta is excellent eating when cooked. Many long, flexible bones are easily removed after cooking. Popular for smoking. School in large numbers making them easy to catch when present."
+      "taste": "适当处理后食用品质良好；肉色微粉，熟后肉白而紧实。非常适合烟熏，风味佳",
+      "cookingMethods": ["烟熏", "烧烤", "油煎", "烘烤", "切排", "炭烤"],
+      "notes": "寄生虫提示：鱼肉偶见寄生虫，充分加热可完全灭活，切勿生食。烹煮后长而柔韧的细刺易去除。常见成群活动，易于在出现时大量捕获；烟熏尤佳"
     }
   },
   {
     "id": "162",
-    "name": "Cobia",
-    "scientificName": "Rachycentron canadum",
+    "name": "军曹鱼",
+    "scientificName": "Rachycentron canadum（军曹鱼）",
     "localNames": [
       "Black kingfish",
+      "黑王鱼",
       "Black salmon",
+      "黑鲑",
       "Ling",
       "Lemonfish",
+      "柠檬鱼",
       "Crabeater",
-      "Sergeant fish"
+      "食蟹鱼",
+      "Sergeant fish",
+      "军曹鱼"
     ],
-    "family": "Rachycentridae",
+    "family": "Rachycentridae（军曹鱼科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/162?thumbnailSize=large",
@@ -7890,38 +7906,38 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Crustaceans",
-        "Fish",
-        "Squid",
-        "Crabs",
-        "Small fish",
-        "Prawns"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["甲壳类", "鱼类", "鱿鱼", "螃蟹", "小型鱼类", "对虾"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Excellent eating quality with firm, white flesh and mild flavour. Superior texture compared to kingfish, retains moisture when cooked",
+      "taste": "食用品质极佳，肉质洁白紧实、风味清雅；相较 kingfish 质地更佳，烹煮后保水性强",
       "cookingMethods": [
-        "Raw/Sashimi",
-        "Pan-fry",
-        "Grill",
-        "Roast",
-        "Steam",
-        "Barbecue",
-        "Smoke"
+        "生食/刺身",
+        "煎",
+        "烧烤",
+        "焙烤",
+        "清蒸",
+        "炭烤",
+        "烟熏"
       ],
-      "notes": "Considered one of the finest eating fish - often called a 'great dad fish' because it won't dry out even if overcooked. Can be cooked with skin and scales on, which crisp up like duck skin. Fast growing aquaculture species with excellent commercial potential. Belongs to remora family but doesn't have sucker disc."
+      "notes": "被誉为顶级餐桌鱼之一——因即便稍过火也不易柴而有“好爸爸鱼”之称。可连皮带鳞烹制，外皮可烤至类似鸭皮般酥脆。养殖生长快，商业潜力优；隶属军曹鱼科而非吸盘鱼（无吸盘）"
     }
   },
   {
     "id": "163",
-    "name": "Gemfish",
-    "scientificName": "Rexea solandri",
-    "localNames": ["Silver gemfish", "Hake", "Kingfish"],
-    "family": "Gempylidae",
+    "name": "宝石鱼",
+    "scientificName": "Rexea solandri（宝石鱼/银宝石鱼）",
+    "localNames": [
+      "Silver gemfish",
+      "银宝石鱼",
+      "Hake",
+      "无须鳕（商品名）",
+      "Kingfish",
+      "宝石鱼"
+    ],
+    "family": "Gempylidae（蛇鲭科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/163?thumbnailSize=large",
@@ -7943,40 +7959,30 @@
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Fish",
-        "Squid",
-        "Crustaceans",
-        "Small fish",
-        "Pelagic prey"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["鱼类", "鱿鱼", "甲壳类", "小型鱼类", "远洋性猎物"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "good",
-      "taste": "Good edible quality flesh with firm texture. Especially tasty when smoked. Clean white meat when cooked",
-      "cookingMethods": [
-        "Smoke",
-        "Pan-fry",
-        "Grill",
-        "Bake",
-        "Steam",
-        "Fillet"
-      ],
-      "notes": "The flesh is of good edible quality and especially tasty when smoked. Important commercial species in southern Australian waters. Schools migrate along continental slope during winter spawning runs. Deep-water species typically caught at 300-450m depth. Stock in eastern Australia has been subject to poor recruitment since 1989."
+      "taste": "食用品质良好，肉质紧实；烟熏风味尤佳。熟后肉色洁白",
+      "cookingMethods": ["烟熏", "煎", "烧烤", "烘烤", "清蒸", "鱼柳/片鱼"],
+      "notes": "南澳大利亚水域重要的商业物种。冬季产卵期群体沿陆坡迁移；多在 300–450 米深水捕获。澳大利亚东部种群自 1989 年以来补充量偏低"
     }
   },
   {
     "id": "164",
-    "name": "Mackerel, grey",
-    "scientificName": "Scomberomorus semifasciatus",
+    "name": "灰马鲛",
+    "scientificName": "Scomberomorus semifasciatus（灰马鲛）",
     "localNames": [
       "Broadbarred king mackerel",
+      "宽带王马鲛",
       "Grey mackerel",
-      "Broadband mackerel"
+      "灰马鲛",
+      "Broadband mackerel",
+      "宽带马鲛"
     ],
-    "family": "Scombridae",
+    "family": "Scombridae（鲭科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/164?thumbnailSize=large",
@@ -7988,46 +7994,40 @@
       "maxWeightKg": 10
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Small fish",
-        "Sardines",
-        "Herrings",
-        "Baitfish",
-        "Anchovies"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["小型鱼类", "沙丁鱼", "鲱鱼", "饵鱼", "鳀鱼"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Excellent eating quality with meaty, lean flesh. One of the finest tropical mackerels with firm texture and mild flavour",
-      "cookingMethods": [
-        "Grill",
-        "Pan-fry",
-        "Barbecue",
-        "Steaks",
-        "Sashimi",
-        "Cutlets"
-      ],
-      "notes": "Much larger than Blue Mackerel (up to 100 times larger) with meatier, leaner flesh. More appropriate for cutting into cutlets with less-edible skin. Spanish Mackerel is considered the greatest of tropical mackerels, but most people struggle to distinguish between Grey, School, and Spotted once cooked. Marketed fresh and frozen; eaten fried, broiled and baked."
+      "taste": "食用品质极佳，肉质结实偏瘦；热带马鲛类中的上乘口感，质地紧实、风味清雅",
+      "cookingMethods": ["烧烤", "煎", "炭烤", "切排", "刺身", "切块烹调"],
+      "notes": "体型远大于蓝点鲭（可达数十倍），肌肉更结实更瘦。皮较不宜食，适合切排烹制。尽管西班牙马鲛被视为热带马鲛之最，多数人在熟制后很难区分灰马鲛、校马鲛与斑点马鲛。常见鲜售或冻品，适合煎、烤、焙"
     }
   },
   {
     "id": "165",
-    "name": "Mackerel, school",
-    "scientificName": "Scomberomorus queenslandicus",
-    "localNames": ["School mackerel", "Queensland school mackerel", "Schoolie"],
-    "family": "Scombridae",
+    "name": "校马鲛",
+    "scientificName": "Scomberomorus queenslandicus（校马鲛）",
+    "localNames": [
+      "School mackerel",
+      "校马鲛",
+      "Queensland school mackerel",
+      "昆士兰校马鲛",
+      "Schoolie",
+      "小校马鲛"
+    ],
+    "family": "Scombridae（鲭科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/165?thumbnailSize=large",
@@ -8039,51 +8039,42 @@
       "maxWeightKg": 8
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Small fish",
-        "Sardines",
-        "Anchovies",
-        "Baitfish",
-        "Herrings"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["小型鱼类", "沙丁鱼", "鳀鱼", "饵鱼", "鲱鱼"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Excellent eating quality with meaty, lean flesh. One of the tropical mackerels with firm texture and good flavour",
-      "cookingMethods": [
-        "Grill",
-        "Pan-fry",
-        "Barbecue",
-        "Steaks",
-        "Cutlets",
-        "Whole cooking"
-      ],
-      "notes": "One of the tropical mackerels with much larger size than Blue Mackerel. Meaty, leaner flesh more appropriate for cutting into cutlets with less-edible skin. Spanish Mackerel is considered the greatest of tropical mackerels, but most people struggle to distinguish between Grey, School, and Spotted once cooked. School in open waters and sometimes move into inshore bays."
+      "taste": "食用品质极佳，肉质结实偏瘦；热带马鲛类之一，质地紧实、风味良好",
+      "cookingMethods": ["烧烤", "煎", "炭烤", "切排", "切块烹调", "整鱼烹调"],
+      "notes": "体型显著大于蓝点鲭，肌肉更结实更瘦。皮较不宜食，适合切排。虽西班牙马鲛被视为热带马鲛之最，但熟制后多数学者难以区分灰/校/斑点马鲛。常结群于外海，有时进入近岸海湾"
     }
   },
   {
     "id": "166",
-    "name": "Mackerel, shark",
-    "scientificName": "Grammatorcynus bicarinatus",
+    "name": "鲛马鲛",
+    "scientificName": "Grammatorcynus bicarinatus（鲛马鲛/大鳞金枪鲔）",
     "localNames": [
       "Shark mackerel",
+      "鲛马鲛",
       "Largescaled tunny",
+      "大鳞金枪鲔",
       "Large-scaled tunny",
-      "Salmon mackerel"
+      "大鳞鲔",
+      "Salmon mackerel",
+      "鲑马鲛"
     ],
-    "family": "Scombridae",
+    "family": "Scombridae（鲭科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/166?thumbnailSize=large",
@@ -8095,24 +8086,18 @@
       "maxWeightKg": 13.5
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Fish",
-        "Clupeoid fishes",
-        "Sardines",
-        "Anchovies",
-        "Small schooling fish"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["鱼类", "鲱形鱼类", "沙丁鱼", "鳀鱼", "小型群游鱼类"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
@@ -8130,14 +8115,17 @@
   },
   {
     "id": "167",
-    "name": "Mackerel, spotted",
-    "scientificName": "Scomberomorus munroi",
+    "name": "斑点马鲛",
+    "scientificName": "Scomberomorus munroi（斑点马鲛/蒙若氏马鲛）",
     "localNames": [
       "Australian spotted mackerel",
+      "澳洲斑点马鲛",
       "Spotted mackerel",
-      "Spotted Spanish mackerel"
+      "斑点马鲛",
+      "Spotted Spanish mackerel",
+      "斑点西班牙马鲛"
     ],
-    "family": "Scombridae",
+    "family": "Scombridae（鲭科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/167?thumbnailSize=large",
@@ -8149,48 +8137,49 @@
       "maxWeightKg": 10.2
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
       "feedingHabits": [
-        "Fish",
-        "Anchovies",
-        "Sardines",
-        "Prawns",
-        "Squid",
-        "Small schooling fish"
+        "鱼类",
+        "鳀鱼",
+        "沙丁鱼",
+        "对虾",
+        "鱿鱼",
+        "小型群游鱼类"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Excellent eating quality with meaty, lean flesh. One of the tropical mackerels with firm texture and excellent flavour. Highly prized catch",
-      "cookingMethods": [
-        "Grill",
-        "Pan-fry",
-        "Barbecue",
-        "Steaks",
-        "Sashimi",
-        "Cutlets",
-        "Smoke"
-      ],
-      "notes": "Easily identified with four rows of large black spots over its sides. Found more commonly in offshore, open waters away from reefs. Form large schools which move close inshore along coast, commonly taken December-April/May. Much larger than Blue Mackerel with meatier flesh. Reports of possible ciguatera poisoning in some areas."
+      "taste": "食用品质极佳，肉质结实偏瘦；热带马鲛类中口感优异，风味出色，深受青睐",
+      "cookingMethods": ["烧烤", "煎", "炭烤", "切排", "刺身", "切块", "烟熏"],
+      "notes": "体侧易见四行大型黑色斑点。多见于离岸外海、远离礁体的开阔水域，常成大群沿岸近岸回游（常见于 12–4/5 月被捕）。体型远大于蓝点鲭，肌肉更结实。部分海域有可能发生雪卡毒素的报告"
     }
   },
   {
     "id": "168",
-    "name": "Tropical snappers and sea perch (group)",
-    "scientificName": "Lutjanidae spp.",
-    "localNames": ["Snappers", "Sea perch", "Red fish", "Tropical snappers"],
-    "family": "Lutjanidae",
+    "name": "热带笛鲷与海鲈（类群）",
+    "scientificName": "Lutjanidae spp.（笛鲷科多种）",
+    "localNames": [
+      "Snappers",
+      "笛鲷",
+      "Sea perch",
+      "海鲈/海鲈类",
+      "Red fish",
+      "红鱼",
+      "Tropical snappers",
+      "热带笛鲷"
+    ],
+    "family": "Lutjanidae（笛鲷科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/168?thumbnailSize=large",
@@ -8202,13 +8191,13 @@
       "maxWeightKg": 15
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast",
+        "region": "West Coast (西海岸)",
         "dailyLimit": 2,
         "closedSeasons": [
           {
@@ -8220,43 +8209,48 @@
     ],
     "behavior": {
       "feedingHabits": [
-        "Fish",
-        "Crustaceans",
-        "Cephalopods",
-        "Small fish",
-        "Prawns",
-        "Invertebrates"
+        "鱼类",
+        "甲壳类",
+        "头足类",
+        "小型鱼类",
+        "对虾",
+        "无脊椎动物"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Excellent eating quality group with firm, white flesh and outstanding flavour. Among Australia's premier table fish species",
+      "taste": "整体食用品质极佳，肉质洁白紧实、风味出众；是澳大利亚顶级餐桌鱼类之一",
       "cookingMethods": [
-        "Whole cooking",
-        "Fillet",
-        "Sashimi",
-        "Pan-fry",
-        "Grill",
-        "Bake",
-        "Steam"
+        "整鱼烹调",
+        "鱼柳/片鱼",
+        "刺身",
+        "煎",
+        "烧烤",
+        "烘烤",
+        "清蒸"
       ],
-      "notes": "Includes many of Australia's most prized eating fish species such as red emperor, goldband snapper, crimson snapper, and various sea perch species. Highly valued commercially and recreationally. Slow growing and long-lived, requiring careful management. Best prepared fresh with minimal seasoning to highlight natural flavours."
+      "notes": "涵盖多种澳洲名贵食用鱼，如红帝笛鲷、金带笛鲷、赤红笛鲷及多种海鲈类。兼具商业与游钓价值；生长慢、寿命长，需审慎管理。鲜制、少佐料更能突出本味"
     }
   },
   {
     "id": "169",
-    "name": "Rays (group)",
-    "scientificName": "Batoidea spp.",
+    "name": "鳐形目（类群）",
+    "scientificName": "Batoidea spp.（鳐形目多种）",
     "localNames": [
       "Stingrays",
+      "黄貂鱼/刺鳐",
       "Skates",
+      "糙鲨鳐/鳐（滑鳐）",
       "Eagle rays",
+      "鹰鳐",
       "Shovelnose rays",
-      "Electric rays"
+      "铲鼻鳐",
+      "Electric rays",
+      "电鳐"
     ],
-    "family": "Batoidea",
+    "family": "Batoidea（鳐形目）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/169?thumbnailSize=large",
@@ -8268,51 +8262,50 @@
       "maxWeightKg": 100
     },
     "habitat": {
-      "waterTypes": ["Marine", "Estuarine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水", "河口"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
       "feedingHabits": [
-        "Bottom dwelling invertebrates",
-        "Molluscs",
-        "Crustaceans",
-        "Worms",
-        "Small fish"
+        "底栖无脊椎动物",
+        "软体动物",
+        "甲壳类",
+        "蠕虫/多毛类",
+        "小型鱼类"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "good",
-      "taste": "Variable eating quality depending on species and preparation. Wings from larger rays are good eating, similar to scallops when properly prepared",
-      "cookingMethods": [
-        "Pan-fry",
-        "Grill",
-        "Bake",
-        "Parboil then sauté",
-        "Mock scallops"
-      ],
-      "notes": "SAFETY WARNING: Many rays have venomous barbs - handle with extreme care. Best eating size is wingspan 18 inches to 2 feet. Larger rays can be tough but are good parboiled. Wings contain cartilage instead of bones. Meat from guitarfish tails similar to flathead. Eagle ray wings have unique texture between pork and prawn. Requires skinning and careful preparation."
+      "taste": "食用品质随种类与处理而异。大型个体的鳍（翼）去皮妥善处理后口感佳，风味可近似带子",
+      "cookingMethods": ["煎", "烧烤", "烘烤", "先汆再煎炒", "仿带子做法"],
+      "notes": "安全提示：许多鳐类具毒刺，务必小心处理。最佳食用尺寸约翼展 18 英寸至 2 英尺。大型个体肉质偏韧，可先汆烫再烹。翼部多为软骨而非骨头。铲鼻鳐尾部肉质与扁鱼相近；鹰鳐翼介于猪肉与虾之间的独特口感。需去皮并细致处理"
     }
   },
   {
     "id": "171",
-    "name": "Emperors and seabream (group)",
-    "scientificName": "Lethrinidae, Sparidae spp.",
+    "name": "皇帝鱼与海鲷（类群）",
+    "scientificName": "Lethrinidae spp.（皇帝鱼科多种），Sparidae spp.（鲷科多种）",
     "localNames": [
       "Red emperor",
+      "红帝皇鱼",
       "Spangled emperor",
+      "星斑皇帝鱼",
       "Grass emperor",
+      "草皇帝鱼",
       "Black snapper",
-      "Seabream"
+      "黑鲷/黑笛鲷",
+      "Seabream",
+      "海鲷"
     ],
-    "family": "Lethrinidae, Sparidae",
+    "family": "Lethrinidae（皇帝鱼科），Sparidae（鲷科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/171?thumbnailSize=large",

@@ -152,7 +152,7 @@ export class AchievementEngine {
         // 需要检查稀有鱼类
         const { fish } = useAppStore.getState();
         const rareCatches = catches.filter(c => {
-          if (c.isSkunked || !c.fishId) return false;
+          if (c.isSkunked || !c.fishId) {return false;}
           const fishData = fish.find(f => f.id === c.fishId);
           return fishData && ['rare', 'epic', 'legendary'].includes(fishData.rarity);
         });
@@ -188,9 +188,9 @@ export class AchievementEngine {
   ): AchievementTier | null {
     const tiers = achievement.tiers;
     
-    if (progress >= tiers.gold.requirement) return 'gold';
-    if (progress >= tiers.silver.requirement) return 'silver';
-    if (progress >= tiers.bronze.requirement) return 'bronze';
+    if (progress >= tiers.gold.requirement) {return 'gold';}
+    if (progress >= tiers.silver.requirement) {return 'silver';}
+    if (progress >= tiers.bronze.requirement) {return 'bronze';}
     
     return null;
   }
@@ -260,7 +260,7 @@ export class AchievementEngine {
    * 计算连续钓鱼天数
    */
   private calculateStreakDays(catches: CatchRecord[]): number {
-    if (catches.length === 0) return 0;
+    if (catches.length === 0) {return 0;}
 
     const fishingDates = Array.from(
       new Set(
@@ -270,7 +270,7 @@ export class AchievementEngine {
       )
     ).sort();
 
-    if (fishingDates.length === 0) return 0;
+    if (fishingDates.length === 0) {return 0;}
 
     let currentStreak = 1;
     let maxStreak = 1;
@@ -324,7 +324,7 @@ export class AchievementEngine {
       .filter(c => !c.isSkunked && c.fishId)
       .reduce((acc, catch_) => {
         const date = new Date(catch_.timestamp).toDateString();
-        if (!acc[date]) acc[date] = new Set();
+        if (!acc[date]) {acc[date] = new Set();}
         acc[date].add(catch_.fishId);
         return acc;
       }, {} as Record<string, Set<string>>);
@@ -355,9 +355,9 @@ export class AchievementEngine {
     const seasons = new Set(
       catches.map(c => {
         const month = new Date(c.timestamp).getMonth() + 1;
-        if (month >= 3 && month <= 5) return 'spring';
-        if (month >= 6 && month <= 8) return 'summer';
-        if (month >= 9 && month <= 11) return 'autumn';
+        if (month >= 3 && month <= 5) {return 'spring';}
+        if (month >= 6 && month <= 8) {return 'summer';}
+        if (month >= 9 && month <= 11) {return 'autumn';}
         return 'winter';
       })
     );
@@ -393,7 +393,7 @@ export class AchievementEngine {
    * 处理解锁通知队列
    */
   private async processUnlockQueue(): Promise<void> {
-    if (this.isProcessing || this.unlockQueue.length === 0) return;
+    if (this.isProcessing || this.unlockQueue.length === 0) {return;}
 
     this.isProcessing = true;
     const { achievements } = useAppStore.getState();

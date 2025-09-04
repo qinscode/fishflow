@@ -1,9 +1,9 @@
-import React, { useState, useCallback } from 'react';
 import { router } from 'expo-router';
+import React, { useState, useCallback } from 'react';
 
 import { AchievementNotification } from '@/components/ui/AchievementNotification';
-import { Achievement, AchievementTier } from '@/lib/types';
 import { useAchievements } from '@/lib/store';
+import { Achievement, AchievementTier } from '@/lib/types';
 
 interface NotificationData {
   id: string;
@@ -56,7 +56,7 @@ export function AchievementNotificationManager() {
 
   // 渲染当前通知
   const renderCurrentNotification = () => {
-    if (!currentNotification) return null;
+    if (!currentNotification) {return null;}
 
     return (
       <AchievementNotification

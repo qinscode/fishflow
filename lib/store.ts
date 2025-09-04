@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { databaseService } from './database';
 
+import { databaseService } from './database';
 import {
   Fish,
   CatchRecord,

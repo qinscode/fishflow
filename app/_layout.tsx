@@ -48,44 +48,9 @@ export default function RootLayout() {
           setUserAchievements([]);
           setEquipmentSets(MOCK_EQUIPMENT_DATA);
           
-          // 添加一些测试钓鱼记录，这样部分鱼类会显示为已解锁
-          const mockCatches = [
-            {
-              id: generateUUID(),
-              fishId: '1',
-              userId: 'test-user',
-              timestamp: new Date().toISOString(),
-              photos: [],
-              measurements: { lengthCm: 45, weightKg: 2.5 },
-              equipment: { rod: '测试鱼竿', bait: '测试饵料' },
-              conditions: {},
-              notes: '测试记录',
-              isReleased: false,
-              isPersonalBest: false,
-              tags: [],
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-            },
-            {
-              id: generateUUID(),
-              fishId: '2',
-              userId: 'test-user',
-              timestamp: new Date().toISOString(),
-              photos: [],
-              measurements: { lengthCm: 30, weightKg: 1.2 },
-              equipment: { rod: '测试鱼竿', bait: '测试饵料' },
-              conditions: {},
-              notes: '测试记录2',
-              isReleased: true,
-              isPersonalBest: false,
-              tags: [],
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-            },
-          ];
-          
-          setCatches(mockCatches);
-          console.log('App data initialized successfully with JSON fish data, mock catches, and equipment data');
+          // 初始化空的钓获记录，让用户从头开始体验成就系统
+          setCatches([]);
+          console.log('App data initialized successfully with JSON fish data and equipment data');
         } catch (error) {
           console.error('Failed to initialize app data:', error);
         }

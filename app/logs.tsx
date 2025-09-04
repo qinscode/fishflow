@@ -38,19 +38,19 @@ export default function LogsScreen() {
             />
           </Pressable>
           <View style={styles.headerLeft}>
-            <ThemedText type="h2">{t('logs.title', '钓鱼日志')}</ThemedText>
+            <ThemedText type="h2">{t('logs.title')}</ThemedText>
             <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
-              {t('logs.subtitle', '浏览和管理你的钓鱼记录')}
+              {t('logs.subtitle')}
             </ThemedText>
           </View>
         </View>
         <ThemedView style={styles.emptyContainer}>
           <EmptyState
             type="no-data"
-            title={t('logs.empty.title', '还没有钓鱼记录')}
-            description={t('logs.empty.description', '从记录一次钓鱼开始吧')}
+            title={t('logs.empty.title')}
+            description={t('logs.empty.description')}
             action={{
-              label: t('logs.empty.action', '去记录'),
+              label: t('logs.empty.action'),
               onPress: () => router.push('/log'),
             }}
           />
@@ -72,9 +72,9 @@ export default function LogsScreen() {
           />
         </Pressable>
         <View style={styles.headerLeft}>
-          <ThemedText type="h2">{t('logs.title', '钓鱼日志')}</ThemedText>
+          <ThemedText type="h2">{t('logs.title')}</ThemedText>
           <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
-            {t('logs.subtitle', '浏览和管理你的钓鱼记录')}
+            {t('logs.subtitle')}
           </ThemedText>
         </View>
       </View>
@@ -83,8 +83,8 @@ export default function LogsScreen() {
         {records.map(record => {
           const fishItem = fish.find(f => f.id === record.fishId);
           const title = record.isSkunked
-            ? t('logs.item.skunked', '空军记录')
-            : fishItem?.name || t('logs.item.unknown', '未知鱼类');
+            ? t('logs.item.skunked')
+            : fishItem?.name || t('logs.item.unknown');
           return (
             <ThemedView key={record.id} type="card" style={[styles.card, theme.shadows.sm]}>
               <Pressable

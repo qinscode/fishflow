@@ -96,36 +96,12 @@ export default function SettingsScreen() {
       Alert.alert('🎨', 'Developer options unlocked!');
     }
     
-    // 添加成就测试功能
-    if (newCount >= 10) {
-      // 连续点击10次触发成就测试
-      testAchievementUnlock();
-      setVersionTapCount(0);
-    }
-    
     // Reset counter after 3 seconds of inactivity
     setTimeout(() => {
       if (versionTapCount === newCount) {
         setVersionTapCount(0);
       }
     }, 3000);
-  };
-
-  const testAchievementUnlock = async () => {
-    try {
-      const { showAchievementNotification } = await import('@/components/ui/AchievementNotificationManager');
-      // 测试第一个成就解锁
-      showAchievementNotification('first-catch', 'bronze', false);
-      
-      // 延迟显示第二个成就
-      setTimeout(() => {
-        showAchievementNotification('species-collector', 'silver', true, 'bronze');
-      }, 2000);
-      
-      Alert.alert('🏆', 'Achievement test notifications triggered!');
-    } catch (error) {
-      console.error('Achievement test failed:', error);
-    }
   };
 
   const handleClearData = () => {

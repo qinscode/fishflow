@@ -18,21 +18,21 @@ const { width } = Dimensions.get('window');
 
 // 根据进度获取颜色
 const getProgressColor = (progress: number, theme: any) => {
-  if (progress < 10) return '#FF6B6B'; // 红色 - 刚开始
-  if (progress < 25) return '#FFA726'; // 橙色 - 入门
-  if (progress < 50) return '#FFCA28'; // 黄色 - 进步中
-  if (progress < 75) return '#66BB6A'; // 绿色 - 不错
-  if (progress < 90) return '#42A5F5'; // 蓝色 - 很好
+  if (progress < 10) {return '#FF6B6B';} // 红色 - 刚开始
+  if (progress < 25) {return '#FFA726';} // 橙色 - 入门
+  if (progress < 50) {return '#FFCA28';} // 黄色 - 进步中
+  if (progress < 75) {return '#66BB6A';} // 绿色 - 不错
+  if (progress < 90) {return '#42A5F5';} // 蓝色 - 很好
   return '#9C27B0'; // 紫色 - 专家级
 };
 
 // 获取进度等级名称
 const getProgressLevel = (progress: number) => {
-  if (progress < 10) return '新手钓手';
-  if (progress < 25) return '入门级';
-  if (progress < 50) return '进阶者';
-  if (progress < 75) return '熟练者';
-  if (progress < 90) return '专家级';
+  if (progress < 10) {return '新手钓手';}
+  if (progress < 25) {return '入门级';}
+  if (progress < 50) {return '进阶者';}
+  if (progress < 75) {return '熟练者';}
+  if (progress < 90) {return '专家级';}
   return '大师级';
 };
 
@@ -312,7 +312,7 @@ export default function StatsScreen() {
             color={theme.colors.primary}
           />
           <ThemedText type="bodySmall" style={{ color: theme.colors.primary }}>
-            {t('logs.view.button', '查看钓鱼日志')}
+            {t('logs.view.button')}
           </ThemedText>
         </Pressable>
       </ThemedView>

@@ -26,6 +26,7 @@ export const translations = {
     'home.stats.achievements': '成就数',
     'home.stats.days': '钓鱼天数',
     'home.quick.log': '记录钓获',
+    'home.quick.logs': '查看钓鱼日志',
     'home.quick.fishdex': '查看图鉴',
     'home.quick.equipment': '管理装备',
     'home.quick.actions': '快速操作',
@@ -175,7 +176,7 @@ export const translations = {
     'achievements.filter.silver': '银牌',
     'achievements.filter.gold': '金牌',
     'achievements.progress': '进度',
-    'achievements.unlocked': '已解锁',
+    'achievements.unlocked': '成就解锁',
     'achievements.locked': '未解锁',
     'achievements.reward': '奖励',
     'achievements.empty.title': '暂无成就',
@@ -249,6 +250,8 @@ export const translations = {
     'achievement.detail.hidden': '这是一个隐藏成就',
     'achievement.detail.tiers.title': '成就等级',
     'achievement.detail.not.found': '成就未找到',
+
+    // Achievement System
 
     // Stats Screen
     'stats.title': '钓鱼统计',
@@ -344,10 +347,28 @@ export const translations = {
     'log.weather.error': '无法获取天气信息',
     'weather.source': '数据来源',
     'weather.source.bom': 'BOM',
+    'weather.source.open_meteo': 'Open‑Meteo',
+    'weather.source.unavailable': '不可用',
     'log.skunked': '空军',
     'log.skunked.description': '没有钓到鱼',
     'log.start.fishing': '开始钓鱼',
     'log.validation.fish.required': '请先选择鱼类',
+
+    // Common
+    'common.no.data': '暂无数据',
+    'common.not.found': '未找到',
+
+    // Logs Screen
+    'logs.title': '钓鱼日志',
+    'logs.subtitle': '浏览和管理你的钓鱼记录',
+    'logs.view.button': '查看钓鱼日志',
+    'logs.detail.title': '钓鱼记录',
+    'logs.detail.record.again': '再次记录',
+    'logs.empty.title': '还没有钓鱼记录',
+    'logs.empty.description': '从记录一次钓鱼开始吧',
+    'logs.empty.action': '去记录',
+    'logs.item.skunked': '空军记录',
+    'logs.item.unknown': '未知鱼类',
 
     // Fish Detail Screen
     'fish.detail.overview': '概览',
@@ -457,6 +478,7 @@ export const translations = {
     'common.add': '添加',
     'common.done': '完成',
     'common.ok': '确定',
+    'common.press': '点击查看',
     'common.yes': '是',
     'common.no': '否',
     'common.loading': '加载中...',
@@ -515,6 +537,10 @@ export const translations = {
     'nav.settings': 'Settings',
     'nav.log': 'Log',
 
+    // Common
+    'common.no.data': 'No Data',
+    'common.not.found': 'Not Found',
+
     // Home Screen
     'home.title': 'Home',
     'home.welcome': 'Welcome back to FishFlow',
@@ -524,6 +550,7 @@ export const translations = {
     'home.stats.achievements': 'Achievements',
     'home.stats.days': 'Fishing Days',
     'home.quick.log': 'Log Catch',
+    'home.quick.logs': 'View Fishing Logs',
     'home.quick.fishdex': 'View Fishdex',
     'home.quick.equipment': 'Manage Equipment',
     'home.quick.actions': 'Quick Actions',
@@ -679,7 +706,7 @@ export const translations = {
     'achievements.filter.silver': 'Silver',
     'achievements.filter.gold': 'Gold',
     'achievements.progress': 'Progress',
-    'achievements.unlocked': 'Unlocked',
+    'achievements.unlocked': 'Achievement Unlocked',
     'achievements.locked': 'Locked',
     'achievements.reward': 'Reward',
     'achievements.empty.title': 'No achievements',
@@ -735,6 +762,18 @@ export const translations = {
       'Specialize in catching fish under 10cm',
     'achievement.catch.and.release.name': 'Conservationist',
     'achievement.catch.and.release.description': 'Number of fish released',
+    
+    // Logs Screen
+    'logs.title': 'Fishing Logs',
+    'logs.subtitle': 'Browse and manage your fishing records',
+    'logs.view.button': 'View Fishing Logs',
+    'logs.detail.title': 'Fishing Record',
+    'logs.detail.record.again': 'Log Again',
+    'logs.empty.title': 'No fishing records yet',
+    'logs.empty.description': 'Start by logging your first catch',
+    'logs.empty.action': 'Log Now',
+    'logs.item.skunked': 'Skunked Trip',
+    'logs.item.unknown': 'Unknown Fish',
     'achievement.lucky.fisherman.name': 'Lucky Angler',
     'achievement.lucky.fisherman.description': 'Catch legendary rare fish',
     'achievement.multi.species.name': 'Jack of All Fish',
@@ -764,6 +803,8 @@ export const translations = {
     'achievement.detail.hidden': 'This is a hidden achievement',
     'achievement.detail.tiers.title': 'Achievement Tiers',
     'achievement.detail.not.found': 'Achievement not found',
+
+    // Achievement System
 
     // Stats Screen
     'stats.title': 'Fishing Statistics',
@@ -860,6 +901,8 @@ export const translations = {
     'log.weather.error': 'Unable to get weather information',
     'weather.source': 'Source',
     'weather.source.bom': 'BOM',
+    'weather.source.open_meteo': 'Open‑Meteo',
+    'weather.source.unavailable': 'Unavailable',
     'log.skunked': 'Skunked',
     'log.skunked.description': 'No fish caught',
     'log.start.fishing': 'Start Fishing',
@@ -980,6 +1023,7 @@ export const translations = {
     'common.add': 'Add',
     'common.done': 'Done',
     'common.ok': 'OK',
+    'common.press': 'Tap to view',
     'common.yes': 'Yes',
     'common.no': 'No',
     'common.loading': 'Loading...',

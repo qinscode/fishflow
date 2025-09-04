@@ -8,7 +8,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { FadeInView, SlideInView } from '@/components/animations';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { Badge } from '@/components/ui/Badge';
 import { HomeFishCard } from '@/components/ui/HomeFishCard';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useResponsive } from '@/hooks/useResponsive';
@@ -18,8 +17,6 @@ import {
   useFish,
   useCatches,
   useUserStats,
-  useAchievements,
-  useUserAchievements,
 } from '@/lib/store';
 import { getFishCardState } from '@/lib/utils';
 
@@ -31,8 +28,6 @@ export default function HomeScreen() {
   const fish = useFish();
   const catches = useCatches();
   const userStats = useUserStats();
-  const achievements = useAchievements();
-  const userAchievements = useUserAchievements();
 
   // Data is initialized in root layout, no need for component-level initialization
 
@@ -45,18 +40,6 @@ export default function HomeScreen() {
     return unlockedFish;
   }, [fish, catches]);
 
-  // Get recent achievements
-  const recentAchievements = React.useMemo(() => {
-    return achievements
-      .map(a => {
-        const userProgress = userAchievements.find(
-          ua => ua.achievementId === a.id
-        );
-        return { achievement: a, progress: userProgress };
-      })
-      .filter(a => a.progress?.tier !== null)
-      .slice(0, 3);
-  }, [achievements, userAchievements]);
 
   // Non-skunked catch count for display
   const nonSkunkedCount = React.useMemo(
@@ -69,33 +52,25 @@ export default function HomeScreen() {
       id: 'log-catch',
       title: t('home.quick.log'),
       description: t('log.subtitle'),
-      icon: 'plus-circle' as const,
-      color: theme.colors.primary,
+      icon: 'plus' as const,
+      color: '#007AFF',
       onPress: () => router.push('/log'),
     },
     {
       id: 'view-logs',
       title: t('home.quick.logs'),
       description: t('logs.subtitle'),
-      icon: 'notebook-outline' as const,
-      color: theme.colors.secondary,
+      icon: 'format-list-bulleted' as const,
+      color: '#5856D6',
       onPress: () => router.push('/logs'),
     },
     {
       id: 'equipment',
       title: t('home.quick.equipment'),
       description: t('equipment.subtitle'),
-      icon: 'tools' as const,
-      color: theme.colors.secondary,
+      icon: 'wrench' as const,
+      color: '#FF9500',
       onPress: () => router.push('/equipment'),
-    },
-    {
-      id: 'fishdex',
-      title: t('home.quick.fishdex'),
-      description: t('fishdex.subtitle'),
-      icon: 'book-open-page-variant' as const,
-      color: theme.colors.accent,
-      onPress: () => router.push('/fishdex'),
     },
   ];
 
@@ -142,45 +117,50 @@ export default function HomeScreen() {
 
         {/* Quick Stats */}
         <SlideInView direction="up" delay={200}>
-          <ThemedView type="card" style={[styles.statsCard, theme.shadows.sm]}>
+          <LinearGradient
+            colors={['#007AFF', '#5856D6']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={[styles.statsCard, theme.shadows.md]}
+          >
             <View style={styles.statsGrid}>
               <View style={styles.statItem}>
-                <ThemedText type="h3" style={{ color: theme.colors.primary }}>
+                <ThemedText type="h3" style={{ color: '#FFFFFF', fontWeight: 'bold' }}>
                   {nonSkunkedCount}
                 </ThemedText>
                 <ThemedText
                   type="bodySmall"
-                  style={{ color: theme.colors.textSecondary }}
+                  style={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: '500' }}
                 >
                   {t('home.stats.catches')}
                 </ThemedText>
               </View>
 
               <View style={styles.statItem}>
-                <ThemedText type="h3" style={{ color: theme.colors.secondary }}>
+                <ThemedText type="h3" style={{ color: '#FFFFFF', fontWeight: 'bold' }}>
                   {userStats.uniqueSpecies}
                 </ThemedText>
                 <ThemedText
                   type="bodySmall"
-                  style={{ color: theme.colors.textSecondary }}
+                  style={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: '500' }}
                 >
                   {t('home.stats.species')}
                 </ThemedText>
               </View>
 
               <View style={styles.statItem}>
-                <ThemedText type="h3" style={{ color: theme.colors.accent }}>
+                <ThemedText type="h3" style={{ color: '#FFFFFF', fontWeight: 'bold' }}>
                   {userStats.currentStreak}
                 </ThemedText>
                 <ThemedText
                   type="bodySmall"
-                  style={{ color: theme.colors.textSecondary }}
+                  style={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: '500' }}
                 >
                   {t('home.stats.days')}
                 </ThemedText>
               </View>
             </View>
-          </ThemedView>
+          </LinearGradient>
         </SlideInView>
 
         {/* Recent Unlocks */}
@@ -207,33 +187,6 @@ export default function HomeScreen() {
           </View>
         )}
 
-        {/* Recent Achievements */}
-        {recentAchievements.length > 0 && (
-          <View style={styles.section}>
-            <ThemedText type="title" style={styles.sectionTitle}>
-              {t('home.recent.achievements')}
-            </ThemedText>
-
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.horizontalList}
-            >
-              {recentAchievements.map(({ achievement, progress }) => (
-                <Badge
-                  key={achievement.id}
-                  achievement={achievement}
-                  tier={progress?.tier || null}
-                  size="medium"
-                  isLocked={false}
-                  onPress={() => router.push('/achievements')}
-                  showTitle={true}
-                  style={styles.achievementBadge}
-                />
-              ))}
-            </ScrollView>
-          </View>
-        )}
 
         {/* Quick Actions */}
         <View style={styles.section}>
@@ -241,47 +194,40 @@ export default function HomeScreen() {
             {t('home.quick.actions')}
           </ThemedText>
 
-          <View style={styles.quickActions}>
+          <View style={styles.circularActionsGrid}>
             {quickActions.map(action => (
               <SlideInView key={action.id} direction="up" delay={300}>
                 <Pressable
-                  style={[
-                    styles.actionCard,
-                    { backgroundColor: theme.colors.surface },
-                    theme.shadows.sm,
+                  style={({ pressed }) => [
+                    styles.circularActionCard,
+                    {
+                      backgroundColor: pressed
+                        ? theme.colors.surface
+                        : 'transparent',
+                      transform: pressed ? [{ scale: 0.95 }] : [{ scale: 1 }],
+                    },
                   ]}
                   onPress={action.onPress}
                 >
                   <View
                     style={[
-                      styles.actionIcon,
-                      { backgroundColor: `${action.color}20` },
+                      styles.circularActionIcon,
+                      {
+                        backgroundColor: action.color,
+                        opacity: 0.9,
+                      },
                     ]}
                   >
                     <MaterialCommunityIcons
                       name={action.icon as any}
-                      size={24}
-                      color={action.color}
+                      size={28}
+                      color="white"
                     />
                   </View>
 
-                  <View style={styles.actionContent}>
-                    <ThemedText type="body" style={styles.actionTitle}>
-                      {action.title}
-                    </ThemedText>
-                    <ThemedText
-                      type="bodySmall"
-                      style={{ color: theme.colors.textSecondary }}
-                    >
-                      {action.description}
-                    </ThemedText>
-                  </View>
-
-                  <MaterialCommunityIcons
-                    name="chevron-right"
-                    size={16}
-                    color={theme.colors.textSecondary}
-                  />
+                  <ThemedText type="bodySmall" style={styles.circularActionTitle}>
+                    {action.title}
+                  </ThemedText>
                 </Pressable>
               </SlideInView>
             ))}
@@ -359,10 +305,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   statsCard: {
-    margin: 20,
-    marginTop: 0,
-    padding: 20,
-    borderRadius: 16,
+    margin: 24,
+    marginTop: 16,
+    padding: 24,
+    borderRadius: 20,
   },
   statsGrid: {
     flexDirection: 'row',
@@ -370,39 +316,54 @@ const styles = StyleSheet.create({
   },
   statItem: {
     alignItems: 'center',
-    gap: 4,
+    gap: 8,
   },
   section: {
-    paddingHorizontal: 20,
-    marginBottom: 24,
+    paddingHorizontal: 24,
+    marginBottom: 32,
   },
   sectionTitle: {
-    fontWeight: '600',
+    fontWeight: '700',
+    fontSize: 18,
     marginBottom: 20,
+    color: '#1D1D1F',
   },
-  quickActions: {
-    gap: 12,
-  },
-  actionCard: {
+  circularActionsGrid: {
     flexDirection: 'row',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
-    padding: 16,
-    borderRadius: 12,
-    gap: 12,
+    paddingHorizontal: 20,
+    marginTop: 8,
   },
-  actionIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
+  circularActionCard: {
+    alignItems: 'center',
+    padding: 20,
+    borderRadius: 24,
+    minWidth: 100,
+    flex: 1,
+    maxWidth: 120,
+  },
+  circularActionIcon: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  actionContent: {
-    flex: 1,
-    gap: 2,
-  },
-  actionTitle: {
+  circularActionTitle: {
     fontWeight: '600',
+    textAlign: 'center',
+    fontSize: 13,
+    lineHeight: 16,
   },
   horizontalList: {
     paddingHorizontal: 4,
@@ -410,9 +371,6 @@ const styles = StyleSheet.create({
   },
   smallFishCard: {
     width: 140,
-  },
-  achievementBadge: {
-    width: 100,
   },
   progressCard: {
     padding: 16,

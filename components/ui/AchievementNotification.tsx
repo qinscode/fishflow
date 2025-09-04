@@ -152,7 +152,7 @@ export function AchievementNotification({
     return tierText;
   };
 
-  if (!isVisible) return null;
+  if (!isVisible) {return null;}
 
   return (
     <View style={styles.container} pointerEvents="box-none">
