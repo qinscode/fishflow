@@ -1,7 +1,7 @@
-import { FlashList } from '@shopify/flash-list';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FlashList } from '@shopify/flash-list';
 import * as Haptics from 'expo-haptics';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
   View,
@@ -12,6 +12,7 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
+import { XMarkIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/ThemedText';
@@ -35,12 +36,13 @@ import {
 } from '@/lib/store';
 import { Fish, FishRarity, WaterType } from '@/lib/types';
 import { getFishCardState, sortFish } from '@/lib/utils';
-import { XMarkIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline';
 
 export default function FishdexScreen() {
   const theme = useTheme();
   const { t } = useTranslation();
   const { gridColumns, isTablet } = useResponsive();
+  const params = useLocalSearchParams<{ select?: string }>();
+  const isSelectMode = !!params.select;
 
   // Store hooks
   const fish = useFish();
@@ -107,8 +109,16 @@ export default function FishdexScreen() {
   // Handlers
   const handleFishPress = useCallback((fishItem: Fish) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    router.push(`/fish/${fishItem.id}` as any);
-  }, []);
+    if (isSelectMode) {
+      // Return selection to log screen instead of opening details
+      router.replace({
+        pathname: '/log',
+        params: { fishId: fishItem.id, fishName: fishItem.name },
+      } as any);
+    } else {
+      router.push(`/fish/${fishItem.id}` as any);
+    }
+  }, [isSelectMode]);
 
   const handleSearchChange = useCallback(
     (text: string) => {
@@ -417,6 +427,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8,
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   filtersContainer: {
     gap: 16,
@@ -431,10 +443,11 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   listContent: {
-    padding: 16,
-    paddingTop: 0,
+    paddingHorizontal: 12,
+    paddingBottom: 16,
   },
   fishCardItem: {
-    marginHorizontal: 8,
+    flex: 1,
+    marginHorizontal: 4,
   },
 });

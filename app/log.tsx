@@ -1,3 +1,5 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as ExpoLocation from 'expo-location';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState, useEffect, useCallback } from 'react';
 import {
@@ -16,14 +18,13 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useTheme } from '@/hooks/useThemeColor';
 import { useTranslation } from '@/lib/i18n';
-import { EquipmentSet, LocationData } from '@/lib/types';
+import { useAppStore, useEquipmentSets, useUserProfile, useFish } from '@/lib/store';
+import { EquipmentSet, LocationData, Fish } from '@/lib/types';
 import {
   australianWeatherService,
   AustralianEnvironmentData,
 } from '@/lib/weatherService';
-import * as ExpoLocation from 'expo-location';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppStore, useEquipmentSets, useUserProfile } from '@/lib/store';
+
 
 export default function LogScreen() {
   const theme = useTheme();
@@ -32,6 +33,7 @@ export default function LogScreen() {
   const addCatch = useAppStore(s => s.addCatch);
   const equipmentSets = useEquipmentSets();
   const userProfile = useUserProfile();
+  const fishList = useFish();
 
   // Form state
   const [isSkunked, setIsSkunked] = useState(false);
@@ -45,6 +47,33 @@ export default function LogScreen() {
     null
   );
   const [showEquipPicker, setShowEquipPicker] = useState(false);
+  const [showFishPicker, setShowFishPicker] = useState(false);
+  const [fishSearch, setFishSearch] = useState('');
+  const [selectedFish, setSelectedFish] = useState<Fish | null>(null);
+
+  // Initialize selected fish from route params if provided
+  useEffect(() => {
+    if (params.fishId && !selectedFish) {
+      const found = fishList.find(f => f.id === params.fishId);
+      if (found) setSelectedFish(found);
+      else if (params.fishName) {
+        // Fallback when fish list not ready yet
+        setSelectedFish({
+          // Minimal placeholder; will be corrected once fishList loads
+          id: params.fishId,
+          name: params.fishName,
+          scientificName: undefined,
+          localNames: [],
+          family: '',
+          rarity: 'common',
+          images: { card: '' },
+          characteristics: { minLengthCm: 0, maxLengthCm: 0, maxWeightKg: 0 },
+          habitat: { waterTypes: [], regions: [], seasons: [] },
+          behavior: { feedingHabits: [], activeTime: 'day', difficulty: 1 },
+        } as Fish);
+      }
+    }
+  }, [params.fishId, params.fishName, fishList, selectedFish]);
 
   const getCurrentLocation =
     useCallback(async (): Promise<LocationData | null> => {
@@ -78,7 +107,7 @@ export default function LogScreen() {
     setIsLoadingWeather(true);
     try {
       const loc = (await getCurrentLocation()) || null;
-      if (loc) setLocation(loc);
+      if (loc) {setLocation(loc);}
       const envData = await australianWeatherService.getEnvironmentalData(
         loc || {
           latitude: -33.8688,
@@ -106,7 +135,7 @@ export default function LogScreen() {
   }, [loadWeatherData]);
 
   const handleSave = async () => {
-    if (!params.fishId) {
+    if (!selectedFish?.id) {
       Alert.alert(t('common.error'), 'Missing fish id');
       return;
     }
@@ -115,7 +144,7 @@ export default function LogScreen() {
         e => e.id === selectedEquipmentId!
       );
       await addCatch({
-        fishId: params.fishId,
+        fishId: selectedFish.id,
         userId: userProfile?.id || 'guest',
         timestamp: new Date().toISOString(),
         photos: [],
@@ -179,12 +208,12 @@ export default function LogScreen() {
           <ThemedText type="body" style={{ color: theme.colors.textSecondary }}>
             {t('log.subtitle')}
           </ThemedText>
-          {params.fishName && (
+          {selectedFish?.name && (
             <ThemedText
               type="bodySmall"
               style={{ color: theme.colors.primary, marginTop: 4 }}
             >
-              {params.fishName}
+              {selectedFish.name}
             </ThemedText>
           )}
         </View>
@@ -228,7 +257,7 @@ export default function LogScreen() {
           {!isSkunked && (
             <Pressable
               style={styles.fishSelectButton}
-              onPress={() => router.push('/fishdex')}
+              onPress={() => setShowFishPicker(true)}
             >
               <ThemedText type="body" style={{ color: theme.colors.primary }}>
                 {t('log.fish.search')}
@@ -475,6 +504,84 @@ export default function LogScreen() {
                   )}
                 </Pressable>
               ))}
+            </ThemedView>
+          </Pressable>
+        </Modal>
+
+        {/* Fish Picker Modal */}
+        <Modal visible={showFishPicker} transparent animationType="fade">
+          <Pressable
+            style={styles.modalOverlay}
+            onPress={() => setShowFishPicker(false)}
+          >
+            <ThemedView type="card" style={[styles.picker, theme.shadows.lg]}>
+              <ThemedText type="subtitle" style={styles.sectionTitle}>
+                {t('fishdex.title')}
+              </ThemedText>
+              <TextInput
+                value={fishSearch}
+                onChangeText={setFishSearch}
+                placeholder={t('fishdex.search')}
+                placeholderTextColor={theme.colors.textSecondary}
+                style={{
+                  paddingVertical: 10,
+                  paddingHorizontal: 12,
+                  borderRadius: 8,
+                  backgroundColor: theme.colors.surface,
+                  color: theme.colors.text,
+                  borderColor: theme.colors.border,
+                  borderWidth: 1,
+                  marginBottom: 12,
+                }}
+              />
+              <ScrollView style={{ maxHeight: 420 }}>
+                {fishList
+                  .filter(f => {
+                    const q = fishSearch.trim().toLowerCase();
+                    if (q.length === 0) return true;
+                    const nameMatch = f.name.toLowerCase().includes(q);
+                    const sciMatch = (f.scientificName || '')
+                      .toLowerCase()
+                      .includes(q);
+                    const idMatch = f.id.toLowerCase().includes(q);
+                    const aliasMatch = (f.localNames || [])
+                      .some(alias => (alias || '').toLowerCase().includes(q));
+                    return nameMatch || sciMatch || idMatch || aliasMatch;
+                  })
+                  .slice(0, 200)
+                  .map(f => (
+                    <Pressable
+                      key={f.id}
+                      style={[
+                        styles.pickerItem,
+                        selectedFish?.id === f.id && styles.pickerItemSelected,
+                      ]}
+                      onPress={() => {
+                        setSelectedFish(f);
+                        setShowFishPicker(false);
+                      }}
+                    >
+                      <ThemedText
+                        type="body"
+                        style={{
+                          color:
+                            selectedFish?.id === f.id
+                              ? theme.colors.primary
+                              : theme.colors.text,
+                        }}
+                      >
+                        {f.name}
+                      </ThemedText>
+                      {selectedFish?.id === f.id && (
+                        <MaterialCommunityIcons
+                          name="check"
+                          size={20}
+                          color={theme.colors.primary}
+                        />
+                      )}
+                    </Pressable>
+                  ))}
+              </ScrollView>
             </ThemedView>
           </Pressable>
         </Modal>

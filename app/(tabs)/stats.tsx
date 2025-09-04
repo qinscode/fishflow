@@ -1,5 +1,6 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useMemo } from 'react';
-import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, StyleSheet, ScrollView, Dimensions, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/ThemedText';
@@ -7,11 +8,10 @@ import { ThemedView } from '@/components/ThemedView';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ProgressBar, ProgressRing } from '@/components/ui/ProgressBar';
 import { useTheme } from '@/hooks/useThemeColor';
-import { useTranslation } from '@/lib/i18n';
 import { RARITY_NAMES } from '@/lib/constants';
+import { useTranslation } from '@/lib/i18n';
 import { useFish, useCatches, useUserStats } from '@/lib/store';
 import { formatDate, getRarityColor } from '@/lib/utils';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
@@ -96,6 +96,87 @@ export default function StatsScreen() {
       c => new Date(c.timestamp) > thirtyDaysAgo
     );
 
+    // Time-based analysis
+    const hourlyStats = catches.reduce((acc, c) => {
+      const hour = new Date(c.timestamp).getHours();
+      acc[hour] = (acc[hour] || 0) + 1;
+      return acc;
+    }, {} as Record<number, number>);
+
+    const bestHour = Object.entries(hourlyStats).reduce(
+      (max, [hour, count]) => {
+        return count > max.count ? { hour: parseInt(hour), count } : max;
+      },
+      { hour: 6, count: 0 }
+    );
+
+    // Seasonal analysis
+    const seasonalStats = catches.reduce((acc, c) => {
+      const month = new Date(c.timestamp).getMonth();
+      const season = month < 3 ? 'winter' : month < 6 ? 'spring' : month < 9 ? 'summer' : 'autumn';
+      acc[season] = (acc[season] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    // Success rate by location
+    const locationStats = catches.reduce((acc, c) => {
+      if (c.locationName) {
+        acc[c.locationName] = (acc[c.locationName] || 0) + 1;
+      }
+      return acc;
+    }, {} as Record<string, number>);
+
+    const topLocation = Object.entries(locationStats).reduce(
+      (max, [location, count]) => {
+        return count > max.count ? { location, count } : max;
+      },
+      { location: '', count: 0 }
+    );
+
+    // Fishing streak calculation
+    const sortedDates = catches
+      .map(c => new Date(c.timestamp).toDateString())
+      .filter((date, index, arr) => arr.indexOf(date) === index)
+      .sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+
+    let currentStreak = 0;
+    let maxStreak = 0;
+    let tempStreak = 1;
+
+    for (let i = 1; i < sortedDates.length; i++) {
+      const prevDate = new Date(sortedDates[i - 1]);
+      const currentDate = new Date(sortedDates[i]);
+      const diffDays = (currentDate.getTime() - prevDate.getTime()) / (1000 * 3600 * 24);
+      
+      if (diffDays === 1) {
+        tempStreak++;
+      } else {
+        maxStreak = Math.max(maxStreak, tempStreak);
+        tempStreak = 1;
+      }
+    }
+    maxStreak = Math.max(maxStreak, tempStreak);
+
+    // Calculate current streak
+    const today = new Date().toDateString();
+    const lastCatchDate = catches.length > 0 ? 
+      new Date(catches[catches.length - 1].timestamp).toDateString() : '';
+    
+    if (lastCatchDate === today) {
+      currentStreak = 1;
+      for (let i = sortedDates.length - 2; i >= 0; i--) {
+        const prevDate = new Date(sortedDates[i]);
+        const nextDate = new Date(sortedDates[i + 1]);
+        const diffDays = (nextDate.getTime() - prevDate.getTime()) / (1000 * 3600 * 24);
+        
+        if (diffDays === 1) {
+          currentStreak++;
+        } else {
+          break;
+        }
+      }
+    }
+
     return {
       totalCatches,
       uniqueSpecies,
@@ -129,6 +210,21 @@ export default function StatsScreen() {
         percentage: Math.round((recentCatches.length / totalCatches) * 100),
       },
       completionRate: Math.round((uniqueSpecies / fish.length) * 100),
+      timeStats: {
+        bestHour: bestHour.hour,
+        bestHourCount: bestHour.count,
+        seasonal: seasonalStats,
+      },
+      locationStats: {
+        topLocation: topLocation.location,
+        topLocationCount: topLocation.count,
+        totalLocations: Object.keys(locationStats).length,
+      },
+      streakStats: {
+        current: currentStreak,
+        longest: maxStreak,
+      },
+      averageCatchesPerTrip: Math.round((totalCatches / Math.max(1, Object.keys(locationStats).length)) * 100) / 100,
     };
   }, [catches, fish]);
 
@@ -468,6 +564,188 @@ export default function StatsScreen() {
                 </ThemedText>
               </View>
             </View>
+
+            <View style={styles.activityItem}>
+              <MaterialCommunityIcons
+                name="clock-time-four"
+                size={20}
+                color={theme.colors.accent}
+              />
+              <View style={styles.activityDetails}>
+                <ThemedText type="subtitle">
+                  {t('stats.best.fishing.hour')}
+                </ThemedText>
+                <ThemedText type="body" style={{ color: theme.colors.accent }}>
+                  {stats.timeStats.bestHour}:00 - {stats.timeStats.bestHour + 1}:00
+                  ({t('stats.times.with.count', {
+                    count: stats.timeStats.bestHourCount.toString(),
+                  })})
+                </ThemedText>
+              </View>
+            </View>
+          </View>
+        </ThemedView>
+
+        {/* Streak & Consistency */}
+        <ThemedView type="card" style={[styles.statsCard, theme.shadows.sm]}>
+          <ThemedText type="title" style={styles.cardTitle}>
+            {t('stats.streak.consistency')}
+          </ThemedText>
+
+          <View style={styles.streakStats}>
+            <View style={styles.streakItem}>
+              <View style={[styles.streakIcon, { backgroundColor: theme.colors.success + '20' }]}>
+                <MaterialCommunityIcons
+                  name="fire"
+                  size={24}
+                  color={theme.colors.success}
+                />
+              </View>
+              <View style={styles.streakDetails}>
+                <ThemedText type="h3" style={{ color: theme.colors.success }}>
+                  {stats.streakStats.current}
+                </ThemedText>
+                <ThemedText type="subtitle">
+                  {t('stats.current.streak')}
+                </ThemedText>
+                <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
+                  {t('stats.consecutive.days')}
+                </ThemedText>
+              </View>
+            </View>
+
+            <View style={styles.streakItem}>
+              <View style={[styles.streakIcon, { backgroundColor: theme.colors.warning + '20' }]}>
+                <MaterialCommunityIcons
+                  name="trophy"
+                  size={24}
+                  color={theme.colors.warning}
+                />
+              </View>
+              <View style={styles.streakDetails}>
+                <ThemedText type="h3" style={{ color: theme.colors.warning }}>
+                  {stats.streakStats.longest}
+                </ThemedText>
+                <ThemedText type="subtitle">
+                  {t('stats.longest.streak')}
+                </ThemedText>
+                <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
+                  {t('stats.best.record')}
+                </ThemedText>
+              </View>
+            </View>
+          </View>
+        </ThemedView>
+
+        {/* Location Analytics */}
+        {stats.locationStats.totalLocations > 0 && (
+          <ThemedView type="card" style={[styles.statsCard, theme.shadows.sm]}>
+            <ThemedText type="title" style={styles.cardTitle}>
+              {t('stats.location.analytics')}
+            </ThemedText>
+
+            <View style={styles.locationStats}>
+              <View style={styles.locationItem}>
+                <MaterialCommunityIcons
+                  name="map-marker"
+                  size={20}
+                  color={theme.colors.primary}
+                />
+                <View style={styles.locationDetails}>
+                  <ThemedText type="subtitle">
+                    {t('stats.favorite.spot')}
+                  </ThemedText>
+                  <ThemedText type="body" style={{ color: theme.colors.primary }}>
+                    {stats.locationStats.topLocation || t('stats.no.location')}
+                  </ThemedText>
+                  <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
+                    {t('stats.times.with.count', {
+                      count: stats.locationStats.topLocationCount.toString(),
+                    })}
+                  </ThemedText>
+                </View>
+              </View>
+
+              <View style={styles.locationItem}>
+                <MaterialCommunityIcons
+                  name="map-outline"
+                  size={20}
+                  color={theme.colors.secondary}
+                />
+                <View style={styles.locationDetails}>
+                  <ThemedText type="subtitle">
+                    {t('stats.total.locations')}
+                  </ThemedText>
+                  <ThemedText type="body" style={{ color: theme.colors.secondary }}>
+                    {stats.locationStats.totalLocations} {t('stats.different.spots')}
+                  </ThemedText>
+                  <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
+                    {t('stats.average.catches.per.trip', {
+                      average: stats.averageCatchesPerTrip.toString(),
+                    })}
+                  </ThemedText>
+                </View>
+              </View>
+            </View>
+          </ThemedView>
+        )}
+
+        {/* Seasonal Analysis */}
+        <ThemedView type="card" style={[styles.statsCard, theme.shadows.sm]}>
+          <ThemedText type="title" style={styles.cardTitle}>
+            {t('stats.seasonal.analysis')}
+          </ThemedText>
+
+          <View style={styles.seasonalStats}>
+            {Object.entries(stats.timeStats.seasonal).map(([season, count]) => {
+              const total = Object.values(stats.timeStats.seasonal).reduce(
+                (sum, c) => sum + c,
+                0
+              );
+              const percentage = Math.round((count / total) * 100);
+              const seasonColors = {
+                spring: '#4CAF50',
+                summer: '#FF9800',
+                autumn: '#FF5722',
+                winter: '#2196F3',
+              };
+              const color = seasonColors[season as keyof typeof seasonColors] || theme.colors.primary;
+              
+              const seasonIcons = {
+                spring: 'flower',
+                summer: 'white-balance-sunny',
+                autumn: 'leaf',
+                winter: 'snowflake',
+              };
+              const icon = seasonIcons[season as keyof typeof seasonIcons] || 'calendar';
+
+              return (
+                <View key={season} style={styles.seasonItem}>
+                  <View style={styles.seasonHeader}>
+                    <MaterialCommunityIcons
+                      name={icon as any}
+                      size={20}
+                      color={color}
+                    />
+                    <ThemedText type="subtitle">
+                      {t(`stats.season.${season}` as any)}
+                    </ThemedText>
+                    <ThemedText
+                      type="body"
+                      style={{ color: theme.colors.textSecondary }}
+                    >
+                      {count} ({percentage}%)
+                    </ThemedText>
+                  </View>
+                  <ProgressBar
+                    progress={percentage / 100}
+                    height={6}
+                    color={color}
+                    style={styles.seasonProgress}
+                  />
+                </View>
+              );
+            })}
           </View>
         </ThemedView>
       </ScrollView>

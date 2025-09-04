@@ -95,6 +95,7 @@ const defaultUserPreferences: UserPreferences = {
   appearance: {
     theme: 'system',
     language: 'zh',
+    rpgFrames: true,
   },
 };
 

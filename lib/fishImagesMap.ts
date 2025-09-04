@@ -815,7 +815,7 @@ export function getAllFishIds(): string[] {
 
 export function getFishImageTypes(fishId: string): FishImageType[] {
   const fishImages = FISH_IMAGES_MAP[fishId];
-  if (!fishImages) return [];
+  if (!fishImages) {return [];}
   
   return Object.keys(fishImages) as FishImageType[];
 }

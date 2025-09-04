@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
   View,
@@ -23,7 +24,6 @@ import {
   Language,
 } from '@/lib/i18n';
 import { useAppStore } from '@/lib/store';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function SettingsScreen() {
   const theme = useTheme();
@@ -88,6 +88,15 @@ export default function SettingsScreen() {
       privacy: {
         ...userPreferences.privacy,
         [type]: !userPreferences.privacy[type],
+      },
+    });
+  };
+
+  const handleRpgFramesToggle = () => {
+    updateUserPreferences({
+      appearance: {
+        ...userPreferences.appearance,
+        rpgFrames: !userPreferences.appearance.rpgFrames,
       },
     });
   };
@@ -343,6 +352,38 @@ export default function SettingsScreen() {
                 />
               </View>
             </Pressable>
+
+            <View style={styles.settingItem}>
+              <View style={styles.settingLeft}>
+                <MaterialCommunityIcons
+                  name="image-frame"
+                  size={20}
+                  color={theme.colors.primary}
+                />
+                <View style={styles.settingText}>
+                  <ThemedText type="body">RPG边框</ThemedText>
+                  <ThemedText
+                    type="bodySmall"
+                    style={{ color: theme.colors.textSecondary }}
+                  >
+                    启用装饰性金色边框
+                  </ThemedText>
+                </View>
+              </View>
+              <Switch
+                value={userPreferences.appearance.rpgFrames}
+                onValueChange={handleRpgFramesToggle}
+                trackColor={{
+                  false: theme.colors.surface,
+                  true: theme.colors.primary + '40',
+                }}
+                thumbColor={
+                  userPreferences.appearance.rpgFrames
+                    ? theme.colors.primary
+                    : theme.colors.textSecondary
+                }
+              />
+            </View>
           </ThemedView>
         </SlideInView>
 

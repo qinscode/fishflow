@@ -16,8 +16,13 @@ import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
 import { RARITY_NAMES } from '@/lib/constants';
 import { FISH_IMAGES } from '@/lib/fishImagesMap';
+import { useAppStore } from '@/lib/store';
 import { Fish, FishCardState } from '@/lib/types';
-import { getRarityColor, getStarCountByEdibility, getStarRatingColor } from '@/lib/utils';
+import {
+  getRarityColor,
+  getStarCountByEdibility,
+  getStarRatingColor,
+} from '@/lib/utils';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -46,6 +51,7 @@ export const FishCard = memo<FishCardProps>(
     const theme = useTheme();
     const { isTablet } = useResponsive();
     const scale = useSharedValue(1);
+    const userPreferences = useAppStore(state => state.userPreferences);
 
     const cardSize =
       size === 'large' ? 200 : size === 'small' ? 120 : isTablet ? 180 : 160;
@@ -80,21 +86,31 @@ export const FishCard = memo<FishCardProps>(
 
     // 根据食用评级获取星星数量
     const starCount = getStarCountByEdibility(fish.edibility?.rating);
-    
-    // 根据星级获取边框和星星颜色
+
+    // 根据星级获取星星颜色
     const starRatingColor = getStarRatingColor(starCount);
+
+    // 当使用flex布局时，需要动态计算边框尺寸
+    const isFlexLayout = style && typeof style === 'object' && 'flex' in style;
 
     const cardStyles = [
       styles.cardContainer,
       {
-        width: cardSize,
-        height: cardSize * 1, // 减少卡片高度比例
-        backgroundColor: 'white',
+        ...(isFlexLayout ? { aspectRatio: 1 } : { width: cardSize }),
+        height: isFlexLayout ? undefined : cardSize * 1, // 减少卡片高度比例
+        backgroundColor: userPreferences.appearance.rpgFrames
+          ? 'transparent'
+          : 'white',
         borderRadius: 16,
-        borderWidth: 2, // 减少边框宽度从3到2
-        borderColor: starRatingColor, // 使用星级颜色而不是稀有度颜色
+        // 只有在不使用RPG边框时才显示默认边框
+        ...(userPreferences.appearance.rpgFrames
+          ? {}
+          : {
+              borderWidth: 1,
+              borderColor: theme.colors.border,
+            }),
       },
-      theme.shadows.lg,
+      userPreferences.appearance.rpgFrames ? {} : theme.shadows.lg,
       style,
     ];
 
@@ -146,6 +162,23 @@ export const FishCard = memo<FishCardProps>(
             ))}
           </View>
         </View>
+
+        {/* 金色边框装饰 - 仅在启用RPG边框时显示 */}
+        {userPreferences.appearance.rpgFrames && (
+          <Image
+            source={require('@/assets/images/frames/gold_frame_old.png')}
+            style={[
+              styles.frameOverlay,
+              isFlexLayout
+                ? styles.frameOverlayFlex
+                : {
+                    width: cardSize + 8,
+                    height: cardSize + 8,
+                  },
+            ]}
+            contentFit="fill"
+          />
+        )}
       </AnimatedPressable>
     );
   }
@@ -210,6 +243,28 @@ const styles = StyleSheet.create({
   starContainer: {
     flexDirection: 'row',
     // gap: 2, // 进一步减少星星间距
+  },
+
+  // 金色边框覆盖层
+  frameOverlay: {
+    position: 'absolute',
+    top: -2,
+    left: -2,
+    pointerEvents: 'none', // 允许点击穿透到下层
+    opacity: 0.9, // 增加不透明度
+    borderRadius: 16, // 与卡片圆角匹配
+  },
+
+  // flex布局时的边框样式
+  frameOverlayFlex: {
+    position: 'absolute',
+    top: -4,
+    left: -4,
+    right: -4,
+    bottom: -4,
+    pointerEvents: 'none',
+    opacity: 0.9,
+    borderRadius: 16,
   },
 });
 

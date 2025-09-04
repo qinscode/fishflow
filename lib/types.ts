@@ -218,6 +218,7 @@ export interface UserPreferences {
   appearance: {
     theme: 'light' | 'dark' | 'system';
     language: 'zh' | 'en';
+    rpgFrames: boolean;
   };
 }
 
