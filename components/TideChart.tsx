@@ -113,7 +113,7 @@ function computeTideSeries(
   let next = sorted[sorted.length - 1];
   for (let i = 0; i < sorted.length; i++) {
     const t = new Date(sorted[i].time).getTime();
-    if (t <= nowMs) prev = sorted[i];
+    if (t <= nowMs) { prev = sorted[i]; }
     if (t >= nowMs) { next = sorted[i]; break; }
   }
   if (!prev || !next || prev.time === next.time) {

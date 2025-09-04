@@ -1,4 +1,5 @@
 import { LocationData, WeatherData } from './types';
+import { getTodayTideSummary } from './tide';
 
 // Australia Bureau of Meteorology API and related services
 export interface AustralianWeatherData {
@@ -133,6 +134,19 @@ class AustralianWeatherService {
     const cached = this.getFromCache<TideData[]>(key);
     if (cached) {return cached;}
     try {
+      // Prefer new tide summary module (smoothed, robust fallbacks)
+      const summary = await getTodayTideSummary(location.latitude, location.longitude);
+      if (summary) {
+        const extremes = [...summary.highs, ...summary.lows]
+          .map(e => ({ time: e.time, height: e.level, type: e.type }))
+          .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
+          .slice(0, 6);
+        if (extremes.length) {
+          this.putToCache(key, extremes, 3 * 60 * 60 * 1000);
+          return extremes;
+        }
+      }
+
       // Try Open‑Meteo Tide for today
       const omt = await this.fetchOpenMeteoTides(location);
       if (omt && omt.length) {
@@ -735,30 +749,34 @@ class AustralianWeatherService {
 
   // --- Open‑Meteo Tide ---
   private async fetchOpenMeteoTides(location: LocationData): Promise<TideData[] | null> {
-    try {
-      const { latitude: lat, longitude: lon } = location;
-      const today = new Date();
-      const y = today.getFullYear();
-      const m = String(today.getMonth() + 1).padStart(2, '0');
-      const d = String(today.getDate()).padStart(2, '0');
-      const dateStr = `${y}-${m}-${d}`;
-      const urls = [
-        // Correct Tide API base per Open‑Meteo docs: tide-api subdomain
-        `https://tide-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
-          `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
-          `&hourly=tide_height&start_date=${dateStr}&end_date=${dateStr}&timezone=auto&cell_selection=sea`,
-        `https://tide-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
-          `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
-          `&hourly=tide_height&length=1&timezone=auto&cell_selection=sea`,
-        // Extra fallbacks in case of routing quirks
-        `https://marine-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
-          `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
-          `&hourly=tide_height&start_date=${dateStr}&end_date=${dateStr}&timezone=auto&cell_selection=sea`,
-        `https://marine-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
-          `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
-          `&hourly=tide_height&length=1&timezone=auto&cell_selection=sea`,
-      ];
-      for (const url of urls) {
+    const { latitude: lat, longitude: lon } = location;
+    const today = new Date();
+    const y = today.getFullYear();
+    const m = String(today.getMonth() + 1).padStart(2, '0');
+    const d = String(today.getDate()).padStart(2, '0');
+    const dateStr = `${y}-${m}-${d}`;
+    const urls = [
+      // Preferred Tide API
+      `https://tide-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
+        `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
+        `&hourly=tide_height&start_date=${dateStr}&end_date=${dateStr}&timezone=auto&cell_selection=sea`,
+      `https://tide-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
+        `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
+        `&hourly=tide_height&length=1&timezone=auto&cell_selection=sea`,
+      // Fallbacks: some environments may block tide-api; try marine-api mirror
+      `https://marine-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
+        `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
+        `&hourly=tide_height&start_date=${dateStr}&end_date=${dateStr}&timezone=auto&cell_selection=sea`,
+      `https://marine-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
+        `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
+        `&hourly=tide_height&length=1&timezone=auto&cell_selection=sea`,
+      // Last resort: use marine sea level as proxy and derive extrema
+      `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}` +
+        `&hourly=sea_level_height_msl&start_date=${dateStr}&end_date=${dateStr}&timezone=auto&cell_selection=sea`,
+    ];
+
+    for (const url of urls) {
+      try {
         this.dbg('openMeteo.tide.url', url);
         const res = await fetch(url);
         this.dbg('openMeteo.tide.res', { ok: res.ok, status: res.status });
@@ -769,18 +787,18 @@ class AustralianWeatherService {
         let out = this.parseOpenMeteoTideJson(json);
         this.dbg('openMeteo.tide.dailyParsedCount', out.length);
         if (!out.length) {
-          // Fallback: derive extremes from hourly tide_height within the requested day
+          // Fallback: derive extremes from hourly tides or sea level
           const derived = this.deriveTideExtremesFromHourly(json);
           this.dbg('openMeteo.tide.derivedCount', derived.length);
           out = derived;
         }
         if (out.length) { return out; }
+      } catch (e) {
+        this.dbg('openMeteo.tide.error', (e as Error)?.message || e);
+        // continue to next candidate URL
       }
-      return null;
-    } catch (e) {
-      this.dbg('openMeteo.tide.error', (e as Error)?.message || e);
-      return null;
     }
+    return null;
   }
 
   private parseOpenMeteoTideJson(json: any): TideData[] {
@@ -821,15 +839,20 @@ class AustralianWeatherService {
     try {
       const hourly = json?.hourly || {};
       const times: string[] | undefined = hourly?.time;
-      const hArr: number[] | undefined = hourly?.tide_height || hourly?.tide || hourly?.tideheight;
+      const hArr: number[] | undefined =
+        hourly?.tide_height ||
+        hourly?.tide ||
+        hourly?.tideheight ||
+        hourly?.sea_level_height_msl; // marine fallback
       if (!Array.isArray(times) || !Array.isArray(hArr) || times.length !== hArr.length || !times.length) {
         return out;
       }
       // Constrain to today's indices
-      const todayStr = new Date(times[0]).toISOString().slice(0, 10); // assume API only returned requested day
+      // Use the date prefix of entries directly (timezone=auto returns local-like strings)
+      const todayStr = (times[0] || '').slice(0, 10);
       const idxs: number[] = [];
       for (let i = 0; i < times.length; i++) {
-        if ((times[i] || '').slice(0, 10) === todayStr) idxs.push(i);
+        if ((times[i] || '').slice(0, 10) === todayStr) { idxs.push(i); }
       }
       if (idxs.length < 3) return out;
       // Find local extrema via sign change of first difference

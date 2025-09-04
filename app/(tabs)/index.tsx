@@ -117,50 +117,45 @@ export default function HomeScreen() {
 
         {/* Quick Stats */}
         <SlideInView direction="up" delay={200}>
-          <LinearGradient
-            colors={['#007AFF', '#5856D6']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={[styles.statsCard, theme.shadows.md]}
-          >
+          <ThemedView type="card" style={[styles.statsCard, theme.shadows.sm]}>
             <View style={styles.statsGrid}>
               <View style={styles.statItem}>
-                <ThemedText type="h3" style={{ color: '#FFFFFF', fontWeight: 'bold' }}>
+                <ThemedText type="h3" style={{ color: theme.colors.primary }}>
                   {nonSkunkedCount}
                 </ThemedText>
                 <ThemedText
                   type="bodySmall"
-                  style={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: '500' }}
+                  style={{ color: theme.colors.textSecondary }}
                 >
                   {t('home.stats.catches')}
                 </ThemedText>
               </View>
 
               <View style={styles.statItem}>
-                <ThemedText type="h3" style={{ color: '#FFFFFF', fontWeight: 'bold' }}>
+                <ThemedText type="h3" style={{ color: theme.colors.secondary }}>
                   {userStats.uniqueSpecies}
                 </ThemedText>
                 <ThemedText
                   type="bodySmall"
-                  style={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: '500' }}
+                  style={{ color: theme.colors.textSecondary }}
                 >
                   {t('home.stats.species')}
                 </ThemedText>
               </View>
 
               <View style={styles.statItem}>
-                <ThemedText type="h3" style={{ color: '#FFFFFF', fontWeight: 'bold' }}>
+                <ThemedText type="h3" style={{ color: theme.colors.accent }}>
                   {userStats.currentStreak}
                 </ThemedText>
                 <ThemedText
                   type="bodySmall"
-                  style={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: '500' }}
+                  style={{ color: theme.colors.textSecondary }}
                 >
                   {t('home.stats.days')}
                 </ThemedText>
               </View>
             </View>
-          </LinearGradient>
+          </ThemedView>
         </SlideInView>
 
         {/* Recent Unlocks */}

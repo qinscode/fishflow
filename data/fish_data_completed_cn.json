@@ -8317,9 +8317,9 @@
       "maxWeightKg": 20
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -8327,7 +8327,7 @@
         "minSizeCm": 41.0
       },
       {
-        "region": "West Coast",
+        "region": "West Coast (西海岸)",
         "dailyLimit": 2,
         "closedSeasons": [
           {
@@ -8339,40 +8339,37 @@
     ],
     "behavior": {
       "feedingHabits": [
-        "Fish",
-        "Crustaceans",
-        "Molluscs",
-        "Bottom invertebrates",
-        "Small fish"
+        "鱼类",
+        "甲壳类",
+        "软体动物",
+        "底栖无脊椎动物",
+        "小型鱼类"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Outstanding eating quality with firm, white flesh and excellent flavour. Among the most prized fish in Australian waters",
-      "cookingMethods": [
-        "Whole cooking",
-        "Fillet",
-        "Pan-fry",
-        "Grill",
-        "Bake",
-        "Steam"
-      ],
-      "notes": "Includes many of Australia's most prized eating fish including red emperor, spangled emperor, and various seabream. Slow growing and long-lived species requiring careful management. Command premium prices in restaurants and fish markets. Best prepared simply to highlight natural flavours."
+      "taste": "食用品质极佳，肉质洁白紧实、风味出众；是澳大利亚最受珍视的餐桌鱼之一",
+      "cookingMethods": ["整鱼烹调", "鱼柳/片鱼", "煎", "烧烤", "烘烤", "清蒸"],
+      "notes": "涵盖红帝皇鱼、星斑皇帝鱼及多种海鲷等名贵食用鱼。生长缓慢、寿命长，需审慎管理；在餐馆与鱼市价格不菲。鲜制、少佐料更能突出本味"
     }
   },
   {
     "id": "172",
-    "name": "Catfish, marine and estuarine (group)",
-    "scientificName": "Plotosidae spp.",
+    "name": "海洋与河口鲶鱼（类群）",
+    "scientificName": "Plotosidae spp.（鳗尾鲶科多种）",
     "localNames": [
       "Estuary cobbler",
+      "河口鲶/科布勒鲶",
       "Marine catfish",
+      "海鲶",
       "Tandan",
-      "Eel-tail catfish"
+      "坦丹鲶/坦丹",
+      "Eel-tail catfish",
+      "鳗尾鲶"
     ],
-    "family": "Plotosidae",
+    "family": "Plotosidae（鳗尾鲶科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/172?thumbnailSize=large",
@@ -8384,9 +8381,9 @@
       "maxWeightKg": 2.5
     },
     "habitat": {
-      "waterTypes": ["Marine", "Estuarine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水", "河口"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -8394,47 +8391,45 @@
         "dailyLimit": 8
       },
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
       "feedingHabits": [
-        "Worms",
-        "Crustaceans",
-        "Molluscs",
-        "Small fish",
-        "Detritus",
-        "Bottom invertebrates"
+        "蠕虫",
+        "甲壳类",
+        "软体动物",
+        "小型鱼类",
+        "碎屑/腐屑",
+        "底栖无脊椎动物"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "good",
-      "taste": "Good eating quality with firm, white, flaky flesh and mild flavour. Similar to other catfish species with low oiliness",
-      "cookingMethods": [
-        "Fillet",
-        "Pan-fry",
-        "Deep-fry",
-        "Bake",
-        "Grill",
-        "Curry"
-      ],
-      "notes": "VENOMOUS SPINES WARNING: Dorsal and pectoral fins have venomous spines that can inflict painful wounds. Handle with extreme care. Skinning recommended before cooking as skin can have strong flavour. Popular target for recreational anglers in estuaries. Flesh is excellent when filleted and cooked properly."
+      "taste": "食用品质良好，肉质洁白、片状、紧实，风味温和；与其他鲶鱼相似，含油量低",
+      "cookingMethods": ["鱼柳/片鱼", "煎", "炸", "烘烤", "烧烤", "咖喱"],
+      "notes": "毒刺警示：背鳍与胸鳍具毒刺，可能造成疼痛伤口，处理需极度小心。建议烹前去皮（鱼皮风味较重）。是河口常见的游钓对象。去骨切片并恰当烹调后肉质极佳"
     }
   },
   {
     "id": "174",
-    "name": "Wrasse and parrotfish (group)",
-    "scientificName": "Labridae, Scaridae spp.",
+    "name": "隆头鱼与鹦嘴鱼（类群）",
+    "scientificName": "Labridae spp.（隆头鱼科多种），Scaridae spp.（鹦嘴鱼科多种）",
     "localNames": [
       "Wrasse",
+      "隆头鱼",
       "Parrotfish",
+      "鹦嘴鱼",
       "Maori wrasse",
+      "毛利隆头鱼",
       "Tuskfish",
-      "Cleaner wrasse"
+      "齿鱼（Tuskfish）",
+      "Cleaner wrasse",
+      "清洁隆头鱼"
     ],
-    "family": "Labridae, Scaridae",
+    "family": "Labridae（隆头鱼科），Scaridae（鹦嘴鱼科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/174?thumbnailSize=large",
@@ -8446,9 +8441,9 @@
       "maxWeightKg": 100
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -8456,33 +8451,34 @@
         "dailyLimit": 8
       },
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Algae",
-        "Coral polyps",
-        "Invertebrates",
-        "Small fish",
-        "Parasites"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["藻类", "珊瑚虫", "无脊椎动物", "小型鱼类", "寄生虫"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "fair",
-      "taste": "Variable eating quality depending on species and size. Larger wrasse can be good eating, but many are important for reef ecosystem health",
-      "cookingMethods": ["Whole cooking", "Fillet", "Steam", "Grill"],
-      "notes": "CONSERVATION NOTE: Many wrasse and parrotfish species are crucial for reef health as cleaners and algae grazers. Large humphead Maori wrasse are protected species. Smaller species generally have limited eating value. Best to release these important reef fish to maintain ecosystem balance."
+      "taste": "食用品质因种类与体型而异。大型隆头鱼可食性较佳，但许多种类对珊瑚礁生态健康至关重要",
+      "cookingMethods": ["整鱼烹调", "鱼柳/片鱼", "清蒸", "烧烤"],
+      "notes": "保护提示：多种隆头鱼与鹦嘴鱼作为清洁鱼与刮藻者，对礁体健康至关重要。大型驼背毛利隆头鱼为受保护物种。小型种类普遍食用价值有限。为维持生态平衡，建议尽量放流这些重要的礁栖鱼类"
     }
   },
   {
     "id": "175",
-    "name": "Finfish - all other species",
-    "scientificName": "Various spp.",
-    "localNames": ["Miscellaneous fish", "Other finfish", "Various species"],
-    "family": "Various",
+    "name": "鳍鱼（其他物种）",
+    "scientificName": "Various spp.（多种）",
+    "localNames": [
+      "Miscellaneous fish",
+      "杂项鱼类",
+      "Other finfish",
+      "其他鳍鱼",
+      "Various species",
+      "多种/各类物种"
+    ],
+    "family": "Various（杂项）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/175?thumbnailSize=large",
@@ -8494,40 +8490,46 @@
       "maxWeightKg": 200
     },
     "habitat": {
-      "waterTypes": ["Marine", "Estuarine", "Freshwater"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水", "河口", "淡水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
-      "feedingHabits": ["Various feeding habits", "Depends on species"],
-      "activeTime": "both",
+      "feedingHabits": ["取食习性多样", "视物种而定"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "variable",
-      "taste": "Eating quality varies greatly depending on the specific species. Some excellent, others poor or inedible",
-      "cookingMethods": ["Various methods", "Depends on species"],
-      "notes": "This category covers all other finfish species not specifically listed elsewhere. Eating quality, cooking methods, and handling requirements vary greatly by species. Always positively identify fish before consumption and check current regulations. Some species may be protected or have special handling requirements."
+      "taste": "食用品质因物种而差异巨大：部分极佳，亦有一般或不宜食用者",
+      "cookingMethods": ["多种烹调方式", "视物种而定"],
+      "notes": "本类别涵盖未在他处单列的所有其他鳍鱼。其食用品质、烹调方式与处理要求因物种而异。食用前务必准确鉴别并查阅最新法规；部分物种可能受保护或需特别处理"
     }
   },
   {
     "id": "176",
-    "name": "Crustaceans - all other species",
-    "scientificName": "Crustacea spp.",
+    "name": "甲壳类（其他物种）",
+    "scientificName": "Crustacea spp.（甲壳类多种）",
     "localNames": [
       "Crabs",
+      "螃蟹",
       "Shrimp",
+      "虾",
       "Prawns",
+      "对虾",
       "Lobsters",
+      "龙虾",
       "Crayfish",
-      "Barnacles"
+      "小龙虾/淡水龙虾",
+      "Barnacles",
+      "藤壶"
     ],
-    "family": "Crustacea",
+    "family": "Crustacea（甲壳类）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/176?thumbnailSize=large",
@@ -8539,9 +8541,9 @@
       "maxWeightKg": 5
     },
     "habitat": {
-      "waterTypes": ["Marine", "Estuarine", "Freshwater"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水", "河口", "淡水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -8549,39 +8551,43 @@
         "dailyLimit": 10
       },
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
       "feedingHabits": [
-        "Detritus",
-        "Algae",
-        "Small fish",
-        "Invertebrates",
-        "Plankton",
-        "Organic matter"
+        "碎屑/腐屑",
+        "藻类",
+        "小型鱼类",
+        "无脊椎动物",
+        "浮游生物",
+        "有机物"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "variable",
-      "taste": "Eating quality varies greatly by species. Many are excellent eating while others are not suitable for consumption",
-      "cookingMethods": ["Boil", "Steam", "Grill", "Stir-fry", "Raw", "Curry"],
-      "notes": "This category covers all other crustacean species not specifically listed. Includes many excellent eating species like crabs, prawns, and lobsters. Always ensure proper identification and check current regulations. Some species may have seasonal closures or size limits. Cook thoroughly to avoid foodborne illness."
+      "taste": "食用品质因物种差异极大，许多可食性极佳，亦有不宜食者",
+      "cookingMethods": ["水煮", "清蒸", "烧烤", "快炒", "生食", "咖喱"],
+      "notes": "本类别涵盖未单列的其他甲壳类，包括许多优良食用品种（如蟹、对虾、龙虾）。务必准确鉴别并查阅最新法规；部分物种可能有禁渔季或体长限制。为避免食源性风险，请充分加热烹熟（不宜生食的品种）"
     }
   },
   {
     "id": "178",
-    "name": "Yabby",
-    "scientificName": "Cherax destructor, Cherax albidus",
+    "name": "雅比小龙虾",
+    "scientificName": "Cherax destructor（雅比小龙虾）, Cherax albidus（白雅比小龙虾）",
     "localNames": [
       "Dam yabby",
+      "水坝雅比",
       "Common yabby",
+      "普通雅比",
       "Freshwater crayfish",
-      "Murray River crayfish"
+      "淡水小龙虾",
+      "Murray River crayfish",
+      "墨累河小龙虾"
     ],
-    "family": "Parastacidae",
+    "family": "Parastacidae（拟螯虾科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/178?thumbnailSize=large",
@@ -8600,43 +8606,48 @@
     "regulations": [],
     "behavior": {
       "feedingHabits": [
-        "Detritus",
-        "Algae",
-        "Water weeds",
-        "Decaying roots and leaves",
-        "Small invertebrates",
-        "Opportunistic omnivore"
+        "碎屑/腐屑",
+        "藻类",
+        "水草",
+        "腐烂的根与叶",
+        "小型无脊椎动物",
+        "机会性杂食者"
       ],
-      "activeTime": "night",
+      "activeTime": "夜间",
       "difficulty": 2
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Soft, delicate and earthy flavour with firm, not mushy bite. Often called 'manna from heaven' when properly prepared",
+      "taste": "口感细嫩、带轻微泥土香，咬感紧实不糜。妥善处理后常被称为“来自天堂的美味”",
       "cookingMethods": [
-        "Boil in salted water",
-        "Grilled",
-        "Pot-roasted",
-        "Poached",
-        "Baked",
-        "Curries",
-        "Salads"
+        "盐水快煮",
+        "烧烤",
+        "锅烤/焖烤",
+        "水煮/清烩",
+        "烘烤",
+        "咖喱",
+        "沙拉"
       ],
-      "notes": "Australian native freshwater crustacean with excellent eating quality. Best cooked live in fast-bubbling salted water, then refreshed in icy water. Traditionally eaten with white bread, butter and brown vinegar. Takes on conditions of water they grow in, so taste varies by location. Can be stored out of water for up to a week when kept damp and cool. Featured at premium restaurants like Bennelong."
+      "notes": "澳洲本土淡水甲壳类，食用品质优异。最佳做法是活体入滚盐水速煮，再以冰水冰镇；传统食法配白面包、黄油与棕色醋。其味受生长水质影响，因地而异；离水保湿低温可存放长达一周。亦常见于高端餐厅（如 Bennelong）"
     }
   },
   {
     "id": "179",
-    "name": "Trevally and queenfish (group)",
-    "scientificName": "Carangidae spp.",
+    "name": "鲹与女王鱼（类群）",
+    "scientificName": "Carangidae spp.（鲹科多种）",
     "localNames": [
       "Trevally",
+      "鲹",
       "Queenfish",
+      "女王鱼",
       "Jack",
+      "鲹（Jack）",
       "Yellow-tail kingfish",
-      "Samson fish"
+      "黄尾鰤/青甘",
+      "Samson fish",
+      "参孙鱼/大青甘"
     ],
-    "family": "Carangidae",
+    "family": "Carangidae（鲹科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/179?thumbnailSize=large",
@@ -8648,9 +8659,9 @@
       "maxWeightKg": 50
     },
     "habitat": {
-      "waterTypes": ["Marine", "Estuarine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水", "河口"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -8658,47 +8669,45 @@
         "dailyLimit": 8
       },
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
       "feedingHabits": [
-        "Small fish",
-        "Squid",
-        "Crustaceans",
-        "Baitfish",
-        "Prawns",
-        "Schooling fish"
+        "小型鱼类",
+        "鱿鱼",
+        "甲壳类",
+        "饵鱼",
+        "对虾",
+        "群游鱼类"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "good",
-      "taste": "Good eating quality with firm, white flesh and mild to moderate flavour. Quality varies by species and size",
-      "cookingMethods": [
-        "Whole cooking",
-        "Fillet",
-        "Pan-fry",
-        "Grill",
-        "Bake",
-        "Sashimi"
-      ],
-      "notes": "Includes various species from queenfish to large trevally and kingfish. Smaller species generally better eating quality. Some larger species can have strong flavour or parasites. Popular recreational fishing targets known for their fighting ability. Best eating when fresh and properly handled."
+      "taste": "食用品质良好，肉质洁白紧实，风味温和至中等；品质因物种与体型而异",
+      "cookingMethods": ["整鱼烹调", "鱼柳/片鱼", "煎", "烧烤", "烘烤", "刺身"],
+      "notes": "涵盖从女王鱼到大型鲹与鰤等多种类。小型种通常食用品质更佳；大型个体可能风味较重或带寄生虫。以强劲搏力闻名的游钓对象。新鲜且妥善处理时口感最佳"
     }
   },
   {
     "id": "180",
-    "name": "Bream (group)",
-    "scientificName": "Sparidae spp.",
+    "name": "海鲷（类群）",
+    "scientificName": "Sparidae spp.（鲷科多种）",
     "localNames": [
       "Black bream",
+      "黑海鲷",
       "Silver bream",
+      "银海鲷",
       "Yellowfin bream",
+      "黄鳍海鲷",
       "Tarwhine",
-      "Surf bream"
+      "塔怀恩/海鲷类",
+      "Surf bream",
+      "浪鳍海鲷/冲浪海鲷"
     ],
-    "family": "Sparidae",
+    "family": "Sparidae（鲷科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/180?thumbnailSize=large",
@@ -8710,9 +8719,9 @@
       "maxWeightKg": 4
     },
     "habitat": {
-      "waterTypes": ["Marine", "Estuarine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水", "河口"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -8721,46 +8730,43 @@
         "dailyLimit": 6
       },
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
       "feedingHabits": [
-        "Worms",
-        "Crustaceans",
-        "Molluscs",
-        "Small fish",
-        "Algae",
-        "Bottom invertebrates"
+        "蠕虫",
+        "甲壳类",
+        "软体动物",
+        "小型鱼类",
+        "藻类",
+        "底栖无脊椎动物"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Outstanding eating quality with firm, white flesh and excellent flavour. Among Australia's most popular recreational fishing targets",
-      "cookingMethods": [
-        "Whole cooking",
-        "Fillet",
-        "Pan-fry",
-        "Grill",
-        "Bake",
-        "Steam"
-      ],
-      "notes": "Highly prized eating fish throughout Australia. Black bream particularly well-regarded for eating quality. Firm, white, flaky flesh with sweet, mild flavour. Popular in estuaries and coastal waters. Responds well to simple cooking methods that highlight natural flavour. Important recreational fishery species."
+      "taste": "食用品质极佳，肉质洁白紧实、风味出众；亦是澳洲最受欢迎的游钓对象之一",
+      "cookingMethods": ["整鱼烹调", "鱼柳/片鱼", "煎", "烧烤", "烘烤", "清蒸"],
+      "notes": "在澳大利亚各地都很受欢迎；黑海鲷尤以食用品质见称。肉质洁白、片状、甜美且风味温和。常见于河口与沿岸水域；适合突出本味的简洁烹法。亦是重要的游钓鱼种"
     }
   },
   {
     "id": "181",
-    "name": "Tuna, albacore",
-    "scientificName": "Thunnus alalunga",
+    "name": "长鳍金枪鱼",
+    "scientificName": "Thunnus alalunga（长鳍金枪鱼/白金枪鱼）",
     "localNames": [
       "Albacore tuna",
+      "长鳍金枪鱼",
       "Long-finned tuna",
+      "长鳍鲔",
       "White tuna",
-      "Chicken of the sea"
+      "白金枪鱼",
+      "Chicken of the sea",
+      "海中鸡肉"
     ],
-    "family": "Scombridae",
+    "family": "Scombridae（鲭科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/181?thumbnailSize=large",
@@ -8772,9 +8778,9 @@
       "maxWeightKg": 60
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["Summer", "Autumn"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["夏季", "秋季"]
     },
     "regulations": [
       {
@@ -8782,48 +8788,45 @@
         "dailyLimit": 8
       },
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
       "feedingHabits": [
-        "Small schooling fish",
-        "Pilchards",
-        "Anchovies",
-        "Sauries",
-        "Squid",
-        "Crustaceans"
+        "小型群游鱼类",
+        "沙丁鱼",
+        "鳀鱼",
+        "秋刀鱼",
+        "鱿鱼",
+        "甲壳类"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 4
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Outstanding eating quality with pinkish flesh that is oily and flavourful. Often called 'chicken of the sea' for its fine eating qualities",
-      "cookingMethods": [
-        "Sashimi",
-        "Steaks",
-        "Grill",
-        "Barbecue",
-        "Pan-fry",
-        "Smoking",
-        "Canned"
-      ],
-      "notes": "Highly prized eating fish and important commercial species. Pinkish flesh is oily and suitable for many cooking methods. Most caught in New Zealand/Australian waters is frozen and sent for canning. Excellent for serving raw as sashimi. Must be bled immediately and kept very cold to prevent spoilage. Premium gamefish known for powerful runs and strong fights."
+      "taste": "食用品质极佳，肉色微粉、含油量高且风味浓郁；因细嫩可口被称作“海中鸡肉”",
+      "cookingMethods": ["刺身", "切排", "烧烤", "炭烤", "煎", "烟熏", "罐藏"],
+      "notes": "极受推崇的食用与重要商业鱼种。粉色肉质含油量高，适配多种烹法；新西兰/澳大利亚海域所捕多冷冻后供罐藏。适合生食作刺身；需立即放血并全程低温以防变质。亦是著名的大型游钓鱼，爆发力强、奔窜有力"
     }
   },
   {
     "id": "182",
-    "name": "Cichlids and tilapia (group)",
-    "scientificName": "Cichlidae spp.",
+    "name": "慈鲷与罗非鱼（类群）",
+    "scientificName": "Cichlidae spp.（慈鲷科多种）",
     "localNames": [
       "Tilapia",
+      "罗非鱼",
       "Cichlids",
+      "慈鲷/丽鱼",
       "Mozambique tilapia",
+      "莫桑比克罗非鱼",
       "Nile tilapia",
-      "Blue tilapia"
+      "尼罗罗非鱼",
+      "Blue tilapia",
+      "蓝罗非鱼"
     ],
-    "family": "Cichlidae",
+    "family": "Cichlidae（慈鲷科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/182?thumbnailSize=large",
@@ -8835,47 +8838,44 @@
       "maxWeightKg": 2
     },
     "habitat": {
-      "waterTypes": ["Freshwater"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["淡水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [],
     "behavior": {
       "feedingHabits": [
-        "Algae",
-        "Plants",
-        "Small invertebrates",
-        "Detritus",
-        "Omnivorous feeding"
+        "藻类",
+        "水生植物",
+        "小型无脊椎动物",
+        "碎屑/腐屑",
+        "杂食性摄食"
       ],
-      "activeTime": "day",
+      "activeTime": "白天",
       "difficulty": 2
     },
     "edibility": {
       "rating": "good",
-      "taste": "Good eating quality with white, flaky flesh and mild flavour. Popular aquaculture species worldwide",
-      "cookingMethods": [
-        "Whole cooking",
-        "Fillet",
-        "Pan-fry",
-        "Grill",
-        "Bake",
-        "Steam"
-      ],
-      "notes": "INVASIVE SPECIES WARNING: Most cichlids and tilapia are introduced species that can cause serious environmental damage to native ecosystems. Many jurisdictions prohibit their release or transport. Despite environmental concerns, they are good eating fish when legally obtained. Popular in aquaculture due to fast growth and mild taste."
+      "taste": "食用品质良好，肉质洁白片状、风味温和；为全球常见的养殖鱼类",
+      "cookingMethods": ["整鱼烹调", "鱼柳/片鱼", "煎", "烧烤", "烘烤", "清蒸"],
+      "notes": "外来入侵警示：多数慈鲷与罗非鱼为引入物种，可能严重破坏本地生态；多地禁止释放或转运。符合规定取得者可食用；因生长快、口味温和而在养殖中广受欢迎"
     }
   },
   {
     "id": "184",
-    "name": "Threadfin, blue",
-    "scientificName": "Eleutheronema tetradactylum",
+    "name": "蓝副须鲬",
+    "scientificName": "Eleutheronema tetradactylum（蓝副须鲬）",
     "localNames": [
       "Blue threadfin",
+      "蓝副须鲬",
       "Blue salmon",
+      "蓝鲑（俗称）",
       "Fourfinger threadfin",
-      "Cook's salmon"
+      "四指须鲬",
+      "Cook's salmon",
+      "库克鲑（俗称）"
     ],
-    "family": "Polynemidae",
+    "family": "Polynemidae（须鲬科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/184?thumbnailSize=large",
@@ -8887,9 +8887,9 @@
       "maxWeightKg": 45
     },
     "habitat": {
-      "waterTypes": ["Marine", "Estuarine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水", "河口"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -8897,48 +8897,48 @@
         "dailyLimit": 4
       },
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Fish",
-        "Crustaceans",
-        "Prawns",
-        "Small fish",
-        "Bottom invertebrates"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["鱼类", "甲壳类", "对虾", "小型鱼类", "底栖无脊椎动物"],
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Outstanding eating quality with firm, white flesh and excellent flavour. One of northern Australia's most prized table fish",
+      "taste": "食用品质极佳，肉质洁白紧实、风味出众；是澳大利亚北部最受推崇的餐桌鱼之一",
       "cookingMethods": [
-        "Whole cooking",
-        "Fillet",
-        "Pan-fry",
-        "Grill",
-        "Bake",
-        "Steam",
-        "Curry"
+        "整鱼烹调",
+        "鱼柳/片鱼",
+        "煎",
+        "烧烤",
+        "烘烤",
+        "清蒸",
+        "咖喱"
       ],
-      "notes": "Highly prized eating fish and one of Australia's premier table fish species. Firm, white, flaky flesh with sweet, delicate flavour. Distinguished by long thread-like pectoral fin rays. Important commercial and recreational species. Can grow very large, with specimens over 40kg recorded. Best eating when fresh and properly handled."
+      "notes": "极具人气的餐桌鱼。肉质洁白、片状、甜美细致；胸鳍具长丝状鳍条极具辨识度。兼具商业与游钓价值；个体可长至 40kg 以上。新鲜且妥善处理时为最佳食用状态"
     }
   },
   {
     "id": "185",
-    "name": "Native freshwater fish (group)",
-    "scientificName": "Various native spp.",
+    "name": "本地淡水鱼（类群）",
+    "scientificName": "Various native spp.（多种本地物种）",
     "localNames": [
       "Murray cod",
+      "墨累鳕",
       "Australian bass",
+      "澳洲鲈",
       "Freshwater catfish",
+      "淡水鲶",
       "Golden perch",
+      "金鲈",
       "Silver perch",
-      "Trout cod"
+      "银鲈",
+      "Trout cod",
+      "鳟鳕"
     ],
-    "family": "Various",
+    "family": "Various（多种）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/185?thumbnailSize=large",
@@ -8950,41 +8950,40 @@
       "maxWeightKg": 100
     },
     "habitat": {
-      "waterTypes": ["Freshwater"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["淡水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [],
     "behavior": {
-      "feedingHabits": [
-        "Fish",
-        "Crustaceans",
-        "Insects",
-        "Worms",
-        "Various prey items"
-      ],
+      "feedingHabits": ["鱼类", "甲壳类", "昆虫", "蠕虫", "多样猎物"],
       "activeTime": "both",
       "difficulty": 3
     },
     "edibility": {
       "rating": "variable",
-      "taste": "Eating quality varies greatly by species. Some are excellent eating while others are protected or not suitable for consumption",
-      "cookingMethods": ["Whole cooking", "Fillet", "Pan-fry", "Grill", "Bake"],
-      "notes": "CONSERVATION CRITICAL: Many native freshwater fish are threatened or protected species. Always check current regulations before targeting or keeping native species. Murray cod, trout cod, and many others have strict size limits, closed seasons, or complete protection. Prioritize conservation and catch-and-release practices. Some species like golden perch and silver perch can be good eating when legally harvested."
+      "taste": "食用品质因物种差异很大：部分极佳，亦有受保护或不宜食用者",
+      "cookingMethods": ["整鱼烹调", "鱼柳/片鱼", "煎", "烧烤", "烘烤"],
+      "notes": "保育要点：众多本地淡水鱼受威胁或受保护。垂钓或留鱼前务必核对最新法规；墨累鳕、鳟鳕等多种设有严格体长或禁渔期，或完全禁捕。请优先采取保育与放流。金鲈、银鲈等在合法获取时具良好食用价值"
     }
   },
   {
     "id": "186",
-    "name": "Coral and live rock (group)",
-    "scientificName": "Cnidaria spp.",
+    "name": "珊瑚与活石（类群）",
+    "scientificName": "Cnidaria spp.（刺胞动物门多种）",
     "localNames": [
       "Hard coral",
+      "硬珊瑚",
       "Soft coral",
+      "软珊瑚",
       "Live rock",
+      "活石",
       "Coral polyps",
-      "Marine invertebrates"
+      "珊瑚虫",
+      "Marine invertebrates",
+      "海洋无脊椎动物"
     ],
-    "family": "Cnidaria",
+    "family": "Cnidaria（刺胞动物门）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/186?thumbnailSize=large",
@@ -8996,42 +8995,42 @@
       "maxWeightKg": 1000
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [],
     "behavior": {
-      "feedingHabits": [
-        "Plankton",
-        "Small organisms",
-        "Symbiotic algae",
-        "Filter feeding",
-        "Photosynthesis"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["浮游生物", "微小生物", "共生藻类", "滤食", "光合作用"],
+      "activeTime": "昼夜均可",
       "difficulty": 1
     },
     "edibility": {
       "rating": "not_edible",
-      "taste": "Not suitable for human consumption. These are marine organisms, not fish",
+      "taste": "不适合食用；其为海洋无脊椎动物，并非鱼类",
       "cookingMethods": [],
-      "notes": "IMPORTANT: This category covers coral and live rock, which are marine invertebrates, not fish. They are not edible and are often protected by environmental regulations. Coral reefs are critical marine ecosystems that support biodiversity and require conservation. Removal or damage to coral may be illegal and harmful to marine environments."
+      "notes": "重要说明：本类别包含珊瑚与活石，均为海洋无脊椎动物而非鱼类；通常受环境法规保护。珊瑚礁是维系生物多样性的关键生态系统，需重点保育。采集或破坏珊瑚可能违法并对海洋环境造成危害"
     }
   },
   {
     "id": "187",
-    "name": "Baitfish (group)",
-    "scientificName": "Various small fish spp.",
+    "name": "饵鱼（类群）",
+    "scientificName": "Various small fish spp.（多种小型鱼类）",
     "localNames": [
       "Sardines",
+      "沙丁鱼",
       "Anchovies",
+      "鳀鱼",
       "Whitebait",
+      "银鱼",
       "Pilchards",
+      "小沙丁",
       "Small herring",
-      "Juvenile fish"
+      "小鲱",
+      "Juvenile fish",
+      "鱼苗/幼鱼"
     ],
-    "family": "Various",
+    "family": "Various（多种）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/187?thumbnailSize=large",
@@ -9043,9 +9042,9 @@
       "maxWeightKg": 0.1
     },
     "habitat": {
-      "waterTypes": ["Marine", "Estuarine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水", "河口"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -9053,32 +9052,32 @@
         "dailyLimit": 9
       },
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
       "feedingHabits": [
-        "Plankton",
-        "Small crustaceans",
-        "Algae",
-        "Small invertebrates",
-        "Filter feeding"
+        "浮游生物",
+        "小型甲壳类",
+        "藻类",
+        "小型无脊椎动物",
+        "滤食"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 1
     },
     "edibility": {
       "rating": "good",
-      "taste": "Good eating quality when fresh. Often oily and flavorful, best when eaten whole or processed",
+      "taste": "新鲜时食用品质良好，含油量较高、风味浓；整食或加工为佳",
       "cookingMethods": [
-        "Deep-fry",
-        "Pan-fry",
-        "Smoke",
-        "Pickle",
-        "Canned",
-        "Raw (some species)"
+        "炸",
+        "煎",
+        "烟熏",
+        "腌制",
+        "罐藏",
+        "生食（部分物种）"
       ],
-      "notes": "Important food source for larger fish and seabirds. Many species are excellent eating when fresh - sardines, anchovies, and whitebait are particularly prized. Often used as bait but also valuable as food fish. High in omega-3 fatty acids. Some species like whitebait command premium prices. Should be consumed very fresh due to high oil content."
+      "notes": "大型鱼类与海鸟的重要食物来源。多种在新鲜时风味极佳——尤以沙丁鱼、鳀鱼与银鱼为上；虽常作饵鱼，但同样具食用价值；富含 Omega-3 脂肪酸。部分如银鱼等价格不菲；因含油量高，宜尽快食用"
     }
   },
   {
@@ -9204,14 +9203,17 @@
   },
   {
     "id": "190",
-    "name": "Trout, brown",
-    "scientificName": "Salmo trutta",
+    "name": "褐鳟",
+    "scientificName": "Salmo trutta（褐鳟）",
     "localNames": [
       "Brown trout",
+      "褐鳟",
       "Sea-run brown trout",
-      "European brown trout"
+      "降海型褐鳟",
+      "European brown trout",
+      "欧洲褐鳟"
     ],
-    "family": "Salmonidae",
+    "family": "Salmonidae（鲑科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/190?thumbnailSize=large",
@@ -9223,9 +9225,9 @@
       "maxWeightKg": 14
     },
     "habitat": {
-      "waterTypes": ["Freshwater", "Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["Spring", "Summer", "Autumn"]
+      "waterTypes": ["淡水", "海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["春季", "夏季", "秋季"]
     },
     "regulations": [
       {
@@ -9234,43 +9236,42 @@
     ],
     "behavior": {
       "feedingHabits": [
-        "Aquatic insects",
-        "Small fish",
-        "Snails",
-        "Worms",
-        "Crustaceans",
-        "Opportunistic carnivore"
+        "水生昆虫",
+        "小型鱼类",
+        "蜗牛",
+        "蠕虫",
+        "甲壳类",
+        "机会性捕食者"
       ],
-      "activeTime": "dawn and dusk",
+      "activeTime": "黎明与黄昏",
       "difficulty": 4
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Outstanding eating quality with firm, pink to white flesh and excellent flavour. One of the world's premier table fish",
-      "cookingMethods": [
-        "Pan-fry",
-        "Grill",
-        "Bake",
-        "Smoke",
-        "Whole cooking",
-        "Steam"
-      ],
-      "notes": "INTRODUCED SPECIES: Successfully introduced to Australia from Europe in 1867. One of the most important sport fish in Australia. Found in cool waters above 600m with moderate to swift flow. Sea-run browns are silver and feed on baitfish. River browns are darker with spots. Closed seasons apply in many areas to protect spawning. Requires fishing license. Highly prized by recreational anglers worldwide."
+      "taste": "食用品质极佳，肉色粉白至白、肉质紧实、风味出众；世界顶级餐桌鱼之一",
+      "cookingMethods": ["煎", "烧烤", "烘烤", "烟熏", "整鱼烹调", "清蒸"],
+      "notes": "外来引入种：1867 年自欧洲成功引入澳大利亚。澳洲重要游钓鱼种之一；多见于海拔 600 米以上、流速中等至较急的冷水域。降海型个体体色银亮、以饵鱼为食；河流型体色较深并具斑点。为保护繁殖，多地设有禁渔季；需持证垂钓；在全球休闲垂钓者中极受推崇"
     }
   },
   {
     "id": "191",
-    "name": "Freshwater pest species (group)",
-    "scientificName": "Various invasive spp.",
+    "name": "淡水入侵物种（类群）",
+    "scientificName": "Various invasive spp.（多种入侵物种）",
     "localNames": [
       "European carp",
+      "欧洲鲤/鲤鱼",
       "Goldfish",
+      "金鱼",
       "Mosquito fish",
+      "食蚊鱼",
       "Redfin perch",
+      "红鳍鲈/红梢鲈",
       "Tilapia",
-      "Invasive species"
+      "罗非鱼",
+      "Invasive species",
+      "入侵物种"
     ],
-    "family": "Various",
+    "family": "Various（多种）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/191?thumbnailSize=large",
@@ -9282,39 +9283,42 @@
       "maxWeightKg": 40
     },
     "habitat": {
-      "waterTypes": ["Freshwater"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["淡水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [],
     "behavior": {
       "feedingHabits": [
-        "Omnivorous",
-        "Plants",
-        "Invertebrates",
-        "Small fish",
-        "Detritus"
+        "杂食",
+        "水生植物",
+        "无脊椎动物",
+        "小型鱼类",
+        "碎屑/腐屑"
       ],
       "activeTime": "both",
       "difficulty": 2
     },
     "edibility": {
       "rating": "variable",
-      "taste": "Eating quality varies by species. Some like carp can be good eating when properly prepared, others not recommended",
-      "cookingMethods": [
-        "Whole cooking",
-        "Fillet",
-        "Not recommended for most species"
-      ],
-      "notes": "ENVIRONMENTAL THREAT: These are invasive pest species that cause serious damage to Australian freshwater ecosystems. MUST NOT BE RETURNED TO WATER if caught - this is often legally required. Can displace native species, degrade water quality, and destroy habitat. European carp is edible but bony. Most other pest species not recommended for consumption. Check local regulations - some areas require immediate destruction of these species."
+      "taste": "食用品质因物种而异：如鲤鱼妥善处理可食，但多数不建议食用",
+      "cookingMethods": ["整鱼烹调", "鱼柳/片鱼", "多数物种不建议食用"],
+      "notes": "环境威胁：此类为入侵有害鱼种，对澳大利亚淡水生态破坏严重。被捕获后严禁放回水体（多地为法定要求）。其会排挤本地物种、恶化水质并破坏栖息地。欧洲鲤可食但多刺；多数入侵种不建议食用。务必查阅当地法规（不少区域要求立即处置）"
     }
   },
   {
     "id": "192",
-    "name": "Swallowtail",
-    "scientificName": "Centroberyx lineatus",
-    "localNames": ["Swallowtail", "Striped swallowtail", "Lined nannygai"],
-    "family": "Berycidae",
+    "name": "燕尾鱼",
+    "scientificName": "Centroberyx lineatus（条纹燕尾鱼）",
+    "localNames": [
+      "Swallowtail",
+      "燕尾鱼",
+      "Striped swallowtail",
+      "条纹燕尾鱼",
+      "Lined nannygai",
+      "条纹红鱼"
+    ],
+    "family": "Berycidae（拟鲈科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/192?thumbnailSize=large",
@@ -9326,13 +9330,13 @@
       "maxWeightKg": 0.5
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast",
+        "region": "West Coast (西海岸)",
         "dailyLimit": 2,
         "closedSeasons": [
           {
@@ -9344,27 +9348,34 @@
     ],
     "behavior": {
       "feedingHabits": [
-        "Small fish",
-        "Crustaceans",
-        "Zooplankton",
-        "Small invertebrates"
+        "小型鱼类",
+        "甲壳类",
+        "动物性浮游生物",
+        "小型无脊椎动物"
       ],
-      "activeTime": "night",
+      "activeTime": "夜间",
       "difficulty": 3
     },
     "edibility": {
       "rating": "good",
-      "taste": "Good eating quality with firm, white flesh and mild flavour. Small but tasty fish often caught as bycatch",
-      "cookingMethods": ["Whole cooking", "Pan-fry", "Grill", "Deep-fry"],
-      "notes": "Small deep-water fish related to nannygai. Often caught as bycatch during deep-water fishing. Despite small size, they are good eating with sweet, firm flesh. Usually cooked whole due to small size. Found in deeper waters and more active at night. Part of the berycid family known for good eating quality."
+      "taste": "食用品质良好，肉质洁白紧实、风味温和；体型虽小但滋味佳，常作兼捕鱼",
+      "cookingMethods": ["整鱼烹调", "煎", "烧烤", "炸"],
+      "notes": "与红鱼类近缘的小型深水鱼，深水钓常见兼捕。虽体型较小但肉质甜美紧实，常以整鱼烹调。多见于较深水域，夜间更为活跃；隶属拟鲈科，整体食用品质良好"
     }
   },
   {
     "id": "193",
-    "name": "Bight redfish",
-    "scientificName": "Centroberyx gerrardi",
-    "localNames": ["Bight redfish", "Gerrard's nannygai", "Redfish"],
-    "family": "Berycidae",
+    "name": "大澳湾红鱼",
+    "scientificName": "Centroberyx gerrardi（大澳湾红鱼）",
+    "localNames": [
+      "Bight redfish",
+      "大澳湾红鱼",
+      "Gerrard's nannygai",
+      "吉拉德红鱼",
+      "Redfish",
+      "红鱼"
+    ],
+    "family": "Berycidae（拟鲈科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/193?thumbnailSize=large",
@@ -9376,13 +9387,13 @@
       "maxWeightKg": 2
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast",
+        "region": "West Coast (西海岸)",
         "dailyLimit": 2,
         "closedSeasons": [
           {
@@ -9394,35 +9405,42 @@
     ],
     "behavior": {
       "feedingHabits": [
-        "Small fish",
-        "Crustaceans",
-        "Zooplankton",
-        "Small invertebrates"
+        "小型鱼类",
+        "甲壳类",
+        "动物性浮游生物",
+        "小型无脊椎动物"
       ],
-      "activeTime": "night",
+      "activeTime": "夜间",
       "difficulty": 3
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Excellent eating quality with firm, white flesh and sweet flavour. Highly regarded among deep-water fish",
-      "cookingMethods": ["Whole cooking", "Pan-fry", "Grill", "Bake", "Steam"],
-      "notes": "Deep-water species related to nannygai and part of the berycid family known for excellent eating quality. Caught primarily in deeper waters off the continental shelf. Despite being called 'redfish', it's not related to true redfish/red snapper. Firm, sweet white flesh makes it highly prized by fishers. Often caught as part of mixed deep-water catches."
+      "taste": "食用品质极佳，肉质洁白紧实、带甜味；在深水鱼中评价很高",
+      "cookingMethods": ["整鱼烹调", "煎", "烧烤", "烘烤", "清蒸"],
+      "notes": "深水物种，与红鱼类近缘并隶属拟鲈科（以优良食用品质闻名）。多在陆架外较深水域被捕。虽名为“红鱼”，并非真正的真红鱼/红鲷。其紧实甘甜的白肉深受垂钓者喜爱，常见于深水混合渔获中"
     }
   },
   {
     "id": "194",
-    "name": "Molluscs and invertebrates – all other species",
-    "scientificName": "Various mollusc spp.",
+    "name": "软体动物与无脊椎动物（其他物种）",
+    "scientificName": "Various mollusc spp.（多种软体动物）",
     "localNames": [
       "Abalones",
+      "鲍鱼",
       "Mussels",
+      "贻贝/青口",
       "Clams",
+      "蛤蜊/文蛤",
       "Scallops",
+      "扇贝",
       "Whelks",
+      "玉黍螺/法螺",
       "Sea snails",
-      "Marine gastropods"
+      "海螺",
+      "Marine gastropods",
+      "海产腹足类"
     ],
-    "family": "Various",
+    "family": "Various（多种）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/194?thumbnailSize=large",
@@ -9434,9 +9452,9 @@
       "maxWeightKg": 2
     },
     "habitat": {
-      "waterTypes": ["Marine", "Estuarine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水", "河口"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -9444,18 +9462,12 @@
         "dailyLimit": 10
       },
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Filter feeding",
-        "Algae",
-        "Plankton",
-        "Detritus",
-        "Small organisms"
-      ],
-      "activeTime": "both",
+      "feedingHabits": ["滤食", "藻类", "浮游生物", "碎屑/腐屑", "微小生物"],
+      "activeTime": "昼夜均可",
       "difficulty": 2
     },
     "edibility": {
@@ -9467,18 +9479,25 @@
   },
   {
     "id": "195",
-    "name": "Ark shells, cockles and pipis (group)",
-    "scientificName": "Bivalve molluscs spp.",
+    "name": "蚶类、皮皮与帘蛤（类群）",
+    "scientificName": "Bivalve molluscs spp.（双壳类软体动物多种）",
     "localNames": [
       "Cockles",
+      "蚶/毛蚶",
       "Pipis",
+      "皮皮",
       "Venus shells",
+      "文蛤/帘蛤",
       "Ark shells",
+      "鳖甲贝",
       "Sand cockles",
+      "沙蚶",
       "Sydney cockles",
-      "Goolwa cockles"
+      "悉尼蚶",
+      "Goolwa cockles",
+      "古尔瓦蚶"
     ],
-    "family": "Arcidae, Veneridae",
+    "family": "Arcidae（鳖甲贝科），Veneridae（帘蛤科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/195?thumbnailSize=large",
@@ -9490,9 +9509,9 @@
       "maxWeightKg": 0.1
     },
     "habitat": {
-      "waterTypes": ["Marine", "Estuarine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水", "河口"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -9500,7 +9519,7 @@
         "dailyLimit": 2
       },
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
@@ -9529,17 +9548,23 @@
   },
   {
     "id": "196",
-    "name": "Specimen shells (group)",
-    "scientificName": "Various gastropod spp.",
+    "name": "标本贝类（类群）",
+    "scientificName": "Various gastropod spp.（腹足类多种）",
     "localNames": [
       "Cone shells",
+      "芋螺",
       "Cowrie shells",
+      "宝贝/宝螺",
       "Volute shells",
+      "螺幔螺/旋螺",
       "Triton shells",
+      "海神螺/法螺",
       "Turban shells",
-      "Specimen gastropods"
+      "涡螺/宝塔螺",
+      "Specimen gastropods",
+      "观赏腹足类"
     ],
-    "family": "Various",
+    "family": "Various（多种）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/196?thumbnailSize=large",
@@ -9551,9 +9576,9 @@
       "maxWeightKg": 1
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
@@ -9561,25 +9586,25 @@
         "dailyLimit": 10
       },
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
       "feedingHabits": [
-        "Carnivorous",
-        "Small fish",
-        "Marine worms",
-        "Other molluscs",
-        "Scavenging"
+        "肉食性",
+        "小型鱼类",
+        "海洋多毛类/海虫",
+        "其他软体动物",
+        "食腐"
       ],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 2
     },
     "edibility": {
       "rating": "variable",
-      "taste": "Eating quality varies greatly by species. Some are good eating while others are collected primarily for their decorative shells",
-      "cookingMethods": ["Steam", "Boil", "Raw (some species)"],
-      "notes": "DANGER WARNING: Some cone shells are extremely venomous and potentially deadly - never handle live cone shells with bare hands! These molluscs are collected primarily for their beautiful shells rather than food. Turban shells and some other species are edible and considered good eating. Many specimen shells are protected or have strict collection limits. Check regulations carefully as some areas prohibit collection entirely. Primarily valued for shell collecting, aquarium trade, and decoration rather than food."
+      "taste": "食用品质因物种差异很大：有些可口，亦有多为观赏收集用途者",
+      "cookingMethods": ["清蒸", "水煮", "生食（部分物种）"],
+      "notes": "危险警示：部分芋螺剧毒且可能致命——切勿徒手触碰活体芋螺！此类多以壳形美观而被收集而非食用；涡螺与部分种类可食且风味尚佳。大量标本贝受保护或有严格采集限额；部分区域完全禁止采集。其主要价值在标本收藏、水族与装饰而非食用"
     }
   },
   {
@@ -9692,7 +9717,7 @@
   },
   {
     "id": "199",
-    "name": "Sawshark",
+    "name": "锯鲨",
     "scientificName": "",
     "localNames": [],
     "family": "",
@@ -9713,27 +9738,32 @@
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
       "feedingHabits": [],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     }
   },
   {
     "id": "200",
-    "name": "Shark, bronze whaler",
-    "scientificName": "Carcharhinus brachyurus",
+    "name": "铜鲨",
+    "scientificName": "Carcharhinus brachyurus（铜鲨）",
     "localNames": [
       "Bronze whaler shark",
+      "铜鲨",
       "Copper shark",
+      "铜鲨（别称）",
       "Narrowtooth shark",
+      "窄齿鲨",
       "Cocktail shark",
-      "Bronzie"
+      "鸡尾酒鲨/铜鲨",
+      "Bronzie",
+      "Bronzie（俗称）"
     ],
-    "family": "Carcharhinidae",
+    "family": "Carcharhinidae（真鲨科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/200?thumbnailSize=large",
@@ -9745,39 +9775,33 @@
       "maxWeightKg": 140
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
-      "feedingHabits": ["Bony fish", "Squid", "Octopus", "Sharks", "Rays"],
-      "activeTime": "both",
+      "feedingHabits": ["硬骨鱼类", "鱿鱼", "章鱼", "鲨鱼", "鳐鱼"],
+      "activeTime": "昼夜均可",
       "difficulty": 4
     },
     "edibility": {
       "rating": "good",
-      "taste": "Good eating quality when properly prepared. Smaller sharks have sweet and delicious flesh with boneless, thick flakes",
-      "cookingMethods": [
-        "Fish and chips",
-        "Barbecue",
-        "Pan-fry",
-        "Bake",
-        "Grill"
-      ],
-      "notes": "CONSERVATION STATUS: Vulnerable (IUCN) with decreasing population. Smaller sharks (under 2m) have better eating quality. Marinate first in oil and lemon to tenderize the flesh. Remove skin before barbecuing. Popular for fish and chips because of boneless flakes. Large coastal predators that are vulnerable to overfishing due to slow growth and late maturity. Handle with extreme caution - powerful predator with razor-sharp teeth."
+      "taste": "处理得当时食用品质良好；小型个体肉质甜美可口，片状无骨肉厚",
+      "cookingMethods": ["炸鱼薯条", "烧烤", "煎", "烘烤", "炙烤"],
+      "notes": "保育状态：易危（IUCN），种群呈下降趋势。2 米以下小体型个体食用品质更佳；先以油和柠檬腌制有助嫩化；烧烤前去皮。片状无骨肉适合做炸鱼薯条。大型近岸掠食者，因生长慢、成熟晚而易受过度捕捞影响。具锋利齿与强大力量，处理务必极度小心"
     }
   },
   {
     "id": "201",
-    "name": "Shark, dusky whaler",
-    "scientificName": "Carcharhinus obscurus",
+    "name": "暗色真鲨",
+    "scientificName": "Carcharhinus obscurus（暗色真鲨/昏鲨）",
     "localNames": [],
-    "family": "",
+    "family": "Carcharhinidae（真鲨科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/201?thumbnailSize=large",
@@ -9796,7 +9820,7 @@
     "regulations": [],
     "behavior": {
       "feedingHabits": [],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     },
     "edibility": {
@@ -9805,16 +9829,21 @@
   },
   {
     "id": "202",
-    "name": "Shark, gummy",
-    "scientificName": "Mustelus antarcticus",
+    "name": "胶齿鼬鲨",
+    "scientificName": "Mustelus antarcticus（南方鼬鲨）",
     "localNames": [
       "Gummy shark",
+      "胶齿鼬鲨",
       "Flake",
+      "鳕片鲨/Flake",
       "Sweet William",
+      "甜威廉（俗称）",
       "Australian smooth hound",
-      "Smooth dog-shark"
+      "澳洲光鼬鲨/光鲨",
+      "Smooth dog-shark",
+      "光鲨/光狗鲨"
     ],
-    "family": "Triakidae",
+    "family": "Triakidae（鼬鲨科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/202?thumbnailSize=large",
@@ -9826,13 +9855,13 @@
       "maxWeightKg": 25
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
@@ -9848,28 +9877,24 @@
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "One of Australia's premium eating sharks with sweet, delicious boneless flesh. Sold as 'flake' - the only Australian shark legally allowed this name",
-      "cookingMethods": [
-        "Deep-fry",
-        "Fish and chips",
-        "Barbecue",
-        "Pan-fry",
-        "Bake",
-        "Grill"
-      ],
-      "notes": "Gummy shark (Flake) is one of Australia's premium eating sharks. Sweet and delicious flesh with no bones makes it perfect for fish and chips. The only Australian shark legally allowed to be called 'Flake'. Marinate first in oil and lemon to tenderize. Remove skin before barbecuing. Classified as 'Least Concern' and considered sustainable seafood due to effective fisheries management. Best time to catch is at night on rising tide."
+      "taste": "澳洲顶级食用鲨之一，肉质甜美、无骨片状，口感极佳。“Flake（鳕片鲨）”为澳洲唯一可合法使用之名称",
+      "cookingMethods": ["油炸", "炸鱼薯条", "烧烤", "煎", "烘烤", "炙烤"],
+      "notes": "胶齿鼬鲨（Flake）因肉甜无骨，非常适合做炸鱼薯条。建议先以油与柠檬腌制助嫩化，烧烤前去皮。受益于有效渔业管理，被评为“无危”，属可持续海产；涨潮夜间为良好作钓时段"
     }
   },
   {
     "id": "203",
-    "name": "Shark, western spotted gummy",
-    "scientificName": "Mustelus stevensi",
+    "name": "西部斑点鼬鲨",
+    "scientificName": "Mustelus stevensi（西部斑点鼬鲨）",
     "localNames": [
       "Western spotted gummy shark",
+      "西部斑点鼬鲨",
       "Spotted gummy shark",
-      "Western flake"
+      "斑点鼬鲨",
+      "Western flake",
+      "西部 Flake"
     ],
-    "family": "Triakidae",
+    "family": "Triakidae（鼬鲨科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/203?thumbnailSize=large",
@@ -9881,13 +9906,13 @@
       "maxWeightKg": 20
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
@@ -9903,24 +9928,17 @@
     },
     "edibility": {
       "rating": "excellent",
-      "taste": "Excellent eating quality similar to gummy shark with sweet, boneless flesh. High-quality flake for fish and chips",
-      "cookingMethods": [
-        "Deep-fry",
-        "Fish and chips",
-        "Barbecue",
-        "Pan-fry",
-        "Bake",
-        "Grill"
-      ],
-      "notes": "Related to the regular gummy shark with similar excellent eating quality. Sweet and delicious flesh with no bones makes it perfect for fish and chips. Marinate first in oil and lemon to tenderize. Remove skin before barbecuing. Safe to handle due to lack of sharp teeth. Best caught at night on rising tide."
+      "taste": "与胶齿鼬鲨相近的顶级食用鲨，肉质甜美无骨，适合制作高品质 Flake（炸鱼薯条用鱼）",
+      "cookingMethods": ["油炸", "炸鱼薯条", "烧烤", "煎", "烘烤", "炙烤"],
+      "notes": "与常见胶齿鼬鲨近缘，食用品质同样优异；肉甜无骨，非常适合做炸鱼薯条。可先以油与柠檬腌制助嫩化，烧烤前去皮；因齿不锋利，相对易于处理。涨潮夜间上鱼效果更佳"
     }
   },
   {
     "id": "204",
-    "name": "Shark, hammerhead",
-    "scientificName": "",
+    "name": "双髻鲨",
+    "scientificName": "Sphyrnidae spp.（双髻鲨科多种）",
     "localNames": [],
-    "family": "",
+    "family": "Sphyrnidae（双髻鲨科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/204?thumbnailSize=large",
@@ -9932,32 +9950,36 @@
       "maxWeightKg": 0
     },
     "habitat": {
-      "waterTypes": [],
-      "regions": ["Western Australia"],
+      "水Types": [],
+      "regions": ["西澳大利亚"],
       "seasons": []
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
       "feedingHabits": [],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     }
   },
   {
     "id": "205",
-    "name": "Shark, Port Jackson",
-    "scientificName": "Heterodontus portusjackson",
+    "name": "杰克逊港鲨",
+    "scientificName": "Heterodontus portusjackson（杰克逊港鲨）",
     "localNames": [
       "Port Jackson shark",
+      "杰克逊港鲨",
       "Horn shark",
+      "牛角鲨",
       "Bullhead shark",
-      "Pig fish"
+      "牛头鲨",
+      "Pig fish",
+      "猪鱼（俗称）"
     ],
-    "family": "Heterodontidae",
+    "family": "Heterodontidae（异齿鲨科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/205?thumbnailSize=large",
@@ -9969,39 +9991,33 @@
       "maxWeightKg": 15
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Sea urchins",
-        "Molluscs",
-        "Crustaceans",
-        "Fish eggs",
-        "Small fish"
-      ],
-      "activeTime": "night",
+      "feedingHabits": ["海胆", "软体动物", "甲壳类", "鱼卵", "小型鱼类"],
+      "activeTime": "夜间",
       "difficulty": 2
     },
     "edibility": {
       "rating": "poor",
-      "taste": "Poor eating quality with tough, cartilaginous flesh. Not commonly eaten despite being harmless",
-      "cookingMethods": ["Not recommended"],
-      "notes": "While harmless and docile, Port Jackson sharks are not considered good eating due to tough, cartilaginous flesh and strong ammonia taste. More valuable as ecotourism attraction. Completely harmless to humans - often called 'puppy dogs of the sea'. Important role in ecosystem as bottom-dwelling predator. Better left in the water for conservation and ecological reasons."
+      "taste": "食用品质较差，软骨质肉感偏韧；虽温顺但并不常食用",
+      "cookingMethods": ["不建议"],
+      "notes": "杰克逊港鲨温顺无害，但因软骨质肉感偏韧且有较重氨味，不被视为良好食用鱼；更适合作为生态旅游观赏对象。对人类完全无害，被称为“海中小狗”。作为底栖掠食者在生态系统中具重要作用；出于保育考虑更宜留在水中"
     }
   },
   {
     "id": "206",
-    "name": "Shark, sandbar",
-    "scientificName": "Carcharhinus plumbeus",
+    "name": "沙洲鲨",
+    "scientificName": "Carcharhinus plumbeus（沙洲鲨/沙洲真鲨）",
     "localNames": [],
-    "family": "",
+    "family": "Carcharhinidae（真鲨科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/206?thumbnailSize=large",
@@ -10014,26 +10030,33 @@
     },
     "habitat": {
       "waterTypes": [],
-      "regions": ["Western Australia"],
+      "regions": ["西澳大利亚"],
       "seasons": []
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
       "feedingHabits": [],
-      "activeTime": "both",
+      "activeTime": "昼夜均可",
       "difficulty": 3
     }
   },
   {
     "id": "207",
-    "name": "Shark, tiger",
-    "scientificName": "Galeocerdo cuvier",
-    "localNames": ["Tiger shark", "Leopard shark", "Maneater shark"],
-    "family": "Carcharhinidae",
+    "name": "虎鲨",
+    "scientificName": "Galeocerdo cuvier（虎鲨）",
+    "localNames": [
+      "Tiger shark",
+      "虎鲨",
+      "Leopard shark",
+      "豹纹鲨",
+      "Maneater shark",
+      "食人鲨"
+    ],
+    "family": "Carcharhinidae（真鲨科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/207?thumbnailSize=large",
@@ -10045,33 +10068,40 @@
       "maxWeightKg": 635
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
-      "feedingHabits": ["Fish", "Seals", "Turtles", "Birds", "Almost anything"],
-      "activeTime": "night",
+      "feedingHabits": ["鱼类", "海豹", "海龟", "海鸟", "几乎无所不食"],
+      "activeTime": "夜间",
       "difficulty": 5
     },
     "edibility": {
       "rating": "fair",
-      "taste": "Fair eating quality but not commonly consumed due to conservation concerns and potential safety issues",
-      "cookingMethods": ["Not recommended"],
-      "notes": "DANGER: Tiger sharks are extremely dangerous apex predators and should never be targeted by recreational anglers. Near Threatened species that plays crucial role in marine ecosystem. While the flesh is edible, tiger sharks are not recommended for consumption due to conservation status, potential mercury contamination, and safety risks. These powerful predators can reach massive sizes and are responsible for attacks on humans. Best left undisturbed in their natural habitat."
+      "taste": "食用品质一般；因保育与安全因素通常不建议食用",
+      "cookingMethods": ["不建议"],
+      "notes": "警示：虎鲨为极具危险性的顶级掠食者，不应作为休闲垂钓目标；近危物种，对海洋生态至关重要。虽可食，但出于保育、汞污染与安全风险，并不建议食用。虎鲨体型巨大，造成过多起人身攻击事件；最好的做法是不要干扰其自然生活"
     }
   },
   {
     "id": "208",
-    "name": "Shark, whiskery",
-    "scientificName": "Furgaleus macki",
-    "localNames": ["Whiskery shark", "Houndshark", "Endeavour dogfish"],
-    "family": "Triakidae",
+    "name": "须鲨",
+    "scientificName": "Furgaleus macki（须鲨）",
+    "localNames": [
+      "Whiskery shark",
+      "须鲨",
+      "Houndshark",
+      "犬鲨/猎犬鲨",
+      "Endeavour dogfish",
+      "奋进狗鱼鲨"
+    ],
+    "family": "Triakidae（鼬鲨科）",
     "rarity": "common",
     "images": {
       "card": "https://rules.fish.wa.gov.au/species/image/208?thumbnailSize=large",
@@ -10083,36 +10113,25 @@
       "maxWeightKg": 25
     },
     "habitat": {
-      "waterTypes": ["Marine"],
-      "regions": ["Western Australia"],
-      "seasons": ["All Year"]
+      "waterTypes": ["海水"],
+      "regions": ["西澳大利亚"],
+      "seasons": ["全年"]
     },
     "regulations": [
       {
-        "region": "West Coast"
+        "region": "West Coast (西海岸)"
       }
     ],
     "behavior": {
-      "feedingHabits": [
-        "Small fish",
-        "Crustaceans",
-        "Cephalopods",
-        "Marine worms"
-      ],
-      "activeTime": "night",
+      "feedingHabits": ["小型鱼类", "甲壳类", "头足类", "海洋多毛类/海虫"],
+      "activeTime": "夜间",
       "difficulty": 3
     },
     "edibility": {
       "rating": "good",
-      "taste": "Good eating quality similar to other houndshark species. Sweet flesh suitable for fish and chips",
-      "cookingMethods": [
-        "Deep-fry",
-        "Fish and chips",
-        "Pan-fry",
-        "Bake",
-        "Grill"
-      ],
-      "notes": "Related to gummy sharks with similar eating quality. Sweet flesh that works well for fish and chips when skinned and prepared properly. Smaller sharks have better eating quality. Safe to handle due to lack of sharp teeth. Marinate first in oil and lemon to tenderize. Remove skin before cooking. Active at night over sandy and muddy bottoms."
+      "taste": "食用品质良好，与其他犬鲨类相近；肉质甜美，适合做炸鱼薯条",
+      "cookingMethods": ["油炸", "炸鱼薯条", "煎", "烘烤", "炙烤"],
+      "notes": "与胶齿鼬鲨近缘，食用品质相似；去皮并妥善处理后更适合做炸鱼薯条。小型个体通常食用品质更佳；齿不锋利，处理相对安全。多在沙泥底夜间活动；建议先以油与柠檬腌制以提升口感"
     }
   }
 ]
