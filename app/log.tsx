@@ -118,6 +118,7 @@ export default function LogScreen() {
     setIsLoadingWeather(true);
     try {
       const loc = (await getCurrentLocation()) || null;
+      console.log('[Log] getCurrentLocation result:', loc);
       if (loc) setLocation(loc);
       const envData = await australianWeatherService.getEnvironmentalData(
         loc || {
@@ -128,6 +129,11 @@ export default function LogScreen() {
           address: 'Unknown',
         }
       );
+      console.log('[Log] environmentalData:', {
+        weather: envData?.weather,
+        tidesCount: envData?.tides?.length,
+        waves: envData?.waves,
+      });
       setWeatherData(envData);
     } catch (error) {
       console.error('Failed to load weather data:', error);
@@ -146,9 +152,15 @@ export default function LogScreen() {
     try {
       const loc = await getCurrentLocation();
       if (loc) {
+        console.log('[Log] refreshLocation result:', loc);
         setLocation(loc);
         // Also refresh environment data for new location
         const env = await australianWeatherService.getEnvironmentalData(loc);
+        console.log('[Log] environmentalData (refresh):', {
+          weather: env?.weather,
+          tidesCount: env?.tides?.length,
+          waves: env?.waves,
+        });
         setWeatherData(env);
       }
     } catch (e) {
