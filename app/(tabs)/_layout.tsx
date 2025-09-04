@@ -1,11 +1,6 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { useTheme } from '@/hooks/useThemeColor';
-import { useTranslation } from '@/lib/i18n';
 import {
   HomeIcon,
   BookOpenIcon,
@@ -13,6 +8,11 @@ import {
   ChartBarIcon,
   Cog6ToothIcon,
 } from 'react-native-heroicons/outline';
+
+import { HapticTab } from '@/components/HapticTab';
+import TabBarBackground from '@/components/ui/TabBarBackground';
+import { useTheme } from '@/hooks/useThemeColor';
+import { useTranslation } from '@/lib/i18n';
 
 export default function TabLayout() {
   const theme = useTheme();

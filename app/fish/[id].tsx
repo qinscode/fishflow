@@ -172,24 +172,26 @@ export default function FishDetailScreen() {
   // Helpers: map strings to MaterialCommunityIcons names
   const getCookingMethodIcon = (method: string): string => {
     const m = method.toLowerCase();
-    if (m.includes('sashimi') || m.includes('生食')) {return 'fish';}
-    if (m.includes('grill') || m.includes('烤')) {return 'fire';}
-    if (m.includes('barbecue') || m.includes('烧烤')) {return 'grill';}
-    if (m.includes('bake') || m.includes('烘')) {return 'bread-slice-outline';}
-    if (m.includes('smoke') || m.includes('熏')) {return 'smoke';}
-    if (m.includes('poach') || m.includes('水煮')) {return 'pot-steam';}
-    if (m.includes('pan') || m.includes('煎')) {return 'frying-pan';}
-    if (m.includes('stir') || m.includes('翻炒')) {return 'pot-mix';}
+    if (m.includes('sashimi') || m.includes('生食')) return 'fish';
+    if (m.includes('grill') || m.includes('烤')) return 'fire';
+    if (m.includes('barbecue') || m.includes('烧烤')) return 'grill';
+    if (m.includes('bake') || m.includes('烘')) return 'bread-slice-outline';
+    if (m.includes('smoke') || m.includes('熏')) return 'smoke';
+    if (m.includes('poach') || m.includes('水煮')) return 'pot-steam';
+    // 'frying-pan' may not exist in the bundled MCI set; use 'stove' as a close alternative
+    if (m.includes('pan') || m.includes('煎')) return 'stove';
+    if (m.includes('stir') || m.includes('翻炒')) return 'pot-mix';
     return 'silverware-fork-knife';
   };
 
   const getFeedingHabitIcon = (habit: string): string => {
     const h = habit.toLowerCase();
-    if (h.includes('fish') || h.includes('鱼')) {return 'fish';}
+    if (h.includes('fish') || h.includes('鱼')) return 'fish';
     if (h.includes('squid') || h.includes('乌贼') || h.includes('鱿'))
-      {return 'octopus';}
-    if (h.includes('crustacean') || h.includes('甲壳')) {return 'crab';}
-    if (h.includes('cephalopod') || h.includes('头足')) {return 'octopus';}
+      return 'octopus';
+    // Use 'fish' for crustaceans to avoid unsupported 'crab' icon in some sets
+    if (h.includes('crustacean') || h.includes('甲壳')) return 'fish';
+    if (h.includes('cephalopod') || h.includes('头足')) return 'octopus';
     return 'food';
   };
 
@@ -924,7 +926,7 @@ export default function FishDetailScreen() {
                         name={getCookingMethodIcon(method) as any}
                         size={14}
                         color="#F59E0B"
-                        style={{ marginRight: 4 }}
+                        style={{ marginRight: 6 }}
                       />
                       <ThemedText
                         style={[styles.compactTagText, { color: '#F59E0B' }]}
@@ -993,12 +995,6 @@ export default function FishDetailScreen() {
                   { backgroundColor: '#10B981' + '20' },
                 ]}
               >
-                <MaterialCommunityIcons
-                  name={getFeedingHabitIcon(habit) as any}
-                  size={14}
-                  color="#10B981"
-                  style={{ marginRight: 4 }}
-                />
                 <ThemedText
                   style={[styles.compactTagText, { color: '#10B981' }]}
                 >
@@ -1506,8 +1502,10 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   compactTag: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     borderRadius: 8,
   },
   compactTagText: {
