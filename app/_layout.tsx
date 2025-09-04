@@ -104,6 +104,8 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="log" options={{ headerShown: false }} />
+        <Stack.Screen name="logs" options={{ headerShown: false }} />
+        <Stack.Screen name="logs/[id]" options={{ headerShown: false }} />
         <Stack.Screen name="achievements" options={{ headerShown: false }} />
         <Stack.Screen name="achievement/[id]" options={{ headerShown: false }} />
         <Stack.Screen name="fish/[id]" options={{ headerShown: false }} />
