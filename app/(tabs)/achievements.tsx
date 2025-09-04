@@ -27,8 +27,8 @@ import { FilterChip, FilterChipGroup } from '@/components/ui/FilterChip';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useResponsive } from '@/hooks/useResponsive';
 import { useTheme } from '@/hooks/useThemeColor';
-import { useTranslation } from '@/lib/i18n';
 import { getAchievementName } from '@/lib/achievementHelpers';
+import { useTranslation } from '@/lib/i18n';
 import {
   useAchievements,
   useUserAchievements,

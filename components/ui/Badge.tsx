@@ -13,6 +13,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { IconSymbol, MAPPING } from '@/components/ui/IconSymbol';
 import { ProgressRing } from '@/components/ui/ProgressBar';
 import { useTheme } from '@/hooks/useThemeColor';
+import { getAchievementName } from '@/lib/achievementHelpers';
 import { ACHIEVEMENT_TIER_COLORS } from '@/lib/constants';
 import { useTranslation } from '@/lib/i18n';
 import { Achievement, AchievementTier } from '@/lib/types';
@@ -46,16 +47,6 @@ export function Badge({
   const { t } = useTranslation();
   const scale = useSharedValue(1);
   const shimmer = useSharedValue(0);
-
-  // Helper function to get achievement name from translation or fallback to default
-  const getAchievementName = (achievement: Achievement) => {
-    const translationKey = `achievement.${achievement.id.replace(/-/g, '.')}.name`;
-    try {
-      return t(translationKey as any);
-    } catch {
-      return achievement.name; // Fallback to original name if translation not found
-    }
-  };
 
   const badgeSize = size === 'large' ? 80 : size === 'small' ? 48 : 64;
   const iconSize = badgeSize * 0.4;
