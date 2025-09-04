@@ -46,6 +46,8 @@ class AustralianWeatherService {
   private cache = new Map<string, { expires: number; data: any }>();
   // Enable verbose logging for debugging BOM fetch/parse
   private debug = true;
+  // In-memory trace buffer for network debugging visible to UI
+  private traces: Array<{ ts: number; tag: string; payload?: any }> = [];
 
   private dbg(label: string, payload?: any) {
     if (!this.debug) {return;}
@@ -60,6 +62,20 @@ class AustralianWeatherService {
     } catch {
       console.log(`[Weather] ${label}`);
     }
+  }
+
+  private trace(tag: string, payload?: any) {
+    // Keep small ring buffer
+    this.traces.push({ ts: Date.now(), tag, payload });
+    if (this.traces.length > 30) { this.traces.shift(); }
+  }
+
+  public getDebugTraces() {
+    return [...this.traces];
+  }
+
+  public clearDebugTraces() {
+    this.traces = [];
   }
 
   private previewJson(json: any) {
@@ -137,13 +153,45 @@ class AustralianWeatherService {
       // Prefer new tide summary module (smoothed, robust fallbacks)
       const summary = await getTodayTideSummary(location.latitude, location.longitude);
       if (summary) {
-        const extremes = [...summary.highs, ...summary.lows]
-          .map(e => ({ time: e.time, height: e.level, type: e.type }))
-          .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
-          .slice(0, 6);
+        let extremes = [...summary.highs, ...summary.lows]
+          .map(e => ({ time: e.time, height: e.level, type: e.type as 'high' | 'low' }))
+          .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+
+        // If we couldn't detect two extremes, synthesize a pair around now using the smoothed series
+        if (extremes.length < 2 && Array.isArray(summary.series) && summary.series.length > 2) {
+          const series = summary.series;
+          const nowIso = summary.nowLocal;
+          const idxMaybe = this.findNearestTimeIndex(series.map(p => p.time), nowIso);
+          const nowIdx = (idxMaybe === null || idxMaybe === undefined) ? Math.floor(series.length / 2) : idxMaybe;
+          // target window ~ +/- 3 hours
+          const targetMs = 3 * 60 * 60 * 1000;
+          const baseTime = new Date(series[nowIdx].time).getTime();
+          let left: number = nowIdx, right: number = nowIdx;
+          for (let i = nowIdx; i >= 0; i--) {
+            if (baseTime - new Date(series[i].time).getTime() >= targetMs) { left = i; break; }
+            left = i;
+          }
+          for (let i = nowIdx; i < series.length; i++) {
+            if (new Date(series[i].time).getTime() - baseTime >= targetMs) { right = i; break; }
+            right = i;
+          }
+          if (left !== right) {
+            const a = series[left];
+            const b = series[right];
+            const firstHigh = a.level >= b.level;
+            const synth: TideData[] = [
+              { time: a.time, height: Math.round(a.level * 100) / 100, type: firstHigh ? 'high' : 'low' },
+              { time: b.time, height: Math.round(b.level * 100) / 100, type: firstHigh ? 'low' : 'high' },
+            ];
+            extremes = synth;
+          }
+        }
+
         if (extremes.length) {
-          this.putToCache(key, extremes, 3 * 60 * 60 * 1000);
-          return extremes;
+          // keep a reasonable number
+          const limited = extremes.slice(0, 6);
+          this.putToCache(key, limited, 3 * 60 * 60 * 1000);
+          return limited;
         }
       }
 
@@ -424,11 +472,14 @@ class AustralianWeatherService {
         `&hourly=relative_humidity_2m,surface_pressure` +
         `&timezone=auto`;
       this.dbg('openMeteo.weather.url', url);
+      this.trace('weather.url', { url });
       const res = await fetch(url);
       this.dbg('openMeteo.weather.res', { ok: res.ok, status: res.status });
+      this.trace('weather.res', { url, ok: res.ok, status: res.status });
       if (!res.ok) {return null;}
       const json: any = await res.json();
       this.dbg('openMeteo.weather.keys', Object.keys(json || {}));
+      this.trace('weather.json', { url, json });
 
       const current = json?.current || json?.current_weather || {};
       const nowIso: string | undefined = current?.time || json?.current?.time || json?.current_weather?.time;
@@ -474,10 +525,13 @@ class AustralianWeatherService {
       const url = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}` +
         `&hourly=wave_height,wave_direction,wave_period&timezone=auto&cell_selection=sea`;
       this.dbg('openMeteo.waves.url', url);
+      this.trace('waves.url', { url });
       const res = await fetch(url);
       this.dbg('openMeteo.waves.res', { ok: res.ok, status: res.status });
+      this.trace('waves.res', { url, ok: res.ok, status: res.status });
       if (!res.ok) {return null;}
       const json: any = await res.json();
+      this.trace('waves.json', { url, json });
       const times: string[] | undefined = json?.hourly?.time;
       const idx = this.findNearestTimeIndex(times, undefined);
       if (idx == null) {return null;}
@@ -778,23 +832,29 @@ class AustralianWeatherService {
     for (const url of urls) {
       try {
         this.dbg('openMeteo.tide.url', url);
+        this.trace('tide.url', { url });
         const res = await fetch(url);
         this.dbg('openMeteo.tide.res', { ok: res.ok, status: res.status });
+        this.trace('tide.res', { url, ok: res.ok, status: res.status });
         if (!res.ok) { continue; }
         const json: any = await res.json();
         this.dbg('openMeteo.tide.keys', json ? Object.keys(json) : []);
+        this.trace('tide.json', { url, json });
         // First try daily fields
         let out = this.parseOpenMeteoTideJson(json);
         this.dbg('openMeteo.tide.dailyParsedCount', out.length);
+        this.trace('tide.dailyParsedCount', { url, count: out.length });
         if (!out.length) {
           // Fallback: derive extremes from hourly tides or sea level
           const derived = this.deriveTideExtremesFromHourly(json);
           this.dbg('openMeteo.tide.derivedCount', derived.length);
           out = derived;
+          this.trace('tide.derivedCount', { url, count: derived.length });
         }
         if (out.length) { return out; }
       } catch (e) {
         this.dbg('openMeteo.tide.error', (e as Error)?.message || e);
+        this.trace('tide.error', { url, message: (e as Error)?.message || String(e) });
         // continue to next candidate URL
       }
     }

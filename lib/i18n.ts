@@ -341,10 +341,14 @@ export const translations = {
     'log.weather.wind': '风速',
     'log.weather.tide': '潮汐',
     'log.weather.waves': '浪高',
+    'log.weather.humidity': '湿度',
     'log.weather.pressure': '气压',
     'log.weather.loading': '正在获取天气数据...',
     'log.saved': '记录已保存',
     'log.weather.error': '无法获取天气信息',
+    // Tide labels
+    'tide.highest': '最高潮',
+    'tide.lowest': '最低潮',
     'weather.source': '数据来源',
     'weather.source.bom': 'BOM',
     'weather.source.open_meteo': 'Open‑Meteo',
@@ -540,6 +544,9 @@ export const translations = {
     // Common
     'common.no.data': 'No Data',
     'common.not.found': 'Not Found',
+    // Tide labels
+    'tide.highest': 'Highest tide',
+    'tide.lowest': 'Lowest tide',
 
     // Home Screen
     'home.title': 'Home',
@@ -895,6 +902,7 @@ export const translations = {
     'log.weather.wind': 'Wind Speed',
     'log.weather.tide': 'Tide',
     'log.weather.waves': 'Wave Height',
+    'log.weather.humidity': 'Humidity',
     'log.weather.pressure': 'Pressure',
     'log.weather.loading': 'Fetching weather data...',
     'log.saved': 'Saved',

@@ -12,21 +12,23 @@ export function useTide(lat: number | undefined, lon: number | undefined, opts?:
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
 
-  const params = useMemo(() => ({ lat, lon, opts }), [lat, lon, opts?.smoothWindow, opts?.stepMinutes, opts?.now?.getTime?.()]);
+  const params = useMemo(() => ({ lat, lon, opts }), [lat, lon, opts]);
 
   useEffect(() => {
     let cancelled = false;
     const run = async () => {
-      if (typeof params.lat !== 'number' || typeof params.lon !== 'number') return;
+      if (typeof params.lat !== 'number' || typeof params.lon !== 'number') {
+        return;
+      }
       setLoading(true);
       setError(null);
       try {
         const res = await getTodayTideSummary(params.lat, params.lon, params.opts);
-        if (!cancelled) setData(res);
+        if (!cancelled) { setData(res); }
       } catch (e) {
-        if (!cancelled) setError(e);
+        if (!cancelled) { setError(e); }
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) { setLoading(false); }
       }
     };
     run();
@@ -37,4 +39,3 @@ export function useTide(lat: number | undefined, lon: number | undefined, opts?:
 }
 
 export default useTide;
-

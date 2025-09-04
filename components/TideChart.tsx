@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { View } from 'react-native';
 
 import { TideData } from '@/lib/weatherService';
+import type { TideSeriesPoint, TideTrend } from '@/lib/tide';
 import { ThemedText } from '@/components/ThemedText';
 import { useTranslation } from '@/lib/i18n';
 import { useTheme } from '@/hooks/useThemeColor';
@@ -11,6 +12,9 @@ export interface TideChartProps {
   now?: Date;
   width?: number;
   height?: number;
+  extraHours?: number; // extend view range on both sides
+  // Optional: use smoothed series from lib/tide for better visuals
+  series?: TideSeriesPoint[];
 }
 
 /**
@@ -23,6 +27,8 @@ export function TideChart({
   now = new Date(),
   width = 240,
   height = 64,
+  extraHours = 2,
+  series,
 }: TideChartProps) {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -32,7 +38,12 @@ export function TideChart({
     currentX,
     currentY,
     label,
-  } = useMemo(() => computeTideSeries(tides, now, width, height), [tides, now, width, height]);
+  } = useMemo(() => {
+    if (series && series.length >= 3) {
+      return computeFromSmoothedSeries(series, now, width, height);
+    }
+    return computeTideSeries(tides, now, width, height, extraHours);
+  }, [tides, now, width, height, extraHours, series?.length]);
 
   if (!samples.length) {
     return (
@@ -96,6 +107,9 @@ export function TideChart({
           {label}
         </ThemedText>
       </View>
+
+      {/* Highest/Lowest tide markers with times on x-axis (series required) */}
+      <TideExtremeMarkers tides={tides} series={series} width={width} height={height} />
     </View>
   );
 }
@@ -104,7 +118,8 @@ function computeTideSeries(
   tides: TideData[],
   now: Date,
   width: number,
-  height: number
+  height: number,
+  extraHours: number
 ) {
   // Find nearest previous and next tide extremes
   const sorted = [...tides].sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
@@ -124,6 +139,10 @@ function computeTideSeries(
   const t2 = new Date(next.time).getTime();
   const dur = Math.max(1, t2 - t1);
   const progress = Math.min(1, Math.max(0, (nowMs - t1) / dur));
+  const durHours = dur / (60 * 60 * 1000);
+  const marginProp = Math.max(0, Math.min(1, (extraHours || 0) / Math.max(0.1, durHours)));
+  const pStart = -marginProp;
+  const pEnd = 1 + marginProp;
 
   const h1 = prev.height;
   const h2 = next.height;
@@ -145,18 +164,148 @@ function computeTideSeries(
   const N = Math.max(32, Math.floor(width / 6));
   const samples: { x: number; y: number }[] = [];
   for (let i = 0; i < N; i++) {
-    const p = i / (N - 1);
-    const x = Math.round(p * (width - 4)) + 2;
+    const p = pStart + (i / (N - 1)) * (pEnd - pStart);
+    const x = Math.round(((p - pStart) / (pEnd - pStart)) * (width - 4)) + 2;
     const y = toY(cosAt(p));
     samples.push({ x, y });
   }
 
   const currentHeight = cosAt(progress);
-  const currentX = Math.round(progress * (width - 4)) + 2;
+  const currentX = Math.round(((progress - pStart) / (pEnd - pStart)) * (width - 4)) + 2;
   const currentY = toY(currentHeight);
   const label = `${currentHeight.toFixed(2)} m`;
 
   return { samples, currentX, currentY, label };
 }
 
+function computeFromSmoothedSeries(
+  series: TideSeriesPoint[],
+  now: Date,
+  width: number,
+  height: number,
+) {
+  const times = series.map(p => new Date(p.time).getTime());
+  const levels = series.map(p => p.level);
+  if (times.length < 3) {
+    return { samples: [] as { x: number; y: number }[], currentX: 0, currentY: height / 2, label: '' };
+  }
+  const tMin = times[0];
+  const tMax = times[times.length - 1];
+  const hMinVal = Math.min(...levels);
+  const hMaxVal = Math.max(...levels);
+  const toY = (hVal: number) => {
+    const norm = hMaxVal === hMinVal ? 0.5 : (hVal - hMinVal) / (hMaxVal - hMinVal);
+    return Math.round((1 - norm) * (height - 8)) + 4;
+  };
+  const N = Math.max(48, Math.floor(width / 4));
+  const samples: { x: number; y: number }[] = [];
+  for (let i = 0; i < N; i++) {
+    const p = i / (N - 1);
+    const t = tMin + p * (tMax - tMin);
+    // nearest series point
+    let idx = 0;
+    let best = Number.POSITIVE_INFINITY;
+    for (let k = 0; k < times.length; k++) {
+      const d = Math.abs(times[k] - t);
+      if (d < best) { best = d; idx = k; }
+    }
+    const x = Math.round(p * (width - 4)) + 2;
+    const y = toY(levels[idx]);
+    samples.push({ x, y });
+  }
+  // current location
+  let nowIdx = 0;
+  let best = Number.POSITIVE_INFINITY;
+  const nowMs = now.getTime();
+  for (let k = 0; k < times.length; k++) {
+    const d = Math.abs(times[k] - nowMs);
+    if (d < best) { best = d; nowIdx = k; }
+  }
+  const progress = (times[nowIdx] - tMin) / Math.max(1, tMax - tMin);
+  const currentX = Math.round(progress * (width - 4)) + 2;
+  const currentY = toY(levels[nowIdx]);
+  const label = `${levels[nowIdx].toFixed(2)} m`;
+  return { samples, currentX, currentY, label };
+}
+
 export default TideChart;
+
+function TideExtremeMarkers({
+  tides, // unused but kept for API compatibility
+  series,
+  width,
+  height,
+}: { tides: TideData[]; series?: TideSeriesPoint[]; width: number; height: number }) {
+  const theme = useTheme();
+  if (!series || series.length < 3) { return null; }
+
+  const tMin = new Date(series[0].time).getTime();
+  const tMax = new Date(series[series.length - 1].time).getTime();
+  const hMin = Math.min(...series.map(p => p.level));
+  const hMax = Math.max(...series.map(p => p.level));
+  const toX = (ms: number) => {
+    const p = (ms - tMin) / Math.max(1, (tMax - tMin));
+    const pClamped = Math.max(0, Math.min(1, p));
+    return Math.round(pClamped * (width - 4)) + 2;
+  };
+  const toY = (lvl: number) => {
+    const norm = hMax === hMin ? 0.5 : (lvl - hMin) / (hMax - hMin);
+    return Math.round((1 - norm) * (height - 8)) + 4;
+  };
+  const nearestIdx = (ms: number) => {
+    let best = 0; let bestDiff = Number.POSITIVE_INFINITY;
+    for (let i = 0; i < series.length; i++) {
+      const d = Math.abs(new Date(series[i].time).getTime() - ms);
+      if (d < bestDiff) { best = i; bestDiff = d; }
+    }
+    return best;
+  };
+  const fmtTime = (iso: string) => {
+    const d = new Date(iso);
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    return `${hh}:${mm}`;
+  };
+
+  // Compute extremes directly from smoothed series to ensure perfect visual alignment
+  let idxHi = 0, idxLo = 0;
+  for (let i = 1; i < series.length; i++) {
+    if (series[i].level > series[idxHi].level) { idxHi = i; }
+    if (series[i].level < series[idxLo].level) { idxLo = i; }
+  }
+  const xHi = toX(new Date(series[idxHi].time).getTime());
+  const xLo = toX(new Date(series[idxLo].time).getTime());
+  const timeHi = fmtTime(series[idxHi].time);
+  const timeLo = fmtTime(series[idxLo].time);
+
+  const nodes: React.ReactNode[] = [];
+  nodes.push(
+    <CenteredCaption key="hi-time" x={xHi} y={height - 4} text={timeHi} />
+  );
+  nodes.push(
+    <CenteredCaption key="lo-time" x={xLo} y={height - 4} text={timeLo} />
+  );
+  return <>{nodes}</>;
+}
+
+function CenteredCaption({ x, y, text, above = false }: { x: number; y: number; text: string; above?: boolean }) {
+  const theme = useTheme();
+  const [size, setSize] = React.useState({ w: 0, h: 0 });
+  const top = above ? y - size.h - 6 : y + 6;
+  const left = Math.round(x - size.w / 2);
+  return (
+    <View
+      style={{ position: 'absolute', left, top }}
+      onLayout={(e) => {
+        const { width, height } = e.nativeEvent.layout;
+        if (width !== size.w || height !== size.h) {
+          setSize({ w: width, h: height });
+        }
+      }}
+    >
+      <ThemedText type="caption" style={{ color: above ? theme.colors.text : theme.colors.textSecondary }}>
+        {text}
+      </ThemedText>
+    </View>
+  );
+}

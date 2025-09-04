@@ -17,6 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import TideChart from '@/components/TideChart';
+import useTide from '@/hooks/useTide';
 import { useTheme } from '@/hooks/useThemeColor';
 import { WATER_TYPE_NAMES } from '@/lib/constants';
 import { useTranslation } from '@/lib/i18n';
@@ -122,6 +123,7 @@ export default function LogScreen() {
       const loc = (await getCurrentLocation()) || null;
       console.log('[Log] getCurrentLocation result:', loc);
       if (loc) {setLocation(loc);}
+      australianWeatherService.clearDebugTraces();
       const envData = await australianWeatherService.getEnvironmentalData(
         loc || {
           latitude: -33.8688,
@@ -136,7 +138,20 @@ export default function LogScreen() {
         tidesCount: envData?.tides?.length,
         waves: envData?.waves,
       });
+      // Detailed tide entries for debugging/log view
+      try {
+        const tideBrief = (envData?.tides || []).map((e) => ({
+          time: e.time,
+          height: e.height,
+          type: e.type,
+        }));
+        console.log('[Log] tides detail:', tideBrief);
+      } catch {}
       setWeatherData(envData);
+      try {
+        const traces = australianWeatherService.getDebugTraces();
+        console.log('[Log] tide network traces:', traces.filter((t: any) => String(t.tag).startsWith('tide.')));
+      } catch {}
     } catch (error) {
       console.error('Failed to load weather data:', error);
       Alert.alert(
@@ -157,13 +172,22 @@ export default function LogScreen() {
         console.log('[Log] refreshLocation result:', loc);
         setLocation(loc);
         // Also refresh environment data for new location
+        australianWeatherService.clearDebugTraces();
         const env = await australianWeatherService.getEnvironmentalData(loc);
         console.log('[Log] environmentalData (refresh):', {
           weather: env?.weather,
           tidesCount: env?.tides?.length,
           waves: env?.waves,
         });
+        try {
+          const tideBrief2 = (env?.tides || []).map((e) => ({ time: e.time, height: e.height, type: e.type }));
+          console.log('[Log] tides detail (refresh):', tideBrief2);
+        } catch {}
         setWeatherData(env);
+        try {
+          const traces2 = australianWeatherService.getDebugTraces();
+          console.log('[Log] tide network traces (refresh):', traces2.filter((t: any) => String(t.tag).startsWith('tide.')));
+        } catch {}
       }
     } catch (e) {
       // Swallow; main loadWeatherData has its own alert
@@ -178,6 +202,9 @@ export default function LogScreen() {
     loadWeatherData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Tide series for smoother chart (non-blocking, independent of weatherData)
+  const tideSummary = useTide(location?.latitude, location?.longitude);
 
   const handleSave = async () => {
     if (!selectedFish?.id && !isSkunked) {
@@ -445,6 +472,15 @@ export default function LogScreen() {
                   </View>
                 )}
 
+                {/* Humidity (separate small item) */}
+                <View style={[styles.weatherItem, styles.weatherItemHalf]}>
+                  <MaterialCommunityIcons name="water-percent" size={20} color={theme.colors.primary} />
+                  <ThemedText type="bodySmall">{t('log.weather.humidity')}</ThemedText>
+                  <ThemedText type="body" style={{ fontWeight: '600' }}>
+                    {Math.round(weatherData.weather.humidity)}%
+                  </ThemedText>
+                </View>
+
                 <View style={[styles.weatherItem, styles.weatherItemFull]}>
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
                     <MaterialCommunityIcons name={"chart-line" as any} size={20} color={theme.colors.primary} />
@@ -452,7 +488,10 @@ export default function LogScreen() {
                       {t('log.weather.tide')}
                     </ThemedText>
                   </View>
-                  <TideChart tides={weatherData.tides || []} />
+                  <TideChart
+                    tides={weatherData.tides || []}
+                    series={tideSummary.data?.series}
+                  />
                 </View>
               </View>
 
