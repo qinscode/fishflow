@@ -51,7 +51,7 @@ interface AppActions {
   setUserAchievements: (userAchievements: UserAchievement[]) => void;
   addCatch: (
     catchData: Omit<CatchRecord, 'id' | 'createdAt' | 'updatedAt'>
-  ) => void;
+  ) => Promise<void>;
   setCatches: (catches: CatchRecord[]) => void;
 
   // 装备操作
@@ -163,7 +163,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     set({ userAchievements });
   },
 
-  addCatch: catchData => {
+  addCatch: async catchData => {
     const newCatch: CatchRecord = {
       ...catchData,
       id: generateId(),
@@ -189,6 +189,14 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
         unlockedFishIds: unlockedIds,
       };
     });
+
+    // 异步检查成就解锁（不阻塞UI）
+    try {
+      const { checkAchievementsAfterCatch } = await import('./achievementEngine');
+      await checkAchievementsAfterCatch(newCatch);
+    } catch (error) {
+      console.warn('Achievement check failed:', error);
+    }
   },
 
   setCatches: catches => {

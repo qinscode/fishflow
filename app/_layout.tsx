@@ -10,6 +10,7 @@ import { useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
 import 'react-native-reanimated';
 
+import { AchievementNotificationManager } from '@/components/ui/AchievementNotificationManager';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { initializeLanguage } from '@/lib/i18n';
 import { useAppStore } from '@/lib/store';
@@ -104,12 +105,14 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="log" options={{ headerShown: false }} />
         <Stack.Screen name="achievements" options={{ headerShown: false }} />
+        <Stack.Screen name="achievement/[id]" options={{ headerShown: false }} />
         <Stack.Screen name="fish/[id]" options={{ headerShown: false }} />
         <Stack.Screen name="equipment/create" options={{ headerShown: false }} />
         <Stack.Screen name="equipment/[id]" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
+      <AchievementNotificationManager />
     </ThemeProvider>
   );
 }
