@@ -804,61 +804,27 @@ class AustralianWeatherService {
   // --- Open‑Meteo Tide ---
   private async fetchOpenMeteoTides(location: LocationData): Promise<TideData[] | null> {
     const { latitude: lat, longitude: lon } = location;
-    const today = new Date();
-    const y = today.getFullYear();
-    const m = String(today.getMonth() + 1).padStart(2, '0');
-    const d = String(today.getDate()).padStart(2, '0');
-    const dateStr = `${y}-${m}-${d}`;
-    const urls = [
-      // Preferred Tide API
-      `https://tide-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
-        `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
-        `&hourly=tide_height&start_date=${dateStr}&end_date=${dateStr}&timezone=auto&cell_selection=sea`,
-      `https://tide-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
-        `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
-        `&hourly=tide_height&length=1&timezone=auto&cell_selection=sea`,
-      // Fallbacks: some environments may block tide-api; try marine-api mirror
-      `https://marine-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
-        `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
-        `&hourly=tide_height&start_date=${dateStr}&end_date=${dateStr}&timezone=auto&cell_selection=sea`,
-      `https://marine-api.open-meteo.com/v1/tide?latitude=${lat}&longitude=${lon}` +
-        `&daily=high_tide_time,low_tide_time,high_tide_height,low_tide_height` +
-        `&hourly=tide_height&length=1&timezone=auto&cell_selection=sea`,
-      // Last resort: use marine sea level as proxy and derive extrema
-      `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}` +
-        `&hourly=sea_level_height_msl&start_date=${dateStr}&end_date=${dateStr}&timezone=auto&cell_selection=sea`,
-    ];
-
-    for (const url of urls) {
-      try {
-        this.dbg('openMeteo.tide.url', url);
-        this.trace('tide.url', { url });
-        const res = await fetch(url);
-        this.dbg('openMeteo.tide.res', { ok: res.ok, status: res.status });
-        this.trace('tide.res', { url, ok: res.ok, status: res.status });
-        if (!res.ok) { continue; }
-        const json: any = await res.json();
-        this.dbg('openMeteo.tide.keys', json ? Object.keys(json) : []);
-        this.trace('tide.json', { url, json });
-        // First try daily fields
-        let out = this.parseOpenMeteoTideJson(json);
-        this.dbg('openMeteo.tide.dailyParsedCount', out.length);
-        this.trace('tide.dailyParsedCount', { url, count: out.length });
-        if (!out.length) {
-          // Fallback: derive extremes from hourly tides or sea level
-          const derived = this.deriveTideExtremesFromHourly(json);
-          this.dbg('openMeteo.tide.derivedCount', derived.length);
-          out = derived;
-          this.trace('tide.derivedCount', { url, count: derived.length });
-        }
-        if (out.length) { return out; }
-      } catch (e) {
-        this.dbg('openMeteo.tide.error', (e as Error)?.message || e);
-        this.trace('tide.error', { url, message: (e as Error)?.message || String(e) });
-        // continue to next candidate URL
-      }
+    const url = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}` +
+      `&hourly=sea_level_height_msl&timezone=auto&cell_selection=sea&forecast_days=1&current=sea_level_height_msl`;
+    try {
+      this.dbg('openMeteo.tide.url', url);
+      this.trace('tide.url', { url });
+      const res = await fetch(url);
+      this.dbg('openMeteo.tide.res', { ok: res.ok, status: res.status });
+      this.trace('tide.res', { url, ok: res.ok, status: res.status });
+      if (!res.ok) { return null; }
+      const json: any = await res.json();
+      this.dbg('openMeteo.tide.keys', json ? Object.keys(json) : []);
+      this.trace('tide.json', { url, json });
+      const derived = this.deriveTideExtremesFromHourly(json);
+      this.dbg('openMeteo.tide.derivedCount', derived.length);
+      this.trace('tide.derivedCount', { url, count: derived.length });
+      return derived.length ? derived : [];
+    } catch (e) {
+      this.dbg('openMeteo.tide.error', (e as Error)?.message || e);
+      this.trace('tide.error', { url, message: (e as Error)?.message || String(e) });
+      return null;
     }
-    return null;
   }
 
   private parseOpenMeteoTideJson(json: any): TideData[] {

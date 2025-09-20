@@ -150,6 +150,8 @@ export default function LogScreen() {
       setWeatherData(envData);
       try {
         const traces = australianWeatherService.getDebugTraces();
+        const tideUrls = traces.filter((t: any) => t?.tag === 'tide.url').map((t: any) => t?.payload?.url);
+        console.log('[Log] tide urls:', tideUrls);
         console.log('[Log] tide network traces:', traces.filter((t: any) => String(t.tag).startsWith('tide.')));
       } catch {}
     } catch (error) {
@@ -186,6 +188,8 @@ export default function LogScreen() {
         setWeatherData(env);
         try {
           const traces2 = australianWeatherService.getDebugTraces();
+          const tideUrls2 = traces2.filter((t: any) => t?.tag === 'tide.url').map((t: any) => t?.payload?.url);
+          console.log('[Log] tide urls (refresh):', tideUrls2);
           console.log('[Log] tide network traces (refresh):', traces2.filter((t: any) => String(t.tag).startsWith('tide.')));
         } catch {}
       }

@@ -56,13 +56,9 @@ export async function getTodayTideSummary(
   const stepMinutes = Math.max(1, Math.floor(opts?.stepMinutes ?? 5));
   const now = opts?.now ?? new Date();
 
-  // Prefer the dedicated tide endpoint
-  let src: 'open-meteo-tide' | 'open-meteo-marine' = 'open-meteo-tide';
-  let hourly = await fetchOpenMeteoTideHourly(lat, lon);
-  if (!hourly || hourly.time.length === 0) {
-    hourly = await fetchOpenMeteoMarineHourly(lat, lon);
-    src = 'open-meteo-marine';
-  }
+  // Use marine API sea_level_height_msl exclusively
+  let src: 'open-meteo-tide' | 'open-meteo-marine' = 'open-meteo-marine';
+  const hourly = await fetchOpenMeteoMarineHourly(lat, lon);
   if (!hourly || hourly.time.length === 0) {
     return null;
   }
@@ -143,9 +139,9 @@ async function fetchOpenMeteoTideHourly(lat: number, lon: number): Promise<Hourl
 
 async function fetchOpenMeteoMarineHourly(lat: number, lon: number): Promise<HourlyResponse | null> {
   try {
-    const { start, end } = todayRange();
     const url = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}` +
-      `&hourly=sea_level_height_msl&start_date=${start}&end_date=${end}&timezone=auto&cell_selection=sea`;
+      `&hourly=sea_level_height_msl&timezone=auto&cell_selection=sea&forecast_days=1&current=sea_level_height_msl`;
+    try { console.log('[Tide] marine.url:', url); } catch {}
     const res = await fetch(url);
     if (!res.ok) {
       return null;
