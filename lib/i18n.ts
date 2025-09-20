@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState, useEffect } from 'react';
+import { useCallback } from 'react';
+import { useAppStore } from './store';
 
 export type Language = 'zh' | 'en' | 'system';
 export type TranslationKeys = keyof typeof translations.zh;
@@ -1082,7 +1083,16 @@ export const translations = {
   },
 };
 
-let currentLanguage: Language = 'zh';
+// Keep a module-level snapshot for places calling `t()` directly.
+// Initialize from store preference to avoid defaulting to Chinese.
+let currentLanguage: Language = (() => {
+  try {
+    const pref = useAppStore.getState().userPreferences?.appearance?.language;
+    return (pref === 'zh' || pref === 'en' || pref === 'system') ? pref : 'en';
+  } catch {
+    return 'en';
+  }
+})();
 
 export const initializeLanguage = async (): Promise<Language> => {
   try {
@@ -1092,6 +1102,13 @@ export const initializeLanguage = async (): Promise<Language> => {
       (storedLanguage === 'zh' || storedLanguage === 'en')
     ) {
       currentLanguage = storedLanguage as Language;
+      // Sync into global store preferences so UI re-renders accordingly
+      const store = useAppStore.getState();
+      const prev = store.userPreferences;
+      const effective: 'zh' | 'en' = (currentLanguage === 'zh' || currentLanguage === 'en') ? currentLanguage : (prev.appearance.language || 'en');
+      store.updateUserPreferences({
+        appearance: { ...prev.appearance, language: effective },
+      });
     }
   } catch (error) {
     console.warn('Failed to load language preference:', error);
@@ -1103,6 +1120,13 @@ export const setLanguage = async (language: Language): Promise<void> => {
   try {
     currentLanguage = language;
     await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+    // Update store so components subscribed via useTranslation re-render
+    const store = useAppStore.getState();
+    const prev = store.userPreferences;
+    const effective: 'zh' | 'en' = (language === 'zh' || language === 'en') ? language : (prev.appearance.language || 'en');
+    store.updateUserPreferences({
+      appearance: { ...prev.appearance, language: effective },
+    });
   } catch (error) {
     console.warn('Failed to save language preference:', error);
   }
@@ -1116,7 +1140,7 @@ export const t = (
   key: TranslationKeys,
   params?: Record<string, string>
 ): string => {
-  const lang = currentLanguage === 'system' ? 'zh' : currentLanguage;
+  const lang = (currentLanguage === 'zh' || currentLanguage === 'en') ? currentLanguage : 'zh';
   const translation = translations[lang][key] || translations.zh[key] || key;
 
   if (params) {
@@ -1129,29 +1153,19 @@ export const t = (
 };
 
 export const useTranslation = () => {
-  const [language, setCurrentLanguage] = useState<Language>(currentLanguage);
+  // Subscribe to language in store so any changes trigger re-render
+  const language = useAppStore(state => state.userPreferences.appearance.language);
 
-  useEffect(() => {
-    // 初始化语言设置
-    initializeLanguage().then(lang => {
-      currentLanguage = lang; // 确保全局变量同步
-      setCurrentLanguage(lang);
-    });
+  const changeLanguage = useCallback(async (newLanguage: Language) => {
+    await setLanguage(newLanguage);
   }, []);
 
-  const changeLanguage = async (newLanguage: Language) => {
-    currentLanguage = newLanguage; // 更新全局变量
-    await setLanguage(newLanguage);
-    setCurrentLanguage(newLanguage);
-  };
+  const translate = useCallback((key: TranslationKeys, params?: Record<string, string>): string => {
+    const langResolved: 'zh' | 'en' = (language === 'zh' || language === 'en') ? language : 'zh';
+    const translation = translations[langResolved][key] || translations.zh[key] || key;
 
-  const translate = (key: TranslationKeys, params?: Record<string, string>): string => {
-    const lang = language === 'system' ? 'zh' : language;
-    const translation = translations[lang][key] || translations.zh[key] || key;
-
-    // 调试信息 - 在开发环境中显示
-    if (__DEV__ && !translations[lang][key] && !translations.zh[key]) {
-      console.warn(`Translation missing for key: ${key} in language: ${lang}`);
+    if (__DEV__ && !translations[langResolved][key] && !translations.zh[key]) {
+      console.warn(`Translation missing for key: ${key} in language: ${langResolved}`);
     }
 
     if (params) {
@@ -1161,7 +1175,7 @@ export const useTranslation = () => {
     }
 
     return translation;
-  };
+  }, [language]);
 
   return { t: translate, currentLanguage: language, setLanguage: changeLanguage };
 };
