@@ -268,8 +268,9 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="textformat"
-                size={14}
+                size={16}
                 color={theme.colors.textSecondary}
+                style={styles.labelIcon}
               />
               <ThemedText
                 type="bodySmall"
@@ -295,8 +296,9 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="doc.text"
-                size={14}
+                size={16}
                 color={theme.colors.textSecondary}
+                style={styles.labelIcon}
               />
               <ThemedText
                 type="bodySmall"
@@ -386,8 +388,9 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="line.3.horizontal"
-                size={14}
+                size={16}
                 color={theme.colors.textSecondary}
+                style={styles.labelIcon}
               />
               <ThemedText
                 type="bodySmall"
@@ -413,8 +416,9 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="circle"
-                size={14}
+                size={16}
                 color={theme.colors.textSecondary}
+                style={styles.labelIcon}
               />
               <ThemedText
                 type="bodySmall"
@@ -440,8 +444,9 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="link"
-                size={14}
+                size={16}
                 color={theme.colors.textSecondary}
+                style={styles.labelIcon}
               />
               <ThemedText
                 type="bodySmall"
@@ -467,8 +472,9 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="staple"
-                size={14}
+                size={16}
                 color={theme.colors.textSecondary}
+                style={styles.labelIcon}
               />
               <ThemedText
                 type="bodySmall"
@@ -494,8 +500,9 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="leaf"
-                size={14}
+                size={16}
                 color={theme.colors.textSecondary}
+                style={styles.labelIcon}
               />
               <ThemedText
                 type="bodySmall"
@@ -723,8 +730,9 @@ export default function CreateEquipmentScreen() {
             <View style={styles.labelRow}>
               <IconSymbol
                 name="star"
-                size={14}
+                size={16}
                 color={theme.colors.textSecondary}
+                style={styles.labelIcon}
               />
               <ThemedText
                 type="bodySmall"
@@ -922,6 +930,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     marginBottom: 8,
+  },
+  labelIcon: {
+    transform: [{ translateY: -4 }],
   },
   textInput: {
     padding: 16,
