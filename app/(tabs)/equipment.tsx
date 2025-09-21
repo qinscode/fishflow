@@ -271,6 +271,30 @@ function EquipmentSetCard({
   t,
   getWaterTypeName,
 }: EquipmentSetCardProps) {
+  const hexToRgba = (hex: string, alpha: number) => {
+    const sanitized = hex.replace('#', '');
+    if (sanitized.length !== 6) {
+      return hex;
+    }
+    const numeric = parseInt(sanitized, 16);
+    const r = (numeric >> 16) & 255;
+    const g = (numeric >> 8) & 255;
+    const b = numeric & 255;
+    return `rgba(${r}, ${g}, ${b}, ${alpha.toFixed(2)})`;
+  };
+
+  const withThemeAlpha = (hex: string, lightAlpha = 0.14, darkAlpha = 0.28) =>
+    hexToRgba(hex, theme.name === 'light' ? lightAlpha : darkAlpha);
+
+  const fieldPalette = {
+    rod: theme.colors.primary,
+    reel: theme.colors.secondary,
+    line: theme.colors.info,
+    hook: theme.colors.warning,
+    bait: theme.colors.accent,
+    accessories: theme.colors.success,
+  } as const;
+
   const infoFields = [
     {
       key: 'rod',
@@ -302,10 +326,22 @@ function EquipmentSetCard({
       label: t('equipment.form.bait'),
       value: set.bait,
     },
-  ].filter(item => item.value);
+  ]
+    .filter(item => item.value)
+    .map(field => {
+      const color =
+        fieldPalette[field.key as keyof typeof fieldPalette] ||
+        theme.colors.primary;
+      return {
+        ...field,
+        iconColor: color,
+        iconBackground: withThemeAlpha(color),
+      };
+    });
 
   const accessories = (set.accessories ?? []).filter(Boolean);
   if (accessories.length > 0) {
+    const color = fieldPalette.accessories;
     infoFields.push({
       key: 'accessories',
       icon: 'wrench.adjustable',
@@ -316,48 +352,30 @@ function EquipmentSetCard({
           : `${accessories.slice(0, 2).join(' • ')} +${
               accessories.length - 2
             }`,
+      iconColor: color,
+      iconBackground: withThemeAlpha(color),
     });
   }
 
   const tags = (set.tags ?? []).filter(Boolean);
   const targetFish = (set.targetFish ?? []).filter(Boolean);
 
-  const iconBackground =
-    theme.name === 'light'
-      ? 'rgba(0, 122, 255, 0.12)'
-      : 'rgba(10, 132, 255, 0.24)';
-  const defaultIconBackground =
-    theme.name === 'light'
-      ? 'rgba(94, 92, 230, 0.18)'
-      : 'rgba(94, 92, 230, 0.32)';
-  const editButtonBackground =
-    theme.name === 'light'
-      ? 'rgba(0, 122, 255, 0.1)'
-      : 'rgba(10, 132, 255, 0.2)';
-  const deleteButtonBackground =
-    theme.name === 'light'
-      ? 'rgba(239, 68, 68, 0.12)'
-      : 'rgba(239, 68, 68, 0.24)';
+  const iconBackground = withThemeAlpha(theme.colors.primary);
+  const defaultIconBackground = withThemeAlpha(
+    theme.colors.secondary,
+    0.18,
+    0.32
+  );
+  const editButtonBackground = withThemeAlpha(theme.colors.primary, 0.12, 0.24);
+  const deleteButtonBackground = withThemeAlpha(theme.colors.error, 0.14, 0.28);
   const infoCardBackground =
     theme.name === 'light'
       ? 'rgba(248, 250, 252, 0.88)'
       : 'rgba(255, 255, 255, 0.06)';
-  const chipBackground =
-    theme.name === 'light'
-      ? 'rgba(0, 122, 255, 0.08)'
-      : 'rgba(255, 255, 255, 0.08)';
-  const statBgUsage =
-    theme.name === 'light'
-      ? 'rgba(59, 130, 246, 0.12)'
-      : 'rgba(59, 130, 246, 0.24)';
-  const statBgSuccess =
-    theme.name === 'light'
-      ? 'rgba(16, 185, 129, 0.12)'
-      : 'rgba(16, 185, 129, 0.24)';
-  const statBgCatch =
-    theme.name === 'light'
-      ? 'rgba(255, 149, 0, 0.12)'
-      : 'rgba(255, 159, 10, 0.24)';
+  const chipBackground = withThemeAlpha(theme.colors.primary, 0.08, 0.16);
+  const statBgUsage = withThemeAlpha(theme.colors.primary, 0.12, 0.24);
+  const statBgSuccess = withThemeAlpha(theme.colors.success, 0.12, 0.24);
+  const statBgCatch = withThemeAlpha(theme.colors.accent, 0.12, 0.24);
 
   return (
     <ThemedView type="card" style={[styles.equipmentCard, theme.shadows.md]}>
@@ -509,13 +527,13 @@ function EquipmentSetCard({
                   <View
                     style={[
                       styles.infoIcon,
-                      { backgroundColor: chipBackground },
+                      { backgroundColor: field.iconBackground as string },
                     ]}
                   >
                     <IconSymbol
                       name={field.icon as any}
                       size={14}
-                      color={theme.colors.textSecondary}
+                      color={field.iconColor as string}
                     />
                   </View>
                   <ThemedText
