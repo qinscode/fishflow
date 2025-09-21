@@ -55,7 +55,7 @@ export default function EquipmentScreen() {
       default:
         return equipmentSets;
     }
-  }, [equipmentSets, equipmentStats, selectedFilter]);
+  }, [equipmentSets, equipmentStats, selectedFilter, t]);
 
   const handleCreateNew = () => {
     router.push('/equipment/create' as any);
