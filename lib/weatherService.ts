@@ -1,5 +1,5 @@
-import { LocationData, WeatherData } from './types';
 import { getTodayTideSummary } from './tide';
+import { LocationData, WeatherData } from './types';
 
 // Australia Bureau of Meteorology API and related services
 export interface AustralianWeatherData {
@@ -47,7 +47,7 @@ class AustralianWeatherService {
   // Enable verbose logging for debugging BOM fetch/parse
   private debug = true;
   // In-memory trace buffer for network debugging visible to UI
-  private traces: Array<{ ts: number; tag: string; payload?: any }> = [];
+  private traces: { ts: number; tag: string; payload?: any }[] = [];
 
   private dbg(label: string, payload?: any) {
     if (!this.debug) {return;}
@@ -494,8 +494,8 @@ class AustralianWeatherService {
       const rhArr = json?.hourly?.relative_humidity_2m ?? json?.hourly?.relativehumidity_2m;
       const spArr = json?.hourly?.surface_pressure;
       const idx = this.findNearestTimeIndex(hourlyTimes, nowIso);
-      const rh = this.safeNumber(current?.relative_humidity_2m ?? (idx != null ? rhArr?.[idx] : undefined));
-      const pres = this.safeNumber(current?.surface_pressure ?? (idx != null ? spArr?.[idx] : undefined));
+      const rh = this.safeNumber(current?.relative_humidity_2m ?? (idx !== null ? rhArr?.[idx] : undefined));
+      const pres = this.safeNumber(current?.surface_pressure ?? (idx !== null ? spArr?.[idx] : undefined));
 
       const data: AustralianWeatherData = {
         temperature: temp,
@@ -534,7 +534,7 @@ class AustralianWeatherService {
       this.trace('waves.json', { url, json });
       const times: string[] | undefined = json?.hourly?.time;
       const idx = this.findNearestTimeIndex(times, undefined);
-      if (idx == null) {return null;}
+      if (idx === null) {return null;}
       const h = this.safeNumber(json?.hourly?.wave_height?.[idx]);
       const p = this.safeNumber(json?.hourly?.wave_period?.[idx]);
       const d = this.safeNumber(json?.hourly?.wave_direction?.[idx]);
@@ -835,7 +835,7 @@ class AustralianWeatherService {
 
     // Helper to normalize to flat arrays
     const toArray = (v: any): any[] => {
-      if (v == null) {return [];} 
+      if (v === null) {return [];}
       if (Array.isArray(v)) {return v.flat ? v.flat() : ([] as any[]).concat(...v);}
       return [v];
     };
@@ -880,7 +880,7 @@ class AustralianWeatherService {
       for (let i = 0; i < times.length; i++) {
         if ((times[i] || '').slice(0, 10) === todayStr) { idxs.push(i); }
       }
-      if (idxs.length < 3) return out;
+      if (idxs.length < 3) {return out;}
       // Find local extrema via sign change of first difference
       let prevDiff = 0;
       for (let k = 1; k < idxs.length; k++) {
@@ -915,23 +915,23 @@ export function mciIconForWeather(w: AustralianWeatherData): string {
   const code = w.wmoCode;
   if (typeof code === 'number') {
     const c = Number(code);
-    if (c === 0) return 'weather-sunny';
-    if (c === 1 || c === 2) return 'weather-partly-cloudy';
-    if (c === 3) return 'weather-cloudy';
-    if (c === 45 || c === 48) return 'weather-fog';
-    if ((c >= 51 && c <= 57) || (c >= 61 && c <= 67)) return 'weather-rainy';
-    if (c >= 71 && c <= 77) return 'weather-snowy';
-    if (c >= 80 && c <= 82) return 'weather-pouring';
-    if (c >= 95) return 'weather-lightning-rainy';
+    if (c === 0) {return 'weather-sunny';}
+    if (c === 1 || c === 2) {return 'weather-partly-cloudy';}
+    if (c === 3) {return 'weather-cloudy';}
+    if (c === 45 || c === 48) {return 'weather-fog';}
+    if ((c >= 51 && c <= 57) || (c >= 61 && c <= 67)) {return 'weather-rainy';}
+    if (c >= 71 && c <= 77) {return 'weather-snowy';}
+    if (c >= 80 && c <= 82) {return 'weather-pouring';}
+    if (c >= 95) {return 'weather-lightning-rainy';}
   }
   // Fallback: use condition text heuristics (BOM)
   const t = (w.conditions || '').toLowerCase();
-  if (t.includes('thunder') || t.includes('storm')) return 'weather-lightning-rainy';
-  if (t.includes('snow')) return 'weather-snowy';
-  if (t.includes('rain') || t.includes('shower') || t.includes('drizzle')) return 'weather-rainy';
-  if (t.includes('fog')) return 'weather-fog';
-  if (t.includes('partly') || t.includes('mostly')) return 'weather-partly-cloudy';
-  if (t.includes('cloud')) return 'weather-cloudy';
-  if (t.includes('clear') || t.includes('sunny')) return 'weather-sunny';
+  if (t.includes('thunder') || t.includes('storm')) {return 'weather-lightning-rainy';}
+  if (t.includes('snow')) {return 'weather-snowy';}
+  if (t.includes('rain') || t.includes('shower') || t.includes('drizzle')) {return 'weather-rainy';}
+  if (t.includes('fog')) {return 'weather-fog';}
+  if (t.includes('partly') || t.includes('mostly')) {return 'weather-partly-cloudy';}
+  if (t.includes('cloud')) {return 'weather-cloudy';}
+  if (t.includes('clear') || t.includes('sunny')) {return 'weather-sunny';}
   return 'weather-cloudy';
 }
