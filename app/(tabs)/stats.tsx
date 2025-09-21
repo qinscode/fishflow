@@ -273,7 +273,7 @@ export default function StatsScreen() {
             action={{
               label: t('stats.start.recording'),
               onPress: () => {
-                // Navigate to log screen
+                router.push('/log');
               },
             }}
           />
