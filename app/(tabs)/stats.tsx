@@ -974,16 +974,21 @@ const styles = StyleSheet.create({
   },
   progressStats: {
     flexDirection: 'row',
-    gap: 24,
+    gap: 16,
     marginTop: 8,
+    flexWrap: 'wrap',
   },
   progressStat: {
     alignItems: 'flex-start',
     gap: 4,
+    flexGrow: 1,
+    flexShrink: 1,
+    minWidth: 0,
   },
   progressStatLabel: {
     fontSize: 10,
     opacity: 0.7,
+    flexShrink: 1,
   },
   rarityStats: {
     gap: 16,
