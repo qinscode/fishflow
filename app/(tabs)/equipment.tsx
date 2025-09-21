@@ -271,186 +271,456 @@ function EquipmentSetCard({
   t,
   getWaterTypeName,
 }: EquipmentSetCardProps) {
+  const infoFields = [
+    {
+      key: 'rod',
+      icon: 'line.3.horizontal',
+      label: t('equipment.form.rod'),
+      value: set.rod,
+    },
+    {
+      key: 'reel',
+      icon: 'circle.grid.3x3.fill',
+      label: t('equipment.form.reel'),
+      value: set.reel,
+    },
+    {
+      key: 'line',
+      icon: 'link',
+      label: t('equipment.form.line'),
+      value: set.line,
+    },
+    {
+      key: 'hook',
+      icon: 'paperclip',
+      label: t('equipment.form.hook'),
+      value: set.hook,
+    },
+    {
+      key: 'bait',
+      icon: 'fish',
+      label: t('equipment.form.bait'),
+      value: set.bait,
+    },
+  ].filter(item => item.value);
+
+  const accessories = (set.accessories ?? []).filter(Boolean);
+  if (accessories.length > 0) {
+    infoFields.push({
+      key: 'accessories',
+      icon: 'wrench.adjustable',
+      label: t('equipment.form.accessories'),
+      value:
+        accessories.length <= 2
+          ? accessories.join(' • ')
+          : `${accessories.slice(0, 2).join(' • ')} +${
+              accessories.length - 2
+            }`,
+    });
+  }
+
+  const tags = (set.tags ?? []).filter(Boolean);
+  const targetFish = (set.targetFish ?? []).filter(Boolean);
+
+  const iconBackground =
+    theme.name === 'light'
+      ? 'rgba(0, 122, 255, 0.12)'
+      : 'rgba(10, 132, 255, 0.24)';
+  const defaultIconBackground =
+    theme.name === 'light'
+      ? 'rgba(94, 92, 230, 0.18)'
+      : 'rgba(94, 92, 230, 0.32)';
+  const editButtonBackground =
+    theme.name === 'light'
+      ? 'rgba(0, 122, 255, 0.1)'
+      : 'rgba(10, 132, 255, 0.2)';
+  const deleteButtonBackground =
+    theme.name === 'light'
+      ? 'rgba(239, 68, 68, 0.12)'
+      : 'rgba(239, 68, 68, 0.24)';
+  const infoCardBackground =
+    theme.name === 'light'
+      ? 'rgba(248, 250, 252, 0.88)'
+      : 'rgba(255, 255, 255, 0.06)';
+  const chipBackground =
+    theme.name === 'light'
+      ? 'rgba(0, 122, 255, 0.08)'
+      : 'rgba(255, 255, 255, 0.08)';
+  const statBgUsage =
+    theme.name === 'light'
+      ? 'rgba(59, 130, 246, 0.12)'
+      : 'rgba(59, 130, 246, 0.24)';
+  const statBgSuccess =
+    theme.name === 'light'
+      ? 'rgba(16, 185, 129, 0.12)'
+      : 'rgba(16, 185, 129, 0.24)';
+  const statBgCatch =
+    theme.name === 'light'
+      ? 'rgba(255, 149, 0, 0.12)'
+      : 'rgba(255, 159, 10, 0.24)';
+
   return (
     <ThemedView type="card" style={[styles.equipmentCard, theme.shadows.md]}>
       <Pressable style={styles.cardPressable} onPress={onPress}>
-        {/* Header */}
-        <View style={styles.cardHeader}>
-          <View style={styles.cardTitleRow}>
-            <ThemedText type="subtitle" style={styles.equipmentName}>
-              {set.name}
-            </ThemedText>
-          </View>
+        <View style={styles.cardHeaderRow}>
+          <View style={styles.headerLeft}>
+            <View
+              style={[styles.iconBadge, { backgroundColor: iconBackground }]}
+            >
+              <IconSymbol
+                name={(set.icon as any) || 'backpack.fill'}
+                size={20}
+                color={theme.colors.primary}
+              />
+            </View>
 
-          {set.description && (
-            <ThemedText
-              type="bodySmall"
-              style={{ color: theme.colors.textSecondary }}
-            >
-              {set.description}
-            </ThemedText>
-          )}
-        </View>
+            <View style={styles.headerText}>
+              <ThemedText
+                type="subtitle"
+                style={styles.equipmentName}
+                numberOfLines={1}
+              >
+                {set.name}
+              </ThemedText>
 
-        {/* Equipment Details */}
-        <View style={styles.equipmentDetails}>
-          <View style={styles.equipmentRow}>
-            <IconSymbol
-              name="line.3.horizontal"
-              size={16}
-              color={theme.colors.textSecondary}
-            />
-            <ThemedText
-              type="bodySmall"
-              style={{ color: theme.colors.textSecondary }}
-            >
-              {set.rod} • {set.reel}
-            </ThemedText>
-          </View>
-          <View style={styles.equipmentRow}>
-            <IconSymbol
-              name="link"
-              size={16}
-              color={theme.colors.textSecondary}
-            />
-            <ThemedText
-              type="bodySmall"
-              style={{ color: theme.colors.textSecondary }}
-            >
-              {set.line} • {set.hook}
-            </ThemedText>
-          </View>
-          <View style={styles.equipmentRow}>
-            <IconSymbol
-              name="fish"
-              size={16}
-              color={theme.colors.textSecondary}
-            />
-            <ThemedText
-              type="bodySmall"
-              style={{ color: theme.colors.textSecondary }}
-            >
-              {set.bait}
-            </ThemedText>
-          </View>
-        </View>
-
-        {/* Water Types */}
-        {set.waterTypes.length > 0 && (
-          <View style={styles.waterTypesContainer}>
-            <View style={styles.waterTypes}>
-              {set.waterTypes.slice(0, 3).map(waterType => (
-                <View
-                  key={waterType}
-                  style={[
-                    styles.waterTypeTag,
-                    { backgroundColor: theme.colors.surface },
-                  ]}
+              {set.description ? (
+                <ThemedText
+                  type="bodySmall"
+                  numberOfLines={2}
+                  style={{ color: theme.colors.textSecondary }}
                 >
-                  <ThemedText
-                    type="caption"
-                    style={{ color: theme.colors.text }}
-                  >
-                    {getWaterTypeName(waterType)}
-                  </ThemedText>
-                </View>
-              ))}
-              {set.waterTypes.length > 3 && (
-                <View
-                  style={[
-                    styles.waterTypeTag,
-                    { backgroundColor: theme.colors.surface },
-                  ]}
-                >
-                  <ThemedText
-                    type="caption"
-                    style={{ color: theme.colors.text }}
-                  >
-                    +{set.waterTypes.length - 3}
-                  </ThemedText>
+                  {set.description}
+                </ThemedText>
+              ) : null}
+
+              {tags.length > 0 && (
+                <View style={styles.tagRow}>
+                  {tags.slice(0, 2).map(tag => (
+                    <View
+                      key={tag}
+                      style={[
+                        styles.smallTag,
+                        {
+                          backgroundColor: theme.colors.surface,
+                          borderColor: theme.colors.borderLight,
+                        },
+                      ]}
+                    >
+                      <ThemedText
+                        type="caption"
+                        style={{ color: theme.colors.textSecondary }}
+                      >
+                        {tag}
+                      </ThemedText>
+                    </View>
+                  ))}
+                  {tags.length > 2 && (
+                    <View
+                      style={[
+                        styles.smallTag,
+                        {
+                          backgroundColor: theme.colors.surface,
+                          borderColor: theme.colors.borderLight,
+                        },
+                      ]}
+                    >
+                      <ThemedText
+                        type="caption"
+                        style={{ color: theme.colors.textSecondary }}
+                      >
+                        +{tags.length - 2}
+                      </ThemedText>
+                    </View>
+                  )}
                 </View>
               )}
             </View>
           </View>
+
+          <View style={styles.headerRight}>
+            {set.isDefault ? (
+              <View
+                style={[
+                  styles.defaultIcon,
+                  { backgroundColor: defaultIconBackground },
+                ]}
+              >
+                <IconSymbol
+                  name="star.fill"
+                  size={16}
+                  color={theme.colors.secondary}
+                />
+              </View>
+            ) : null}
+
+            <View style={styles.headerActions}>
+              <Pressable
+                hitSlop={12}
+                style={[
+                  styles.iconAction,
+                  { backgroundColor: editButtonBackground },
+                ]}
+                onPress={event => {
+                  event.stopPropagation();
+                  onPress();
+                }}
+              >
+                <IconSymbol
+                  name="pencil"
+                  size={16}
+                  color={theme.colors.primary}
+                />
+              </Pressable>
+              <Pressable
+                hitSlop={12}
+                style={[
+                  styles.iconAction,
+                  { backgroundColor: deleteButtonBackground },
+                ]}
+                onPress={event => {
+                  event.stopPropagation();
+                  onDelete();
+                }}
+              >
+                <IconSymbol
+                  name="trash"
+                  size={16}
+                  color={theme.colors.error}
+                />
+              </Pressable>
+            </View>
+          </View>
+        </View>
+
+        {infoFields.length > 0 && (
+          <View style={styles.infoGrid}>
+            {infoFields.map(field => (
+              <View
+                key={field.key}
+                style={[
+                  styles.infoCard,
+                  {
+                    borderColor: theme.colors.borderLight,
+                    backgroundColor: infoCardBackground,
+                  },
+                ]}
+              >
+                <View style={styles.infoLabelRow}>
+                  <View
+                    style={[
+                      styles.infoIcon,
+                      { backgroundColor: chipBackground },
+                    ]}
+                  >
+                    <IconSymbol
+                      name={field.icon as any}
+                      size={14}
+                      color={theme.colors.textSecondary}
+                    />
+                  </View>
+                  <ThemedText
+                    type="caption"
+                    style={{
+                      color: theme.colors.textSecondary,
+                      fontWeight: '600',
+                      letterSpacing: 0.3,
+                    }}
+                  >
+                    {field.label}
+                  </ThemedText>
+                </View>
+                <ThemedText
+                  type="bodySmall"
+                  style={{ color: theme.colors.text }}
+                  numberOfLines={2}
+                >
+                  {field.value}
+                </ThemedText>
+              </View>
+            ))}
+          </View>
         )}
 
-        {/* Stats */}
+        {(set.waterTypes.length > 0 || targetFish.length > 0 || accessories.length > 0) && (
+          <View style={styles.metaSection}>
+            {set.waterTypes.length > 0 && (
+              <View style={styles.metaBlock}>
+                <ThemedText
+                  type="caption"
+                  style={{ color: theme.colors.textSecondary, fontWeight: '600' }}
+                >
+                  {t('equipment.form.water.types.label')}
+                </ThemedText>
+                <View style={styles.waterTypes}>
+                  {set.waterTypes.slice(0, 4).map(waterType => (
+                    <View
+                      key={waterType}
+                      style={[
+                        styles.waterTypeTag,
+                        { backgroundColor: chipBackground },
+                      ]}
+                    >
+                      <ThemedText
+                        type="caption"
+                        style={{ color: theme.colors.text }}
+                      >
+                        {getWaterTypeName(waterType)}
+                      </ThemedText>
+                    </View>
+                  ))}
+                  {set.waterTypes.length > 4 && (
+                    <View
+                      style={[
+                        styles.waterTypeTag,
+                        { backgroundColor: chipBackground },
+                      ]}
+                    >
+                      <ThemedText
+                        type="caption"
+                        style={{ color: theme.colors.text }}
+                      >
+                        +{set.waterTypes.length - 4}
+                      </ThemedText>
+                    </View>
+                  )}
+                </View>
+              </View>
+            )}
+
+            {targetFish.length > 0 && (
+              <View style={styles.metaBlock}>
+                <ThemedText
+                  type="caption"
+                  style={{ color: theme.colors.textSecondary, fontWeight: '600' }}
+                >
+                  {t('equipment.form.target.fish')}
+                </ThemedText>
+                <View style={styles.waterTypes}>
+                  {targetFish.slice(0, 3).map(fish => (
+                    <View
+                      key={fish}
+                      style={[
+                        styles.waterTypeTag,
+                        { backgroundColor: theme.colors.surface },
+                      ]}
+                    >
+                      <ThemedText
+                        type="caption"
+                        style={{ color: theme.colors.textSecondary }}
+                      >
+                        {fish}
+                      </ThemedText>
+                    </View>
+                  ))}
+                  {targetFish.length > 3 && (
+                    <View
+                      style={[
+                        styles.waterTypeTag,
+                        { backgroundColor: theme.colors.surface },
+                      ]}
+                    >
+                      <ThemedText
+                        type="caption"
+                        style={{ color: theme.colors.textSecondary }}
+                      >
+                        +{targetFish.length - 3}
+                      </ThemedText>
+                    </View>
+                  )}
+                </View>
+              </View>
+            )}
+
+            {accessories.length > 0 && (
+              <View style={styles.metaBlock}>
+                <ThemedText
+                  type="caption"
+                  style={{ color: theme.colors.textSecondary, fontWeight: '600' }}
+                >
+                  {t('equipment.form.accessories')}
+                </ThemedText>
+                <ThemedText
+                  type="bodySmall"
+                  style={{ color: theme.colors.text }}
+                  numberOfLines={2}
+                >
+                  {infoFields.find(field => field.key === 'accessories')?.value}
+                </ThemedText>
+              </View>
+            )}
+          </View>
+        )}
+
         {stats && (
-          <View style={styles.statsRow}>
-            <View style={styles.statItem}>
-              <ThemedText
-                type="bodySmall"
-                style={{ color: theme.colors.primary, fontWeight: '600' }}
-              >
-                {stats.usageCount}
-              </ThemedText>
-              <ThemedText
-                type="caption"
-                style={{ color: theme.colors.textSecondary }}
-              >
-                {t('equipment.stats.usage')}
-              </ThemedText>
+          <View style={styles.statsPills}>
+            <View style={[styles.statPill, { backgroundColor: statBgUsage }]}>
+              <IconSymbol
+                name="clock.arrow.2.circlepath"
+                size={14}
+                color={theme.colors.primary}
+              />
+              <View>
+                <ThemedText
+                  type="caption"
+                  style={{ color: theme.colors.textSecondary }}
+                >
+                  {t('equipment.stats.usage')}
+                </ThemedText>
+                <ThemedText
+                  type="bodySmall"
+                  style={[styles.statValue, { color: theme.colors.primary }]}
+                >
+                  {stats.usageCount}
+                </ThemedText>
+              </View>
             </View>
-            <View style={styles.statItem}>
-              <ThemedText
-                type="bodySmall"
-                style={{ color: theme.colors.secondary, fontWeight: '600' }}
-              >
-                {Math.round(stats.successRate * 100)}%
-              </ThemedText>
-              <ThemedText
-                type="caption"
-                style={{ color: theme.colors.textSecondary }}
-              >
-                {t('equipment.stats.success')}
-              </ThemedText>
+
+            <View style={[styles.statPill, { backgroundColor: statBgSuccess }]}>
+              <IconSymbol
+                name="checkmark.seal.fill"
+                size={14}
+                color={theme.colors.secondary}
+              />
+              <View>
+                <ThemedText
+                  type="caption"
+                  style={{ color: theme.colors.textSecondary }}
+                >
+                  {t('equipment.stats.success')}
+                </ThemedText>
+                <ThemedText
+                  type="bodySmall"
+                  style={[styles.statValue, { color: theme.colors.secondary }]}
+                >
+                  {Math.round(stats.successRate * 100)}%
+                </ThemedText>
+              </View>
             </View>
-            <View style={styles.statItem}>
-              <ThemedText
-                type="bodySmall"
-                style={{ color: theme.colors.accent, fontWeight: '600' }}
-              >
-                {stats.catchCount}
-              </ThemedText>
-              <ThemedText
-                type="caption"
-                style={{ color: theme.colors.textSecondary }}
-              >
-                {t('equipment.stats.catches')}
-              </ThemedText>
+
+            <View style={[styles.statPill, { backgroundColor: statBgCatch }]}>
+              <IconSymbol
+                name="fish.fill"
+                size={14}
+                color={theme.colors.accent}
+              />
+              <View>
+                <ThemedText
+                  type="caption"
+                  style={{ color: theme.colors.textSecondary }}
+                >
+                  {t('equipment.stats.catches')}
+                </ThemedText>
+                <ThemedText
+                  type="bodySmall"
+                  style={[styles.statValue, { color: theme.colors.accent }]}
+                >
+                  {stats.catchCount}
+                </ThemedText>
+              </View>
             </View>
           </View>
         )}
       </Pressable>
-
-      {/* Action Buttons */}
-      <View style={styles.cardActions}>
-        <Pressable
-          style={[
-            styles.actionButton,
-            { backgroundColor: theme.colors.surface },
-          ]}
-          onPress={onPress}
-        >
-          <IconSymbol name="pencil" size={16} color={theme.colors.primary} />
-          <ThemedText type="bodySmall" style={{ color: theme.colors.primary }}>
-            {t('equipment.actions.edit')}
-          </ThemedText>
-        </Pressable>
-
-        <Pressable
-          style={[
-            styles.actionButton,
-            { backgroundColor: theme.colors.surface },
-          ]}
-          onPress={onDelete}
-        >
-          <IconSymbol name="trash" size={16} color={theme.colors.error} />
-          <ThemedText type="bodySmall" style={{ color: theme.colors.error }}>
-            {t('equipment.actions.delete')}
-          </ThemedText>
-        </Pressable>
-      </View>
     </ThemedView>
   );
 }
@@ -513,40 +783,105 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   equipmentCard: {
-    borderRadius: 16,
+    borderRadius: 20,
     padding: 20,
-    gap: 16,
   },
   cardPressable: {
     flex: 1,
+    gap: 20,
   },
-  cardHeader: {
-    gap: 8,
-  },
-  cardTitleRow: {
+  cardHeaderRow: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gap: 16,
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
+    flex: 1,
+  },
+  iconBadge: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerText: {
+    flex: 1,
+    gap: 8,
   },
   equipmentName: {
     fontWeight: '600',
     flex: 1,
   },
-  defaultBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+  tagRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  smallTag: {
     borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderWidth: 1,
   },
-  equipmentDetails: {
-    gap: 8,
+  headerRight: {
+    alignItems: 'flex-end',
+    gap: 10,
   },
-  equipmentRow: {
+  defaultIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerActions: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
   },
-  waterTypesContainer: {
-    marginTop: 8,
+  iconAction: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  infoGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  infoCard: {
+    borderRadius: 14,
+    padding: 12,
+    borderWidth: 1,
+    gap: 8,
+    flexBasis: '48%',
+    flexGrow: 1,
+    minWidth: 140,
+  },
+  infoLabelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  infoIcon: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  metaSection: {
+    gap: 12,
+  },
+  metaBlock: {
+    gap: 8,
   },
   waterTypes: {
     flexDirection: 'row',
@@ -554,34 +889,24 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   waterTypeTag: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  statsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingTop: 16,
-    marginTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#f0f0f0',
-  },
-  statItem: {
-    alignItems: 'center',
-    gap: 4,
-  },
-  cardActions: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    gap: 12,
-    marginTop: 8,
-  },
-  actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 12,
-    gap: 4,
+    borderRadius: 14,
+  },
+  statsPills: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  statPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    borderRadius: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+  },
+  statValue: {
+    fontWeight: '600',
   },
 });
