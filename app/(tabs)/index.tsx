@@ -18,7 +18,7 @@ import {
   useCatches,
   useUserStats,
 } from '@/lib/store';
-import { getFishCardState } from '@/lib/utils';
+import { getFishCardState, formatDate } from '@/lib/utils';
 
 export default function HomeScreen() {
   const theme = useTheme();
@@ -271,6 +271,74 @@ export default function HomeScreen() {
             </ThemedText>
           </ThemedView>
         </View>
+
+        {/* Fishing Log */}
+        <View style={styles.section}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <ThemedText type="title" style={styles.sectionTitle}>
+              {t('logs.title')}
+            </ThemedText>
+            <Pressable onPress={() => router.push('/logs')} style={{ padding: 6 }}>
+              <ThemedText type="bodySmall" style={{ color: theme.colors.primary }}>
+                {t('logs.view.button')}
+              </ThemedText>
+            </Pressable>
+          </View>
+
+          {catches.length === 0 ? (
+            <ThemedView type="card" style={[styles.logCard, theme.shadows.sm]}>
+              <Pressable onPress={() => router.push('/log')} style={styles.row}>
+                <View style={[styles.icon, { backgroundColor: theme.colors.surface }]}>
+                  <MaterialCommunityIcons name="plus" size={22} color={theme.colors.primary} />
+                </View>
+                <View style={styles.content}>
+                  <ThemedText type="body" style={styles.title}>
+                    {t('logs.empty.title')}
+                  </ThemedText>
+                  <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
+                    {t('logs.empty.description')}
+                  </ThemedText>
+                </View>
+                <MaterialCommunityIcons name="chevron-right" size={18} color={theme.colors.textSecondary} />
+              </Pressable>
+            </ThemedView>
+          ) : (
+            catches
+              .slice()
+              .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+              .slice(0, 5)
+              .map(record => {
+                const fishItem = fish.find(f => f.id === record.fishId);
+                const title = record.isSkunked
+                  ? t('logs.item.skunked')
+                  : fishItem?.name || t('logs.item.unknown');
+                return (
+                  <ThemedView key={record.id} type="card" style={[styles.logCard, theme.shadows.sm]}>
+                    <Pressable onPress={() => router.push(`/logs/${record.id}` as any)} style={styles.row}>
+                      <View style={[styles.icon, { backgroundColor: theme.colors.surface }]}>
+                        <MaterialCommunityIcons
+                          name={record.isSkunked ? 'emoticon-sad-outline' : 'fish'}
+                          size={22}
+                          color={record.isSkunked ? theme.colors.textSecondary : theme.colors.primary}
+                        />
+                      </View>
+                      <View style={styles.content}>
+                        <ThemedText type="body" style={styles.title}>
+                          {title}
+                        </ThemedText>
+                        <ThemedText type="caption" style={{ color: theme.colors.textSecondary }}>
+                          {formatDate(record.timestamp)}
+                          {record.measurements.lengthCm ? ` · ${record.measurements.lengthCm}cm` : ''}
+                          {record.measurements.weightKg ? ` · ${record.measurements.weightKg}kg` : ''}
+                        </ThemedText>
+                      </View>
+                      <MaterialCommunityIcons name="chevron-right" size={18} color={theme.colors.textSecondary} />
+                    </Pressable>
+                  </ThemedView>
+                );
+              })
+          )}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -379,5 +447,29 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     marginVertical: 4,
+  },
+  // Fishing Log styles
+  logCard: {
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  content: {
+    flex: 1,
+  },
+  title: {
+    fontWeight: '600',
   },
 });
